@@ -1,0 +1,191 @@
+/*
+ * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+#include "webwindow.h"
+#include "ui_webwindow.h"
+
+WebWindow::WebWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::WebWindow)
+{
+    ui->setupUi(this);
+
+    this->_browserStatus = Idle;
+
+    this->_setupGui();
+
+    this->_loadPage(config.getStartPage());
+}
+
+WebWindow::~WebWindow()
+{
+    delete ui;
+}
+
+void WebWindow::_setupGui()
+{
+    // Create, configure and add webView
+    this->_webView = new WebView(this);
+    this->_webView->settings()->setIconDatabasePath(config.getStorageLocation(Configuration::FaviconStorageLocation));
+    ui->horizontalLayoutMiddle->addWidget(this->_webView);
+
+    // Create, configure and add browser toolbar
+    this->_toolBarBrowser = new QToolBar(tr("Browser Navigation"), this);
+    this->_toolBarBrowser->layout()->setSpacing(3);
+    this->_toolBarBrowser->layout()->setObjectName("BrowserToolBarLayout");
+    this->_toolBarBrowser->setObjectName("BrowserToolBar");
+    this->_toolBarBrowser->setIconSize(QSize(24, 24));
+    this->addToolBar(this->_toolBarBrowser);
+
+    // Create browser toolbar actions
+    this->_actionBrowseBack = this->_webView->pageAction(QWebPage::Back);
+    this->_actionBrowseForward = this->_webView->pageAction(QWebPage::Forward);
+    this->_actionBrowseReload = this->_webView->pageAction(QWebPage::Reload);
+    this->_actionBrowseStop = this->_webView->pageAction(QWebPage::Stop);
+    this->_actionBrowseHome = new QAction(tr("Go Home"), this);
+
+    // ...and widgets
+    this->_comboBoxAddressBar = new WebBrowserComboBox;
+    this->_comboBoxQuickPicker = new QComboBox;
+    this->_lineEditSearch = new QLineEdit;
+    this->_browserProgressBar = new QProgressBar;
+
+    // Configure actions
+    this->_actionBrowseBack->setIcon(QIcon(":/icons/browseBack"));
+    this->_actionBrowseForward->setIcon(QIcon(":/icons/browseForward"));
+    this->_actionBrowseReload->setIcon(QIcon(":/icons/browseReload"));
+    this->_actionBrowseStop->setIcon(QIcon(":/icons/browseStop"));
+    this->_actionBrowseHome->setIcon(QIcon(":/icons/browseHome"));
+
+    // Configure widgets
+    this->_comboBoxAddressBar->setSizePolicy(QSizePolicy::Expanding, this->_comboBoxAddressBar->sizePolicy().verticalPolicy());
+    this->_comboBoxAddressBar->setItemIcon(0, this->_webView->icon());
+    this->_lineEditSearch->setSizePolicy(QSizePolicy::Minimum, this->_lineEditSearch->sizePolicy().verticalPolicy());
+    this->_lineEditSearch->setMinimumWidth(200);
+    this->_lineEditSearch->setPlaceholderText(tr("Search..."));
+    this->_browserProgressBar->setTextVisible(false);
+    this->_browserProgressBar->setMaximumWidth(80);
+    this->_browserProgressBar->setMaximumHeight(20);
+
+    // Connect actions and widgets
+    connect(this->_comboBoxAddressBar,  SIGNAL(activated(const QString&)),          this, SLOT(_loadPage(const QString&)));
+    connect(this->_webView,             SIGNAL(loadProgress(int)),                  this, SLOT(_receiveBrowserProgress(int)));
+    connect(this->_webView,             SIGNAL(loadStarted()),                      this, SLOT(_whenWebViewLoadStarted()));
+    connect(this->_webView,             SIGNAL(loadFinished(bool)),                 this, SLOT(_whenWebViewLoadFinished(bool)));
+    connect(this->_webView,             SIGNAL(iconChanged()),                      this, SLOT(_whenWebViewIconChanged()));
+    connect(this->_webView,             SIGNAL(urlChanged(const QUrl &)),           this, SLOT(_whenWebViewUrlChanged(const QUrl&)));
+    connect(this->_webView,             SIGNAL(statusBarMessage(const QString &)),  this, SLOT(_receiveStatusBarMessage(QString)));
+    connect(this->_webView,             SIGNAL(titleChanged(const QString &)),      this, SLOT(_whenWebViewTitleChanged(QString)));
+    connect(this->_lineEditSearch,      SIGNAL(returnPressed()),                    this, SLOT(_whenSearchBoxReturnPressed()));
+
+    // Add actions and widgets to browser toolbar
+    this->_toolBarBrowser->addAction(this->_actionBrowseBack);
+    this->_toolBarBrowser->addAction(this->_actionBrowseForward);
+    this->_toolBarBrowser->addAction(this->_actionBrowseReload);
+    this->_toolBarBrowser->addAction(this->_actionBrowseStop);
+    this->_toolBarBrowser->addAction(this->_actionBrowseHome);
+    this->_toolBarBrowser->addWidget(this->_comboBoxAddressBar);
+    this->_toolBarBrowser->addWidget(this->_comboBoxQuickPicker);
+    this->_toolBarBrowser->addWidget(this->_lineEditSearch);
+    this->_toolBarBrowser->addWidget(this->_browserProgressBar);
+
+    // Restore window state and geometry, or set default geometry if no previous settings exist
+    if (! config.getWindowState(Configuration::WebWindow).isEmpty())
+        this->restoreState(config.getWindowState(Configuration::WebWindow));
+    if (! config.getWindowGeometry(Configuration::WebWindow).isEmpty())
+        this->restoreGeometry(config.getWindowGeometry(Configuration::WebWindow));
+    else
+    {
+        int defaultWidth  = ((QApplication::desktop()->availableGeometry().width() >= 1024)  ? 1024 : QApplication::desktop()->availableGeometry().width());
+        int defaultHeight = ((QApplication::desktop()->availableGeometry().height() >= 740) ? 740   : QApplication::desktop()->availableGeometry().height());
+        this->setGeometry(30, 50, defaultWidth, defaultHeight);
+    }
+}
+
+void WebWindow::_whenWebViewLoadFinished(bool ok)
+{
+    this->_browserStatus = Idle;
+    qDebug() << "LoadFinished(" << ok << ")";
+    this->_browserProgressBar->setEnabled(false);
+    this->_browserProgressBar->setValue(0);
+}
+
+void WebWindow::_whenWebViewLoadStarted()
+{
+    this->_browserStatus = Busy;
+    qDebug() << "LoadStarted()";
+    this->_browserProgressBar->setEnabled(true);
+}
+
+void WebWindow::_whenWebViewUrlChanged(const QUrl &url)
+{
+    qDebug() << "UrlChanged()";
+    this->_comboBoxAddressBar->addUrl(this->_webView->icon(), url);
+    this->_comboBoxAddressBar->clearEditText();
+    this->_comboBoxAddressBar->setCurrentIndex(0);
+}
+
+void WebWindow::_whenWebViewIconChanged()
+{
+    qDebug() << "IconChanged()";
+    this->_updateBrowserIcon(0);
+}
+
+void WebWindow::_whenWebViewTitleChanged(const QString &title)
+{
+    this->setWindowTitle(title + (title.isEmpty() ? "" : " - ") + config.fullAppName());
+}
+
+void WebWindow::_whenSearchBoxReturnPressed()
+{
+    this->_loadPage(config.makeSearchUrl(this->_lineEditSearch->text()));
+}
+
+void WebWindow::_receiveStatusBarMessage(const QString &text)
+{
+    ui->statusBar->showMessage(text);
+}
+
+void WebWindow::_receiveBrowserProgress(int progress)
+{
+    this->_browserProgressBar->setValue(progress);
+}
+
+void WebWindow::_loadPage(const QUrl &url)
+{
+    this->_webView->load(url);
+    this->_webView->setFocus();
+}
+
+void WebWindow::_loadPage(const QString &dirtyUrl)
+{
+    if (! dirtyUrl.contains(QRegExp("^[a-z0-9-]+:")))
+        this->_loadPage(QUrl(("http://" + dirtyUrl)));
+    else
+        this->_loadPage(QUrl(dirtyUrl));
+}
+
+void WebWindow::_updateBrowserIcon(int index, bool force)
+{
+    if (force || this->_comboBoxAddressBar->itemIcon(index).isNull())
+        this->_comboBoxAddressBar->setItemIcon(index, this->_webView->settings()->iconForUrl(QUrl(this->_comboBoxAddressBar->itemText(index))));
+}
+
+void WebWindow::closeEvent(QCloseEvent *event)
+{
+    config.saveWindow(Configuration::WebWindow, this->saveState(), this->saveGeometry());
+    QMainWindow::closeEvent(event);
+}

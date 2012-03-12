@@ -40,7 +40,8 @@ FORMS    += webwindow.ui \
 win32:RC_FILE = VHS4.rc
 
 OTHER_FILES += \
-    vhs4.rc
+    vhs4.rc \
+    README
 
 RESOURCES += \
     vhs4.qrc

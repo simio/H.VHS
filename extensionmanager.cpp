@@ -117,7 +117,22 @@ int ExtensionManager::_loadExtensions()
     QString path;
     foreach (path, locations)
     {
-        qDebug() << "Loading extensions from" << path;
+        // Nya extensionsdefinitioner med redan registrerade uid ska ersätta de föregående.
+        if (path.startsWith("http://") || path.startsWith("https://"))
+        {
+            //qDebug() << "Loading format definitions from URL:" << path;
+        }
+        else
+        {
+            QPointer<QFile> file = new QFile(path);
+            if (file->exists())
+            {
+                qDebug() << "Loading extension definitions from:" << path;
+                VhsXml extensionsFile(file);
+                this->_extensions = extensionsFile.getExtensions();
+            }
+            delete file;
+        }
     }
 
     return this->_extensions.size();

@@ -69,7 +69,7 @@ QList< QPointer<MediaDefinition> > VhsXml::getMediaDefinitions()
     QList< QPointer<MediaDefinition> > result;
 
     QDomElement documentElement = this->_xml.documentElement();
-    // Find the first <FormatDefinitions>
+    // Find the first <MediaDefinition>
     QDomNode definitionsNode = documentElement.firstChild();
     while (! definitionsNode.isNull())
     {
@@ -84,6 +84,65 @@ QList< QPointer<MediaDefinition> > VhsXml::getMediaDefinitions()
                     QPointer<MediaDefinition> newDef = new MediaDefinition;
                     newDef->setUid(node.toElement().elementsByTagName("uid").item(0).toElement().text().toAscii());
                     newDef->setPrettyName(node.toElement().elementsByTagName("Name").item(0).toElement().text());
+                    result << newDef;
+                }
+                node = node.nextSibling();
+            }
+        }
+        definitionsNode = definitionsNode.nextSibling();
+    }
+    return result;
+}
+
+QList<QByteArray> VhsXml::_readNamedChildrenToByteArrayList(QDomElement node, QString tagName)
+{
+    QDomNodeList nodeList = node.elementsByTagName(tagName);
+    QList<QByteArray> result;
+    for (int index = 0; index < nodeList.size(); index++)
+        if (! nodeList.item(index).toElement().isNull())
+            result << nodeList.item(index).toElement().text().toAscii();
+    return result;
+}
+
+QList< QPointer<Extension> > VhsXml::getExtensions()
+{
+    QList< QPointer<Extension> > result;
+
+    QDomElement documentElement = this->_xml.documentElement();
+    // Find the first <Extensions>
+    QDomNode definitionsNode = documentElement.firstChild();
+    while (! definitionsNode.isNull())
+    {
+        if (definitionsNode.toElement().tagName() == "Extensions")
+        {
+            // Loop through all <Extension> elements within it
+            QDomNode node = definitionsNode.firstChild();
+            while (! node.isNull())
+            {
+                if (node.toElement().tagName() == "Extension")
+                {
+                    QPointer<Extension> newDef = new Extension;
+
+                    QDomNode extNode = node.firstChild().toElement();
+                    while (! extNode.toElement().isNull())
+                    {
+                        QDomElement e = extNode.toElement();
+                        if (e.tagName() == "uid")
+                            newDef->setUid(e.text().toAscii());
+                        else if (e.tagName() == "InputMedia")
+                            newDef->addInputMedia(this->_readNamedChildrenToByteArrayList(e, "Media"));
+                        else if (e.tagName() == "InputFormats")
+                            newDef->addInputFormats(this->_readNamedChildrenToByteArrayList(e, "Format"));
+                        else if (e.tagName() == "OutputMedia")
+                            newDef->addOutputMedia(this->_readNamedChildrenToByteArrayList(e, "Media"));
+                        else if (e.tagName() == "OutputFormats")
+                            newDef->addOutputFormats(this->_readNamedChildrenToByteArrayList(e, "Format"));
+                        else
+                            newDef->addInfo(e.tagName(), e.text());
+
+                        extNode = extNode.nextSibling();
+                    }
+
                     result << newDef;
                 }
                 node = node.nextSibling();

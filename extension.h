@@ -18,6 +18,9 @@
 #define EXTENSION_H
 
 #include <QObject>
+#include <QString>
+#include <QVariant>
+#include <QMap>
 
 #include "main.h"
 
@@ -30,13 +33,25 @@ class Extension : public QObject
 public:
     explicit Extension(QObject *parent = 0);
 
-    enum ExtensionImplementation {
-        Empty,
-        Internal,
-        Dll,
-        JavaScript,
-        ChickenScheme
-    };
+    QByteArray uid();
+    QVariant info(QString key, QVariant defaultValue = QVariant());
+    void addInfo(QString key, QVariant defaultValue = QVariant());
+
+    bool canWriteFormat(QByteArray uid);
+    bool canReadFormat(QByteArray uid);
+    bool canWriteMedia(QByteArray uid);
+    bool canReadMedia(QByteArray uid);
+
+    QList<QByteArray> inputMedia();
+    QList<QByteArray> inputFormats();
+    QList<QByteArray> outputMedia();
+    QList<QByteArray> outputFormats();
+
+    void setUid(QByteArray uid);
+    void addInputMedia(QList<QByteArray> media);
+    void addInputFormats(QList<QByteArray> format);
+    void addOutputMedia(QList<QByteArray> media);
+    void addOutputFormats(QList<QByteArray> format);
 
 signals:
 
@@ -44,19 +59,12 @@ public slots:
 
 private:
     QByteArray _uid;
-    QString _version;
-    bool _enabled;
-    QString _prettyName;
-    QString _authorName;
-    QString _authorEmail;
-    QString _authorWebsite;
+    QMap<QString,QVariant> _info;
 
-    ExtensionImplementation _implementation;
-
-    QList<MediaDefinition> _inputMedia;
-    QList<FormatDefinition> _inputFormats;
-    QList<MediaDefinition> _outputMedia;
-    QList<FormatDefinition> _outputFormats;
+    QList<QByteArray> _inputMedia;
+    QList<QByteArray> _inputFormats;
+    QList<QByteArray> _outputMedia;
+    QList<QByteArray> _outputFormats;
 };
 
 #endif // EXTENSION_H

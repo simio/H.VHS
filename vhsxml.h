@@ -27,6 +27,7 @@
 
 #include "formatdefinition.h"
 #include "mediadefinition.h"
+#include "extension.h"
 
 class VhsXml : public QObject
 {
@@ -38,18 +39,22 @@ public:
 
     QList< QPointer<FormatDefinition> > getFormatDefinitions();
     QList< QPointer<MediaDefinition> > getMediaDefinitions();
+    QList< QPointer<Extension> > getExtensions();
 
 signals:
 
 public slots:
 
 private:
+    static const int _currentXmlVersion = 1;               // Current XML version
+    static const int _legacyXmlVersion = 1;                // Lowest readable XML version
+
     bool _initialise(QPointer<QFile> file, QString name = QString());
     bool _initialise(QPointer<QIODevice> device, QString name = QString());
     bool _initialise(QXmlInputSource *source, QString name = QString());
 
-    static const int _currentXmlVersion = 1;               // Current XML version
-    static const int _legacyXmlVersion = 1;                // Lowest readable XML version
+    QList<QByteArray> _readNamedChildrenToByteArrayList(QDomElement e, QString tagName);
+
     QDomDocument _xml;
 
 };

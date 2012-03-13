@@ -21,7 +21,7 @@
                 <Media>datastream</Media>
                 <Media>localfile</Media>
             </InputMedia>
-            </OutputMedia>
+            <OutputMedia>
                 <Media>textstream</Media>
                 <Media>datastream</Media>
                 <Media>localfile</Media>

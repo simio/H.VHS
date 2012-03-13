@@ -19,6 +19,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QDirIterator>
 
 #include "main.h"
 

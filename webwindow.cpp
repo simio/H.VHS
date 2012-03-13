@@ -25,7 +25,8 @@ WebWindow::WebWindow(QWidget *parent) :
 
     this->_browserStatus = Idle;
 
-    qDebug() << ExtensionManager::pointer()->count() << "extensions loaded.";
+    // Temporary -- until it's actually used somewhere.
+    ExtensionManager::pointer()->count();
 
     this->_setupGui();
 

@@ -24,6 +24,9 @@ ExtensionManager::ExtensionManager(QObject *parent) :
     qDebug() << this->_loadMediaDefinitions() << "media definitions loaded.";
     qDebug() << this->_loadFormatDefinitions() << "format definitions loaded.";
     qDebug() << this->_loadExtensions() << "extensions loaded.";
+
+    if (this->_extensions.size() > 0)
+        this->_extensions.first()->setup();
 }
 
 ExtensionManager *ExtensionManager::pointer()
@@ -124,14 +127,24 @@ int ExtensionManager::_loadExtensions()
         }
         else
         {
-            QPointer<QFile> file = new QFile(path);
-            if (file->exists())
+            QDirIterator dir(path);
+            while (dir.hasNext())
             {
-                qDebug() << "Loading extension definitions from:" << path;
-                VhsXml extensionsFile(file);
-                this->_extensions = extensionsFile.getExtensions();
+                if (dir.fileName() != ".." && dir.fileName() != "." && QFileInfo(dir.filePath()).isDir())
+                {
+                    QFileInfo fileInfo(QDir::toNativeSeparators(dir.filePath() + "/" + dir.fileName() + ".xml"));
+                    qDebug() << "> Examining " << fileInfo.absoluteFilePath();
+                    if (fileInfo.exists())
+                    {
+                        QPointer<QFile> file = new QFile(fileInfo.absoluteFilePath());
+                        qDebug() << "Loading extension definitions from:" << file->fileName();
+                        VhsXml extensionsFile(file);
+                        this->_extensions = extensionsFile.getExtensions();
+                        delete file;
+                    }
+                }
+                dir.next();
             }
-            delete file;
         }
     }
 

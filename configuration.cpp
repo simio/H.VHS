@@ -143,9 +143,9 @@ QString Configuration::getStorageLocation(StorageLocation location)
     {
     case FaviconStorageLocation:                            return QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
                                                             /* NOTREACHED */
-    case SystemExtensionsStorageLocation:                   return Portability::pointer()->systemExtensionPath("extensions.xml");
+    case SystemExtensionsStorageLocation:                   return Portability::pointer()->systemExtensionPath();
                                                             /* NOTREACHED */
-    case UserExtensionsStorageLocation:                     return Portability::pointer()->userExtensionPath("extensions.xml");
+    case UserExtensionsStorageLocation:                     return Portability::pointer()->userExtensionPath();
                                                             /* NOTREACHED */
     case SystemMediaDefinitionStorageLocation:              return Portability::pointer()->systemExtensionPath("media.xml");
                                                             /* NOTREACHED */

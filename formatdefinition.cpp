@@ -41,8 +41,8 @@ void FormatDefinition::setContentType(QString contentType)
         this->setContentType(Any);
     else if (normalised == "meta")
         this->setContentType(Meta);
-    else if (normalised == "rawdata" || normalised == "raw")
-        this->setContentType(RawData);
+    else if (normalised == "data")
+        this->setContentType(Data);
     else if (normalised == "complete")
         this->setContentType(Complete);
     else

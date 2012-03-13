@@ -21,6 +21,7 @@
 #include <QString>
 #include <QVariant>
 #include <QMap>
+#include <QDataStream>
 
 #include "main.h"
 
@@ -33,9 +34,14 @@ class Extension : public QObject
 public:
     explicit Extension(QObject *parent = 0);
 
+    QPointer<QDataStream> createWriter(QByteArray outputMedia, QByteArray outputFormat, QByteArray outputIdentifier);
+    QPointer<QDataStream> createReader(QByteArray inputMedia, QByteArray inputFormat, QByteArray inputIdentifier);
+
     QByteArray uid();
     QVariant info(QString key, QVariant defaultValue = QVariant());
     void addInfo(QString key, QVariant defaultValue = QVariant());
+
+    bool setup();
 
     bool canWriteFormat(QByteArray uid);
     bool canReadFormat(QByteArray uid);
@@ -60,6 +66,12 @@ public slots:
 private:
     QByteArray _uid;
     QMap<QString,QVariant> _info;
+
+    bool _setup();
+    bool _isReady();
+    QMap<QString,QVariant> _setupData;
+
+    QString _findExtensionFile(QString filename, QString suffix = QString());
 
     QList<QByteArray> _inputMedia;
     QList<QByteArray> _inputFormats;

@@ -26,6 +26,8 @@ QByteArray Extension::uid()                                             { return
 QVariant Extension::info(QString key, QVariant defaultValue)            { return this->_info.value(key, defaultValue); }
 void Extension::addInfo(QString key, QVariant value)                    { this->_info.insert(key, value); }
 
+bool Extension::setup()                                                 { return this->_setup(); }
+
 bool Extension::canWriteFormat(QByteArray uid)                          { return this->_outputFormats.contains(uid); }
 bool Extension::canReadFormat(QByteArray uid)                           { return this->_inputFormats.contains(uid); }
 bool Extension::canWriteMedia(QByteArray uid)                           { return this->_outputMedia.contains(uid); }
@@ -41,3 +43,49 @@ void Extension::addInputMedia(QList<QByteArray> media)                  { this->
 void Extension::addInputFormats(QList<QByteArray> format)               { this->_inputFormats.append(format); }
 void Extension::addOutputMedia(QList<QByteArray> media)                 { this->_outputMedia.append(media); }
 void Extension::addOutputFormats(QList<QByteArray> format)              { this->_outputFormats.append(format); }
+
+bool Extension::_isReady()                                              { return (this->_setupData.size() > 0); }
+
+QString Extension::_findExtensionFile(QString filename, QString suffix)
+{
+    QStringList possibleLocations;
+    possibleLocations << Configuration::pointer()->getStorageLocation(Configuration::UserExtensionsStorageLocation)
+                      << Configuration::pointer()->getStorageLocation(Configuration::SystemExtensionsStorageLocation);
+
+    QString path = QDir::toNativeSeparators(QString(this->uid()) + "/" + filename + "-" + this->info("Version").toString() + suffix);
+
+    QString location;
+    foreach (location, possibleLocations)
+        if (QFile(location + path).exists())
+            return location + path;
+
+    return QString();
+}
+
+bool Extension::_setup()
+{
+    if (this->_isReady())
+        return true;
+
+    if (this->info("Implementation").toString().toLower() == "dll")
+    {
+        this->_setupData.insert("dllFile", this->_findExtensionFile(this->uid(), ".dll"));
+    }
+
+    qDebug() << "DLL location:" << this->_setupData.value("dllFile");
+
+    return true;
+}
+
+
+/*
+QPointer<QDataStream> Extension::createWriter(QByteArray outputMedia, QByteArray outputFormat, QByteArray outputIdentifier)
+{
+
+}
+
+QPointer<QDataStream> Extension::createReader(QByteArray inputMedia, QByteArray inputFormat, QByteArray inputIdentifier)
+{
+
+}
+*/

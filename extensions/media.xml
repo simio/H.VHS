@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<HuggPlay version="1">
+<HuggPlay version="2">
     <MediaDefinitions>
         <Definition>
             <uid>textstream</uid>

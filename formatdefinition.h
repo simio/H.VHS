@@ -31,11 +31,11 @@ public:
 
     enum ContentType {
         Unknown,
-        Empty,              // No contents
+        Empty,              // No data or metadata
         Any,                // Any of the below
-        Meta,               // i.e. a Cassette (where the actual data is on a remote location)
-        RawData,            // Data only (i.e. a raw video stream)
-        Complete            // Both Meta and RawData
+        Meta,               // Contains all information necessary to access or build a complete file
+        Data,               // Does not contain enough all information necessary to access or build a complete file
+        Complete            // Contains a complete file
     };
 
     QByteArray uid();

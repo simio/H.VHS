@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<HuggPlay version="1">
+<HuggPlay version="2">
     <FormatDefinitions>
         <Definition>
             <uid>any</uid>
@@ -14,17 +14,22 @@
         <Definition>
             <uid>internal</uid>
             <Name>Internal representation</Name>
-            <ContentType>Any</ContentType>
+            <ContentType>Meta</ContentType>
+        </Definition>
+        <Definition>
+            <uid>website</uid>
+            <Name>Website</Name>
+            <ContentType>Meta</ContentType>
         </Definition>
         <Definition>
             <uid>vhsxml</uid>
             <Name>VhsXml</Name>
-            <ContentType>Any</ContentType>
+            <ContentType>Meta</ContentType>
         </Definition>
         <Definition>
             <uid>vhsexpr</uid>
             <Name>VhsExpr</Name>
-            <ContentType>Any</ContentType>
+            <ContentType>Meta</ContentType>
         </Definition>
         <Definition>
             <uid>flv</uid>

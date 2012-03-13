@@ -129,6 +129,18 @@ QList< QPointer<Extension> > VhsXml::getExtensions()
                         QDomElement e = extNode.toElement();
                         if (e.tagName() == "uid")
                             newDef->setUid(e.text().toAscii());
+                        else if (e.tagName() == "Version")
+                            newDef->addInfo(e.tagName(), e.text().toInt());
+                        else if (e.tagName() == "Author")
+                        {
+                            newDef->addInfo("Author", e.text());
+                            newDef->addInfo("AuthorEmail", e.attribute("email"));
+                            newDef->addInfo("AuthorWebsite", e.attribute("website"));
+                        }
+                        else if (e.tagName() == "Enabled")
+                        {
+                            newDef->addInfo("Enabled", e.text() == "true");
+                        }
                         else if (e.tagName() == "InputMedia")
                             newDef->addInputMedia(this->_readNamedChildrenToByteArrayList(e, "Media"));
                         else if (e.tagName() == "InputFormats")

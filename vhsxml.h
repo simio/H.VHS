@@ -46,8 +46,8 @@ signals:
 public slots:
 
 private:
-    static const int _currentXmlVersion = 1;               // Current XML version
-    static const int _legacyXmlVersion = 1;                // Lowest readable XML version
+    static const int _currentXmlVersion = 2;               // Current XML version
+    static const int _legacyXmlVersion = 2;                // Lowest readable XML version
 
     bool _initialise(QPointer<QFile> file, QString name = QString());
     bool _initialise(QPointer<QIODevice> device, QString name = QString());

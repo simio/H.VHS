@@ -19,6 +19,8 @@
 
 void WebWindow::_setupGui()
 {
+    this->setMinimumSize(300, 100);
+
     // Create, configure and add webView
     this->_webView = new WebView(this);
     this->_webView->settings()->setIconDatabasePath(Configuration::pointer()->getStorageLocation(Configuration::FaviconStorageLocation));

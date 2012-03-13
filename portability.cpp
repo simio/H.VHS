@@ -29,3 +29,17 @@ Portability *Portability::pointer()
         s_instance = new Portability;
     return s_instance;
 }
+
+QString Portability::systemExtensionPath(QString file)
+{
+#ifdef WIN32
+    return QDir::toNativeSeparators(qApp->applicationDirPath() + "/extensions/" + file);
+#endif
+}
+
+QString Portability::userExtensionPath(QString file)
+{
+#ifdef WIN32
+    return QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions/" + file);
+#endif
+}

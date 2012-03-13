@@ -141,9 +141,24 @@ QString Configuration::getStorageLocation(StorageLocation location)
 {
     switch (location)
     {
-    case FaviconStorageLocation:
-        return QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-        /* NOTREACHED */
+    case FaviconStorageLocation:                            return QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+                                                            /* NOTREACHED */
+    case SystemExtensionsStorageLocation:                   return Portability::pointer()->systemExtensionPath();
+                                                            /* NOTREACHED */
+    case UserExtensionsStorageLocation:                     return Portability::pointer()->userExtensionPath();
+                                                            /* NOTREACHED */
+    case SystemMediaDefinitionStorageLocation:              return Portability::pointer()->systemExtensionPath("media.xml");
+                                                            /* NOTREACHED */
+    case UserMediaDefinitionStorageLocation:                return Portability::pointer()->userExtensionPath("media.xml");
+                                                            /* NOTREACHED */
+    case RemoteMediaDefinitionStorageLocation:              return "http://play.huggpunkt.org/vhs/media.xml";
+                                                            /* NOTREACHED */
+    case SystemFormatDefinitionStorageLocation:             return Portability::pointer()->systemExtensionPath("format.xml");
+                                                            /* NOTREACHED */
+    case UserFormatDefinitionStorageLocation:               return Portability::pointer()->userExtensionPath("format.xml");
+                                                            /* NOTREACHED */
+    case RemoteFormatDefinitionStorageLocation:             return "http://play.huggpunkt.org/vhs/format.xml";
+                                                            /* NOTREACHED */
     default:
         return QString();
     }
@@ -154,12 +169,13 @@ void Configuration::_setValue(const QString &key, const QVariant &value)
     if (! this->_writeBlock)
     {
         this->_settings->setValue(key, value);
-        qDebug() << "Config write(" << this->_settings->group() << "): " << key << value;
+        //qDebug() << "Config write(" << this->_settings->group() << "): " << key << value;
     }
 }
 
 QVariant Configuration::_value(const QString &key, const QVariant &defaultValue) const
 {
-    qDebug() << "Config read(" << this->_settings->group() << "):" << key << this->_settings->value(key, defaultValue) << "(default:" << defaultValue << ")";
+    //qDebug() << "Config read(" << this->_settings->group() << "):" << key
+    //         << this->_settings->value(key, defaultValue) << "(default:" << defaultValue << ")";
     return this->_settings->value(key, defaultValue);
 }

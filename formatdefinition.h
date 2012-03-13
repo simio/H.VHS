@@ -14,42 +14,38 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONMANAGER_H
-#define EXTENSIONMANAGER_H
+#ifndef FORMAT_H
+#define FORMAT_H
+
+// Format types: "Raw" (eg. any), "FLV", "VhsXml",
 
 #include <QObject>
-#include <QList>
 
 #include "main.h"
 
-#include "formatdefinition.h"
-#include "mediadefinition.h"
-#include "extension.h"
-
-class ExtensionManager : public QObject
+class FormatDefinition : public QObject
 {
     Q_OBJECT
 public:
-    explicit ExtensionManager(QObject *parent = 0);
-    static ExtensionManager *pointer();
+    explicit FormatDefinition(QObject *parent = 0);
 
-    int count();
-
-signals:
+    enum Contents {
+        Empty,
+        Any,                // Any of the below
+        Meta,               // i.e. a Cassette (where the actual data is on a remote location)
+        RawData,            // Data only (i.e. a raw video stream)
+        Complete            // Both Meta and RawData
+    };
 
 public slots:
 
+signals:
+
 private:
-    static ExtensionManager *s_instance;
-
-    int _loadMediaDefinitions();
-    int _loadFormatDefinitions();
-    int _loadExtensions();
-
-    QList<Extension> _extensions;
-    QList<FormatDefinition> _knownFormats;
-    QList<MediaDefinition> _knownMedia;
+    QString _uid;               // Used in extensions
+    QString _prettyName;        // Defaults to _uid
+    Contents _contents;
 
 };
 
-#endif // EXTENSIONMANAGER_H
+#endif // FORMAT_H

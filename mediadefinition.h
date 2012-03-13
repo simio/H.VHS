@@ -14,42 +14,28 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONMANAGER_H
-#define EXTENSIONMANAGER_H
+#ifndef MEDIA_H
+#define MEDIA_H
+
+// Media types: "QTextStream", "QDataStream", "http", "https", "ftp", "rtmp", "rtmpe", "FileProtocol", "LocalFile", etc
 
 #include <QObject>
-#include <QList>
 
 #include "main.h"
 
-#include "formatdefinition.h"
-#include "mediadefinition.h"
-#include "extension.h"
-
-class ExtensionManager : public QObject
+class MediaDefinition : public QObject
 {
     Q_OBJECT
 public:
-    explicit ExtensionManager(QObject *parent = 0);
-    static ExtensionManager *pointer();
-
-    int count();
+    explicit MediaDefinition(QObject *parent = 0);
 
 signals:
 
 public slots:
 
 private:
-    static ExtensionManager *s_instance;
-
-    int _loadMediaDefinitions();
-    int _loadFormatDefinitions();
-    int _loadExtensions();
-
-    QList<Extension> _extensions;
-    QList<FormatDefinition> _knownFormats;
-    QList<MediaDefinition> _knownMedia;
-
+    QString _uid;           // Used in extensions
+    QString _prettyName;    // Defaults to _uid
 };
 
-#endif // EXTENSIONMANAGER_H
+#endif // MEDIA_H

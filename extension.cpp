@@ -14,42 +14,18 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONMANAGER_H
-#define EXTENSIONMANAGER_H
-
-#include <QObject>
-#include <QList>
-
-#include "main.h"
-
-#include "formatdefinition.h"
-#include "mediadefinition.h"
 #include "extension.h"
 
-class ExtensionManager : public QObject
+Extension::Extension(QObject *parent) :
+    QObject(parent)
 {
-    Q_OBJECT
-public:
-    explicit ExtensionManager(QObject *parent = 0);
-    static ExtensionManager *pointer();
+    this->_uid = QByteArray();
+    this->_version = QString();
+    this->_enabled = false;
+    this->_prettyName = QString();
+    this->_authorName = QString();
+    this->_authorEmail = QString();
+    this->_authorWebsite = QString();
 
-    int count();
-
-signals:
-
-public slots:
-
-private:
-    static ExtensionManager *s_instance;
-
-    int _loadMediaDefinitions();
-    int _loadFormatDefinitions();
-    int _loadExtensions();
-
-    QList<Extension> _extensions;
-    QList<FormatDefinition> _knownFormats;
-    QList<MediaDefinition> _knownMedia;
-
-};
-
-#endif // EXTENSIONMANAGER_H
+    this->_type = Empty;
+}

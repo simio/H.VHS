@@ -28,6 +28,9 @@
 #include <QMap>
 #include <QStringList>
 
+#include "portability.h"
+#include "messagehandler.h"
+
 class Configuration
 {
 public:
@@ -42,7 +45,15 @@ public:
     };
 
     enum StorageLocation {
-        FaviconStorageLocation
+        FaviconStorageLocation,
+        SystemExtensionsStorageLocation,
+        UserExtensionsStorageLocation,
+        SystemMediaDefinitionStorageLocation,
+        UserMediaDefinitionStorageLocation,
+        RemoteMediaDefinitionStorageLocation,
+        SystemFormatDefinitionStorageLocation,
+        UserFormatDefinitionStorageLocation,
+        RemoteFormatDefinitionStorageLocation
     };
 
     QString appName();
@@ -63,10 +74,12 @@ public:
 private:
     static Configuration * s_instance;
 
-    QPointer<QSettings> _settings;
-    bool _writeBlock;
     void _setValue(const QString &key, const QVariant &value);
     QVariant _value(const QString &key, const QVariant &defaultValue = QVariant()) const;
+
+    bool _writeBlock;
+
+    QPointer<QSettings> _settings;
 };
 
 #endif // CONFIGURATION_H

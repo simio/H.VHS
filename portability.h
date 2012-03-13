@@ -17,6 +17,9 @@
 #ifndef PORTABILITY_H
 #define PORTABILITY_H
 
+#include <QApplication>
+#include <QDesktopServices>
+#include <QDir>
 #include <QString>
 
 class Portability
@@ -24,6 +27,9 @@ class Portability
 public:
     Portability();
     static Portability *pointer();
+
+    QString systemExtensionPath(QString file = QString());
+    QString userExtensionPath(QString file = QString());
 
 private:
     static Portability *s_instance;

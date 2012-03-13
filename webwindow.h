@@ -29,6 +29,7 @@
 
 #include "webbrowsercombobox.h"
 #include "webview.h"
+#include "extensionmanager.h"
 
 namespace Ui {
 class WebWindow;

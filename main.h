@@ -17,9 +17,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "portability.h"
 #include "configuration.h"
 #include "messagehandler.h"
-#include "extensionmanager.h"
 
 #endif // MAIN_H

@@ -28,10 +28,10 @@ WebView::~WebView()
     this->_writeConfiguration();
 }
 
-bool WebView::javaEnabled()                         { return this->_setting("JavaEnabled").toBool(); }
-void WebView::setJavaEnabled(bool enabled)          { this->_setSetting("JavaEnabled", enabled); }
-bool WebView::pluginsEnabled()                      { return this->_setting("PluginsEnabled").toBool(); }
-void WebView::setPluginsEnabled(bool enabled)       { this->_setSetting("PluginsEnabled", enabled); }
+bool WebView::javaEnabled()                         { return ! this->_setting("JavaDisabled").toBool(); }
+void WebView::setJavaEnabled(bool enabled)          { this->_setSetting("JavaDisabled", ! enabled); }
+bool WebView::pluginsEnabled()                      { return ! this->_setting("PluginsDisabled").toBool(); }
+void WebView::setPluginsEnabled(bool enabled)       { this->_setSetting("PluginsDisabled", ! enabled); }
 
 QVariant WebView::_setting(QString key)             { return this->_configuration.value(key, QVariant()); }
 void WebView::_setSetting(QString key, QVariant value)
@@ -44,8 +44,8 @@ void WebView::_setSetting(QString key, QVariant value)
 void WebView::_writeConfiguration()                 { Configuration::pointer()->saveWebViewSettings(this->_configuration); }
 void WebView::_readConfiguration()
 {
-    this->settings()->setAttribute(QWebSettings::JavaEnabled, this->_setting("JavaEnabled").toBool());
-    this->settings()->setAttribute(QWebSettings::PluginsEnabled, this->_setting("PluginsEnabled").toBool());
+    this->settings()->setAttribute(QWebSettings::JavaEnabled, ! this->_setting("JavaDisabled").toBool());
+    this->settings()->setAttribute(QWebSettings::PluginsEnabled, ! this->_setting("PluginsDisabled").toBool());
 }
 
 QIcon WebView::icon() const

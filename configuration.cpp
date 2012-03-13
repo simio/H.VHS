@@ -26,9 +26,16 @@ Configuration::Configuration()
     qApp->setApplicationName( "H.VHS" );
     qApp->setApplicationVersion( APP_VER );
 
+    this->_writeBlock = false;
+
     this->_settings = new QSettings("hvhs.ini", QSettings::IniFormat, 0);
     this->_settings->setIniCodec("UTF-8");
     qDebug() << "Using INI-file at" << this->_settings->fileName();
+}
+
+void Configuration::setWriteBlock(bool blocked)
+{
+    this->_writeBlock = blocked;
 }
 
 Configuration *Configuration::pointer()
@@ -58,23 +65,25 @@ QString Configuration::fullAppName(bool fullVersion)
 void Configuration::saveWindow(Window window, QByteArray state, QByteArray geometry)
 {
     this->_settings->beginGroup("Layout");
-    this->_settings->setValue(QString("WindowState") + QString::number((int)window), state);
-    this->_settings->setValue(QString("WindowGeometry") + QString::number((int)window), geometry);
+    this->_setValue(QString("WindowState") + QString::number((int)window), state);
+    this->_setValue(QString("WindowGeometry") + QString::number((int)window), geometry);
     this->_settings->endGroup();
 }
 
 QByteArray Configuration::getWindowState(Window window)
 {
     this->_settings->beginGroup("Layout");
-    return this->_settings->value(QString("WindowState") + QString::number((int)window), "").toByteArray();
+    QByteArray retVal = this->_value(QString("WindowState") + QString::number((int)window), "").toByteArray();
     this->_settings->endGroup();
+    return retVal;
 }
 
 QByteArray Configuration::getWindowGeometry(Window window)
 {
     this->_settings->beginGroup("Layout");
-    return this->_settings->value(QString("WindowGeometry") + QString::number((int)window), "").toByteArray();
+    QByteArray retVal = this->_value(QString("WindowGeometry") + QString::number((int)window), "").toByteArray();
     this->_settings->endGroup();
+    return retVal;
 }
 
 void Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
@@ -83,8 +92,7 @@ void Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
     this->_settings->beginGroup("WebView");
     for (webViewSetting = webViewSettings.begin(); webViewSetting != webViewSettings.end(); webViewSetting++)
     {
-        qDebug() << "Writing config pair" << webViewSetting.key() << webViewSetting.value();
-        this->_settings->setValue(webViewSetting.key(), webViewSetting.value());
+        this->_setValue(webViewSetting.key(), webViewSetting.value());
     }
     this->_settings->endGroup();
 }
@@ -98,8 +106,7 @@ QMap<QString,QVariant> Configuration::getWebViewSettings()
     QStringList::iterator iterator;
     for (iterator = keys.begin(); iterator != keys.end(); iterator++)
     {
-        result.insert(*iterator, this->_settings->value(*iterator));
-        qDebug() << "Reading config pair" << *iterator <<  this->_settings->value(*iterator);
+        result.insert(*iterator, this->_value(*iterator));
     }
     this->_settings->endGroup();
 
@@ -115,7 +122,7 @@ QUrl Configuration::makeSearchUrl(QString query)
 {
     QString defaultQuery("https://www.startpage.com/do/search?q=");
     this->_settings->beginGroup("WebSearch");
-    QUrl url = QUrl(this->_settings->value("DefaultQuery", defaultQuery).toString() + query.replace(" ", "+"));
+    QUrl url = QUrl(this->_value("DefaultQuery", defaultQuery).toString() + query.replace(" ", "+"));
     this->_settings->endGroup();
     return url;
 }
@@ -130,4 +137,19 @@ QString Configuration::getStorageLocation(StorageLocation location)
     default:
         return QString();
     }
+}
+
+void Configuration::_setValue(const QString &key, const QVariant &value)
+{
+    if (! this->_writeBlock)
+    {
+        this->_settings->setValue(key, value);
+        qDebug() << "Config write(" << this->_settings->group() << "): " << key << value;
+    }
+}
+
+QVariant Configuration::_value(const QString &key, const QVariant &defaultValue) const
+{
+    qDebug() << "Config read(" << this->_settings->group() << "):" << key << this->_settings->value(key, defaultValue) << "(default:" << defaultValue << ")";
+    return this->_settings->value(key, defaultValue);
 }

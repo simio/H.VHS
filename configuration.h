@@ -32,6 +32,7 @@ class Configuration
 public:
     Configuration();
     static Configuration *pointer();
+    void setWriteBlock(bool blocked);
 
     enum Window {
         WebWindow,
@@ -61,6 +62,9 @@ private:
     static Configuration * s_instance;
 
     QPointer<QSettings> _settings;
+    bool _writeBlock;
+    void _setValue(const QString &key, const QVariant &value);
+    QVariant _value(const QString &key, const QVariant &defaultValue = QVariant()) const;
 };
 
 #endif // CONFIGURATION_H

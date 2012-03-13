@@ -49,6 +49,7 @@ private slots:
     void _loadPage(const QString &dirtyUrl);
 
     void _quit();
+    void _clearStorageAndQuit();
 
     void _whenWebViewLoadStarted();
     void _whenWebViewLoadFinished(bool ok);
@@ -92,6 +93,10 @@ private:
     QPointer<QMenu> _menuSettings;
     QPointer<QAction> _actionToggleWebViewPlugins;
     QPointer<QAction> _actionToggleWebViewJava;
+
+    // Advanced menu
+    QPointer<QMenu> _menuAdvanced;
+    QPointer<QAction> _actionClearStorageAndQuit;
 
     // Info menu
     QPointer<QMenu> _menuInfo;

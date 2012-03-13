@@ -55,6 +55,12 @@ void WebWindow::_quit()
     qApp->exit(0);
 }
 
+void WebWindow::_clearStorageAndQuit()
+{
+    Configuration::pointer()->setWriteBlock(true);
+    this->_quit();
+}
+
 void WebWindow::_setupGui()
 {
     // Create, configure and add webView
@@ -135,9 +141,10 @@ void WebWindow::_setupGui()
     }
 
     // Create top menus
-    this->_menuFile = new QMenu(tr("File"), ui->menuBar);
-    this->_menuSettings = new QMenu(tr("Settings"), ui->menuBar);
-    this->_menuInfo = new QMenu(tr("Info"), ui->menuBar);
+    this->_menuFile = new QMenu(tr("&File"), ui->menuBar);
+    this->_menuSettings = new QMenu(tr("&Settings"), ui->menuBar);
+    this->_menuAdvanced = new QMenu(tr("&Advanced"), ui->menuBar);
+    this->_menuInfo = new QMenu(tr("&Info"), ui->menuBar);
 
     // FILE MENU
     // += Quit
@@ -159,6 +166,12 @@ void WebWindow::_setupGui()
     connect(this->_actionToggleWebViewJava, SIGNAL(toggled(bool)), this->_webView, SLOT(setJavaEnabled(bool)));
     this->_menuSettings->addAction(this->_actionToggleWebViewJava);
 
+    // ADVANCED MENU
+    // += Clear storage and quit
+    this->_actionClearStorageAndQuit = new QAction(tr("&Clear Storage and Quit"), this->_menuAdvanced);
+    connect(this->_actionClearStorageAndQuit, SIGNAL(triggered()), this, SLOT(_clearStorageAndQuit()));
+    this->_menuAdvanced->addAction(this->_actionClearStorageAndQuit);
+
     // INFO MENU
     // += About
     this->_actionAbout = new QAction(QIcon(":/icons/bitmapVideoCassette"),
@@ -169,13 +182,13 @@ void WebWindow::_setupGui()
     // Add top menus
     ui->menuBar->addMenu(this->_menuFile);
     ui->menuBar->addMenu(this->_menuSettings);
+    ui->menuBar->addMenu(this->_menuAdvanced);
     ui->menuBar->addMenu(this->_menuInfo);
 }
 
 void WebWindow::_whenWebViewLoadFinished(bool ok)
 {
     this->_browserStatus = Idle;
-    qDebug() << "LoadFinished(" << ok << ")";
     this->_browserProgressBar->setEnabled(false);
     this->_browserProgressBar->setValue(0);
 }
@@ -183,13 +196,11 @@ void WebWindow::_whenWebViewLoadFinished(bool ok)
 void WebWindow::_whenWebViewLoadStarted()
 {
     this->_browserStatus = Busy;
-    qDebug() << "LoadStarted()";
     this->_browserProgressBar->setEnabled(true);
 }
 
 void WebWindow::_whenWebViewUrlChanged(const QUrl &url)
 {
-    qDebug() << "UrlChanged()";
     this->_comboBoxAddressBar->addUrl(this->_webView->icon(), url);
     this->_comboBoxAddressBar->clearEditText();
     this->_comboBoxAddressBar->setCurrentIndex(0);
@@ -197,7 +208,6 @@ void WebWindow::_whenWebViewUrlChanged(const QUrl &url)
 
 void WebWindow::_whenWebViewIconChanged()
 {
-    qDebug() << "IconChanged()";
     this->_updateBrowserIcon(0);
 }
 

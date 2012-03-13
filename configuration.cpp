@@ -38,6 +38,16 @@ void Configuration::setWriteBlock(bool blocked)
     this->_writeBlock = blocked;
 }
 
+bool Configuration::deleteStorage()
+{
+    this->_settings->clear();
+
+    if (this->_settings->format() == QSettings::IniFormat)
+        QFile(this->_settings->fileName()).remove();
+
+    return true;
+}
+
 Configuration *Configuration::pointer()
 {
     if (s_instance == NULL)

@@ -24,6 +24,7 @@
 #include <QRegExp>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QFile>
 #include <QMap>
 #include <QStringList>
 
@@ -33,6 +34,7 @@ public:
     Configuration();
     static Configuration *pointer();
     void setWriteBlock(bool blocked);
+    bool deleteStorage();
 
     enum Window {
         WebWindow,

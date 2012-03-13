@@ -23,6 +23,11 @@ class Portability
 {
 public:
     Portability();
+    static Portability *pointer();
+
+private:
+    static Portability *s_instance;
+
 };
 
 static const QString newl = "\n";

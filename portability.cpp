@@ -16,6 +16,16 @@
 
 #include "portability.h"
 
+// Singleton (Portability::pointer())
+Portability *Portability::s_instance = NULL;
+
 Portability::Portability()
 {
+}
+
+Portability *Portability::pointer()
+{
+    if (s_instance == NULL)
+        s_instance = new Portability;
+    return s_instance;
 }

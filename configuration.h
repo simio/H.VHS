@@ -34,7 +34,7 @@ public:
     Configuration();
     static Configuration *pointer();
     void setWriteBlock(bool blocked);
-    bool deleteStorage();
+    bool clearStorage();
 
     enum Window {
         WebWindow,

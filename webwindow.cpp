@@ -58,7 +58,7 @@ void WebWindow::_quit()
 void WebWindow::_clearStorageAndQuit()
 {
     Configuration::pointer()->setWriteBlock(true);
-    Configuration::pointer()->deleteStorage();
+    Configuration::pointer()->clearStorage();
     this->_quit();
 }
 

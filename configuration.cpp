@@ -38,7 +38,7 @@ void Configuration::setWriteBlock(bool blocked)
     this->_writeBlock = blocked;
 }
 
-bool Configuration::deleteStorage()
+bool Configuration::clearStorage()
 {
     this->_settings->clear();
 

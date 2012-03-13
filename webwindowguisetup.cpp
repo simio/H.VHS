@@ -105,6 +105,7 @@ void WebWindow::_setupGui()
     // FILE MENU
     // += Quit
     this->_actionQuit = new QAction(QIcon(":/icons/exit"), tr("&Quit"), this->_menuFile);
+    this->_actionQuit->setShortcut(QKeySequence(tr("Ctrl+Q")));
     connect(this->_actionQuit, SIGNAL(triggered()), this, SLOT(_quit()));
     this->_menuFile->addAction(this->_actionQuit);
 
@@ -113,25 +114,28 @@ void WebWindow::_setupGui()
     this->_actionToggleWebViewPlugins = new QAction(tr("Allow Browser &Plugins"), this->_menuSettings);
     this->_actionToggleWebViewPlugins->setCheckable(true);
     this->_actionToggleWebViewPlugins->setChecked(this->_webView->pluginsEnabled());
+    this->_actionToggleWebViewPlugins->setShortcut(QKeySequence(tr("Ctrl+Alt+P")));
     connect(this->_actionToggleWebViewPlugins, SIGNAL(toggled(bool)), this->_webView, SLOT(setPluginsEnabled(bool)));
     this->_menuSettings->addAction(this->_actionToggleWebViewPlugins);
     // +- Toggle Java
     this->_actionToggleWebViewJava = new QAction(tr("Allow &Java"), this->_menuSettings);
     this->_actionToggleWebViewJava->setCheckable(true);
     this->_actionToggleWebViewJava->setChecked(this->_webView->javaEnabled());
+    this->_actionToggleWebViewJava->setShortcut(QKeySequence(tr("Ctrl+Alt+J")));
     connect(this->_actionToggleWebViewJava, SIGNAL(toggled(bool)), this->_webView, SLOT(setJavaEnabled(bool)));
     this->_menuSettings->addAction(this->_actionToggleWebViewJava);
 
     // ADVANCED MENU
     // += Clear storage and quit
     this->_actionClearStorageAndQuit = new QAction(tr("&Clear Storage and Quit"), this->_menuAdvanced);
+    this->_actionClearStorageAndQuit->setShortcut(QKeySequence(tr("Ctrl+Alt+Q")));
     connect(this->_actionClearStorageAndQuit, SIGNAL(triggered()), this, SLOT(_clearStorageAndQuit()));
     this->_menuAdvanced->addAction(this->_actionClearStorageAndQuit);
 
     // INFO MENU
     // += About
     this->_actionAbout = new QAction(QIcon(":/icons/bitmapVideoCassette"),
-                                     tr("About") + QString(" ") + Configuration::pointer()->fullAppName(),
+                                     tr("&About") + QString(" ") + Configuration::pointer()->fullAppName(),
                                      this->_menuSettings);
     this->_menuInfo->addAction(this->_actionAbout);
 

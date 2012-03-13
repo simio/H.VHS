@@ -14,12 +14,19 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
-
-#include "portability.h"
-#include "configuration.h"
-#include "messagehandler.h"
 #include "extensionmanager.h"
 
-#endif // MAIN_H
+ExtensionManager *ExtensionManager::s_instance = NULL;
+
+ExtensionManager::ExtensionManager(QObject *parent) :
+    QObject(parent)
+{
+}
+
+ExtensionManager *ExtensionManager::pointer()
+{
+    if (s_instance == NULL)
+        s_instance = new ExtensionManager;
+
+    return s_instance;
+}

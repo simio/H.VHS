@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     webbrowsercombobox.cpp \
     webview.cpp \
     configuration.cpp \
-    webwindowguisetup.cpp
+    webwindowguisetup.cpp \
+    extensionmanager.cpp
 
 HEADERS  += webwindow.h \
     messagehandler.h \
@@ -33,7 +34,8 @@ HEADERS  += webwindow.h \
     main.h \
     webbrowsercombobox.h \
     webview.h \
-    configuration.h
+    configuration.h \
+    extensionmanager.h
 
 FORMS    += webwindow.ui \
     consolewindow.ui

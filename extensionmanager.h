@@ -14,12 +14,25 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef EXTENSIONMANAGER_H
+#define EXTENSIONMANAGER_H
 
-#include "portability.h"
-#include "configuration.h"
-#include "messagehandler.h"
-#include "extensionmanager.h"
+#include <QObject>
 
-#endif // MAIN_H
+class ExtensionManager : public QObject
+{
+    Q_OBJECT
+public:
+    explicit ExtensionManager(QObject *parent = 0);
+    static ExtensionManager *pointer();
+
+signals:
+
+public slots:
+
+private:
+    static ExtensionManager *s_instance;
+
+};
+
+#endif // EXTENSIONMANAGER_H

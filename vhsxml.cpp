@@ -106,10 +106,20 @@ bool VhsXml::_initialise(QXmlInputSource *source, QString name)
     if (this->_xml.setContent(source, true, error, errorLine, errorColumn))
     {
         if (this->_xml.documentElement().tagName() == "HuggPlay")
-            success = true;
+        {
+            if ((this->_xml.documentElement().attribute("version").toInt() >= this->_legacyXmlVersion)
+                    && (this->_xml.documentElement().attribute("version").toInt() <= this->_currentXmlVersion))
+                success = true;
+            else
+                qWarning() << "XML Parser error:"
+                           << "Version mismatch."
+                           << this->_xml.documentElement().attribute("version").toInt()
+                           << "is above" << this->_currentXmlVersion << "or below" << this->_legacyXmlVersion;
+        }
+
     }
     else
-        qWarning() << "XML Parser Error:" << *error << endl
+        qWarning() << "XML Parser error:" << *error << endl
                    << "Line " << *errorLine << "column" << *errorColumn;
 
 

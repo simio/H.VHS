@@ -48,6 +48,8 @@ private:
     bool _initialise(QPointer<QIODevice> device, QString name = QString());
     bool _initialise(QXmlInputSource *source, QString name = QString());
 
+    static const int _currentXmlVersion = 1;               // Current XML version
+    static const int _legacyXmlVersion = 1;                // Lowest readable XML version
     QDomDocument _xml;
 
 };

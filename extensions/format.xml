@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<HuggPlay>
+<HuggPlay version="1">
     <FormatDefinitions>
         <Definition>
             <uid>any</uid>
             <Name>Unidentified data</Name>
+            <ContentType>Any</ContentType>
+        </Definition>
+        <Definition>
+            <uid>copy</uid>
+            <Name>Copy of input stream</Name>
+            <ContentType>Any</ContentType>
+        </Definition>
+        <Definition>
+            <uid>internal</uid>
+            <Name>Internal representation</Name>
             <ContentType>Any</ContentType>
         </Definition>
         <Definition>

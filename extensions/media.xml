@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<HuggPlay>
+<HuggPlay version="1">
     <MediaDefinitions>
         <Definition>
-            <uid>QTextStream</uid>
+            <uid>textstream</uid>
             <Name>Text Stream</Name>
         </Definition>
         <Definition>
-            <uid>QDataStream</uid>
+            <uid>datastream</uid>
             <Name>Binary Stream</Name>
         </Definition>
         <Definition>

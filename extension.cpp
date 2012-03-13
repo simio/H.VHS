@@ -27,5 +27,5 @@ Extension::Extension(QObject *parent) :
     this->_authorEmail = QString();
     this->_authorWebsite = QString();
 
-    this->_type = Empty;
+    this->_implementation = Empty;
 }

@@ -30,7 +30,7 @@ class Extension : public QObject
 public:
     explicit Extension(QObject *parent = 0);
 
-    enum ExtensionType {
+    enum ExtensionImplementation {
         Empty,
         Internal,
         Dll,
@@ -51,7 +51,7 @@ private:
     QString _authorEmail;
     QString _authorWebsite;
 
-    ExtensionType _type;
+    ExtensionImplementation _implementation;
 
     QList<MediaDefinition> _inputMedia;
     QList<FormatDefinition> _inputFormats;

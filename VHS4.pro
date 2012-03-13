@@ -57,7 +57,8 @@ OTHER_FILES += \
     vhs4.rc \
     README \
     extensions/format.xml \
-    extensions/media.xml
+    extensions/media.xml \
+    extensions/extensions.xml
 
 RESOURCES += \
     vhs4.qrc

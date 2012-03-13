@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<HuggPlay version="1">
+    <Extensions>
+        <Extension>
+            <uid>vhsxml</uid>
+            <Version>1</Version>
+            <Enabled>true</Enabled>
+            <Name>Internal VhsXml interface</Name>
+            <Author email="jesper@huggpunkt.org" website="http://huggpunkt.org/">Jesper Räftegård</Author>
+            <Implementation>internal</Implementation>
+            <InputFormat>
+                <Format>vhsxml</Format>
+            </InputFormat>
+            <OutputFormat>
+                <Format>vhsxml</Format>
+                <Format>internal</Format>
+                <Format>copy</Format>
+            </OutputFormat>
+            <InputMedia>
+                <Media>textstream</Media>
+                <Media>datastream</Media>
+                <Media>localfile</Media>
+            </InputMedia>
+            </OutputMedia>
+                <Media>textstream</Media>
+                <Media>datastream</Media>
+                <Media>localfile</Media>
+            </OutputMedia>
+        </Extension>
+    </Extensions>
+</HuggPlay>

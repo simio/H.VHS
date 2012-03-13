@@ -74,7 +74,10 @@ private:
     void _setupWebView();
     void _updateBrowserIcon(int index, bool force = false);
 
-    enum BrowserStatus { Idle, Busy };
+    enum BrowserStatus {
+        Idle,
+        Busy
+    };
     BrowserStatus _browserStatus;
 
     QPointer<WebView> _webView;

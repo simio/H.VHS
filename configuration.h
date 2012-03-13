@@ -24,11 +24,14 @@
 #include <QRegExp>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QMap>
+#include <QStringList>
 
 class Configuration
 {
 public:
     Configuration();
+    static Configuration *pointer();
 
     enum Window {
         WebWindow,
@@ -46,6 +49,8 @@ public:
     void saveWindow(Window window, QByteArray state, QByteArray geometry);
     QByteArray getWindowState(Window window);
     QByteArray getWindowGeometry(Window window);
+    void saveWebViewSettings(QMap<QString,QVariant> settings);
+    QMap<QString,QVariant> getWebViewSettings();
 
     QUrl getStartPage();
     QUrl makeSearchUrl(QString query);
@@ -53,10 +58,9 @@ public:
     QString getStorageLocation(StorageLocation location);
 
 private:
-    QPointer<QSettings> _settings;
-    QVariant _getValue(const QString &key, const QVariant &defaultValue = QVariant()) const;
-    void _setValue(const QString &key, const QVariant &value);};
+    static Configuration * s_instance;
 
-static Configuration config;
+    QPointer<QSettings> _settings;
+};
 
 #endif // CONFIGURATION_H

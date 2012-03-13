@@ -19,20 +19,20 @@ QMAKE_CXXFLAGS += -DAPP_VER=\\\"$$VERSION\\\"
 SOURCES += main.cpp\
         webwindow.cpp \
     messagehandler.cpp \
-    configuration.cpp \
     portability.cpp \
     consolewindow.cpp \
     webbrowsercombobox.cpp \
-    webview.cpp
+    webview.cpp \
+    configuration.cpp
 
 HEADERS  += webwindow.h \
     messagehandler.h \
-    configuration.h \
     portability.h \
     consolewindow.h \
     main.h \
     webbrowsercombobox.h \
-    webview.h
+    webview.h \
+    configuration.h
 
 FORMS    += webwindow.ui \
     consolewindow.ui

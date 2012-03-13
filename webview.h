@@ -19,17 +19,34 @@
 
 #include <QWebView>
 
+#include "main.h"
+
 class WebView : public QWebView
 {
     Q_OBJECT
 public:
     explicit WebView(QWidget *parent = 0);
+    ~WebView();
 
     QIcon icon() const;
+
+    bool pluginsEnabled();
+    bool javaEnabled();
 
 signals:
 
 public slots:
+    void setPluginsEnabled(bool enabled);
+    void setJavaEnabled(bool enabled);
+
+private:
+    void _readConfiguration();
+    void _writeConfiguration();
+
+    QVariant _setting(QString key);
+    void _setSetting(QString key, QVariant value);
+
+    QMap<QString,QVariant> _configuration;
 
 };
 

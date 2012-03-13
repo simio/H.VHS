@@ -16,6 +16,9 @@
 
 #include "configuration.h"
 
+// Singleton (Configuration::pointer())
+Configuration *Configuration::s_instance = NULL;
+
 Configuration::Configuration()
 {
     qApp->setOrganizationName( "Huggpunkt" );
@@ -25,6 +28,14 @@ Configuration::Configuration()
 
     this->_settings = new QSettings("hvhs.ini", QSettings::IniFormat, 0);
     this->_settings->setIniCodec("UTF-8");
+    qDebug() << "Using INI-file at" << this->_settings->fileName();
+}
+
+Configuration *Configuration::pointer()
+{
+    if (s_instance == NULL)
+        s_instance = new Configuration;
+    return s_instance;
 }
 
 QString Configuration::appName()
@@ -46,18 +57,47 @@ QString Configuration::fullAppName(bool fullVersion)
 
 void Configuration::saveWindow(Window window, QByteArray state, QByteArray geometry)
 {
-    this->_setValue(QString("WindowState") + QString::number((int)window), state);
-    this->_setValue(QString("WindowGeometry") + QString::number((int)window), geometry);
+    this->_settings->setValue(QString("Layout/WindowState") + QString::number((int)window), state);
+    this->_settings->setValue(QString("Layout/WindowGeometry") + QString::number((int)window), geometry);
 }
 
 QByteArray Configuration::getWindowState(Window window)
 {
-    return this->_getValue(QString("WindowState") + QString::number((int)window), "").toByteArray();
+    return this->_settings->value(QString("Layout/WindowState") + QString::number((int)window), "").toByteArray();
 }
 
 QByteArray Configuration::getWindowGeometry(Window window)
 {
-    return this->_getValue(QString("WindowGeometry") + QString::number((int)window), "").toByteArray();
+    return this->_settings->value(QString("Layout/WindowGeometry") + QString::number((int)window), "").toByteArray();
+}
+
+void Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
+{
+    QMap<QString,QVariant>::iterator webViewSetting;
+    this->_settings->beginGroup("WebView");
+    for (webViewSetting = webViewSettings.begin(); webViewSetting != webViewSettings.end(); webViewSetting++)
+    {
+        qDebug() << "Writing config pair" << webViewSetting.key() << webViewSetting.value();
+        this->_settings->setValue(webViewSetting.key(), webViewSetting.value());
+    }
+    this->_settings->endGroup();
+}
+
+QMap<QString,QVariant> Configuration::getWebViewSettings()
+{
+    QMap<QString,QVariant> result;
+
+    this->_settings->beginGroup("WebView");
+    QStringList keys = this->_settings->childKeys();
+    QStringList::iterator iterator;
+    for (iterator = keys.begin(); iterator != keys.end(); iterator++)
+    {
+        result.insert(*iterator, this->_settings->value(*iterator));
+        qDebug() << "Reading config pair" << *iterator <<  this->_settings->value(*iterator);
+    }
+    this->_settings->endGroup();
+
+    return result;
 }
 
 QUrl Configuration::getStartPage()
@@ -80,14 +120,4 @@ QString Configuration::getStorageLocation(StorageLocation location)
     default:
         return QString();
     }
-}
-
-void Configuration::_setValue(const QString &key, const QVariant &value)
-{
-    this->_settings->setValue(key, value);
-}
-
-QVariant Configuration::_getValue(const QString &key, const QVariant &defaultValue) const
-{
-    return this->_settings->value(key, defaultValue);
 }

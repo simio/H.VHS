@@ -31,7 +31,7 @@
         <file>icons/software-update-available.svg</file>
         <file>icons/start-here.svg</file>
         <file>icons/subtitling.svg</file>
-        <file>icons/system-log-out.svg</file>
+        <file alias="exit">icons/system-log-out.svg</file>
         <file>icons/text-x-generic.svg</file>
         <file>icons/text-x-script.svg</file>
         <file alias="icoVideoCassette">icons/vhs.ico</file>

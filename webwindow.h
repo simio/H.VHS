@@ -82,6 +82,20 @@ private:
     QPointer<QLineEdit> _lineEditSearch;
     QPointer<QProgressBar> _browserProgressBar;
 
+    // File menu
+    QPointer<QMenu> _menuFile;
+    QPointer<QAction> _actionQuit;
+
+    // Settings menu
+    QPointer<QMenu> _menuSettings;
+    QPointer<QAction> _actionToggleWebViewPlugins;
+    QPointer<QAction> _actionToggleWebViewJava;
+
+    // Info menu
+    QPointer<QMenu> _menuInfo;
+    QPointer<QAction> _actionAbout;
+
+
 };
 
 #endif // WEBWINDOW_H

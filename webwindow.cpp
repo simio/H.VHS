@@ -27,7 +27,7 @@ WebWindow::WebWindow(QWidget *parent) :
 
     this->_setupGui();
 
-    this->_loadPage(config.getStartPage());
+    this->_loadPage(Configuration::pointer()->getStartPage());
 }
 
 WebWindow::~WebWindow()
@@ -39,7 +39,7 @@ void WebWindow::_setupGui()
 {
     // Create, configure and add webView
     this->_webView = new WebView(this);
-    this->_webView->settings()->setIconDatabasePath(config.getStorageLocation(Configuration::FaviconStorageLocation));
+    this->_webView->settings()->setIconDatabasePath(Configuration::pointer()->getStorageLocation(Configuration::FaviconStorageLocation));
     ui->horizontalLayoutMiddle->addWidget(this->_webView);
 
     // Create, configure and add browser toolbar
@@ -103,16 +103,52 @@ void WebWindow::_setupGui()
     this->_toolBarBrowser->addWidget(this->_browserProgressBar);
 
     // Restore window state and geometry, or set default geometry if no previous settings exist
-    if (! config.getWindowState(Configuration::WebWindow).isEmpty())
-        this->restoreState(config.getWindowState(Configuration::WebWindow));
-    if (! config.getWindowGeometry(Configuration::WebWindow).isEmpty())
-        this->restoreGeometry(config.getWindowGeometry(Configuration::WebWindow));
+    if (! Configuration::pointer()->getWindowState(Configuration::WebWindow).isEmpty())
+        this->restoreState(Configuration::pointer()->getWindowState(Configuration::WebWindow));
+    if (! Configuration::pointer()->getWindowGeometry(Configuration::WebWindow).isEmpty())
+        this->restoreGeometry(Configuration::pointer()->getWindowGeometry(Configuration::WebWindow));
     else
     {
         int defaultWidth  = ((QApplication::desktop()->availableGeometry().width() >= 1024)  ? 1024 : QApplication::desktop()->availableGeometry().width());
         int defaultHeight = ((QApplication::desktop()->availableGeometry().height() >= 740) ? 740   : QApplication::desktop()->availableGeometry().height());
         this->setGeometry(30, 50, defaultWidth, defaultHeight);
     }
+
+    // Create top menus
+    this->_menuFile = new QMenu(tr("File"), ui->menuBar);
+    this->_menuSettings = new QMenu(tr("Settings"), ui->menuBar);
+    this->_menuInfo = new QMenu(tr("Info"), ui->menuBar);
+
+    // FILE MENU
+    // += Quit
+    this->_actionQuit = new QAction(QIcon(":/icons/exit"), tr("&Quit"), this->_menuFile);
+    this->_menuFile->addAction(this->_actionQuit);
+
+    // SETTINGS MENU
+    // +- Toggle Plugins
+    this->_actionToggleWebViewPlugins = new QAction(tr("Allow Browser &Plugins"), this->_menuSettings);
+    this->_actionToggleWebViewPlugins->setCheckable(true);
+    this->_actionToggleWebViewPlugins->setChecked(this->_webView->pluginsEnabled());
+    connect(this->_actionToggleWebViewPlugins, SIGNAL(toggled(bool)), this->_webView, SLOT(setPluginsEnabled(bool)));
+    this->_menuSettings->addAction(this->_actionToggleWebViewPlugins);
+    // +- Toggle Java
+    this->_actionToggleWebViewJava = new QAction(tr("Allow &Java"), this->_menuSettings);
+    this->_actionToggleWebViewJava->setCheckable(true);
+    this->_actionToggleWebViewJava->setChecked(this->_webView->javaEnabled());
+    connect(this->_actionToggleWebViewJava, SIGNAL(toggled(bool)), this->_webView, SLOT(setJavaEnabled(bool)));
+    this->_menuSettings->addAction(this->_actionToggleWebViewJava);
+
+    // INFO MENU
+    // += About
+    this->_actionAbout = new QAction(QIcon(":/icons/bitmapVideoCassette"),
+                                     tr("About") + QString(" ") + Configuration::pointer()->fullAppName(),
+                                     this->_menuSettings);
+    this->_menuInfo->addAction(this->_actionAbout);
+
+    // Add top menus
+    ui->menuBar->addMenu(this->_menuFile);
+    ui->menuBar->addMenu(this->_menuSettings);
+    ui->menuBar->addMenu(this->_menuInfo);
 }
 
 void WebWindow::_whenWebViewLoadFinished(bool ok)
@@ -146,12 +182,12 @@ void WebWindow::_whenWebViewIconChanged()
 
 void WebWindow::_whenWebViewTitleChanged(const QString &title)
 {
-    this->setWindowTitle(title + (title.isEmpty() ? "" : " - ") + config.fullAppName());
+    this->setWindowTitle(title + (title.isEmpty() ? "" : " - ") + Configuration::pointer()->fullAppName());
 }
 
 void WebWindow::_whenSearchBoxReturnPressed()
 {
-    this->_loadPage(config.makeSearchUrl(this->_lineEditSearch->text()));
+    this->_loadPage(Configuration::pointer()->makeSearchUrl(this->_lineEditSearch->text()));
 }
 
 void WebWindow::_receiveStatusBarMessage(const QString &text)
@@ -186,6 +222,6 @@ void WebWindow::_updateBrowserIcon(int index, bool force)
 
 void WebWindow::closeEvent(QCloseEvent *event)
 {
-    config.saveWindow(Configuration::WebWindow, this->saveState(), this->saveGeometry());
+    Configuration::pointer()->saveWindow(Configuration::WebWindow, this->saveState(), this->saveGeometry());
     QMainWindow::closeEvent(event);
 }

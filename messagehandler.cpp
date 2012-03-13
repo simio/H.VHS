@@ -16,9 +16,20 @@
 
 #include "messagehandler.h"
 
+// Singleton (MessageHandler::pointer())
+MessageHandler *MessageHandler::s_instance = NULL;
+
 MessageHandler::MessageHandler(QObject *parent) :
     QObject(parent)
 {
+}
+
+MessageHandler *MessageHandler::pointer()
+{
+    if (s_instance == NULL)
+        s_instance = new MessageHandler;
+
+    return s_instance;
 }
 
 void MessageHandler::message(QtMsgType type, const char *msg)
@@ -38,7 +49,7 @@ void MessageHandler::message(QtMsgType type, const char *msg)
 
     emit deliverMessage(message);
 
-    std::cerr << message.toStdString();
+    std::cerr << message.toStdString() << std::endl;
 
     if (type == QtFatalMsg)
         abort();
@@ -54,7 +65,7 @@ QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
     this->_consoleWindow->activateWindow();
 
     qDebug() << "Connecting console window to message handler..."
-             << QObject::connect(mainMessageHandler, SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString)));
+             << QObject::connect(MessageHandler::pointer(), SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString)));
 
     return this->_consoleWindow;
 
@@ -63,5 +74,5 @@ QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
 // OBS: Inte del av klass
 void messageHandler(QtMsgType type, const char *msg)
 {
-    mainMessageHandler->message(type, msg);
+    MessageHandler::pointer()->message(type, msg);
 }

@@ -36,8 +36,12 @@ void WebWindow::_setupGui()
     this->_actionBrowseBack = this->_webView->pageAction(QWebPage::Back);
     this->_actionBrowseForward = this->_webView->pageAction(QWebPage::Forward);
     this->_actionBrowseReload = this->_webView->pageAction(QWebPage::Reload);
+    this->_actionBrowseReloadAndBypassCache = this->_webView->pageAction(QWebPage::ReloadAndBypassCache);
     this->_actionBrowseStop = this->_webView->pageAction(QWebPage::Stop);
     this->_actionBrowseHome = new QAction(tr("Go Home"), this);
+
+    this->_actionFocusAddressBar = new QAction(tr("Set Focus on Address Bar"), this);
+    this->_actionFocusSearchBox = new QAction(tr("Set Focus on Search Box"), this);
 
     // ...and widgets
     this->_comboBoxAddressBar = new WebBrowserComboBox;
@@ -47,10 +51,31 @@ void WebWindow::_setupGui()
 
     // Configure actions
     this->_actionBrowseBack->setIcon(QIcon(":/icons/browseBack"));
+    this->_actionBrowseBack->setShortcuts(QKeySequence::Back);
     this->_actionBrowseForward->setIcon(QIcon(":/icons/browseForward"));
+    this->_actionBrowseForward->setShortcuts(QKeySequence::Forward);
     this->_actionBrowseReload->setIcon(QIcon(":/icons/browseReload"));
+    QList<QKeySequence> actionBrowseReloadShortcuts;
+    actionBrowseReloadShortcuts << QKeySequence(tr("F5")) << QKeySequence(tr("Ctrl+R"));
+    this->_actionBrowseReload->setShortcuts(QKeySequence::Refresh);
+    QList<QKeySequence> actionBrowseReloadAndBypassCacheShortcuts;
+    actionBrowseReloadAndBypassCacheShortcuts << QKeySequence(tr("Shift+F5")) << QKeySequence(tr("Ctrl+Shift+R"));
+    if (! this->_actionBrowseReloadAndBypassCache.isNull())
+    {
+        this->_actionBrowseReloadAndBypassCache->setShortcuts(actionBrowseReloadAndBypassCacheShortcuts);
+        qDebug() << "ReloadAndBypassCache is enabled.";
+    }
+    else
+        qDebug() << "ReloadAndBypassCache is disabled.";
     this->_actionBrowseStop->setIcon(QIcon(":/icons/browseStop"));
+    this->_actionBrowseStop->setShortcut(QKeySequence(Qt::Key_Escape));
     this->_actionBrowseHome->setIcon(QIcon(":/icons/browseHome"));
+    this->_actionBrowseHome->setShortcut(QKeySequence(tr("Ctrl+H")));
+
+    QList<QKeySequence> actionFocusAddressBarShortcuts;
+    actionFocusAddressBarShortcuts << QKeySequence(tr("F8")) << QKeySequence(tr("Ctrl+L")) << QKeySequence(tr("Alt+D"));
+    this->_actionFocusAddressBar->setShortcuts(actionFocusAddressBarShortcuts);
+    this->_actionFocusSearchBox->setShortcut(QKeySequence(tr("Ctrl+E")));
 
     // Configure widgets
     this->_comboBoxAddressBar->setSizePolicy(QSizePolicy::Expanding, this->_comboBoxAddressBar->sizePolicy().verticalPolicy());
@@ -63,15 +88,17 @@ void WebWindow::_setupGui()
     this->_browserProgressBar->setMaximumHeight(20);
 
     // Connect actions and widgets
-    connect(this->_comboBoxAddressBar,  SIGNAL(activated(const QString&)),          this, SLOT(_loadPage(const QString&)));
-    connect(this->_webView,             SIGNAL(loadProgress(int)),                  this, SLOT(_receiveBrowserProgress(int)));
-    connect(this->_webView,             SIGNAL(loadStarted()),                      this, SLOT(_whenWebViewLoadStarted()));
-    connect(this->_webView,             SIGNAL(loadFinished(bool)),                 this, SLOT(_whenWebViewLoadFinished(bool)));
-    connect(this->_webView,             SIGNAL(iconChanged()),                      this, SLOT(_whenWebViewIconChanged()));
-    connect(this->_webView,             SIGNAL(urlChanged(const QUrl &)),           this, SLOT(_whenWebViewUrlChanged(const QUrl&)));
-    connect(this->_webView,             SIGNAL(statusBarMessage(const QString &)),  this, SLOT(_receiveStatusBarMessage(QString)));
-    connect(this->_webView,             SIGNAL(titleChanged(const QString &)),      this, SLOT(_whenWebViewTitleChanged(QString)));
-    connect(this->_lineEditSearch,      SIGNAL(returnPressed()),                    this, SLOT(_whenSearchBoxReturnPressed()));
+    connect(this->_comboBoxAddressBar,      SIGNAL(activated(const QString&)),          this, SLOT(_loadPage(const QString&)));
+    connect(this->_webView,                 SIGNAL(loadProgress(int)),                  this, SLOT(_receiveBrowserProgress(int)));
+    connect(this->_webView,                 SIGNAL(loadStarted()),                      this, SLOT(_whenWebViewLoadStarted()));
+    connect(this->_webView,                 SIGNAL(loadFinished(bool)),                 this, SLOT(_whenWebViewLoadFinished(bool)));
+    connect(this->_webView,                 SIGNAL(iconChanged()),                      this, SLOT(_whenWebViewIconChanged()));
+    connect(this->_webView,                 SIGNAL(urlChanged(const QUrl &)),           this, SLOT(_whenWebViewUrlChanged(const QUrl&)));
+    connect(this->_webView,                 SIGNAL(statusBarMessage(const QString &)),  this, SLOT(_receiveStatusBarMessage(QString)));
+    connect(this->_webView,                 SIGNAL(titleChanged(const QString &)),      this, SLOT(_whenWebViewTitleChanged(QString)));
+    connect(this->_lineEditSearch,          SIGNAL(returnPressed()),                    this, SLOT(_whenSearchBoxReturnPressed()));
+    connect(this->_actionFocusAddressBar,   SIGNAL(triggered()),                        this, SLOT(_setFocusOnAddressBar()));
+    connect(this->_actionFocusSearchBox,    SIGNAL(triggered()),                        this, SLOT(_setFocusOnSearchBox()));
 
     // Add actions and widgets to browser toolbar
     this->_toolBarBrowser->addAction(this->_actionBrowseBack);
@@ -83,6 +110,9 @@ void WebWindow::_setupGui()
     this->_toolBarBrowser->addWidget(this->_comboBoxQuickPicker);
     this->_toolBarBrowser->addWidget(this->_lineEditSearch);
     this->_toolBarBrowser->addWidget(this->_browserProgressBar);
+
+    this->addAction(this->_actionFocusAddressBar);
+    this->addAction(this->_actionFocusSearchBox);
 
     // Restore window state and geometry, or set default geometry if no previous settings exist
     if (! Configuration::pointer()->getWindowState(Configuration::WebWindow).isEmpty())

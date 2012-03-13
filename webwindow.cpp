@@ -107,6 +107,16 @@ void WebWindow::_receiveBrowserProgress(int progress)
     this->_browserProgressBar->setValue(progress);
 }
 
+void WebWindow::_setFocusOnAddressBar()
+{
+    this->_comboBoxAddressBar->setFocus();
+}
+
+void WebWindow::_setFocusOnSearchBox()
+{
+    this->_lineEditSearch->setFocus();
+}
+
 void WebWindow::_updateBrowserIcon(int index, bool force)
 {
     if (force || this->_comboBoxAddressBar->itemIcon(index).isNull())

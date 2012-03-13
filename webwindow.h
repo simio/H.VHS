@@ -23,6 +23,7 @@
 #include <QToolBar>
 #include <QComboBox>
 #include <QWebView>
+#include <QShortcut>
 
 #include "main.h"
 
@@ -61,6 +62,9 @@ private slots:
     void _receiveStatusBarMessage(const QString &text);
     void _receiveBrowserProgress(int progress);
 
+    void _setFocusOnAddressBar();
+    void _setFocusOnSearchBox();
+
 private:
     Ui::WebWindow *ui;
 
@@ -78,12 +82,16 @@ private:
     QPointer<QAction> _actionBrowseBack;
     QPointer<QAction> _actionBrowseForward;
     QPointer<QAction> _actionBrowseReload;
+    QPointer<QAction> _actionBrowseReloadAndBypassCache;
     QPointer<QAction> _actionBrowseStop;
 
     QPointer<WebBrowserComboBox> _comboBoxAddressBar;
     QPointer<QComboBox> _comboBoxQuickPicker;
     QPointer<QLineEdit> _lineEditSearch;
     QPointer<QProgressBar> _browserProgressBar;
+
+    QPointer<QAction> _actionFocusAddressBar;
+    QPointer<QAction> _actionFocusSearchBox;
 
     // File menu
     QPointer<QMenu> _menuFile;

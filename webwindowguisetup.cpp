@@ -156,8 +156,13 @@ void WebWindow::_setupGui()
     this->_menuSettings->addAction(this->_actionToggleWebViewJava);
 
     // ADVANCED MENU
+    // += Launch Console Window
+    this->_actionLaunchConsoleWindow = new QAction(tr("Launch &Console Window"), this->_menuAdvanced);
+    this->_actionLaunchConsoleWindow->setShortcut(QKeySequence(tr("F12")));
+    connect(this->_actionLaunchConsoleWindow, SIGNAL(triggered()), this, SLOT(_launchConsoleWindow()));
+    this->_menuAdvanced->addAction(this->_actionLaunchConsoleWindow);
     // += Clear storage and quit
-    this->_actionClearStorageAndQuit = new QAction(tr("&Clear Storage and Quit"), this->_menuAdvanced);
+    this->_actionClearStorageAndQuit = new QAction(tr("Clear &Storage and Quit"), this->_menuAdvanced);
     this->_actionClearStorageAndQuit->setShortcut(QKeySequence(tr("Ctrl+Alt+Q")));
     connect(this->_actionClearStorageAndQuit, SIGNAL(triggered()), this, SLOT(_clearStorageAndQuit()));
     this->_menuAdvanced->addAction(this->_actionClearStorageAndQuit);

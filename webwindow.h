@@ -65,6 +65,8 @@ private slots:
     void _setFocusOnAddressBar();
     void _setFocusOnSearchBox();
 
+    void _launchConsoleWindow();
+
 private:
     Ui::WebWindow *ui;
 
@@ -105,6 +107,7 @@ private:
     // Advanced menu
     QPointer<QMenu> _menuAdvanced;
     QPointer<QAction> _actionClearStorageAndQuit;
+    QPointer<QAction> _actionLaunchConsoleWindow;
 
     // Info menu
     QPointer<QMenu> _menuInfo;

@@ -64,8 +64,10 @@ QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
     this->_consoleWindow->raise();
     this->_consoleWindow->activateWindow();
 
-    qDebug() << "Connecting console window to message handler..."
-             << QObject::connect(MessageHandler::pointer(), SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString)));
+    if (QObject::connect(MessageHandler::pointer(), SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString))))
+        qDebug() << tr("Console connected.");
+    else
+        qWarning() << tr("Could not connect console.");
 
     return this->_consoleWindow;
 

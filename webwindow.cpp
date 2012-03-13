@@ -117,6 +117,11 @@ void WebWindow::_setFocusOnSearchBox()
     this->_lineEditSearch->setFocus();
 }
 
+void WebWindow::_launchConsoleWindow()
+{
+    MessageHandler::pointer()->createConsoleWindow();
+}
+
 void WebWindow::_updateBrowserIcon(int index, bool force)
 {
     if (force || this->_comboBoxAddressBar->itemIcon(index).isNull())

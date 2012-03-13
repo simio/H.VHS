@@ -57,18 +57,24 @@ QString Configuration::fullAppName(bool fullVersion)
 
 void Configuration::saveWindow(Window window, QByteArray state, QByteArray geometry)
 {
-    this->_settings->setValue(QString("Layout/WindowState") + QString::number((int)window), state);
-    this->_settings->setValue(QString("Layout/WindowGeometry") + QString::number((int)window), geometry);
+    this->_settings->beginGroup("Layout");
+    this->_settings->setValue(QString("WindowState") + QString::number((int)window), state);
+    this->_settings->setValue(QString("WindowGeometry") + QString::number((int)window), geometry);
+    this->_settings->endGroup();
 }
 
 QByteArray Configuration::getWindowState(Window window)
 {
-    return this->_settings->value(QString("Layout/WindowState") + QString::number((int)window), "").toByteArray();
+    this->_settings->beginGroup("Layout");
+    return this->_settings->value(QString("WindowState") + QString::number((int)window), "").toByteArray();
+    this->_settings->endGroup();
 }
 
 QByteArray Configuration::getWindowGeometry(Window window)
 {
-    return this->_settings->value(QString("Layout/WindowGeometry") + QString::number((int)window), "").toByteArray();
+    this->_settings->beginGroup("Layout");
+    return this->_settings->value(QString("WindowGeometry") + QString::number((int)window), "").toByteArray();
+    this->_settings->endGroup();
 }
 
 void Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
@@ -107,7 +113,11 @@ QUrl Configuration::getStartPage()
 
 QUrl Configuration::makeSearchUrl(QString query)
 {
-    return QUrl(QString("https://www.startpage.com/do/search?q=") + query.replace(" ", "+"));
+    QString defaultQuery("https://www.startpage.com/do/search?q=");
+    this->_settings->beginGroup("WebSearch");
+    QUrl url = QUrl(this->_settings->value("DefaultQuery", defaultQuery).toString() + query.replace(" ", "+"));
+    this->_settings->endGroup();
+    return url;
 }
 
 QString Configuration::getStorageLocation(StorageLocation location)

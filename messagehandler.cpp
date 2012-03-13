@@ -70,7 +70,6 @@ QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
         qWarning() << tr("Could not connect console.");
 
     return this->_consoleWindow;
-
 }
 
 // OBS: Inte del av klass

@@ -32,9 +32,12 @@ Portability *Portability::pointer()
 
 QString Portability::systemExtensionPath(QString file)
 {
-#ifdef WIN32
-    return QDir::toNativeSeparators(qApp->applicationDirPath() + "/extensions/" + file);
+#ifndef RELEASE
+    QString base = QString( PRO_PATH );
+#elif WIN32
+    QString base = qApp->applicationDirPath();
 #endif
+    return QDir::toNativeSeparators( base + "/extensions/" + file);
 }
 
 QString Portability::userExtensionPath(QString file)

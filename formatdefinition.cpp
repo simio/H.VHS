@@ -21,5 +21,30 @@ FormatDefinition::FormatDefinition(QObject *parent) :
 {
     this->_uid = QByteArray();
     this->_prettyName = QString(this->_uid);
-    this->_contents = Empty;
+    this->_contentType = Empty;
+}
+
+QByteArray FormatDefinition::uid()                                                  { return this->_uid; }
+QString FormatDefinition::prettyName()                                              { return this->_prettyName; }
+FormatDefinition::ContentType FormatDefinition::contentType()                       { return this->_contentType; }
+
+void FormatDefinition::setUid(QByteArray uid)                                       { this->_uid = uid; }
+void FormatDefinition::setPrettyName(QString prettyName)                            { this->_prettyName = prettyName; }
+void FormatDefinition::setContentType(FormatDefinition::ContentType content)        { this->_contentType = content; }
+void FormatDefinition::setContentType(QString contentType)
+{
+    QString normalised = contentType.toLower().trimmed();
+
+    if (normalised == "empty")
+        this->setContentType(Empty);
+    else if (normalised == "any")
+        this->setContentType(Any);
+    else if (normalised == "meta")
+        this->setContentType(Meta);
+    else if (normalised == "rawdata" || normalised == "raw")
+        this->setContentType(RawData);
+    else if (normalised == "complete")
+        this->setContentType(Complete);
+    else
+        this->setContentType(Unknown);
 }

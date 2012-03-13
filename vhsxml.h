@@ -14,17 +14,42 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#ifndef VHSXML_H
+#define VHSXML_H
+
+#include <QObject>
+#include <QPointer>
+#include <QFile>
+#include <QDomDocument>
+#include <QXmlInputSource>
+
+#include "main.h"
+
+#include "formatdefinition.h"
 #include "mediadefinition.h"
 
-MediaDefinition::MediaDefinition(QObject *parent) :
-    QObject(parent)
+class VhsXml : public QObject
 {
-    this->_uid = QByteArray();
-    this->_prettyName = QString(this->_uid);
-}
+    Q_OBJECT
+public:
+    explicit VhsXml(QObject *parent = 0);
+    VhsXml(QPointer<QFile> file, QObject *parent = 0);
+    VhsXml(QPointer<QIODevice> device, QObject *parent = 0);
 
-QByteArray MediaDefinition::uid()                                                   { return this->_uid; }
-QString MediaDefinition::prettyName()                                               { return this->_prettyName; }
+    QList< QPointer<FormatDefinition> > getFormatDefinitions();
+    QList< QPointer<MediaDefinition> > getMediaDefinitions();
 
-void MediaDefinition::setUid(QByteArray uid)                                        { this->_uid = uid; }
-void MediaDefinition::setPrettyName(QString prettyName)                             { this->_prettyName = prettyName; }
+signals:
+
+public slots:
+
+private:
+    bool _initialise(QPointer<QFile> file, QString name = QString());
+    bool _initialise(QPointer<QIODevice> device, QString name = QString());
+    bool _initialise(QXmlInputSource *source, QString name = QString());
+
+    QDomDocument _xml;
+
+};
+
+#endif // VHSXML_H

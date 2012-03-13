@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<HuggPlay>
+    <FormatDefinitions>
+        <Definition>
+            <uid>any</uid>
+            <Name>Unidentified data</Name>
+            <ContentType>Any</ContentType>
+        </Definition>
+        <Definition>
+            <uid>vhsxml</uid>
+            <Name>VhsXml</Name>
+            <ContentType>Any</ContentType>
+        </Definition>
+        <Definition>
+            <uid>vhsexpr</uid>
+            <Name>VhsExpr</Name>
+            <ContentType>Any</ContentType>
+        </Definition>
+        <Definition>
+            <uid>flv</uid>
+            <Name>Flash Video</Name>
+            <ContentType>Complete</ContentType>
+        </Definition>
+        <Definition>
+            <uid>srt</uid>
+            <Name>Subrip subtitles</Name>
+            <ContentType>Complete</ContentType>
+        </Definition>
+    </FormatDefinitions>
+</HuggPlay>

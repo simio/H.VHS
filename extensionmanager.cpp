@@ -21,9 +21,9 @@ ExtensionManager *ExtensionManager::s_instance = NULL;
 ExtensionManager::ExtensionManager(QObject *parent) :
     QObject(parent)
 {
-    qDebug() << "Found" << this->_loadMediaDefinitions() << "media definitions.";
-    qDebug() << "Found" << this->_loadFormatDefinitions() << "format definitions.";
-    qDebug() << "Found" << this->_loadExtensions() << "extensions.";
+    qDebug() << this->_loadMediaDefinitions() << "media definitions loaded.";
+    qDebug() << this->_loadFormatDefinitions() << "format definitions loaded.";
+    qDebug() << this->_loadExtensions() << "extensions loaded.";
 }
 
 ExtensionManager *ExtensionManager::pointer()
@@ -51,15 +51,26 @@ int ExtensionManager::_loadMediaDefinitions()
     {
         // Nya mediadefinitioner med redan registrerade uid ska ersätta de föregående.
         if (path.startsWith("http://") || path.startsWith("https://"))
-            qDebug() << "Loading media definitions from URL:" << path;
+        {
+            //qDebug() << "Loading media definitions from URL:" << path;
+        }
         else
-            qDebug() << "Loading media definitions from:" << path;
+        {
+            QPointer<QFile> file = new QFile(path);
+            if (file->exists())
+            {
+                qDebug() << "Loading media definitions from:" << path;
+                VhsXml mediaFile(file);
+                this->_knownMedia = mediaFile.getMediaDefinitions();
+            }
+            delete file;
+        }
     }
 
     // Skriv här ned samtliga definitioner till
     // Configuration::pointer()->getStorageLocation(Configuration::UserMediaDefinitionStorageLocation)
 
-    return 0;
+    return this->_knownMedia.size();
 }
 
 int ExtensionManager::_loadFormatDefinitions()
@@ -74,15 +85,26 @@ int ExtensionManager::_loadFormatDefinitions()
     {
         // Nya formatdefinitioner med redan registrerade uid ska ersätta de föregående.
         if (path.startsWith("http://") || path.startsWith("https://"))
-            qDebug() << "Loading format definitions from URL:" << path;
+        {
+            //qDebug() << "Loading format definitions from URL:" << path;
+        }
         else
-            qDebug() << "Loading format definitions from:" << path;
+        {
+            QPointer<QFile> file = new QFile(path);
+            if (file->exists())
+            {
+                qDebug() << "Loading format definitions from:" << path;
+                VhsXml formatsFile(file);
+                this->_knownFormats = formatsFile.getFormatDefinitions();
+            }
+            delete file;
+        }
     }
 
     // Skriv här ned samtliga definitioner till
     // Configuration::pointer()->getStorageLocation(Configuration::UserFormatDefinitionStorageLocation)
 
-    return 0;
+    return this->_knownFormats.size();
 }
 
 
@@ -98,5 +120,5 @@ int ExtensionManager::_loadExtensions()
         qDebug() << "Loading extensions from" << path;
     }
 
-    return 0;
+    return this->_extensions.size();
 }

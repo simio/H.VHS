@@ -14,7 +14,10 @@ VERSION = 0.4.0.0
 
 TRANSLATIONS = hvhs_sv.ts
 
-QMAKE_CXXFLAGS += -DAPP_VER=\\\"$$VERSION\\\"
+#DEFINES += RELEASE
+
+QMAKE_CXXFLAGS += -DAPP_VER=\\\"$$VERSION\\\" \
+                  -DPRO_PATH=\"\\\"$$_PRO_FILE_PWD_\\\"\"
 
 SOURCES += main.cpp\
         webwindow.cpp \
@@ -28,7 +31,8 @@ SOURCES += main.cpp\
     extensionmanager.cpp \
     extension.cpp \
     mediadefinition.cpp \
-    formatdefinition.cpp
+    formatdefinition.cpp \
+    vhsxml.cpp
 
 HEADERS  += webwindow.h \
     messagehandler.h \
@@ -41,7 +45,8 @@ HEADERS  += webwindow.h \
     extensionmanager.h \
     extension.h \
     mediadefinition.h \
-    formatdefinition.h
+    formatdefinition.h \
+    vhsxml.h
 
 FORMS    += webwindow.ui \
     consolewindow.ui
@@ -50,7 +55,9 @@ win32:RC_FILE = VHS4.rc
 
 OTHER_FILES += \
     vhs4.rc \
-    README
+    README \
+    extensions/format.xml \
+    extensions/media.xml
 
 RESOURCES += \
     vhs4.qrc

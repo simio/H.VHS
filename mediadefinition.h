@@ -29,12 +29,17 @@ class MediaDefinition : public QObject
 public:
     explicit MediaDefinition(QObject *parent = 0);
 
+    QByteArray uid();
+    QString prettyName();
+    void setUid(QByteArray uid);
+    void setPrettyName(QString prettyName);
+
 signals:
 
 public slots:
 
 private:
-    QString _uid;           // Used in extensions
+    QByteArray _uid;           // Used in extensions
     QString _prettyName;    // Defaults to _uid
 };
 

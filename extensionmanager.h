@@ -25,6 +25,7 @@
 #include "formatdefinition.h"
 #include "mediadefinition.h"
 #include "extension.h"
+#include "vhsxml.h"
 
 class ExtensionManager : public QObject
 {
@@ -46,9 +47,9 @@ private:
     int _loadFormatDefinitions();
     int _loadExtensions();
 
-    QList<Extension> _extensions;
-    QList<FormatDefinition> _knownFormats;
-    QList<MediaDefinition> _knownMedia;
+    QList< QPointer<Extension> > _extensions;
+    QList< QPointer<FormatDefinition> > _knownFormats;
+    QList< QPointer<MediaDefinition> > _knownMedia;
 
 };
 

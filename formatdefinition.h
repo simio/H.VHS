@@ -29,22 +29,32 @@ class FormatDefinition : public QObject
 public:
     explicit FormatDefinition(QObject *parent = 0);
 
-    enum Contents {
-        Empty,
+    enum ContentType {
+        Unknown,
+        Empty,              // No contents
         Any,                // Any of the below
         Meta,               // i.e. a Cassette (where the actual data is on a remote location)
         RawData,            // Data only (i.e. a raw video stream)
         Complete            // Both Meta and RawData
     };
 
+    QByteArray uid();
+    QString prettyName();
+    ContentType contentType();
+
+    void setUid(QByteArray uid);
+    void setPrettyName(QString prettyName);
+    void setContentType(ContentType contentType);
+    void setContentType(QString contentType);
+
 public slots:
 
 signals:
 
 private:
-    QString _uid;               // Used in extensions
-    QString _prettyName;        // Defaults to _uid
-    Contents _contents;
+    QByteArray _uid;               // Used in extensions
+    QString _prettyName;           // Defaults to _uid
+    ContentType _contentType;
 
 };
 

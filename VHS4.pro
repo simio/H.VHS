@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     consolewindow.cpp \
     webbrowsercombobox.cpp \
     webview.cpp \
-    configuration.cpp
+    configuration.cpp \
+    webwindowguisetup.cpp
 
 HEADERS  += webwindow.h \
     messagehandler.h \

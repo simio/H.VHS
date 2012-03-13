@@ -64,8 +64,8 @@ private slots:
 private:
     Ui::WebWindow *ui;
 
+    void _setupGui();                                           // Located in webwindowguisetup.cpp
     void _setupWebView();
-    void _setupGui();
     void _updateBrowserIcon(int index, bool force = false);
 
     enum BrowserStatus { Idle, Busy };

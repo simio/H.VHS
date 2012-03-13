@@ -35,6 +35,26 @@ WebWindow::~WebWindow()
     delete ui;
 }
 
+void WebWindow::_loadPage(const QUrl &url)
+{
+    this->_webView->load(url);
+    this->_webView->setFocus();
+}
+
+void WebWindow::_loadPage(const QString &dirtyUrl)
+{
+    if (! dirtyUrl.contains(QRegExp("^[a-z0-9-]+:")))
+        this->_loadPage(QUrl(("http://" + dirtyUrl)));
+    else
+        this->_loadPage(QUrl(dirtyUrl));
+}
+
+void WebWindow::_quit()
+{
+    qApp->closeAllWindows();
+    qApp->exit(0);
+}
+
 void WebWindow::_setupGui()
 {
     // Create, configure and add webView
@@ -122,6 +142,7 @@ void WebWindow::_setupGui()
     // FILE MENU
     // += Quit
     this->_actionQuit = new QAction(QIcon(":/icons/exit"), tr("&Quit"), this->_menuFile);
+    connect(this->_actionQuit, SIGNAL(triggered()), this, SLOT(_quit()));
     this->_menuFile->addAction(this->_actionQuit);
 
     // SETTINGS MENU
@@ -198,20 +219,6 @@ void WebWindow::_receiveStatusBarMessage(const QString &text)
 void WebWindow::_receiveBrowserProgress(int progress)
 {
     this->_browserProgressBar->setValue(progress);
-}
-
-void WebWindow::_loadPage(const QUrl &url)
-{
-    this->_webView->load(url);
-    this->_webView->setFocus();
-}
-
-void WebWindow::_loadPage(const QString &dirtyUrl)
-{
-    if (! dirtyUrl.contains(QRegExp("^[a-z0-9-]+:")))
-        this->_loadPage(QUrl(("http://" + dirtyUrl)));
-    else
-        this->_loadPage(QUrl(dirtyUrl));
 }
 
 void WebWindow::_updateBrowserIcon(int index, bool force)

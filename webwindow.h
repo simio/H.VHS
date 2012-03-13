@@ -48,6 +48,8 @@ private slots:
     void _loadPage(const QUrl &url);
     void _loadPage(const QString &dirtyUrl);
 
+    void _quit();
+
     void _whenWebViewLoadStarted();
     void _whenWebViewLoadFinished(bool ok);
     void _whenWebViewUrlChanged(const QUrl &url);

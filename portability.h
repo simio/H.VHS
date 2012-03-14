@@ -29,7 +29,9 @@ public:
     static Portability *pointer();
 
     QString systemExtensionPath(QString file = QString());
+    QString systemConfPath(QString file = QString());
     QString userExtensionPath(QString file = QString());
+    QString userConfPath(QString file = QString());
 
 private:
     static Portability *s_instance;

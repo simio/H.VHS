@@ -40,9 +40,26 @@ QString Portability::systemExtensionPath(QString file)
     return QDir::toNativeSeparators( base + "/extensions/" + file);
 }
 
+QString Portability::systemConfPath(QString file)
+{
+#ifndef RELEASE
+    QString base = QString( PRO_PATH );
+#elif WIN32
+    QString base = qApp->applicationDirPath();
+#endif
+    return QDir::toNativeSeparators( base + "/conf/" + file);
+}
+
 QString Portability::userExtensionPath(QString file)
 {
 #ifdef WIN32
     return QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions/" + file);
+#endif
+}
+
+QString Portability::userConfPath(QString file)
+{
+#ifdef WIN32
+    return QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/conf/" + file);
 #endif
 }

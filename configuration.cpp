@@ -147,15 +147,15 @@ QString Configuration::getStorageLocation(StorageLocation location)
                                                             /* NOTREACHED */
     case UserExtensionsStorageLocation:                     return Portability::pointer()->userExtensionPath();
                                                             /* NOTREACHED */
-    case SystemMediaDefinitionStorageLocation:              return Portability::pointer()->systemExtensionPath("media.xml");
+    case SystemMediaDefinitionStorageLocation:              return Portability::pointer()->systemConfPath("media.xml");
                                                             /* NOTREACHED */
-    case UserMediaDefinitionStorageLocation:                return Portability::pointer()->userExtensionPath("media.xml");
+    case UserMediaDefinitionStorageLocation:                return Portability::pointer()->userConfPath("media.xml");
                                                             /* NOTREACHED */
     case RemoteMediaDefinitionStorageLocation:              return "http://play.huggpunkt.org/vhs/media.xml";
                                                             /* NOTREACHED */
-    case SystemFormatDefinitionStorageLocation:             return Portability::pointer()->systemExtensionPath("format.xml");
+    case SystemFormatDefinitionStorageLocation:             return Portability::pointer()->systemConfPath("format.xml");
                                                             /* NOTREACHED */
-    case UserFormatDefinitionStorageLocation:               return Portability::pointer()->userExtensionPath("format.xml");
+    case UserFormatDefinitionStorageLocation:               return Portability::pointer()->userConfPath("format.xml");
                                                             /* NOTREACHED */
     case RemoteFormatDefinitionStorageLocation:             return "http://play.huggpunkt.org/vhs/format.xml";
                                                             /* NOTREACHED */

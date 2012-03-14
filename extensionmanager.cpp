@@ -130,6 +130,7 @@ int ExtensionManager::_loadExtensions()
             QDirIterator dir(path);
             while (dir.hasNext())
             {
+                dir.next();
                 if (dir.fileName() != ".." && dir.fileName() != "." && QFileInfo(dir.filePath()).isDir())
                 {
                     QFileInfo fileInfo(QDir::toNativeSeparators(dir.filePath() + "/" + dir.fileName() + ".xml"));
@@ -143,7 +144,6 @@ int ExtensionManager::_loadExtensions()
                         delete file;
                     }
                 }
-                dir.next();
             }
         }
     }

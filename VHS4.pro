@@ -56,9 +56,10 @@ win32:RC_FILE = VHS4.rc
 OTHER_FILES += \
     vhs4.rc \
     README \
-    extensions/format.xml \
     extensions/media.xml \
-    extensions/extensions.xml
+    extensions/extensions.xml \
+    conf/media.xml \
+    conf/format.xml
 
 RESOURCES += \
     vhs4.qrc

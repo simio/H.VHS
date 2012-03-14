@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<HuggPlay version="1">
+<HuggPlay version="2">
     <Extensions>
         <Extension>
-            <uid>vhsxml</uid>
+            <uid>localfile</uid>
             <Version>1</Version>
             <Enabled>true</Enabled>
-            <Name>Internal VhsXml interface</Name>
+            <Name>Test Extension for writing and reading files</Name>
             <Author email="jesper@huggpunkt.org" website="http://huggpunkt.org/">Jesper Räftegård</Author>
-            <Implementation>internal</Implementation>
+            <Implementation>DLL</Implementation>
             <InputFormat>
-                <Format>vhsxml</Format>
+                <Format>any</Format>
             </InputFormat>
             <OutputFormat>
-                <Format>vhsxml</Format>
-                <Format>internal</Format>
                 <Format>copy</Format>
             </OutputFormat>
             <InputMedia>
+                <Media>localfile</Media>
                 <Media>textstream</Media>
                 <Media>datastream</Media>
-                <Media>localfile</Media>
             </InputMedia>
             <OutputMedia>
+                <Media>localfile</Media>
                 <Media>textstream</Media>
                 <Media>datastream</Media>
-                <Media>localfile</Media>
             </OutputMedia>
         </Extension>
     </Extensions>

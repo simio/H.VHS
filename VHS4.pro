@@ -20,7 +20,7 @@ QMAKE_CXXFLAGS += -DAPP_VER=\\\"$$VERSION\\\" \
                   -DPRO_PATH=\"\\\"$$_PRO_FILE_PWD_\\\"\"
 
 SOURCES += main.cpp\
-        webwindow.cpp \
+    webwindow.cpp \
     messagehandler.cpp \
     portability.cpp \
     consolewindow.cpp \

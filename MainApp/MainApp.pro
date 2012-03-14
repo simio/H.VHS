@@ -12,7 +12,7 @@ TEMPLATE = app
 # När VERSION uppdateras måste även vhs4.rc uppdateras
 VERSION = 0.4.0.0
 
-TRANSLATIONS = hvhs_sv.ts
+TRANSLATIONS = hvhs_sv.ts qt_sv.ts
 
 #DEFINES += RELEASE
 

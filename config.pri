@@ -1,10 +1,11 @@
 #
-#   HVHS_CONFIG
+#   APP_CONFIG
 #
 #   deploy_dist     Creates a folder containing all files necessary for distribution.
 #
 
-HVHS_VERSION  =             0.4.0.0
-HVHS_TAG =                  0.4.0-devel
-HVHS_CONFIG =               #deploy_dist
-HVHS_ENABLED_EXTENSIONS =   dummy
+APP_VERSION  =              0.4.0.0                 # Must also be set in MainApp/vhs4.rc
+APP_TAG =                   devel
+APP_CONFIG =                #deploy_dist
+
+HVHS_ENABLED_EXTENSIONS =    dummy

@@ -5,4 +5,4 @@ SUBDIRS += \
     dummy
 
 OTHER_FILES += \
-    extensions.pri
+    hvhs_extension.pri

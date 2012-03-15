@@ -4,17 +4,13 @@
 #
 #-------------------------------------------------
 
-include( ../global.pri )
-
 ## BUILD
-QT       += core gui webkit network xml svg
-TARGET = HuggpunktVHS
-TEMPLATE = app
+QT                 += core gui webkit network xml svg
+TARGET              = HuggpunktVHS
+TEMPLATE            = app
+TRACK_BUILD_NUMBER  = true
 
-# När VERSION uppdateras måste även vhs4.rc uppdateras
-VERSION = $HVHS_VERSION
-TRANSLATIONS = hvhs_sv.ts qt_sv.ts
-QMAKE_CXXFLAGS += -DAPP_VER=\\\"$$VERSION\\\"
+include( ../global.pri )
 
 ## DEPLOYMENT
 include( ../deploy.pri )

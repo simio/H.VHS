@@ -11,7 +11,7 @@ contains(HVHS_ENABLED_EXTENSIONS, $${HVHS_EXTENSION_NAME}) {
     include( ../deploy.pri )
 
     # Put the extension definition in deploy_dist-style subdir only if desploy_dist is set.
-    contains(HVHS_CONFIG, deploy_dist) {
+    contains(APP_CONFIG, deploy_dist) {
         EXTENSION_DEPLOY_DIST_DIR = $$DEPLOY_DIST_DIR/extensions/$$HVHS_EXTENSION_NAME
     } else {
         EXTENSION_DEPLOY_DIST_DIR = $$DEPLOY_DIST_DIR

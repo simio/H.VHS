@@ -1,4 +1,4 @@
-!contains(HVHS_CONFIG, deploy_dist) {
+!contains(APP_CONFIG, deploy_dist) {
     win32 {
         CONFIG(debug, debug|release) {
             DEPLOY_DIST_DIR = $${OUT_PWD}/debug
@@ -8,7 +8,7 @@
     }
 }
 
-contains(HVHS_CONFIG, deploy_dist) {
+contains(APP_CONFIG, deploy_dist) {
     win32 {
         QTDLL_RUNDEPENDS += mingwm10.dll libgcc_s_dw2-1.dll
 

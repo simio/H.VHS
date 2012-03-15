@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <HuggPlay version="2">
     <FormatDefinitions asOf="2012-03-15T10:57:24">
-        <Definition>
+        <FormatDefinition>
             <uid>any</uid>
             <Name>Unidentified data</Name>
             <ContentType>Any</ContentType>
-        </Definition>
-        <Definition>
+        </FormatDefinition>
+        <FormatDefinition>
             <uid>copy</uid>
             <Name>Copy of input stream</Name>
             <ContentType>Any</ContentType>
-        </Definition>
-        <Definition>
+        </FormatDefinition>
+        <FormatDefinition>
             <uid>internal</uid>
             <Name>Internal representation</Name>
             <ContentType>Meta</ContentType>
-        </Definition>
-        <Definition>
+        </FormatDefinition>
+        <FormatDefinition>
             <uid>website</uid>
             <Name>Website</Name>
             <ContentType>Meta</ContentType>
-        </Definition>
-        <Definition>
+        </FormatDefinition>
+        <FormatDefinition>
             <uid>vhsxml</uid>
             <Name>VhsXml</Name>
             <ContentType>Meta</ContentType>
-        </Definition>
-        <Definition>
+        </FormatDefinition>
+        <FormatDefinition>
             <uid>vhsexpr</uid>
             <Name>VhsExpr</Name>
             <ContentType>Meta</ContentType>
-        </Definition>
-        <Definition>
+        </FormatDefinition>
+        <FormatDefinition>
             <uid>flv</uid>
             <Name>Flash Video</Name>
             <ContentType>Complete</ContentType>
-        </Definition>
-        <Definition>
+        </FormatDefinition>
+        <FormatDefinition>
             <uid>srt</uid>
             <Name>Subrip subtitles</Name>
             <ContentType>Complete</ContentType>
-        </Definition>
+        </FormatDefinition>
     </FormatDefinitions>
 </HuggPlay>

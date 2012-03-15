@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <HuggPlay version="2">
     <MediaDefinitions asOf="2012-03-15T10:57:24">
-        <Definition>
+        <MediaDefinition>
             <uid>textstream</uid>
             <Name>Text Stream</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>datastream</uid>
             <Name>Binary Stream</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>localfile</uid>
             <Name>Local file</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>fileprotocol</uid>
             <Name>file://</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>http</uid>
             <Name>Hypertext Transfer Protocol</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>https</uid>
             <Name>Hypertext Transfer Protocol Secure</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>ftp</uid>
             <Name>File Transfer Protocol</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>rtmp</uid>
             <Name>Real Time Messaging Protocol</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>rtmpe</uid>
             <Name>Real Time Messaging Protocol Encrypted</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>rtmpt</uid>
             <Name>Real Time Messaging Protocol via HTTP</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>rtmpte</uid>
             <Name>Real Time Messaging Protocol Encrypted via HTTP</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>rtmps</uid>
             <Name>Real Time Messaging Protocol via HTTPS</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>rtmfp</uid>
             <Name>Real Time Media Flow Protocol</Name>
-        </Definition>
-        <Definition>
+        </MediaDefinition>
+        <MediaDefinition>
             <uid>playback</uid>
             <Name>Local Playback Device</Name>
-        </Definition>
+        </MediaDefinition>
     </MediaDefinitions>
 </HuggPlay>

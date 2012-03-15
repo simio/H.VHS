@@ -51,11 +51,11 @@ QList< QPointer<FormatDefinition> > VhsXml::getFormatDefinitions()
             {
                 QDateTime defaultDateTime = QDateTime::fromString(definitionsNode.toElement().attribute("asOf"), Qt::ISODate);
 
-                // Loop through all <Definition> elements within it
+                // Loop through all <FormatDefinition> elements within it
                 QDomNode node = definitionsNode.firstChild();
                 while (! node.isNull())
                 {
-                    if (node.toElement().tagName() == "Definition")
+                    if (node.toElement().tagName() == "FormatDefinition")
                     {
                         QPointer<FormatDefinition> newDef = new FormatDefinition;
                         if (node.toElement().hasAttribute("asOf"))
@@ -94,11 +94,11 @@ QList< QPointer<MediaDefinition> > VhsXml::getMediaDefinitions()
             {
                 QDateTime defaultDateTime = QDateTime::fromString(definitionsNode.toElement().attribute("asOf"), Qt::ISODate);
 
-                // Loop through all <Definition> elements within it
+                // Loop through all <MediaDefinition> elements within it
                 QDomNode node = definitionsNode.firstChild();
                 while (! node.isNull())
                 {
-                    if (node.toElement().tagName() == "Definition")
+                    if (node.toElement().tagName() == "MediaDefinition")
                     {
                         QPointer<MediaDefinition> newDef = new MediaDefinition;
                         if (node.toElement().hasAttribute("asOf"))

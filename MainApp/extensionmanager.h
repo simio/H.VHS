@@ -20,6 +20,7 @@
 #include <QObject>
 #include <QList>
 #include <QDirIterator>
+#include <QDateTime>
 
 #include "main.h"
 
@@ -44,13 +45,13 @@ public slots:
 private:
     static ExtensionManager *s_instance;
 
-    int _loadMediaDefinitions();
-    int _loadFormatDefinitions();
-    int _loadExtensions();
+    int _loadAndMergeMediaDefinitions();
+    int _loadAndMergeFormatDefinitions();
+    int _loadAndMergeExtensions();
 
-    QList< QPointer<Extension> > _extensions;
-    QList< QPointer<FormatDefinition> > _knownFormats;
-    QList< QPointer<MediaDefinition> > _knownMedia;
+    QHash< QByteArray, QPointer<Extension> > _extensions;
+    QHash< QByteArray, QPointer<FormatDefinition> > _formats;
+    QHash< QByteArray, QPointer<MediaDefinition> > _media;
 
 };
 

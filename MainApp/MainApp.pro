@@ -10,7 +10,7 @@ TARGET = HuggpunktVHS
 TEMPLATE = app
 
 # När VERSION uppdateras måste även vhs4.rc uppdateras
-VERSION = 0.4.0.0
+VERSION = $HVHS_VERSION
 
 TRANSLATIONS = hvhs_sv.ts qt_sv.ts
 

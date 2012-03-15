@@ -52,7 +52,7 @@ QString Extension::_findExtensionFile(QString filename, QString suffix)
     possibleLocations << Configuration::pointer()->getStorageLocation(Configuration::UserExtensionsStorageLocation)
                       << Configuration::pointer()->getStorageLocation(Configuration::SystemExtensionsStorageLocation);
 
-    QString path = QDir::toNativeSeparators(QString(this->uid()) + "/" + filename + "-" + this->info("Version").toString() + suffix);
+    QString path = QDir::toNativeSeparators(QString(this->uid()) + "/" + filename + this->info("Version").toString() + suffix);
 
     QString location;
     foreach (location, possibleLocations)

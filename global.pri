@@ -1,12 +1,3 @@
-#
-#   HVHS_CONFIG
-#
-#   deploy_dist     Creates a folder containing all files necessary for distribution.
-#
+include( config.pri )
 
-HVHS_VERSION  =             0.4.0.0
-HVHS_TAG =                  0.4.0-devel
-HVHS_CONFIG =               #deploy_dist
-HVHS_ENABLED_EXTENSIONS =   dummy
-
-DEPLOY_DIST_DIR = ../deploy
+DEPLOY_DIST_DIR = ../package-$${HVHS_VERSION}

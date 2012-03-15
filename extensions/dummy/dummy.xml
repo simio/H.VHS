@@ -2,10 +2,10 @@
 <HuggPlay version="2">
     <Extensions>
         <Extension>
-            <uid>localfile</uid>
+            <uid>dummy</uid>
             <Version>1</Version>
             <Enabled>false</Enabled>
-            <Name>Writing to and reading from files</Name>
+            <Name>Dummy extension</Name>
             <Author email="jesper@huggpunkt.org" website="http://huggpunkt.org/">Jesper Räftegård</Author>
             <Implementation>dll</Implementation>
             <InputFormat>

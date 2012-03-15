@@ -5,4 +5,4 @@ SUBDIRS += \
     extensions
 
 OTHER_FILES += \
-    shared.pri
+    global.pri

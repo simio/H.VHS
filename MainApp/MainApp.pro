@@ -4,6 +4,8 @@
 #
 #-------------------------------------------------
 
+include( ../global.pri )
+
 QT       += core gui webkit network xml svg
 
 TARGET = HuggpunktVHS
@@ -14,12 +16,10 @@ VERSION = $HVHS_VERSION
 
 TRANSLATIONS = hvhs_sv.ts qt_sv.ts
 
-include( ../shared.pri )
-
 win32 {
     copyfiles.files = conf
 
-    !contains(HVHS_CONFIG, finalise) {
+    !contains(HVHS_CONFIG, deploy_dist) {
         CONFIG(debug, debug|release) {
             DEPLOY_DIR = $$OUT_PWD/debug
         } else {
@@ -29,12 +29,7 @@ win32 {
         INSTALLS += copyfiles
     }
 
-    contains(HVHS_CONFIG, finalise) {
-        QTDLL_DIR = "C:/QtSDK/Desktop/Qt/4.8.0/mingw/bin"
-        QTI18N_DIR = "C:/QtSDK/Desktop/Qt/4.8.0/mingw/translations"
-        QTIMAGEFORMATS_DIR = "C:/QtSDK/Desktop/Qt/4.8.0/mingw/plugins/imageformats"
-        QTICONENGINES_DIR = "C:/QtSDK/Desktop/Qt/4.8.0/mingw/plugins/iconengines"
-
+    contains(HVHS_CONFIG, deploy_dist) {
         CONFIG(debug, debug|release) {
             DEPLOY_TYPE = debug
             QTDLL_DIR_DEPENDS += QtGuid4.dll QtCored4.dll phonond4.dll QtNetworkd4.dll \

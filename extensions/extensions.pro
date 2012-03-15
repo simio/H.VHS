@@ -1,4 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    localfile
+    localfile \
+    dummy
+
+OTHER_FILES += \
+    extensions.pri

@@ -39,7 +39,10 @@ public:
 
     QByteArray uid();
     QVariant info(QString key, QVariant defaultValue = QVariant());
+    QString basePath();
+    void setUid(QByteArray uid);
     void addInfo(QString key, QVariant defaultValue = QVariant());
+    void setBasePath(QString basePath);
 
     bool setup();
 
@@ -53,7 +56,6 @@ public:
     QList<QByteArray> outputMedia();
     QList<QByteArray> outputFormats();
 
-    void setUid(QByteArray uid);
     void addInputMedia(QList<QByteArray> media);
     void addInputFormats(QList<QByteArray> format);
     void addOutputMedia(QList<QByteArray> media);
@@ -66,12 +68,12 @@ public slots:
 private:
     QByteArray _uid;
     QMap<QString,QVariant> _info;
+    QString _basePath;
 
     bool _setup();
     bool _isReady();
     QMap<QString,QVariant> _setupData;
 
-    QString _findExtensionFile(QString filename, QString suffix = QString());
 
     QList<QByteArray> _inputMedia;
     QList<QByteArray> _inputFormats;

@@ -152,7 +152,7 @@ QList< QPointer<Extension> > VhsXml::getExtensions()
                         if (e.tagName() == "uid")
                             newDef->setUid(e.text().toAscii());
                         else if (e.tagName() == "Version")
-                            newDef->addInfo(e.tagName(), e.text().toInt());
+                            newDef->setVersion(e.text().toInt());
                         else if (e.tagName() == "Author")
                         {
                             newDef->addInfo("Author", e.text());

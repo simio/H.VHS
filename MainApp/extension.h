@@ -40,9 +40,11 @@ public:
     QByteArray uid();
     QVariant info(QString key, QVariant defaultValue = QVariant());
     QString basePath();
+    int version();
     void setUid(QByteArray uid);
     void addInfo(QString key, QVariant defaultValue = QVariant());
     void setBasePath(QString basePath);
+    void setVersion(int version);
 
     bool setup();
 
@@ -69,6 +71,7 @@ private:
     QByteArray _uid;
     QMap<QString,QVariant> _info;
     QString _basePath;
+    int _version;
 
     bool _setup();
     bool _isReady();

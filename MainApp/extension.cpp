@@ -26,9 +26,11 @@ Extension::Extension(QObject *parent) :
 QByteArray Extension::uid()                                             { return this->_uid; }
 QVariant Extension::info(QString key, QVariant defaultValue)            { return this->_info.value(key, defaultValue); }
 QString Extension::basePath()                                           { return this->_basePath; }
+int Extension::version()                                                { return this->_version; }
 void Extension::setUid(QByteArray uid)                                  { this->_uid = uid; }
 void Extension::addInfo(QString key, QVariant value)                    { this->_info.insert(key, value); }
 void Extension::setBasePath(QString basePath)                           { this->_basePath = basePath; }
+void Extension::setVersion(int version)                                 { this->_version = version; }
 
 bool Extension::setup()                                                 { return this->_setup(); }
 

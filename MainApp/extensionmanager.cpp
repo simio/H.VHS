@@ -46,28 +46,20 @@ int ExtensionManager::_loadMediaDefinitions()
 {
     QList<QString> locations;
     locations << Configuration::pointer()->getStorageLocation(Configuration::SystemMediaDefinitionStorageLocation)
-              << Configuration::pointer()->getStorageLocation(Configuration::UserMediaDefinitionStorageLocation)
-              << Configuration::pointer()->getStorageLocation(Configuration::RemoteMediaDefinitionStorageLocation);
+              << Configuration::pointer()->getStorageLocation(Configuration::UserMediaDefinitionStorageLocation);
 
     QString path;
     foreach (path, locations)
     {
         // Nya mediadefinitioner med redan registrerade uid ska ersätta de föregående.
-        if (path.startsWith("http://") || path.startsWith("https://"))
+        QPointer<QFile> file = new QFile(path);
+        if (file->exists())
         {
-            //qDebug() << "Loading media definitions from URL:" << path;
+            qDebug() << "Loading media definitions from:" << path;
+            VhsXml mediaFile(file);
+            this->_knownMedia = mediaFile.getMediaDefinitions();
         }
-        else
-        {
-            QPointer<QFile> file = new QFile(path);
-            if (file->exists())
-            {
-                qDebug() << "Loading media definitions from:" << path;
-                VhsXml mediaFile(file);
-                this->_knownMedia = mediaFile.getMediaDefinitions();
-            }
-            delete file;
-        }
+        delete file;
     }
 
     // Skriv här ned samtliga definitioner till
@@ -80,28 +72,20 @@ int ExtensionManager::_loadFormatDefinitions()
 {
     QList<QString> locations;
     locations << Configuration::pointer()->getStorageLocation(Configuration::SystemFormatDefinitionStorageLocation)
-              << Configuration::pointer()->getStorageLocation(Configuration::UserFormatDefinitionStorageLocation)
-              << Configuration::pointer()->getStorageLocation(Configuration::RemoteMediaDefinitionStorageLocation);
+              << Configuration::pointer()->getStorageLocation(Configuration::UserFormatDefinitionStorageLocation);
 
     QString path;
     foreach (path, locations)
     {
-        // Nya formatdefinitioner med redan registrerade uid ska ersätta de föregående.
-        if (path.startsWith("http://") || path.startsWith("https://"))
+        // Nya formatdefinitioner med redan registrerade uid ska ersätta de föregående. (S
+        QPointer<QFile> file = new QFile(path);
+        if (file->exists())
         {
-            //qDebug() << "Loading format definitions from URL:" << path;
+            qDebug() << "Loading format definitions from:" << path;
+            VhsXml formatsFile(file);
+            this->_knownFormats = formatsFile.getFormatDefinitions();
         }
-        else
-        {
-            QPointer<QFile> file = new QFile(path);
-            if (file->exists())
-            {
-                qDebug() << "Loading format definitions from:" << path;
-                VhsXml formatsFile(file);
-                this->_knownFormats = formatsFile.getFormatDefinitions();
-            }
-            delete file;
-        }
+        delete file;
     }
 
     // Skriv här ned samtliga definitioner till

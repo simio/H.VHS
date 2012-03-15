@@ -50,10 +50,8 @@ public:
         UserExtensionsStorageLocation,
         SystemMediaDefinitionStorageLocation,
         UserMediaDefinitionStorageLocation,
-        RemoteMediaDefinitionStorageLocation,
         SystemFormatDefinitionStorageLocation,
         UserFormatDefinitionStorageLocation,
-        RemoteFormatDefinitionStorageLocation
     };
 
     QString appName();

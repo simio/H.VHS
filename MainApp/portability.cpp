@@ -65,3 +65,21 @@ QString Portability::userConfPath(QString file)
 #endif
     return path;
 }
+
+QString Portability::systemIniFilePath(QString file)
+{
+    QString path;
+#ifdef WIN32
+    path = QDir::toNativeSeparators( qApp->applicationDirPath() + "/" + file);
+#endif
+    return path;
+}
+
+QString Portability::userIniFilePath(QString file)
+{
+    QString path;
+#ifdef WIN32
+    path = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/" + file);
+#endif
+    return path;
+}

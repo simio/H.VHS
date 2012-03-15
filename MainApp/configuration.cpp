@@ -28,7 +28,7 @@ Configuration::Configuration()
 
     this->_writeBlock = false;
 
-    this->_settings = new QSettings("hvhs.ini", QSettings::IniFormat, 0);
+    this->_settings = new QSettings(Portability::pointer()->userIniFilePath("hvhs.ini"), QSettings::IniFormat, 0);
     this->_settings->setIniCodec("UTF-8");
     qDebug() << "Using INI-file at" << this->_settings->fileName();
 }

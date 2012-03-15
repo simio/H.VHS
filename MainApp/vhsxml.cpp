@@ -44,19 +44,30 @@ QList< QPointer<FormatDefinition> > VhsXml::getFormatDefinitions()
     {
         if (definitionsNode.toElement().tagName() == "FormatDefinitions")
         {
-            // Loop through all <Definition> elements within it
-            QDomNode node = definitionsNode.firstChild();
-            while (! node.isNull())
+            if (! definitionsNode.toElement().hasAttribute("asOf"))
+                qWarning() << "Invalid 'FormatDefinitions' element found; element has no 'asOf' attribute.";
+            else
             {
-                if (node.toElement().tagName() == "Definition")
+                QDateTime defaultDateTime = QDateTime::fromString(definitionsNode.toElement().attribute("asOf"), Qt::ISODate);
+
+                // Loop through all <Definition> elements within it
+                QDomNode node = definitionsNode.firstChild();
+                while (! node.isNull())
                 {
-                    QPointer<FormatDefinition> newDef = new FormatDefinition;
-                    newDef->setUid(node.toElement().elementsByTagName("uid").item(0).toElement().text().toAscii());
-                    newDef->setPrettyName(node.toElement().elementsByTagName("Name").item(0).toElement().text());
-                    newDef->setContentType(node.toElement().elementsByTagName("ContentType").item(0).toElement().text());
-                    result << newDef;
+                    if (node.toElement().tagName() == "Definition")
+                    {
+                        QPointer<FormatDefinition> newDef = new FormatDefinition;
+                        if (node.toElement().hasAttribute("asOf"))
+                            newDef->setDateTime(QDateTime::fromString(node.toElement().attribute("asOf"), Qt::ISODate));
+                        else
+                            newDef->setDateTime(defaultDateTime);
+                        newDef->setUid(node.toElement().elementsByTagName("uid").item(0).toElement().text().toAscii());
+                        newDef->setPrettyName(node.toElement().elementsByTagName("Name").item(0).toElement().text());
+                        newDef->setContentType(node.toElement().elementsByTagName("ContentType").item(0).toElement().text());
+                        result << newDef;
+                    }
+                    node = node.nextSibling();
                 }
-                node = node.nextSibling();
             }
         }
         definitionsNode = definitionsNode.nextSibling();
@@ -75,18 +86,29 @@ QList< QPointer<MediaDefinition> > VhsXml::getMediaDefinitions()
     {
         if (definitionsNode.toElement().tagName() == "MediaDefinitions")
         {
-            // Loop through all <Definition> elements within it
-            QDomNode node = definitionsNode.firstChild();
-            while (! node.isNull())
+            if (! definitionsNode.toElement().hasAttribute("asOf"))
+                qWarning() << "Invalid 'MediaDefinitions' element found; element has no 'asOf' attribute.";
+            else
             {
-                if (node.toElement().tagName() == "Definition")
+                QDateTime defaultDateTime = QDateTime::fromString(definitionsNode.toElement().attribute("asOf"), Qt::ISODate);
+
+                // Loop through all <Definition> elements within it
+                QDomNode node = definitionsNode.firstChild();
+                while (! node.isNull())
                 {
-                    QPointer<MediaDefinition> newDef = new MediaDefinition;
-                    newDef->setUid(node.toElement().elementsByTagName("uid").item(0).toElement().text().toAscii());
-                    newDef->setPrettyName(node.toElement().elementsByTagName("Name").item(0).toElement().text());
-                    result << newDef;
+                    if (node.toElement().tagName() == "Definition")
+                    {
+                        QPointer<MediaDefinition> newDef = new MediaDefinition;
+                        if (node.toElement().hasAttribute("asOf"))
+                            newDef->setDateTime(QDateTime::fromString(node.toElement().attribute("asOf"), Qt::ISODate));
+                        else
+                            newDef->setDateTime(defaultDateTime);
+                        newDef->setUid(node.toElement().elementsByTagName("uid").item(0).toElement().text().toAscii());
+                        newDef->setPrettyName(node.toElement().elementsByTagName("Name").item(0).toElement().text());
+                        result << newDef;
+                    }
+                    node = node.nextSibling();
                 }
-                node = node.nextSibling();
             }
         }
         definitionsNode = definitionsNode.nextSibling();

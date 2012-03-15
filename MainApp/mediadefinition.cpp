@@ -21,10 +21,13 @@ MediaDefinition::MediaDefinition(QObject *parent) :
 {
     this->_uid = QByteArray();
     this->_prettyName = QString(this->_uid);
+    this->_dateTime = QDateTime();
 }
 
 QByteArray MediaDefinition::uid()                                                   { return this->_uid; }
 QString MediaDefinition::prettyName()                                               { return this->_prettyName; }
+QDateTime MediaDefinition::dateTime()                                               { return this->_dateTime; }
 
 void MediaDefinition::setUid(QByteArray uid)                                        { this->_uid = uid; }
 void MediaDefinition::setPrettyName(QString prettyName)                             { this->_prettyName = prettyName; }
+void MediaDefinition::setDateTime(QDateTime dateTime)                               { this->_dateTime = dateTime; }

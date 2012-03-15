@@ -22,14 +22,17 @@ FormatDefinition::FormatDefinition(QObject *parent) :
     this->_uid = QByteArray();
     this->_prettyName = QString(this->_uid);
     this->_contentType = Empty;
+    this->_dateTime = QDateTime();
 }
 
 QByteArray FormatDefinition::uid()                                                  { return this->_uid; }
 QString FormatDefinition::prettyName()                                              { return this->_prettyName; }
 FormatDefinition::ContentType FormatDefinition::contentType()                       { return this->_contentType; }
+QDateTime FormatDefinition::dateTime()                                              { return this->_dateTime; }
 
 void FormatDefinition::setUid(QByteArray uid)                                       { this->_uid = uid; }
 void FormatDefinition::setPrettyName(QString prettyName)                            { this->_prettyName = prettyName; }
+void FormatDefinition::setDateTime(QDateTime dateTime)                              { this->_dateTime = dateTime; }
 void FormatDefinition::setContentType(FormatDefinition::ContentType content)        { this->_contentType = content; }
 void FormatDefinition::setContentType(QString contentType)
 {

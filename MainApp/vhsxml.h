@@ -22,6 +22,7 @@
 #include <QFile>
 #include <QDomDocument>
 #include <QXmlInputSource>
+#include <QDateTime>
 
 #include "main.h"
 

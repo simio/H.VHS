@@ -20,6 +20,7 @@
 // Format types: "Raw" (eg. any), "FLV", "VhsXml",
 
 #include <QObject>
+#include <QDateTime>
 
 #include "main.h"
 
@@ -41,11 +42,13 @@ public:
     QByteArray uid();
     QString prettyName();
     ContentType contentType();
+    QDateTime dateTime();
 
     void setUid(QByteArray uid);
     void setPrettyName(QString prettyName);
     void setContentType(ContentType contentType);
     void setContentType(QString contentType);
+    void setDateTime(QDateTime dateTime);
 
 public slots:
 
@@ -55,6 +58,7 @@ private:
     QByteArray _uid;               // Used in extensions
     QString _prettyName;           // Defaults to _uid
     ContentType _contentType;
+    QDateTime _dateTime;
 
 };
 

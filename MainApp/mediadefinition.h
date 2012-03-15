@@ -20,6 +20,7 @@
 // Media types: "QTextStream", "QDataStream", "http", "https", "ftp", "rtmp", "rtmpe", "FileProtocol", "LocalFile", etc
 
 #include <QObject>
+#include <QDateTime>
 
 #include "main.h"
 
@@ -31,16 +32,20 @@ public:
 
     QByteArray uid();
     QString prettyName();
+    QDateTime dateTime();
+
     void setUid(QByteArray uid);
     void setPrettyName(QString prettyName);
+    void setDateTime(QDateTime dateTime);
 
 signals:
 
 public slots:
 
 private:
-    QByteArray _uid;           // Used in extensions
-    QString _prettyName;    // Defaults to _uid
+    QByteArray _uid;            // Used in extensions
+    QString _prettyName;        // Defaults to _uid
+    QDateTime _dateTime;
 };
 
 #endif // MEDIA_H

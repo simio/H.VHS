@@ -125,7 +125,7 @@ int ExtensionManager::_loadExtensions()
         {
             //qDebug() << "Loading format definitions from URL:" << path;
         }
-        else
+        else if (QFileInfo(path).isDir())
         {
             QDirIterator dir(path);
             while (dir.hasNext())

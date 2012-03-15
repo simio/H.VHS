@@ -6,80 +6,27 @@
 
 include( ../global.pri )
 
+## BUILD
 QT       += core gui webkit network xml svg
-
 TARGET = HuggpunktVHS
 TEMPLATE = app
 
 # När VERSION uppdateras måste även vhs4.rc uppdateras
 VERSION = $HVHS_VERSION
-
 TRANSLATIONS = hvhs_sv.ts qt_sv.ts
+QMAKE_CXXFLAGS += -DAPP_VER=\\\"$$VERSION\\\"
 
-win32 {
-    copyfiles.files = conf
+## DEPLOYMENT
+include( ../qt_depends.pri )
 
-    !contains(HVHS_CONFIG, deploy_dist) {
-        CONFIG(debug, debug|release) {
-            DEPLOY_DIR = $$OUT_PWD/debug
-        } else {
-            DEPLOY_DIR = $$OUT_PWD/release
-        }
-        copyfiles.path = $$DEPLOY_DIR
-        INSTALLS += copyfiles
-    }
+target.path = $$DEPLOY_DIST_DIR
 
-    contains(HVHS_CONFIG, deploy_dist) {
-        CONFIG(debug, debug|release) {
-            DEPLOY_TYPE = debug
-            QTDLL_DIR_DEPENDS += QtGuid4.dll QtCored4.dll phonond4.dll QtNetworkd4.dll \
-                                QtScriptd4.dll QtSvgd4.dll QtWebKitd4.dll QtXmld4.dll
-            QTIMAGEFORMATS_DIR_DEPENDS += qtiffd4.dll qmngd4.dll qsvgd4.dll qgifd4.dll \
-                qicod4.dll qjpegd4.dll
-            QTICONENGINES_DIR_DEPENDS += qsvgicond4.dll
-        } else {
-            DEFINES += RELEASE
-            DEPLOY_TYPE = release
-            QTDLL_DIR_DEPENDS += QtGui4.dll QtCore4.dll phonon4.dll QtNetwork4.dll \
-                QtScript4.dll QtSvg4.dll QtWebKit4.dll QtXml4.dll
-            QTIMAGEFORMATS_DIR_DEPENDS += qtiff4.dll qmng4.dll qsvg4.dll qgif4.dll \
-                qico4.dll qjpeg4.dll
-            QTICONENGINES_DIR_DEPENDS += qsvgicon4.dll
-        }
-        DEPLOY_DIR = $$DEPLOY_DIR/$$DEPLOY_TYPE
+copyfiles.files = conf
+copyfiles.path = $$DEPLOY_DIST_DIR
 
-        QTI18N_DIR_DEPENDS += qt_sv.qm
-        QTDLL_DIR_DEPENDS += mingwm10.dll libgcc_s_dw2-1.dll
+INSTALLS += copyfiles target
 
-        target.path = $$DEPLOY_DIR
-
-        copyfiles.path = $$DEPLOY_DIR
-
-        depends.path = $$DEPLOY_DIR
-        for(file, QTDLL_DIR_DEPENDS) {
-            depends.files += $$QTDLL_DIR/$$file
-        }
-        for(file, QTI18N_DIR_DEPENDS) {
-            depends.files += $$QTDLL_DIR/$$file
-        }
-
-        imageformats.path = $$DEPLOY_DIR/imageformats
-        for(file, QTIMAGEFORMATS_DIR_DEPENDS) {
-            imageformats.files += $$QTIMAGEFORMATS_DIR/$$file
-        }
-
-        iconengines.path = $$DEPLOY_DIR/iconengines
-        for(file, QTICONENGINES_DIR_DEPENDS) {
-            iconengines.files += $$QTICONENGINES_DIR/$$file
-        }
-
-        INSTALLS += target copyfiles depends imageformats iconengines
-    }
-}
-
-QMAKE_CXXFLAGS += -DAPP_VER=\\\"$$VERSION\\\" \
-                  -DPRO_PATH=\"\\\"$$_PRO_FILE_PWD_\\\"\"
-
+## PROJECT
 SOURCES += main.cpp\
     webwindow.cpp \
     messagehandler.cpp \

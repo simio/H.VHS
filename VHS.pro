@@ -5,4 +5,5 @@ SUBDIRS += \
     extensions
 
 OTHER_FILES += \
-    global.pri
+    global.pri \
+    qt_depends.pri

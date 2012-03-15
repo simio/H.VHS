@@ -33,6 +33,7 @@ VhsXml::VhsXml(QPointer<QIODevice> device, QObject *parent) :
     this->_initialise(device);
 }
 
+// Allocates new FormatDefinitions. Caller is responsible for deletion.
 QList< QPointer<FormatDefinition> > VhsXml::getFormatDefinitions()
 {
     QList< QPointer<FormatDefinition> > result;
@@ -75,6 +76,7 @@ QList< QPointer<FormatDefinition> > VhsXml::getFormatDefinitions()
     return result;
 }
 
+// Allocates new MediaDefinitions. Caller is responsible for deletion.
 QList< QPointer<MediaDefinition> > VhsXml::getMediaDefinitions()
 {
     QList< QPointer<MediaDefinition> > result;

@@ -91,6 +91,6 @@ contains(HVHS_CONFIG, deploy_dist) {
             qt_run_depends.files += $$OPENSSL_DIR/$$file
         }
 
-        INSTALLS += qt_run_depends
+        INSTALLS += qt_run_depends target
     }
 }

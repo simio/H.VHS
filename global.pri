@@ -6,7 +6,7 @@
 
 HVHS_VERSION  =             0.4.0.0
 HVHS_TAG =                  0.4.0-devel
-HVHS_CONFIG =               deploy_dist
-HVHS_ENABLED_EXTENSIONS =   dummy localfile
+HVHS_CONFIG =               #deploy_dist
+HVHS_ENABLED_EXTENSIONS =   dummy
 
 DEPLOY_DIST_DIR = ../deploy

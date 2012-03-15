@@ -6,4 +6,4 @@ SUBDIRS += \
 
 OTHER_FILES += \
     global.pri \
-    qt_depends.pri
+    deploy.pri

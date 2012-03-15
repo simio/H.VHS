@@ -17,14 +17,14 @@ TRANSLATIONS = hvhs_sv.ts qt_sv.ts
 QMAKE_CXXFLAGS += -DAPP_VER=\\\"$$VERSION\\\"
 
 ## DEPLOYMENT
-include( ../qt_depends.pri )
+include( ../deploy.pri )
 
 target.path = $$DEPLOY_DIST_DIR
 
 copyfiles.files = conf
 copyfiles.path = $$DEPLOY_DIST_DIR
 
-INSTALLS += copyfiles target
+INSTALLS += copyfiles
 
 ## PROJECT
 SOURCES += main.cpp\

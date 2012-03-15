@@ -32,34 +32,36 @@ Portability *Portability::pointer()
 
 QString Portability::systemExtensionPath(QString file)
 {
-#ifndef RELEASE
-    QString base = QString( PRO_PATH );
-#elif WIN32
-    QString base = qApp->applicationDirPath();
+    QString path;
+#ifdef WIN32
+    path = QDir::toNativeSeparators( qApp->applicationDirPath() + "/extensions/" + file);
 #endif
-    return QDir::toNativeSeparators( base + "/extensions/" + file);
+    return path;
 }
 
 QString Portability::systemConfPath(QString file)
 {
-#ifndef RELEASE
-    QString base = QString( PRO_PATH );
-#elif WIN32
-    QString base = qApp->applicationDirPath();
+    QString path;
+#ifdef WIN32
+    path = QDir::toNativeSeparators( qApp->applicationDirPath() + "/conf/" + file);
 #endif
-    return QDir::toNativeSeparators( base + "/conf/" + file);
+    return path;
 }
 
 QString Portability::userExtensionPath(QString file)
 {
+    QString path;
 #ifdef WIN32
-    return QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions/" + file);
+    path = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions/" + file);
 #endif
+    return path;
 }
 
 QString Portability::userConfPath(QString file)
 {
+    QString path;
 #ifdef WIN32
-    return QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/conf/" + file);
+    path = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/conf/" + file);
 #endif
+    return path;
 }

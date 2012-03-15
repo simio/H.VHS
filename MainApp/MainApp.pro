@@ -12,7 +12,7 @@ TARGET              = HuggpunktVHS
 TEMPLATE            = app
 TRACK_BUILD_NUMBER  = true
 
-VERSION             = $HVHS_VERSION
+VERSION             = $$APP_VERSION
 TRANSLATIONS        = hvhs_sv.ts qt_sv.ts
 
 QMAKE_CXXFLAGS     += -DAPP_VER=\\\"$$VERSION\\\"

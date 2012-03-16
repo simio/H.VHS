@@ -31,7 +31,7 @@ contains(APP_CONFIG, deploy_dist) {
             QTDLL_RUNDEPENDS_DEBUG += QtScriptd4.dll
             QTDLL_RUNDEPENDS_RELEASE += QtScript4.dll
         }
-        contains(QT, xml) | contains(QT, webkit) {
+        contains(QT, xml) | contains(QT, webkit) | contains(QT, svg) {
             QTDLL_RUNDEPENDS_DEBUG += QtXmld4.dll
             QTDLL_RUNDEPENDS_RELEASE += QtXml4.dll
         }

@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<HuggPlay version="2">
-    <FormatDefinitions asOf="2012-03-15T10:57:24">
-        <FormatDefinition>
+<huggPlay version="2">
+    <formatDefinitions asOf="2012-03-15T10:57:24">
+        <formatDefinition>
             <uid>any</uid>
-            <Name>Unidentified data</Name>
-            <ContentType>Any</ContentType>
-        </FormatDefinition>
-        <FormatDefinition>
+            <name>Unidentified data</name>
+            <contentType>Any</contentType>
+        </formatDefinition>
+        <formatDefinition>
             <uid>copy</uid>
-            <Name>Copy of input stream</Name>
-            <ContentType>Any</ContentType>
-        </FormatDefinition>
-        <FormatDefinition>
+            <name>Copy of input stream</name>
+            <contentType>Any</contentType>
+        </formatDefinition>
+        <formatDefinition>
             <uid>internal</uid>
-            <Name>Internal representation</Name>
-            <ContentType>Meta</ContentType>
-        </FormatDefinition>
-        <FormatDefinition>
+            <name>Internal representation</name>
+            <contentType>Meta</contentType>
+        </formatDefinition>
+        <formatDefinition>
             <uid>website</uid>
-            <Name>Website</Name>
-            <ContentType>Meta</ContentType>
-        </FormatDefinition>
-        <FormatDefinition>
+            <name>Website</name>
+            <contentType>Meta</contentType>
+        </formatDefinition>
+        <formatDefinition>
             <uid>vhsxml</uid>
-            <Name>VhsXml</Name>
-            <ContentType>Meta</ContentType>
-        </FormatDefinition>
-        <FormatDefinition>
+            <name>VhsXml</name>
+            <contentType>Meta</contentType>
+        </formatDefinition>
+        <formatDefinition>
             <uid>vhsexpr</uid>
-            <Name>VhsExpr</Name>
-            <ContentType>Meta</ContentType>
-        </FormatDefinition>
-        <FormatDefinition>
+            <name>VhsExpr</name>
+            <contentType>Meta</contentType>
+        </formatDefinition>
+        <formatDefinition>
             <uid>flv</uid>
-            <Name>Flash Video</Name>
-            <ContentType>Complete</ContentType>
-        </FormatDefinition>
-        <FormatDefinition>
+            <name>Flash Video</name>
+            <contentType>Complete</contentType>
+        </formatDefinition>
+        <formatDefinition>
             <uid>srt</uid>
-            <Name>Subrip subtitles</Name>
-            <ContentType>Complete</ContentType>
-        </FormatDefinition>
-    </FormatDefinitions>
-</HuggPlay>
+            <name>Subrip subtitles</name>
+            <contentType>Complete</contentType>
+        </formatDefinition>
+    </formatDefinitions>
+</huggPlay>

@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<HuggPlay version="2">
-    <Extensions>
-        <Extension>
+<huggPlay version="2">
+    <extensions>
+        <extension>
             <uid>localfile</uid>
-            <Version>1</Version>
-            <Enabled>false</Enabled>
-            <Name>Writing to and reading from files</Name>
-            <Author email="jesper@huggpunkt.org" website="http://huggpunkt.org/">Jesper Räftegård</Author>
-            <Implementation>dll</Implementation>
-            <InputFormat>
-                <Format>any</Format>
-            </InputFormat>
-            <OutputFormat>
-                <Format>copy</Format>
-            </OutputFormat>
-            <InputMedia>
-                <Media>localfile</Media>
-                <Media>textstream</Media>
-                <Media>datastream</Media>
-            </InputMedia>
-            <OutputMedia>
-                <Media>localfile</Media>
-                <Media>textstream</Media>
-                <Media>datastream</Media>
-            </OutputMedia>
-        </Extension>
-    </Extensions>
-</HuggPlay>
+            <version>1</version>
+            <enabled>false</enabled>
+            <name>Local file interface</name>
+            <description>Writing to and reading from files</description>
+            <author email="jesper@huggpunkt.org" website="http://huggpunkt.org/">Jesper Räftegård</author>
+            <implementation>dll</implementation>
+            <input>
+                <format>any</format>
+                <media>localfile</media>
+                <media>textstream</media>
+                <media>datastream</media>
+            </input>
+            <output>
+                <format>copy</format>
+                <media>localfile</media>
+                <media>textstream</media>
+                <media>datastream</media>
+            </output>
+        </extension>
+    </extensions>
+</huggPlay>

@@ -43,10 +43,10 @@ QList< QPointer<FormatDefinition> > VhsXml::getFormatDefinitions()
     QDomNode definitionsNode = documentElement.firstChild();
     while (! definitionsNode.isNull())
     {
-        if (definitionsNode.toElement().tagName() == "FormatDefinitions")
+        if (definitionsNode.toElement().tagName() == "formatDefinitions")
         {
             if (! definitionsNode.toElement().hasAttribute("asOf"))
-                qWarning() << "Invalid 'FormatDefinitions' element found; element has no 'asOf' attribute.";
+                qWarning() << "Invalid 'formatDefinitions' element found; element has no 'asOf' attribute.";
             else
             {
                 QDateTime defaultDateTime = QDateTime::fromString(definitionsNode.toElement().attribute("asOf"), Qt::ISODate);
@@ -55,7 +55,7 @@ QList< QPointer<FormatDefinition> > VhsXml::getFormatDefinitions()
                 QDomNode node = definitionsNode.firstChild();
                 while (! node.isNull())
                 {
-                    if (node.toElement().tagName() == "FormatDefinition")
+                    if (node.toElement().tagName() == "formatDefinition")
                     {
                         QPointer<FormatDefinition> newDef = new FormatDefinition;
                         if (node.toElement().hasAttribute("asOf"))
@@ -86,10 +86,10 @@ QList< QPointer<MediaDefinition> > VhsXml::getMediaDefinitions()
     QDomNode definitionsNode = documentElement.firstChild();
     while (! definitionsNode.isNull())
     {
-        if (definitionsNode.toElement().tagName() == "MediaDefinitions")
+        if (definitionsNode.toElement().tagName() == "mediaDefinitions")
         {
             if (! definitionsNode.toElement().hasAttribute("asOf"))
-                qWarning() << "Invalid 'MediaDefinitions' element found; element has no 'asOf' attribute.";
+                qWarning() << "Invalid 'mediaDefinitions' element found; element has no 'asOf' attribute.";
             else
             {
                 QDateTime defaultDateTime = QDateTime::fromString(definitionsNode.toElement().attribute("asOf"), Qt::ISODate);
@@ -98,7 +98,7 @@ QList< QPointer<MediaDefinition> > VhsXml::getMediaDefinitions()
                 QDomNode node = definitionsNode.firstChild();
                 while (! node.isNull())
                 {
-                    if (node.toElement().tagName() == "MediaDefinition")
+                    if (node.toElement().tagName() == "mediaDefinition")
                     {
                         QPointer<MediaDefinition> newDef = new MediaDefinition;
                         if (node.toElement().hasAttribute("asOf"))
@@ -137,13 +137,13 @@ QList< QPointer<Extension> > VhsXml::getExtensions()
     QDomNode definitionsNode = documentElement.firstChild();
     while (! definitionsNode.isNull())
     {
-        if (definitionsNode.toElement().tagName() == "Extensions")
+        if (definitionsNode.toElement().tagName() == "extensions")
         {
             // Loop through all <Extension> elements within it
             QDomNode node = definitionsNode.firstChild();
             while (! node.isNull())
             {
-                if (node.toElement().tagName() == "Extension")
+                if (node.toElement().tagName() == "extension")
                 {
                     QPointer<Extension> newDef = new Extension;
 
@@ -153,26 +153,28 @@ QList< QPointer<Extension> > VhsXml::getExtensions()
                         QDomElement e = extNode.toElement();
                         if (e.tagName() == "uid")
                             newDef->setUid(e.text().toAscii());
-                        else if (e.tagName() == "Version")
+                        else if (e.tagName() == "version")
                             newDef->setVersion(e.text().toInt());
-                        else if (e.tagName() == "Author")
+                        else if (e.tagName() == "author")
                         {
-                            newDef->addInfo("Author", e.text());
-                            newDef->addInfo("AuthorEmail", e.attribute("email"));
-                            newDef->addInfo("AuthorWebsite", e.attribute("website"));
+                            newDef->addInfo("author", e.text());
+                            newDef->addInfo("authorEmail", e.attribute("email"));
+                            newDef->addInfo("authorWebsite", e.attribute("website"));
                         }
-                        else if (e.tagName() == "Enabled")
+                        else if (e.tagName() == "enabled")
                         {
-                            newDef->addInfo("Enabled", e.text() == "true");
+                            newDef->addInfo("enabled", e.text() == "true");
                         }
-                        else if (e.tagName() == "InputMedia")
-                            newDef->addInputMedia(this->_readNamedChildrenToByteArrayList(e, "Media"));
-                        else if (e.tagName() == "InputFormats")
-                            newDef->addInputFormats(this->_readNamedChildrenToByteArrayList(e, "Format"));
-                        else if (e.tagName() == "OutputMedia")
-                            newDef->addOutputMedia(this->_readNamedChildrenToByteArrayList(e, "Media"));
-                        else if (e.tagName() == "OutputFormats")
-                            newDef->addOutputFormats(this->_readNamedChildrenToByteArrayList(e, "Format"));
+                        else if (e.tagName() == "input")
+                        {
+                            newDef->addInputMedia(this->_readNamedChildrenToByteArrayList(e, "media"));
+                            newDef->addInputFormats(this->_readNamedChildrenToByteArrayList(e, "format"));
+                        }
+                        else if (e.tagName() == "output")
+                        {
+                            newDef->addOutputMedia(this->_readNamedChildrenToByteArrayList(e, "media"));
+                            newDef->addOutputFormats(this->_readNamedChildrenToByteArrayList(e, "format"));
+                        }
                         else
                             newDef->addInfo(e.tagName(), e.text());
 
@@ -200,7 +202,7 @@ bool VhsXml::_initialise(QXmlInputSource *source, QString name)
     this->_xml = QDomDocument(name);
     if (this->_xml.setContent(source, true, error, errorLine, errorColumn))
     {
-        if (this->_xml.documentElement().tagName() == "HuggPlay")
+        if (this->_xml.documentElement().tagName() == "huggPlay")
         {
             if ((this->_xml.documentElement().attribute("version").toInt() >= this->_legacyXmlVersion)
                     && (this->_xml.documentElement().attribute("version").toInt() <= this->_currentXmlVersion))

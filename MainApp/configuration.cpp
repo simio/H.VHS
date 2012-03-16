@@ -26,6 +26,10 @@ Configuration::Configuration()
     qApp->setApplicationName( "H.VHS" );
     qApp->setApplicationVersion( APP_VER );
 
+#ifdef RELEASE
+    qApp->setLibraryPaths(QStringList(qApp->applicationDirPath()));
+#endif
+
     this->_writeBlock = false;
 
     this->_settings = new QSettings(Portability::pointer()->userIniFilePath("hvhs.ini"), QSettings::IniFormat, 0);

@@ -31,10 +31,10 @@ Configuration::Configuration(QObject *parent) :
     qApp->setLibraryPaths(QStringList(qApp->applicationDirPath()));
 #endif
 
-#ifdef HIDE_COMMIT_COUNT
-    this->_hideCommitCount = true;
+#ifdef HIDE_DEVEL_INFO
+    this->_hideDevelInfo = true;
 #else
-    this->_hideCommitCount = false;
+    this->_hideDevelInfo = false;
 #endif
 
     this->_writeBlock = false;
@@ -42,6 +42,11 @@ Configuration::Configuration(QObject *parent) :
     this->_settings = SystemDependent::pointer()->makeSettings();
     this->_settings->setParent(this);
     this->_settings->setIniCodec("UTF-8");
+
+    this->_publicAppTag = QString( PUBLIC_APP_TAG );
+    this->_gitHash = QString( GIT_HASH );
+    this->_gitBranch = QString( GIT_BRANCH );
+    this->_gitTag = QString( GIT_TAG );
 }
 
 void Configuration::setWriteBlock(bool blocked)
@@ -68,18 +73,29 @@ Configuration *Configuration::pointer()
 
 QString Configuration::appName(bool full)
 {
-    return qApp->applicationName() + " " + this->appVersion() + this->appTag("-");
+    return qApp->applicationName()
+            + " " + this->appVersion()
+            + this->_wrapPublicAppTag(" ")
+            + (this->_hideDevelInfo ? "" : this->_wrapGitInfo());
 }
 
-QString Configuration::appTag(QString prepend)
+QString Configuration::_wrapPublicAppTag(QString prepend, QString append)
 {
-    QString tag( APP_TAG );
-    return (tag.isEmpty() ? "" : prepend + tag);
+    return (this->_publicAppTag.isEmpty() ? "" : prepend + this->_publicAppTag + append);
+}
+
+QString Configuration::_wrapGitInfo(QString prepend, QString append)
+{
+    QString info = (this->_gitTag.isEmpty() ? "" : ":" + this->_gitTag)
+            + " ("
+            + (this->_gitBranch.isEmpty() ? "" : this->_gitBranch + "/") + this->_gitHash
+            + ")";
+    return (info.isEmpty() ? "" : prepend + info + append);
 }
 
 QString Configuration::appVersion()
 {
-    return ( this->_hideCommitCount
+    return ( this->_hideDevelInfo
             ? qApp->applicationVersion().remove(QRegExp("\\.[0-9]+$"))
             : qApp->applicationVersion());
 }
@@ -143,7 +159,7 @@ QUrl Configuration::getStartPage()
 QUrl Configuration::makeSearchUrl(QString query)
 {
     QString defaultQuery("https://www.startpage.com/do/search?q=");
-    this->_settings->beginGroup("WebSearch");
+    this->_settings->beginGroup("WebBrowser");
     QUrl url = QUrl(this->_value("DefaultQuery", defaultQuery).toString() + query.replace(" ", "+"));
     this->_settings->endGroup();
     return url;

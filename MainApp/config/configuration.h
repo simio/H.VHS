@@ -59,7 +59,6 @@ public:
     };
 
     QString appName(bool full = false);
-    QString appTag(QString prepend = QString());
     QString appVersion();
     QString fullAppName(bool fullVersion = false);
 
@@ -83,9 +82,15 @@ private:
 
     void _setValue(const QString &key, const QVariant &value);
     QVariant _value(const QString &key, const QVariant &defaultValue = QVariant()) const;
+    QString _wrapPublicAppTag(QString prepend = QString(), QString append = QString());
+    QString _wrapGitInfo(QString prepend = QString(), QString append = QString());
 
     bool _writeBlock;
-    bool _hideCommitCount;
+    bool _hideDevelInfo;
+    QString _publicAppTag;
+    QString _gitHash;
+    QString _gitTag;
+    QString _gitBranch;
 
     QPointer<QSettings> _settings;
 };

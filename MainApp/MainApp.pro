@@ -15,8 +15,6 @@ TEMPLATE            = app
 VERSION             = $$APP_VERSION
 TRANSLATIONS        = hvhs_sv.ts qt_sv.ts
 
-QMAKE_CXXFLAGS     += -DAPP_TAG=\\\"$$APP_TAG\\\"
-
 ## DEPLOYMENT
 include( ../deploy.pri )
 
@@ -26,7 +24,7 @@ win32 {
     RC_FILE = vhs.rc
     CYGWIN_PRO_FILE_PWD = $$replace(_PRO_FILE_PWD_, "C:", "/cygdrive/c")
     winrc.target = $$RC_FILE
-    winrc.commands = $${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/update_version.sh'" $$CYGWIN_BIN win32 $$VERSION $$RC_FILE
+    winrc.commands = $${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/update_version.sh'" $$CYGWIN_BIN win32 $$VERSION $$RC_FILE $$PUBLIC_APP_TAG
     winrc.depends = FORCE
 
     version_h.target = version.h
@@ -44,7 +42,7 @@ presets.path = $$DEPLOY_DIST_DIR
 
 INSTALLS += presets
 
-contains(APP_CONFIG, deploy_dist):DEFINES += HIDE_COMMIT_COUNT
+contains(APP_CONFIG, deploy_dist):DEFINES += HIDE_DEVEL_INFO
 
 
 ## PROJECT

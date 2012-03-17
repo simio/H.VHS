@@ -5,7 +5,7 @@
 #
 
 APP_VERSION  =              0.4.0                   # MainApp/update_version.sh requires x.y.z format
-APP_TAG =                   devel
+PUBLIC_APP_TAG =            devel
 APP_CONFIG +=               #deploy_dist
 
 HVHS_ENABLED_EXTENSIONS =    dummy

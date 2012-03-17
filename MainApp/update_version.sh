@@ -4,8 +4,9 @@ CYGWIN_BIN="$1"
 PLATFORM="$2"
 APP_VERSION="$3"
 RC_FILENAME="$4"
+PUBLIC_APP_TAG="$5"
 
-if [ X$PLATFORM == Xwin32 ]; then
+if [ X$PLATFORM = Xwin32 ]; then
     SED="$CYGWIN_BIN/sed.exe"
     DIRNAME="$CYGWIN_BIN/dirname.exe"
     GIT="$CYGWIN_BIN/git.exe"
@@ -16,28 +17,65 @@ fi
 PRO_PWD=$($DIRNAME "$0")
 VERSION_H="$PRO_PWD/version.h"
 COMMIT_COUNT_FILE="$PRO_PWD/.commitcounter"
+GIT_HASH_FILE="$PRO_PWD/.lastgithash"
 RC_FILE="$PRO_PWD/$RC_FILENAME"
 
-# Append git commit count
-COMMIT_COUNT=$(cd "$PRO_PWD" && $GIT rev-list --all --abbrev-commit --no-merges | $WC -l)
+# Append git commit count to version number
+#COMMIT_COUNT=$(cd "$PRO_PWD" && $GIT rev-list --all --abbrev-commit --no-merges | $WC -l)
+#APP_VERSION=$APP_VERSION.$COMMIT_COUNT
+
+# Get git hash
+GIT_HASH=$(cd "$PRO_PWD" && $GIT log "--pretty=format:%h" -n 1)
+
+# Get git branch
+GIT_BRANCH=$(cd "$PRO_PWD" && $GIT rev-parse --abbrev-ref HEAD)
+
+# Get git (annotated) tag, if an exact match exists
+GIT_TAG=$(cd "$PRO_PWD" && $GIT describe --exact-match HEAD 2> /dev/null)
+
+# Update commit counter when hash has changed
+LAST_GIT_HASH=$($CAT "$GIT_HASH_FILE" | $SED 's/^[ \t]*//;s/[ \t]*$//')
+LAST_COMMIT_COUNT=$($CAT "$COMMIT_COUNT_FILE" | $SED 's/^[ \t]*//;s/[ \t]*$//')
+if [ X$GIT_HASH != X$LAST_GIT_HASH ]; then
+    echo -n $GIT_HASH > "$GIT_HASH_FILE"
+    COMMIT_COUNT=$(($LAST_COMMIT_COUNT+1))
+    echo -n $COMMIT_COUNT > "$COMMIT_COUNT_FILE"
+else
+    COMMIT_COUNT=$LAST_COMMIT_COUNT
+fi
+
 APP_VERSION=$APP_VERSION.$COMMIT_COUNT
 
+if [ X$GIT_TAG = X ]; then
+    DISP_TAG="(none)"
+else
+    DISP_TAG=$GIT_TAG
+fi
+
 # Exit if git commit count hasn't changed since last run
-LAST_COMMIT_COUNT=$($CAT "$COMMIT_COUNT_FILE")
-if [ X$LAST_COMMIT_COUNT == X$COMMIT_COUNT ]; then
+if [ X$LAST_COMMIT_COUNT = X$COMMIT_COUNT -a -e "$VERSION_H" ]; then
     exit 0
 fi
 
-# Write git commit count
-echo -n $COMMIT_COUNT > "$COMMIT_COUNT_FILE"
+echo "------------------------------------------------------------------------"
+echo -n "    Updated "
 
 # Write to Windows resource file
-if [ X$PLATFORM == Xwin32 ]; then
+if [ X$PLATFORM = Xwin32 ]; then
     RC_VERSION=$(echo $APP_VERSION | $SED s/\\./,/g)
     $SED s/_FILEVERSION_/$RC_VERSION/g < "$PRO_PWD/rc.template" > "$RC_FILE"
-    echo "$RC_FILENAME updated to $RC_VERSION"
+    echo -n "$RC_FILENAME and "
 fi
 
 # Write version.h
-echo "#define APP_VER \"$APP_VERSION\"" > "$PRO_PWD/version.h"
-echo "version.h updated to $APP_VERSION"
+$CAT << EOF > "$VERSION_H"
+#define APP_VER         "$APP_VERSION"
+#define GIT_HASH        "$GIT_HASH"
+#define GIT_TAG         "$GIT_TAG"
+#define GIT_BRANCH      "$GIT_BRANCH"
+#define PUBLIC_APP_TAG  "$PUBLIC_APP_TAG"
+EOF
+
+echo "version.h:"
+echo "    $APP_VERSION $PUBLIC_APP_TAG:$GIT_TAG ($GIT_BRANCH/$GIT_HASH)"
+echo "------------------------------------------------------------------------"

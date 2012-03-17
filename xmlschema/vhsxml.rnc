@@ -1,6 +1,6 @@
-﻿default namespace huggplay = "http://play.huggpunkt.org/vhsxml/1"
+default namespace huggplay = "http://play.huggpunkt.org/vhsxml/1"
 
-grammar { 
+grammar {
     start =
         element vhsxml {
             attribute version { "2.0" },
@@ -9,7 +9,7 @@ grammar {
                 & extensions?
                 & cassettes? )
         }
-    
+
     #
     #  TRANSPORT DEFINITIONS
     #
@@ -21,21 +21,21 @@ grammar {
             i18nName,
             i18nDesc
         }
-    
+
     #
     #  STREAM/FILE FORMAT DEFINITIONS
     #
     formatDefinitions =
         element formatDefinitions { formatDefinition+ }
-    formatDefinition = 
+    formatDefinition =
         element formatDefinition {
             timestampedId,
             i18nName,
             i18nDesc,
-            element completeness { "any" | "empty" | "notEmpty" | "metaOnly" | "dataOnly" | "complete" },
+            element completeness { "notEmpty" | "metaOnly" | "dataOnly" | "complete" },
             mimeType
         }
-    
+
     #
     #  H.VHS EXTENSIONS
     #
@@ -43,7 +43,7 @@ grammar {
         element extensions { extension+ }
     extension =
         element extension {
-            versionedId,
+            timestampedId,
             i18nName+,
             i18nDesc*,
             author?,
@@ -72,7 +72,7 @@ grammar {
             attribute type { "vhscheme" | "vhscript" },
             xsd:string
         }
-        
+
     #
     #  CASSETTES (stub)
     #
@@ -83,7 +83,7 @@ grammar {
             timestampedId,
             ( internalTypedContent | externalTypedContent )
         }
-        
+
     internalTypedContent =
         element content {
             attribute mimeType { xsd:token },
@@ -95,18 +95,13 @@ grammar {
             attribute src { xsd:anyURI },
             empty
         }
-    
+
     #
     #  DATA TYPES
     #
-    timestampedId = 
+    timestampedId =
         element id {
             attribute asOf { xsd:dateTime },
-            xsd:NMTOKEN
-        }
-    versionedId =
-        element id {
-            attribute version { xsd:integer },
             xsd:NMTOKEN
         }
     i18nName =

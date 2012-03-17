@@ -18,9 +18,11 @@
 #define PORTABILITY_H
 
 #include <QApplication>
+#include <QPointer>
 #include <QDesktopServices>
 #include <QDir>
 #include <QString>
+#include <QSettings>
 
 class Portability
 {
@@ -28,12 +30,14 @@ public:
     Portability();
     static Portability *pointer();
 
-    QString extensionsPathSystem(QString file = QString());
-    QString extensionsPathUser(QString file = QString());
-    QString presetsPathSystem(QString file = QString());
-    QString presetsPathUser(QString file = QString());
-    QString iniPathUser(QString file = QString());
-    QString iniPathSystem(QString file = QString());
+    enum Scope {
+        User,
+        System
+    };
+
+    QFileInfo extensionsDir(Scope scope);
+    QFileInfo presetsDir(Scope scope);
+    QPointer<QSettings> makeSettings();
 
 private:
     static Portability *s_instance;

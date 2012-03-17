@@ -41,13 +41,14 @@ int ExtensionManager::count()
 
 int ExtensionManager::_loadAndMergeTransportDefinitions()
 {
-    QList<QString> locations;
+    QList<QFileInfo> locations;
     locations << Configuration::pointer()->getStorageLocation(Configuration::SystemTransportDefinitionStorageLocation)
               << Configuration::pointer()->getStorageLocation(Configuration::UserTransportDefinitionStorageLocation);
 
-    QString path;
-    foreach (path, locations)
+    QFileInfo location;
+    foreach (location, locations)
     {
+        QString path = location.canonicalFilePath();
         QPointer<QFile> file = new QFile(path);
         if (file->exists())
         {
@@ -86,13 +87,14 @@ int ExtensionManager::_loadAndMergeTransportDefinitions()
 
 int ExtensionManager::_loadAndMergeFormatDefinitions()
 {
-    QList<QString> locations;
+    QList<QFileInfo> locations;
     locations << Configuration::pointer()->getStorageLocation(Configuration::SystemFormatDefinitionStorageLocation)
               << Configuration::pointer()->getStorageLocation(Configuration::UserFormatDefinitionStorageLocation);
 
-    QString path;
-    foreach (path, locations)
+    QFileInfo location;
+    foreach (location, locations)
     {
+        QString path = location.canonicalFilePath();
         QPointer<QFile> file = new QFile(path);
         if (file->exists())
         {
@@ -134,13 +136,14 @@ int ExtensionManager::_loadAndMergeFormatDefinitions()
 
 int ExtensionManager::_loadAndMergeExtensions()
 {
-    QList<QString> locations;
+    QList<QFileInfo> locations;
     locations << Configuration::pointer()->getStorageLocation(Configuration::SystemExtensionsStorageLocation)
               << Configuration::pointer()->getStorageLocation(Configuration::UserExtensionsStorageLocation);
 
-    QString path;
-    foreach (path, locations)
+    QFileInfo location;
+    foreach (location, locations)
     {
+        QString path = location.canonicalFilePath();
         // Nya extensionsdefinitioner med redan registrerade uid ska ersätta de föregående.
         if (QFileInfo(path).isDir())
         {
@@ -153,7 +156,7 @@ int ExtensionManager::_loadAndMergeExtensions()
                     QFileInfo fileInfo(QDir::toNativeSeparators(dir.filePath() + "/" + dir.fileName() + ".xml"));
                     if (fileInfo.isFile())
                     {
-                        QPointer<QFile> file = new QFile(fileInfo.absoluteFilePath());
+                        QPointer<QFile> file = new QFile(fileInfo.canonicalFilePath());
                         VhsXml::Reader extensionsFile(file);
                         QList<Extension> newExtensions = extensionsFile.getExtensions();
                         Extension newExtension;

@@ -19,7 +19,8 @@
 // Singleton (Configuration::pointer())
 Configuration *Configuration::s_instance = NULL;
 
-Configuration::Configuration()
+Configuration::Configuration(QObject *parent) :
+    QObject(parent)
 {
     qApp->setOrganizationName( "Huggpunkt" );
     qApp->setOrganizationDomain( "huggpunkt.org" );
@@ -38,7 +39,8 @@ Configuration::Configuration()
 
     this->_writeBlock = false;
 
-    this->_settings = new QSettings(Portability::pointer()->iniPathUser("hvhs.ini"), QSettings::IniFormat, 0);
+    this->_settings = Portability::pointer()->makeSettings();
+    this->_settings->setParent(this);
     this->_settings->setIniCodec("UTF-8");
 }
 
@@ -147,27 +149,52 @@ QUrl Configuration::makeSearchUrl(QString query)
     return url;
 }
 
-QString Configuration::getStorageLocation(StorageLocation location)
+QFileInfo Configuration::getStorageLocation(StorageLocation type)
 {
-    switch (location)
+    QFileInfo location;
+    QString filename;
+    switch (type)
     {
-    case FaviconStorageLocation:                            return QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-                                                            /* NOTREACHED */
-    case SystemExtensionsStorageLocation:                   return Portability::pointer()->extensionsPathSystem();
-                                                            /* NOTREACHED */
-    case UserExtensionsStorageLocation:                     return Portability::pointer()->extensionsPathUser();
-                                                            /* NOTREACHED */
-    case SystemTransportDefinitionStorageLocation:              return Portability::pointer()->presetsPathSystem("transport.xml");
-                                                            /* NOTREACHED */
-    case UserTransportDefinitionStorageLocation:                return Portability::pointer()->presetsPathUser("transport.xml");
-                                                            /* NOTREACHED */
-    case SystemFormatDefinitionStorageLocation:             return Portability::pointer()->presetsPathSystem("format.xml");
-                                                            /* NOTREACHED */
-    case UserFormatDefinitionStorageLocation:               return Portability::pointer()->presetsPathUser("format.xml");
-                                                            /* NOTREACHED */
+    case FaviconStorageLocation:
+        location = QFileInfo(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
+        break;
+    case SystemExtensionsStorageLocation:
+        location = Portability::pointer()->extensionsDir(Portability::System);
+        break;
+    case UserExtensionsStorageLocation:
+        location = Portability::pointer()->extensionsDir(Portability::User);
+        break;
+    case SystemTransportDefinitionStorageLocation:
+        location = Portability::pointer()->presetsDir(Portability::System);
+        filename = "transport.xml";
+        break;
+    case UserTransportDefinitionStorageLocation:
+        location = Portability::pointer()->presetsDir(Portability::User);
+        filename = "transport.xml";
+        break;
+    case SystemFormatDefinitionStorageLocation:
+        location = Portability::pointer()->presetsDir(Portability::System);
+        filename = "format.xml";
+        break;
+    case UserFormatDefinitionStorageLocation:
+        location = Portability::pointer()->presetsDir(Portability::User);
+        filename = "format.xml";
+        break;
     default:
-        return QString();
+        return QFileInfo();
     }
+
+    if (! filename.isEmpty())
+    {
+        if (location.isDir())
+            location = QFileInfo(location.canonicalFilePath() + "/" + filename);
+        else if (location.exists())
+            qWarning() << "Configuration::getStorateLocation(): path component"
+                       << location.filePath() << "is an existing non-directory and cannot contain files."
+                       << "(Filename:" << filename << ")";
+    }
+
+    return location;
 }
 
 void Configuration::_setValue(const QString &key, const QVariant &value)
@@ -175,13 +202,10 @@ void Configuration::_setValue(const QString &key, const QVariant &value)
     if (! this->_writeBlock)
     {
         this->_settings->setValue(key, value);
-        //qDebug() << "Config write(" << this->_settings->group() << "): " << key << value;
     }
 }
 
 QVariant Configuration::_value(const QString &key, const QVariant &defaultValue) const
 {
-    //qDebug() << "Config read(" << this->_settings->group() << "):" << key
-    //         << this->_settings->value(key, defaultValue) << "(default:" << defaultValue << ")";
     return this->_settings->value(key, defaultValue);
 }

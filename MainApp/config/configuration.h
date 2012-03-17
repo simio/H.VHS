@@ -17,6 +17,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+#include <QObject>
 #include <QtGui/QApplication>
 #include <QPointer>
 #include <QSettings>
@@ -32,11 +33,13 @@
 #include "config/portability.h"
 #include "config/messagehandler.h"
 
-class Configuration
+class Configuration : public QObject
 {
+    Q_OBJECT
 public:
-    Configuration();
+    explicit Configuration(QObject *parent = 0);
     static Configuration *pointer();
+
     void setWriteBlock(bool blocked);
     bool clearStorage();
 
@@ -69,7 +72,11 @@ public:
     QUrl getStartPage();
     QUrl makeSearchUrl(QString query);
 
-    QString getStorageLocation(StorageLocation location);
+    QFileInfo getStorageLocation(StorageLocation type);
+
+public slots:
+
+signals:
 
 private:
     static Configuration * s_instance;

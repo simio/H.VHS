@@ -30,56 +30,43 @@ Portability *Portability::pointer()
     return s_instance;
 }
 
-QString Portability::extensionsPathSystem(QString file)
+QFileInfo Portability::extensionsDir(Scope scope)
 {
-    QString path;
 #ifdef WIN32
-    path = QDir::toNativeSeparators( qApp->applicationDirPath() + "/extensions/" + file);
+    switch (scope)
+    {
+    case System:
+        return QFileInfo(qApp->applicationDirPath() + "/extensions");
+        /* NOTREACHED */
+    default:
+    case User:
+        return QFileInfo(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions");
+        /* NOTREACHED */
+    }
 #endif
-    return path;
 }
 
-QString Portability::presetsPathSystem(QString file)
+QFileInfo Portability::presetsDir(Scope scope)
 {
-    QString path;
 #ifdef WIN32
-    path = QDir::toNativeSeparators( qApp->applicationDirPath() + "/presets/" + file);
+    switch (scope)
+    {
+    case System:
+        return QFileInfo(qApp->applicationDirPath() + "/presets");
+        /* NOTREACHED */
+    default:
+    case User:
+        return QFileInfo(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/presets");
+        /* NOTREACHED */
+    }
 #endif
-    return path;
 }
 
-QString Portability::extensionsPathUser(QString file)
-{
-    QString path;
-#ifdef WIN32
-    path = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions/" + file);
-#endif
-    return path;
-}
 
-QString Portability::presetsPathUser(QString file)
+QPointer<QSettings> Portability::makeSettings()
 {
-    QString path;
 #ifdef WIN32
-    path = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/presets/" + file);
+    return new QSettings(QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/hvhs.ini"),
+                         QSettings::IniFormat);
 #endif
-    return path;
-}
-
-QString Portability::iniPathSystem(QString file)
-{
-    QString path;
-#ifdef WIN32
-    path = QDir::toNativeSeparators( qApp->applicationDirPath() + "/" + file);
-#endif
-    return path;
-}
-
-QString Portability::iniPathUser(QString file)
-{
-    QString path;
-#ifdef WIN32
-    path = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/" + file);
-#endif
-    return path;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper RÃ¤ftegÃ¥rd <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -126,7 +126,7 @@ int ExtensionManager::_loadAndMergeFormatDefinitions()
         delete file;
     }
 
-    // Skriv här ned samtliga definitioner till
+    // Skriv hÃ¤r ned samtliga definitioner till
     // Configuration::pointer()->getStorageLocation(Configuration::UserFormatDefinitionStorageLocation)
 
     return this->_formats.size();
@@ -141,7 +141,7 @@ int ExtensionManager::_loadAndMergeExtensions()
     QString path;
     foreach (path, locations)
     {
-        // Nya extensionsdefinitioner med redan registrerade uid ska ersätta de föregående.
+        // Nya extensionsdefinitioner med redan registrerade uid ska ersÃ¤tta de fÃ¶regÃ¥ende.
         if (QFileInfo(path).isDir())
         {
             QDirIterator dir(path);

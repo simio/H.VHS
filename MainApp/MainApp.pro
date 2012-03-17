@@ -22,10 +22,10 @@ include( ../deploy.pri )
 
 target.path = $$DEPLOY_DIST_DIR
 
-copyfiles.files = $$files(prebuilt_xml/*.xml)
-copyfiles.path = $$DEPLOY_DIST_DIR/conf
+presets.files = presets
+presets.path = $$DEPLOY_DIST_DIR
 
-INSTALLS += copyfiles
+INSTALLS += presets
 
 ## PROJECT
 SOURCES += main.cpp\
@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     webwindow.cpp \
     config/configuration.cpp \
     config/messagehandler.cpp \
-    config/portability.cpp
+    config/portability.cpp \
+    extension/definition.cpp
 
 HEADERS  += webwindow.h \
     consolewindow.h \
@@ -63,18 +64,19 @@ HEADERS  += webwindow.h \
     browser/webview.h \
     config/configuration.h \
     config/messagehandler.h \
-    config/portability.h
+    config/portability.h \
+    extension/definition.h
 
 FORMS    += webwindow.ui \
     consolewindow.ui
 
-win32:RC_FILE = VHS4.rc
+win32:RC_FILE = vhs.rc
 
 OTHER_FILES += \
-    vhs4.rc \
+    vhs.rc \
     README \
-    prebuilt_xml/format.xml \
-    prebuilt_xml/transport.xml
+    presets/format.xml \
+    presets/transport.xml
 
 RESOURCES += \
-    vhs4.qrc
+    vhs.qrc

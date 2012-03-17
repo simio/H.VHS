@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper RÃ¤ftegÃ¥rd <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -32,7 +32,7 @@ Configuration::Configuration()
 
     this->_writeBlock = false;
 
-    this->_settings = new QSettings(Portability::pointer()->userIniFilePath("hvhs.ini"), QSettings::IniFormat, 0);
+    this->_settings = new QSettings(Portability::pointer()->iniPathUser("hvhs.ini"), QSettings::IniFormat, 0);
     this->_settings->setIniCodec("UTF-8");
 }
 
@@ -146,17 +146,17 @@ QString Configuration::getStorageLocation(StorageLocation location)
     {
     case FaviconStorageLocation:                            return QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
                                                             /* NOTREACHED */
-    case SystemExtensionsStorageLocation:                   return Portability::pointer()->systemExtensionPath();
+    case SystemExtensionsStorageLocation:                   return Portability::pointer()->extensionsPathSystem();
                                                             /* NOTREACHED */
-    case UserExtensionsStorageLocation:                     return Portability::pointer()->userExtensionPath();
+    case UserExtensionsStorageLocation:                     return Portability::pointer()->extensionsPathUser();
                                                             /* NOTREACHED */
-    case SystemTransportDefinitionStorageLocation:              return Portability::pointer()->systemConfPath("transport.xml");
+    case SystemTransportDefinitionStorageLocation:              return Portability::pointer()->presetsPathSystem("transport.xml");
                                                             /* NOTREACHED */
-    case UserTransportDefinitionStorageLocation:                return Portability::pointer()->userConfPath("transport.xml");
+    case UserTransportDefinitionStorageLocation:                return Portability::pointer()->presetsPathUser("transport.xml");
                                                             /* NOTREACHED */
-    case SystemFormatDefinitionStorageLocation:             return Portability::pointer()->systemConfPath("format.xml");
+    case SystemFormatDefinitionStorageLocation:             return Portability::pointer()->presetsPathSystem("format.xml");
                                                             /* NOTREACHED */
-    case UserFormatDefinitionStorageLocation:               return Portability::pointer()->userConfPath("format.xml");
+    case UserFormatDefinitionStorageLocation:               return Portability::pointer()->presetsPathUser("format.xml");
                                                             /* NOTREACHED */
     default:
         return QString();

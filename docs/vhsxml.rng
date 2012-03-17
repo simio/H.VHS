@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <grammar ns="http://play.huggpunkt.org/vhsxml/1" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <start>
     <element name="vhsxml">
@@ -7,42 +7,30 @@
       </attribute>
       <interleave>
         <optional>
-          <choice>
-            <ref name="transportDefinitions"/>
-            <ref name="transportDefinition"/>
-          </choice>
+          <ref name="transportDefinitions"/>
         </optional>
         <optional>
-          <choice>
-            <ref name="formatDefinitions"/>
-            <ref name="formatDefinition"/>
-          </choice>
+          <ref name="formatDefinitions"/>
         </optional>
         <optional>
-          <choice>
-            <ref name="extensions"/>
-            <ref name="extension"/>
-          </choice>
+          <ref name="extensions"/>
         </optional>
         <optional>
-          <choice>
-            <ref name="cassettes"/>
-            <ref name="cassette"/>
-          </choice>
+          <ref name="cassettes"/>
         </optional>
       </interleave>
     </element>
   </start>
   <!--
     
-     TRANSPOR DEFINITIONS
+     TRANSPORT DEFINITIONS
     
   -->
   <define name="transportDefinitions">
     <element name="transportDefinitions">
-      <zeroOrMore>
+      <oneOrMore>
         <ref name="transportDefinition"/>
-      </zeroOrMore>
+      </oneOrMore>
     </element>
   </define>
   <define name="transportDefinition">
@@ -112,6 +100,16 @@
           <value>false</value>
         </choice>
       </element>
+      <optional>
+        <element name="stability">
+          <choice>
+            <value>broken</value>
+            <value>unstable</value>
+            <value>stable</value>
+            <value>testing</value>
+          </choice>
+        </element>
+      </optional>
       <choice>
         <ref name="externalImplementation"/>
         <ref name="internalImplementation"/>

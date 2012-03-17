@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper RÃ¤ftegÃ¥rd <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -28,12 +28,12 @@ public:
     Portability();
     static Portability *pointer();
 
-    QString systemExtensionPath(QString file = QString());
-    QString userExtensionPath(QString file = QString());
-    QString userConfPath(QString file = QString());
-    QString systemConfPath(QString file = QString());
-    QString userIniFilePath(QString file = QString());
-    QString systemIniFilePath(QString file = QString());
+    QString extensionsPathSystem(QString file = QString());
+    QString extensionsPathUser(QString file = QString());
+    QString presetsPathSystem(QString file = QString());
+    QString presetsPathUser(QString file = QString());
+    QString iniPathUser(QString file = QString());
+    QString iniPathSystem(QString file = QString());
 
 private:
     static Portability *s_instance;

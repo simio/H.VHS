@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/applications-multimedia.svg</file>
+        <file>icons/appointment-new.svg</file>
+        <file>icons/audio.ico</file>
+        <file>icons/audio-128.png</file>
+        <file>icons/busy.gif</file>
+        <file>icons/busy90.gif</file>
+        <file>icons/closed-captioning-symbol.svg</file>
+        <file>icons/custom-download.svg</file>
+        <file>icons/document-properties.svg</file>
+        <file>icons/document-save.svg</file>
+        <file>icons/emblem-system.svg</file>
+        <file>icons/flippy.ico</file>
+        <file>icons/flippy.png</file>
+        <file alias="browseHome">icons/go-home.svg</file>
+        <file>icons/go-jump.svg</file>
+        <file alias="browseForward">icons/go-next.svg</file>
+        <file alias="browseBack">icons/go-previous.svg</file>
+        <file>icons/help-browser.svg</file>
+        <file>icons/internet-group-chat.svg</file>
+        <file>icons/live-stream.svg</file>
+        <file>icons/mail-attachment.svg</file>
+        <file>icons/media-floppy.svg</file>
+        <file>icons/media-playback-pause.svg</file>
+        <file>icons/media-playback-stop.svg</file>
+        <file>icons/media-record.svg</file>
+        <file>icons/notBusy.gif</file>
+        <file>icons/notBusy90.gif</file>
+        <file alias="browseStop">icons/process-stop.svg</file>
+        <file>icons/software-update-available.svg</file>
+        <file>icons/start-here.svg</file>
+        <file>icons/subtitling.svg</file>
+        <file alias="exit">icons/system-log-out.svg</file>
+        <file>icons/text-x-generic.svg</file>
+        <file>icons/text-x-script.svg</file>
+        <file alias="icoVideoCassette">icons/vhs.ico</file>
+        <file alias="bitmapVideoCassette">icons/vhs-128.png</file>
+        <file>icons/video-x-generic.svg</file>
+        <file alias="browseReload">icons/view-refresh.svg</file>
+        <file alias="console">icons/utilities-terminal.svg</file>
+        <file alias="browserDefaultIcon">icons/internet-web-browser.svg</file>
+    </qresource>
+</RCC>

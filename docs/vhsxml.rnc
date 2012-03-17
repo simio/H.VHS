@@ -1,4 +1,4 @@
-default namespace huggplay = "http://play.huggpunkt.org/vhsxml/1"
+﻿default namespace huggplay = "http://play.huggpunkt.org/vhsxml/1"
 
 grammar { 
     start =
@@ -11,7 +11,7 @@ grammar {
         }
     
     #
-    #  TRANSPOR DEFINITIONS
+    #  TRANSPORT DEFINITIONS
     #
     transportDefinitions =
         element transportDefinitions { transportDefinition+ }
@@ -48,6 +48,7 @@ grammar {
             i18nDesc*,
             author?,
             element enabled { "true" | "false" },
+            element stability { "broken" | "unstable" | "stable" | "testing" }?,
             (externalImplementation | internalImplementation),
             element input {
                 element transport { xsd:NMTOKEN }+,
@@ -75,7 +76,7 @@ grammar {
     #
     #  CASSETTES (stub)
     #
-    # Gl�m inte "<![CDATA[xxx]]>"
+    # Glöm inte "<![CDATA[xxx]]>"
     cassettes = element cassettes { cassette+ }
     cassette =
         element cassette {

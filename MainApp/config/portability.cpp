@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper RÃ¤ftegÃ¥rd <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -30,7 +30,7 @@ Portability *Portability::pointer()
     return s_instance;
 }
 
-QString Portability::systemExtensionPath(QString file)
+QString Portability::extensionsPathSystem(QString file)
 {
     QString path;
 #ifdef WIN32
@@ -39,16 +39,16 @@ QString Portability::systemExtensionPath(QString file)
     return path;
 }
 
-QString Portability::systemConfPath(QString file)
+QString Portability::presetsPathSystem(QString file)
 {
     QString path;
 #ifdef WIN32
-    path = QDir::toNativeSeparators( qApp->applicationDirPath() + "/conf/" + file);
+    path = QDir::toNativeSeparators( qApp->applicationDirPath() + "/presets/" + file);
 #endif
     return path;
 }
 
-QString Portability::userExtensionPath(QString file)
+QString Portability::extensionsPathUser(QString file)
 {
     QString path;
 #ifdef WIN32
@@ -57,16 +57,16 @@ QString Portability::userExtensionPath(QString file)
     return path;
 }
 
-QString Portability::userConfPath(QString file)
+QString Portability::presetsPathUser(QString file)
 {
     QString path;
 #ifdef WIN32
-    path = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/conf/" + file);
+    path = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/presets/" + file);
 #endif
     return path;
 }
 
-QString Portability::systemIniFilePath(QString file)
+QString Portability::iniPathSystem(QString file)
 {
     QString path;
 #ifdef WIN32
@@ -75,7 +75,7 @@ QString Portability::systemIniFilePath(QString file)
     return path;
 }
 
-QString Portability::userIniFilePath(QString file)
+QString Portability::iniPathUser(QString file)
 {
     QString path;
 #ifdef WIN32

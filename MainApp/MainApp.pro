@@ -17,10 +17,26 @@ TRANSLATIONS        = hvhs_sv.ts qt_sv.ts
 
 QMAKE_CXXFLAGS     += -DAPP_VER=\\\"$$VERSION\\\"
 
+## PORTABILITY
+
+# Windows
+CYGWIN_BIN = c:/Cygwin/bin
+
 ## DEPLOYMENT
 include( ../deploy.pri )
 
 target.path = $$DEPLOY_DIST_DIR
+
+win32 {
+    CYGWIN_PRO_FILE_PWD = $$replace(_PRO_FILE_PWD_, "C:", "/cygdrive/c")
+    winrc.target = vhs.rc
+    winrc.commands = $${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/make_vhs_rc.sh'" $$VERSION $$CYGWIN_BIN
+    winrc.depends = FORCE
+
+    PRE_TARGETDEPS += vhs.rc
+    QMAKE_EXTRA_TARGETS += winrc
+    RC_FILE = vhs.rc
+}
 
 presets.files = presets
 presets.path = $$DEPLOY_DIST_DIR
@@ -28,7 +44,8 @@ presets.path = $$DEPLOY_DIST_DIR
 INSTALLS += presets
 
 ## PROJECT
-SOURCES += main.cpp\
+SOURCES += \
+    main.cpp\
     consolewindow.cpp \
     vhsxml/reader.cpp \
     vhsxml/transportreader.cpp \
@@ -48,7 +65,8 @@ SOURCES += main.cpp\
     config/portability.cpp \
     extension/definition.cpp
 
-HEADERS  += webwindow.h \
+HEADERS  += \
+    webwindow.h \
     consolewindow.h \
     main.h \
     vhsxml/reader.h \
@@ -67,16 +85,16 @@ HEADERS  += webwindow.h \
     config/portability.h \
     extension/definition.h
 
-FORMS    += webwindow.ui \
+FORMS    += \
+    webwindow.ui \
     consolewindow.ui
 
-win32:RC_FILE = vhs.rc
-
 OTHER_FILES += \
-    vhs.rc \
     README \
     presets/format.xml \
-    presets/transport.xml
+    presets/transport.xml \
+    vhs_rc.template \
+    make_vhs_rc.sh
 
 RESOURCES += \
     vhs.qrc

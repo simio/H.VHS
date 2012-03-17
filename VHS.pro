@@ -7,4 +7,7 @@ SUBDIRS += \
 OTHER_FILES += \
     config.pri \
     global.pri \
-    deploy.pri
+    deploy.pri \
+    xmlschema/vhsxml.rnc \
+    xmlschema/vhsxml.rng \
+    xmlschema/make.sh

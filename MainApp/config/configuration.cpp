@@ -39,7 +39,7 @@ Configuration::Configuration(QObject *parent) :
 
     this->_writeBlock = false;
 
-    this->_settings = Portability::pointer()->makeSettings();
+    this->_settings = SystemDependent::pointer()->makeSettings();
     this->_settings->setParent(this);
     this->_settings->setIniCodec("UTF-8");
 }
@@ -159,25 +159,25 @@ QFileInfo Configuration::getStorageLocation(StorageLocation type)
         location = QFileInfo(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
         break;
     case SystemExtensionsStorageLocation:
-        location = Portability::pointer()->extensionsDir(Portability::System);
+        location = SystemDependent::pointer()->extensionsDir(SystemDependent::System);
         break;
     case UserExtensionsStorageLocation:
-        location = Portability::pointer()->extensionsDir(Portability::User);
+        location = SystemDependent::pointer()->extensionsDir(SystemDependent::User);
         break;
     case SystemTransportDefinitionStorageLocation:
-        location = Portability::pointer()->presetsDir(Portability::System);
+        location = SystemDependent::pointer()->presetsDir(SystemDependent::System);
         filename = "transport.xml";
         break;
     case UserTransportDefinitionStorageLocation:
-        location = Portability::pointer()->presetsDir(Portability::User);
+        location = SystemDependent::pointer()->presetsDir(SystemDependent::User);
         filename = "transport.xml";
         break;
     case SystemFormatDefinitionStorageLocation:
-        location = Portability::pointer()->presetsDir(Portability::System);
+        location = SystemDependent::pointer()->presetsDir(SystemDependent::System);
         filename = "format.xml";
         break;
     case UserFormatDefinitionStorageLocation:
-        location = Portability::pointer()->presetsDir(Portability::User);
+        location = SystemDependent::pointer()->presetsDir(SystemDependent::User);
         filename = "format.xml";
         break;
     default:

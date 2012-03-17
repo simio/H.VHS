@@ -14,23 +14,23 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "portability.h"
+#include "systemdependent.h"
 
 // Singleton (Portability::pointer())
-Portability *Portability::s_instance = NULL;
+SystemDependent *SystemDependent::s_instance = NULL;
 
-Portability::Portability()
+SystemDependent::SystemDependent()
 {
 }
 
-Portability *Portability::pointer()
+SystemDependent *SystemDependent::pointer()
 {
     if (s_instance == NULL)
-        s_instance = new Portability;
+        s_instance = new SystemDependent;
     return s_instance;
 }
 
-QFileInfo Portability::extensionsDir(Scope scope)
+QFileInfo SystemDependent::extensionsDir(Scope scope)
 {
 #ifdef WIN32
     switch (scope)
@@ -46,7 +46,7 @@ QFileInfo Portability::extensionsDir(Scope scope)
 #endif
 }
 
-QFileInfo Portability::presetsDir(Scope scope)
+QFileInfo SystemDependent::presetsDir(Scope scope)
 {
 #ifdef WIN32
     switch (scope)
@@ -63,7 +63,7 @@ QFileInfo Portability::presetsDir(Scope scope)
 }
 
 
-QPointer<QSettings> Portability::makeSettings()
+QPointer<QSettings> SystemDependent::makeSettings()
 {
 #ifdef WIN32
     return new QSettings(QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/hvhs.ini"),

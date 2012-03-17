@@ -66,8 +66,8 @@ SOURCES += \
     webwindow.cpp \
     config/configuration.cpp \
     config/messagehandler.cpp \
-    config/portability.cpp \
-    extension/definition.cpp
+    extension/definition.cpp \
+    config/systemdependent.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -86,8 +86,8 @@ HEADERS  += \
     browser/webview.h \
     config/configuration.h \
     config/messagehandler.h \
-    config/portability.h \
-    extension/definition.h
+    extension/definition.h \
+    config/systemdependent.h
 
 FORMS    += \
     webwindow.ui \

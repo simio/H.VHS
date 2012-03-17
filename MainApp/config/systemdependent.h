@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef PORTABILITY_H
-#define PORTABILITY_H
+#ifndef SYSTEMDEPENDENT_H
+#define SYSTEMDEPENDENT_H
 
 #include <QApplication>
 #include <QPointer>
@@ -24,11 +24,11 @@
 #include <QString>
 #include <QSettings>
 
-class Portability
+class SystemDependent
 {
 public:
-    Portability();
-    static Portability *pointer();
+    SystemDependent();
+    static SystemDependent *pointer();
 
     enum Scope {
         User,
@@ -40,10 +40,10 @@ public:
     QPointer<QSettings> makeSettings();
 
 private:
-    static Portability *s_instance;
+    static SystemDependent *s_instance;
 
 };
 
 static const QString newl = "\n";
 
-#endif // PORTABILITY_H
+#endif // SYSTEMDEPENDENT_H

@@ -30,7 +30,7 @@
 #include <QStringList>
 
 #include "version.h"
-#include "config/portability.h"
+#include "config/systemdependent.h"
 #include "config/messagehandler.h"
 
 class Configuration : public QObject

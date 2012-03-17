@@ -92,7 +92,7 @@ void WebWindow::_whenWebViewIconChanged()
 
 void WebWindow::_whenWebViewTitleChanged(const QString &title)
 {
-    this->setWindowTitle(title + (title.isEmpty() ? "" : " - ") + Configuration::pointer()->fullAppName());
+    this->setWindowTitle(title + (title.isEmpty() ? "" : " - ") + Configuration::pointer()->appName());
 }
 
 void WebWindow::_whenSearchBoxReturnPressed()

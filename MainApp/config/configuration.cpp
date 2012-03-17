@@ -26,8 +26,14 @@ Configuration::Configuration()
     qApp->setApplicationName( "H.VHS" );
     qApp->setApplicationVersion( APP_VER );
 
-#ifdef RELEASE
+#ifdef DEPLOY
     qApp->setLibraryPaths(QStringList(qApp->applicationDirPath()));
+#endif
+
+#ifdef HIDE_COMMIT_COUNT
+    this->_hideCommitCount = true;
+#else
+    this->_hideCommitCount = false;
 #endif
 
     this->_writeBlock = false;
@@ -58,21 +64,22 @@ Configuration *Configuration::pointer()
     return s_instance;
 }
 
-QString Configuration::appName()
+QString Configuration::appName(bool full)
 {
-    return qApp->applicationName();
+    return qApp->applicationName() + " " + this->appVersion() + this->appTag("-");
 }
 
-QString Configuration::appVersion(bool full)
+QString Configuration::appTag(QString prepend)
 {
-    return (full
-            ? qApp->applicationVersion()
-            : qApp->applicationVersion().remove(QRegExp("[0.]+$")));
+    QString tag( APP_TAG );
+    return (tag.isEmpty() ? "" : prepend + tag);
 }
 
-QString Configuration::fullAppName(bool fullVersion)
+QString Configuration::appVersion()
 {
-    return this->appName() + " " + this->appVersion(fullVersion);
+    return ( this->_hideCommitCount
+            ? qApp->applicationVersion().remove(QRegExp("\\.[0-9]+$"))
+            : qApp->applicationVersion());
 }
 
 void Configuration::saveWindow(Window window, QByteArray state, QByteArray geometry)

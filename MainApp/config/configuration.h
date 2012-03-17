@@ -28,8 +28,9 @@
 #include <QMap>
 #include <QStringList>
 
-#include "portability.h"
-#include "messagehandler.h"
+#include "version.h"
+#include "config/portability.h"
+#include "config/messagehandler.h"
 
 class Configuration
 {
@@ -51,11 +52,12 @@ public:
         SystemTransportDefinitionStorageLocation,
         UserTransportDefinitionStorageLocation,
         SystemFormatDefinitionStorageLocation,
-        UserFormatDefinitionStorageLocation,
+        UserFormatDefinitionStorageLocation
     };
 
-    QString appName();
-    QString appVersion(bool full = false);
+    QString appName(bool full = false);
+    QString appTag(QString prepend = QString());
+    QString appVersion();
     QString fullAppName(bool fullVersion = false);
 
     void saveWindow(Window window, QByteArray state, QByteArray geometry);
@@ -76,6 +78,7 @@ private:
     QVariant _value(const QString &key, const QVariant &defaultValue = QVariant()) const;
 
     bool _writeBlock;
+    bool _hideCommitCount;
 
     QPointer<QSettings> _settings;
 };

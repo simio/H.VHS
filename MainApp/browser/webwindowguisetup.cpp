@@ -172,7 +172,7 @@ void WebWindow::_setupGui()
     // INFO MENU
     // += About
     this->_actionAbout = new QAction(QIcon(":/icons/bitmapVideoCassette"),
-                                     tr("&About") + QString(" ") + Configuration::pointer()->fullAppName(),
+                                     tr("&About") + QString(" ") + Configuration::pointer()->appName(true),
                                      this->_menuSettings);
     this->_menuInfo->addAction(this->_actionAbout);
 

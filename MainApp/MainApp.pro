@@ -15,8 +15,7 @@ TEMPLATE            = app
 VERSION             = $$APP_VERSION
 TRANSLATIONS        = hvhs_sv.ts qt_sv.ts
 
-QMAKE_CXXFLAGS     += -DAPP_VER=\\\"$$VERSION\\\"
-
+QMAKE_CXXFLAGS     += -DAPP_TAG=\\\"$$APP_TAG\\\"
 
 ## DEPLOYMENT
 include( ../deploy.pri )
@@ -24,20 +23,28 @@ include( ../deploy.pri )
 target.path = $$DEPLOY_DIST_DIR
 
 win32 {
+    RC_FILE = vhs.rc
     CYGWIN_PRO_FILE_PWD = $$replace(_PRO_FILE_PWD_, "C:", "/cygdrive/c")
-    winrc.target = vhs.rc
-    winrc.commands = $${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/update_vhs_rc.sh'" $$VERSION $$CYGWIN_BIN
+    winrc.target = $$RC_FILE
+    winrc.commands = $${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/update_version.sh'" $$CYGWIN_BIN win32 $$VERSION $$RC_FILE
     winrc.depends = FORCE
 
-    PRE_TARGETDEPS += vhs.rc
+    version_h.target = version.h
+    version_h.depends = winrc
+
+    PRE_TARGETDEPS += $$RC_FILE
     QMAKE_EXTRA_TARGETS += winrc
-    RC_FILE = vhs.rc
 }
+
+PRE_TARGETDEPS += version.h
+QMAKE_EXTRA_TARGETS += version_h
 
 presets.files = presets
 presets.path = $$DEPLOY_DIST_DIR
 
 INSTALLS += presets
+
+contains(APP_CONFIG, deploy_dist):DEFINES += HIDE_COMMIT_COUNT
 
 
 ## PROJECT
@@ -90,8 +97,8 @@ OTHER_FILES += \
     README \
     presets/format.xml \
     presets/transport.xml \
-    vhs_rc.template \
-    update_vhs_rc.sh
+    update_version.sh \
+    rc.template
 
 RESOURCES += \
     vhs.qrc

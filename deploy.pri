@@ -9,6 +9,7 @@
 }
 
 contains(APP_CONFIG, deploy_dist) {
+    DEFINES += DEPLOY
     win32 {
         QTDLL_RUNDEPENDS += mingwm10.dll libgcc_s_dw2-1.dll
 
@@ -58,7 +59,6 @@ contains(APP_CONFIG, deploy_dist) {
             QTICONENGINES_RUNDEPENDS += $$QTICONENGINES_RUNDEPENDS_DEBUG
             OPENSSL_RUNDEPENDS += $$OPENSSL_RUNDEPENDS_DEBUG
         } else {
-            DEFINES += RELEASE
             DEPLOY_DIST_DIR = $${DEPLOY_DIST_DIR}/release
             QTDLL_RUNDEPENDS += $$QTDLL_RUNDEPENDS_RELEASE
             QTI18N_RUNDEPENDS += $$QTI18N_RUNDEPENDS_RELEASE

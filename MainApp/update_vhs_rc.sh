@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo -n "Creating vhs.rc... "
-
 APP_VERSION="$1"
 CYGWIN_BIN="$2"
 
@@ -13,4 +11,4 @@ RC_VERSION=$(echo $APP_VERSION | $SED s/\\./,/g)
 
 $SED s/_FILEVERSION_/$RC_VERSION/g < "$PRO_PWD/vhs_rc.template" > "$PRO_PWD/vhs.rc"
 
-echo "done"
+echo "vhs.rc updated"

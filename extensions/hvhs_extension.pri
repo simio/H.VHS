@@ -1,4 +1,5 @@
-include( ../global.pri )
+APP_PRO_DIR = ..
+include( $$APP_PRO_DIR/global.pri )
 
 TEMPLATE = $$HVHS_EXTENSION_TEMPLATE
 QT = $$HVHS_EXTENSION_QT

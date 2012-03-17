@@ -4,23 +4,19 @@
 #
 #-------------------------------------------------
 
-include( ../global.pri )
+APP_PRO_DIR = ".."
+include( $$APP_PRO_DIR/global.pri )
 
 ## BUILD
 QT                 += core gui webkit network xml svg
 TARGET              = HuggpunktVHS
 TEMPLATE            = app
-TRACK_BUILD_NUMBER  = true
 
 VERSION             = $$APP_VERSION
 TRANSLATIONS        = hvhs_sv.ts qt_sv.ts
 
 QMAKE_CXXFLAGS     += -DAPP_VER=\\\"$$VERSION\\\"
 
-## PORTABILITY
-
-# Windows
-CYGWIN_BIN = c:/Cygwin/bin
 
 ## DEPLOYMENT
 include( ../deploy.pri )
@@ -30,7 +26,7 @@ target.path = $$DEPLOY_DIST_DIR
 win32 {
     CYGWIN_PRO_FILE_PWD = $$replace(_PRO_FILE_PWD_, "C:", "/cygdrive/c")
     winrc.target = vhs.rc
-    winrc.commands = $${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/make_vhs_rc.sh'" $$VERSION $$CYGWIN_BIN
+    winrc.commands = $${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/update_vhs_rc.sh'" $$VERSION $$CYGWIN_BIN
     winrc.depends = FORCE
 
     PRE_TARGETDEPS += vhs.rc
@@ -42,6 +38,7 @@ presets.files = presets
 presets.path = $$DEPLOY_DIST_DIR
 
 INSTALLS += presets
+
 
 ## PROJECT
 SOURCES += \
@@ -94,7 +91,7 @@ OTHER_FILES += \
     presets/format.xml \
     presets/transport.xml \
     vhs_rc.template \
-    make_vhs_rc.sh
+    update_vhs_rc.sh
 
 RESOURCES += \
     vhs.qrc

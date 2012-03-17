@@ -14,38 +14,18 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MEDIA_H
-#define MEDIA_H
+#include "extensionreader.h"
 
-// Media types: "QTextStream", "QDataStream", "http", "https", "ftp", "rtmp", "rtmpe", "FileProtocol", "LocalFile", etc
+namespace VhsXml {
 
-#include <QObject>
-#include <QDateTime>
-
-#include "main.h"
-
-class MediaDefinition : public QObject
+ExtensionReader::ExtensionReader()
 {
-    Q_OBJECT
-public:
-    explicit MediaDefinition(QObject *parent = 0);
+}
 
-    QByteArray uid();
-    QString prettyName();
-    QDateTime dateTime();
+QList<Extension> ExtensionReader::getAll(const QDomDocument &document)
+{
+    QList<Extension> result;
+    return result;
+}
 
-    void setUid(QByteArray uid);
-    void setPrettyName(QString prettyName);
-    void setDateTime(QDateTime dateTime);
-
-signals:
-
-public slots:
-
-private:
-    QByteArray _uid;            // Used in extensions
-    QString _prettyName;        // Defaults to _uid
-    QDateTime _dateTime;
-};
-
-#endif // MEDIA_H
+} // namespace VhsXml

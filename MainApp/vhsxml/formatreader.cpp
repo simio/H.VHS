@@ -14,10 +14,18 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#include "formatreader.h"
 
-#include "config/configuration.h"
-#include "config/messagehandler.h"
+namespace VhsXml {
 
-#endif // MAIN_H
+FormatReader::FormatReader()
+{
+}
+
+QList<FormatDefinition> FormatReader::getAll(const QDomDocument &document)
+{
+    QList<FormatDefinition> result;
+    return result;
+}
+
+} // namespace VhsXml

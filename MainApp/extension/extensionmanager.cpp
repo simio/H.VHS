@@ -21,7 +21,7 @@ ExtensionManager *ExtensionManager::s_instance = NULL;
 ExtensionManager::ExtensionManager(QObject *parent) :
     QObject(parent)
 {
-    qDebug() << this->_loadAndMergeMediaDefinitions() << "media definitions loaded.";
+    qDebug() << this->_loadAndMergeTransportDefinitions() << "transport definitions loaded.";
     qDebug() << this->_loadAndMergeFormatDefinitions() << "format definitions loaded.";
     qDebug() << this->_loadAndMergeExtensions() << "extensions loaded.";
 }
@@ -39,11 +39,11 @@ int ExtensionManager::count()
     return this->_extensions.count();
 }
 
-int ExtensionManager::_loadAndMergeMediaDefinitions()
+int ExtensionManager::_loadAndMergeTransportDefinitions()
 {
     QList<QString> locations;
-    locations << Configuration::pointer()->getStorageLocation(Configuration::SystemMediaDefinitionStorageLocation)
-              << Configuration::pointer()->getStorageLocation(Configuration::UserMediaDefinitionStorageLocation);
+    locations << Configuration::pointer()->getStorageLocation(Configuration::SystemTransportDefinitionStorageLocation)
+              << Configuration::pointer()->getStorageLocation(Configuration::UserTransportDefinitionStorageLocation);
 
     QString path;
     foreach (path, locations)
@@ -51,38 +51,37 @@ int ExtensionManager::_loadAndMergeMediaDefinitions()
         QPointer<QFile> file = new QFile(path);
         if (file->exists())
         {
-            qDebug() << "Reading MediaDefinitions from:" << path;
-            VhsXml mediaFile(file);
-            QList< QPointer<MediaDefinition> > newMedia = mediaFile.getMediaDefinitions();
-            QPointer<MediaDefinition> newMedium;
-            foreach(newMedium, newMedia)
+            VhsXml::Reader transportFile(file);
+            QList<TransportDefinition> newTransports = transportFile.getTransports();
+            TransportDefinition newTransport;
+            foreach(newTransport, newTransports)
             {
-                QByteArray uid = newMedium->uid();
-                if (! this->_media.contains(uid))
+                QByteArray uid = newTransport.uid();
+                if (! this->_transports.contains(uid))
                 {
-                    // Medium is not yet known, so add it
-                    qDebug() << "Found previously unknown medium definition:" << uid << "(adding)";
-                    this->_media.insert(uid, newMedium);
+                    // Transport is not yet known, so add it
+                    qDebug() << "Found previously unknown transport definition:" << uid << "(adding)";
+                    this->_transports.insert(uid, newTransport);
                 }
-                else if (this->_media.value(uid)->dateTime() > newMedium->dateTime())
+                else if (this->_transports.value(uid).dateTime() > newTransport.dateTime())
                 {
                     // A newer definition is already known, so delete the one we just got.
-                    qDebug() << "Found older definition of already known medium:" << uid << "(deleting)";
-                    delete newMedium;
+                    qDebug() << "Found older definition of already known transport:" << uid << "(deleting)";
+                    //delete newTransport;
                 }
                 else
                 {
                     // An older definition is known. Delete the old one and replace it with the new one.
-                    qDebug() << "Found newer definition of already known medium:" << uid << "(replacing)";
-                    delete this->_media.take(uid);
-                    this->_media.insert(uid, newMedium);
+                    qDebug() << "Found newer definition of already known transport:" << uid << "(replacing)";
+                    //delete this->_transports.take(uid);
+                    this->_transports.insert(uid, newTransport);
                 }
             }
         }
         delete file;
     }
 
-    return this->_media.size();
+    return this->_transports.size();
 }
 
 int ExtensionManager::_loadAndMergeFormatDefinitions()
@@ -97,30 +96,29 @@ int ExtensionManager::_loadAndMergeFormatDefinitions()
         QPointer<QFile> file = new QFile(path);
         if (file->exists())
         {
-            qDebug() << "Reading FormatDefinitions from:" << path;
-            VhsXml formatsFile(file);
-            QList< QPointer<FormatDefinition> > newFormats = formatsFile.getFormatDefinitions();
-            QPointer<FormatDefinition> newFormat;
+            VhsXml::Reader formatsFile(file);
+            QList<FormatDefinition> newFormats = formatsFile.getFormats();
+            FormatDefinition newFormat;
             foreach(newFormat, newFormats)
             {
-                QByteArray uid = newFormat->uid();
+                QByteArray uid = newFormat.uid();
                 if (! this->_formats.contains(uid))
                 {
                     // Format is not yet known, so add it
                     qDebug() << "Found previously unknown format definition:" << uid << "(adding)";
                     this->_formats.insert(uid, newFormat);
                 }
-                else if (this->_formats.value(uid)->dateTime() > newFormat->dateTime())
+                else if (this->_formats.value(uid).dateTime() > newFormat.dateTime())
                 {
                     // A newer definition is already known, so delete the one we just got.
                     qDebug() << "Found older definition of already known format:" << uid << "(deleting)";
-                    delete newFormat;
+                    //delete newFormat;
                 }
                 else
                 {
                     // An older definition is known. Delete the old one and replace it with the new one.
                     qDebug() << "Found newer definition of already known format:" << uid << "(replacing)";
-                    delete this->_formats.take(uid);
+                    //delete this->_formats.take(uid);
                     this->_formats.insert(uid, newFormat);
                 }
             }
@@ -155,31 +153,30 @@ int ExtensionManager::_loadAndMergeExtensions()
                     QFileInfo fileInfo(QDir::toNativeSeparators(dir.filePath() + "/" + dir.fileName() + ".xml"));
                     if (fileInfo.isFile())
                     {
-                        qDebug() << "Found extension definition file:" << fileInfo.absoluteFilePath();
                         QPointer<QFile> file = new QFile(fileInfo.absoluteFilePath());
-                        VhsXml extensionsFile(file);
-                        QList< QPointer<Extension> > newExtensions = extensionsFile.getExtensions();
-                        QPointer<Extension> newExtension;
+                        VhsXml::Reader extensionsFile(file);
+                        QList<Extension> newExtensions = extensionsFile.getExtensions();
+                        Extension newExtension;
                         foreach(newExtension, newExtensions)
                         {
-                            QByteArray uid = newExtension->uid();
+                            QByteArray uid = newExtension.uid();
                             if (! this->_extensions.contains(uid))
                             {
                                 // Extension is not yet known, so add it
                                 qDebug() << "Found previously unknown extension:" << uid << "(adding)";
                                 this->_extensions.insert(uid, newExtension);
                             }
-                            else if (this->_extensions.value(uid)->version() > newExtension->version())
+                            else if (this->_extensions.value(uid).version() > newExtension.version())
                             {
                                 // A newer version of this extension is already known, so delete the one we just got.
                                 qDebug() << "Found older version of already known extension:" << uid << "(deleting)";
-                                delete newExtension;
+                                //delete newExtension;
                             }
                             else
                             {
                                 // An older definition is known. Delete the old one and replace it with the new one.
                                 qDebug() << "Found newer version of already known extension:" << uid << "(replacing)";
-                                delete this->_extensions.take(uid);
+                                //delete this->_extensions.take(uid);
                                 this->_extensions.insert(uid, newExtension);
                             }
                         }

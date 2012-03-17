@@ -48,8 +48,8 @@ public:
         FaviconStorageLocation,
         SystemExtensionsStorageLocation,
         UserExtensionsStorageLocation,
-        SystemMediaDefinitionStorageLocation,
-        UserMediaDefinitionStorageLocation,
+        SystemTransportDefinitionStorageLocation,
+        UserTransportDefinitionStorageLocation,
         SystemFormatDefinitionStorageLocation,
         UserFormatDefinitionStorageLocation,
     };

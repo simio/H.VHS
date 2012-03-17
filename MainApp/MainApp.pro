@@ -22,40 +22,48 @@ include( ../deploy.pri )
 
 target.path = $$DEPLOY_DIST_DIR
 
-copyfiles.files = conf
-copyfiles.path = $$DEPLOY_DIST_DIR
+copyfiles.files = $$files(prebuilt_xml/*.xml)
+copyfiles.path = $$DEPLOY_DIST_DIR/conf
 
 INSTALLS += copyfiles
 
 ## PROJECT
 SOURCES += main.cpp\
-    webwindow.cpp \
-    messagehandler.cpp \
-    portability.cpp \
     consolewindow.cpp \
-    webbrowsercombobox.cpp \
-    webview.cpp \
-    configuration.cpp \
-    webwindowguisetup.cpp \
-    extensionmanager.cpp \
-    extension.cpp \
-    mediadefinition.cpp \
-    formatdefinition.cpp \
-    vhsxml.cpp
+    vhsxml/reader.cpp \
+    vhsxml/transportreader.cpp \
+    vhsxml/formatreader.cpp \
+    vhsxml/cassettereader.cpp \
+    vhsxml/extensionreader.cpp \
+    extension/extension.cpp \
+    extension/extensionmanager.cpp \
+    extension/formatdefinition.cpp \
+    extension/transportdefinition.cpp \
+    browser/webbrowsercombobox.cpp \
+    browser/webview.cpp \
+    browser/webwindowguisetup.cpp \
+    webwindow.cpp \
+    config/configuration.cpp \
+    config/messagehandler.cpp \
+    config/portability.cpp
 
 HEADERS  += webwindow.h \
-    messagehandler.h \
-    portability.h \
     consolewindow.h \
     main.h \
-    webbrowsercombobox.h \
-    webview.h \
-    configuration.h \
-    extensionmanager.h \
-    extension.h \
-    mediadefinition.h \
-    formatdefinition.h \
-    vhsxml.h
+    vhsxml/reader.h \
+    vhsxml/transportreader.h \
+    vhsxml/formatreader.h \
+    vhsxml/cassettereader.h \
+    vhsxml/extensionreader.h \
+    extension/extension.h \
+    extension/extensionmanager.h \
+    extension/formatdefinition.h \
+    extension/transportdefinition.h \
+    browser/webbrowsercombobox.h \
+    browser/webview.h \
+    config/configuration.h \
+    config/messagehandler.h \
+    config/portability.h
 
 FORMS    += webwindow.ui \
     consolewindow.ui
@@ -65,8 +73,8 @@ win32:RC_FILE = VHS4.rc
 OTHER_FILES += \
     vhs4.rc \
     README \
-    conf/media.xml \
-    conf/format.xml
+    prebuilt_xml/format.xml \
+    prebuilt_xml/transport.xml
 
 RESOURCES += \
     vhs4.qrc

@@ -14,45 +14,26 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONMANAGER_H
-#define EXTENSIONMANAGER_H
+#ifndef VHSXML_FORMATREADER_H
+#define VHSXML_FORMATREADER_H
 
-#include <QObject>
 #include <QList>
-#include <QDirIterator>
-#include <QDateTime>
+#include <QPointer>
+#include <QDomDocument>
 
 #include "main.h"
+#include "extension/formatdefinition.h"
 
-#include "formatdefinition.h"
-#include "mediadefinition.h"
-#include "extension.h"
-#include "vhsxml.h"
+namespace VhsXml {
 
-class ExtensionManager : public QObject
+class FormatReader
 {
-    Q_OBJECT
 public:
-    explicit ExtensionManager(QObject *parent = 0);
-    static ExtensionManager *pointer();
+    FormatReader();
 
-    int count();
-
-signals:
-
-public slots:
-
-private:
-    static ExtensionManager *s_instance;
-
-    int _loadAndMergeMediaDefinitions();
-    int _loadAndMergeFormatDefinitions();
-    int _loadAndMergeExtensions();
-
-    QHash< QByteArray, QPointer<Extension> > _extensions;
-    QHash< QByteArray, QPointer<FormatDefinition> > _formats;
-    QHash< QByteArray, QPointer<MediaDefinition> > _media;
-
+    static QList<FormatDefinition> getAll(const QDomDocument &document);
 };
 
-#endif // EXTENSIONMANAGER_H
+} // namespace VhsXml
+
+#endif // VHSXML_FORMATREADER_H

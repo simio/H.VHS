@@ -14,10 +14,26 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef VHSXML_CASSETTEREADER_H
+#define VHSXML_CASSETTEREADER_H
 
-#include "config/configuration.h"
-#include "config/messagehandler.h"
+#include <QList>
+#include <QPointer>
+#include <QDomDocument>
 
-#endif // MAIN_H
+#include "main.h"
+//#include "cassettereader.h"
+
+namespace VhsXml {
+
+class CassetteReader
+{
+public:
+    CassetteReader();
+
+    //static QList< QPointer<Cassette> > getAll(const QDomDocument &document);
+};
+
+} // namespace VhsXml
+
+#endif // VHSXML_CASSETTEREADER_H

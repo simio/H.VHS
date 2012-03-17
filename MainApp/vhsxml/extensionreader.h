@@ -14,10 +14,26 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef VHSXML_EXTENSIONREADER_H
+#define VHSXML_EXTENSIONREADER_H
 
-#include "config/configuration.h"
-#include "config/messagehandler.h"
+#include <QList>
+#include <QPointer>
+#include <QDomDocument>
 
-#endif // MAIN_H
+#include "main.h"
+#include "extension/extension.h"
+
+namespace VhsXml {
+
+class ExtensionReader
+{
+public:
+    ExtensionReader();
+
+    static QList<Extension> getAll(const QDomDocument &document);
+};
+
+} // namespace VhsXml
+
+#endif // VHSXML_EXTENSIONREADER_H

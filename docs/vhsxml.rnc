@@ -1,0 +1,140 @@
+default namespace huggplay = "http://play.huggpunkt.org/vhsxml/1"
+
+grammar { 
+    start =
+        element vhsxml {
+            attribute version { "2.0" },
+            ( transportDefinitions?
+                & formatDefinitions?
+                & extensions?
+                & cassettes? )
+        }
+    
+    #
+    #  TRANSPOR DEFINITIONS
+    #
+    transportDefinitions =
+        element transportDefinitions { transportDefinition+ }
+    transportDefinition =
+        element transportDefinition {
+            timestampedId,
+            i18nName,
+            i18nDesc
+        }
+    
+    #
+    #  STREAM/FILE FORMAT DEFINITIONS
+    #
+    formatDefinitions =
+        element formatDefinitions { formatDefinition+ }
+    formatDefinition = 
+        element formatDefinition {
+            timestampedId,
+            i18nName,
+            i18nDesc,
+            element completeness { "any" | "empty" | "notEmpty" | "metaOnly" | "dataOnly" | "complete" },
+            mimeType
+        }
+    
+    #
+    #  H.VHS EXTENSIONS
+    #
+    extensions =
+        element extensions { extension+ }
+    extension =
+        element extension {
+            versionedId,
+            i18nName+,
+            i18nDesc*,
+            author?,
+            element enabled { "true" | "false" },
+            (externalImplementation | internalImplementation),
+            element input {
+                element transport { xsd:NMTOKEN }+,
+                element format { xsd:NMTOKEN }+
+            },
+            element output {
+                element transport { xsd:NMTOKEN }+,
+                element format { xsd:NMTOKEN }+
+            },
+            transportDefinitions?,
+            formatDefinitions?
+        }
+    externalImplementation =
+        element implementation {
+            attribute type { "qtdll" | "vhscheme" | "vhscript" },
+            attribute src { xsd:anyURI },
+            empty
+        }
+    internalImplementation =
+        element implementation {
+            attribute type { "vhscheme" | "vhscript" },
+            xsd:string
+        }
+        
+    #
+    #  CASSETTES (stub)
+    #
+    # Glöm inte "<![CDATA[xxx]]>"
+    cassettes = element cassettes { cassette+ }
+    cassette =
+        element cassette {
+            timestampedId,
+            ( internalTypedContent | externalTypedContent )
+        }
+        
+    internalTypedContent =
+        element content {
+            attribute mimeType { xsd:token },
+            xsd:base64Binary
+        }
+    externalTypedContent =
+        element content {
+            attribute mimeType { xsd:token },
+            attribute src { xsd:anyURI },
+            empty
+        }
+    
+    #
+    #  DATA TYPES
+    #
+    timestampedId = 
+        element id {
+            attribute asOf { xsd:dateTime },
+            xsd:NMTOKEN
+        }
+    versionedId =
+        element id {
+            attribute version { xsd:integer },
+            xsd:NMTOKEN
+        }
+    i18nName =
+        element name {
+            attribute xml:lang { "en" },
+            xsd:token
+        }
+        & element name {
+            attribute xml:lang { xsd:language },
+            xsd:token
+        }*
+    i18nDesc =
+        element description {
+            attribute xml:lang { "en" },
+            xsd:token
+        }?
+        & element description {
+            attribute xml:lang { xsd:language },
+            xsd:token
+        }*
+    author =
+        element author {
+            attribute email { xsd:token },
+            attribute website { xsd:anyURI },
+            xsd:token
+        }
+    mimeType =
+        element mimeType { xsd:token },
+        element alternateMimeTypes {
+          element mimeType { xsd:token }+
+        }?
+}

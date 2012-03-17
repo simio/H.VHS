@@ -29,6 +29,8 @@ class FormatDefinition : public QObject
     Q_OBJECT
 public:
     explicit FormatDefinition(QObject *parent = 0);
+    FormatDefinition(const FormatDefinition &original, QObject *parent = 0);
+    FormatDefinition &operator=(const FormatDefinition &original);
 
     enum ContentType {
         Unknown,
@@ -39,10 +41,10 @@ public:
         Complete            // Contains a complete file
     };
 
-    QByteArray uid();
-    QString prettyName();
-    ContentType contentType();
-    QDateTime dateTime();
+    QByteArray uid() const;
+    QString prettyName() const;
+    ContentType contentType() const;
+    QDateTime dateTime() const;
 
     void setUid(QByteArray uid);
     void setPrettyName(QString prettyName);

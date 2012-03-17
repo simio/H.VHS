@@ -25,7 +25,7 @@
 
 #include "main.h"
 
-#include "mediadefinition.h"
+#include "transportdefinition.h"
 #include "formatdefinition.h"
 
 class Extension : public QObject
@@ -33,14 +33,17 @@ class Extension : public QObject
     Q_OBJECT
 public:
     explicit Extension(QObject *parent = 0);
+    Extension(const Extension &original, QObject *parent = 0);
+    Extension &operator=(const Extension &original);
 
-    QPointer<QDataStream> createWriter(QByteArray outputMedia, QByteArray outputFormat, QByteArray outputIdentifier);
-    QPointer<QDataStream> createReader(QByteArray inputMedia, QByteArray inputFormat, QByteArray inputIdentifier);
+    QPointer<QDataStream> createWriter(QByteArray outputTransports, QByteArray outputFormat, QByteArray outputIdentifier);
+    QPointer<QDataStream> createReader(QByteArray inputTransports, QByteArray inputFormat, QByteArray inputIdentifier);
 
-    QByteArray uid();
-    QVariant info(QString key, QVariant defaultValue = QVariant());
-    QString basePath();
-    int version();
+    QByteArray uid() const;
+    QVariant info(QString key, QVariant defaultValue = QVariant()) const;
+    QString basePath() const;
+    int version() const;
+
     void setUid(QByteArray uid);
     void addInfo(QString key, QVariant defaultValue = QVariant());
     void setBasePath(QString basePath);
@@ -48,19 +51,19 @@ public:
 
     bool setup();
 
-    bool canWriteFormat(QByteArray uid);
-    bool canReadFormat(QByteArray uid);
-    bool canWriteMedia(QByteArray uid);
-    bool canReadMedia(QByteArray uid);
+    bool canWriteFormat(QByteArray uid) const;
+    bool canReadFormat(QByteArray uid) const;
+    bool canWriteTransport(QByteArray uid) const;
+    bool canReadTransport(QByteArray uid) const;
 
-    QList<QByteArray> inputMedia();
-    QList<QByteArray> inputFormats();
-    QList<QByteArray> outputMedia();
-    QList<QByteArray> outputFormats();
+    QList<QByteArray> inputTransports() const;
+    QList<QByteArray> inputFormats() const;
+    QList<QByteArray> outputTransports() const;
+    QList<QByteArray> outputFormats() const;
 
-    void addInputMedia(QList<QByteArray> media);
+    void addInputTransports(QList<QByteArray> transport);
     void addInputFormats(QList<QByteArray> format);
-    void addOutputMedia(QList<QByteArray> media);
+    void addOutputTransports(QList<QByteArray> transport);
     void addOutputFormats(QList<QByteArray> format);
 
 signals:
@@ -68,20 +71,21 @@ signals:
 public slots:
 
 private:
+    bool _setup();
+    bool _isReady() const;
+
     QByteArray _uid;
-    QMap<QString,QVariant> _info;
     QString _basePath;
     int _version;
 
-    bool _setup();
-    bool _isReady();
-    QMap<QString,QVariant> _setupData;
+    QMap<QString,QVariant> _info;
 
-
-    QList<QByteArray> _inputMedia;
+    QList<QByteArray> _inputTransports;
     QList<QByteArray> _inputFormats;
-    QList<QByteArray> _outputMedia;
+    QList<QByteArray> _outputTransports;
     QList<QByteArray> _outputFormats;
+
+    QMap<QString,QVariant> _setupData;
 };
 
 #endif // EXTENSION_H

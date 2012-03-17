@@ -34,7 +34,6 @@ Configuration::Configuration()
 
     this->_settings = new QSettings(Portability::pointer()->userIniFilePath("hvhs.ini"), QSettings::IniFormat, 0);
     this->_settings->setIniCodec("UTF-8");
-    qDebug() << "Using INI-file at" << this->_settings->fileName();
 }
 
 void Configuration::setWriteBlock(bool blocked)
@@ -151,9 +150,9 @@ QString Configuration::getStorageLocation(StorageLocation location)
                                                             /* NOTREACHED */
     case UserExtensionsStorageLocation:                     return Portability::pointer()->userExtensionPath();
                                                             /* NOTREACHED */
-    case SystemMediaDefinitionStorageLocation:              return Portability::pointer()->systemConfPath("media.xml");
+    case SystemTransportDefinitionStorageLocation:              return Portability::pointer()->systemConfPath("transport.xml");
                                                             /* NOTREACHED */
-    case UserMediaDefinitionStorageLocation:                return Portability::pointer()->userConfPath("media.xml");
+    case UserTransportDefinitionStorageLocation:                return Portability::pointer()->userConfPath("transport.xml");
                                                             /* NOTREACHED */
     case SystemFormatDefinitionStorageLocation:             return Portability::pointer()->systemConfPath("format.xml");
                                                             /* NOTREACHED */

@@ -14,10 +14,12 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#include "cassettereader.h"
 
-#include "config/configuration.h"
-#include "config/messagehandler.h"
+namespace VhsXml {
 
-#endif // MAIN_H
+CassetteReader::CassetteReader()
+{
+}
+
+} // namespace VhsXml

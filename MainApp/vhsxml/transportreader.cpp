@@ -14,10 +14,18 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#include "vhsxml/transportreader.h"
 
-#include "config/configuration.h"
-#include "config/messagehandler.h"
+namespace VhsXml {
 
-#endif // MAIN_H
+TransportReader::TransportReader()
+{
+}
+
+QList<TransportDefinition> TransportReader::getAll(const QDomDocument &document)
+{
+    QList<TransportDefinition> result;
+    return result;
+}
+
+} // namespace VhsXml

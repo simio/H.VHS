@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<vhsxml version="1.1" xmlns="http://play.huggpunkt.org/vhsxml/1">
+    <formatDefinitions>
+        <formatDefinition>
+            <id asOf="2012-03-15T10:57:24">any</id>
+            <name xml:lan="en">Unidentified data</name>
+            <name xml:lan="sv">Oidentifierad data</name>
+            <completeness>any</completeness>
+        </formatDefinition>
+        <formatDefinition>
+            <id asOf="2012-03-15T10:57:24">copy</id>
+            <name xml:lan="en">Copy of input stream</name>
+            <name xml:lan="sv">Kopia av inström</name>
+            <completeness>any</completeness>
+        </formatDefinition>
+        <formatDefinition>
+            <id asOf="2012-03-15T10:57:24">internal</id>
+            <name xml:lan="en">Internal representation</name>
+            <name xml:lan="sv">Intern datarepresentation</name>
+            <completeness>metaOnly</completeness>
+        </formatDefinition>
+        <formatDefinition>
+            <id asOf="2012-03-15T10:57:24">website</id>
+            <name xml:lan="en">Website</name>
+            <name xml:lan="sv">Webbsajt</name>
+            <completeness>metaOnly</completeness>
+            <mimeType>text/url</mimeType>
+        </formatDefinition>
+        <formatDefinition>
+            <id asOf="2012-03-15T10:57:24">vhsxml</id>
+            <name xml:lan="en">VhsXml</name>
+            <completeness>metaOnly</completeness>
+            <mimeType>text/xml</mimeType>
+        </formatDefinition>
+        <formatDefinition>
+            <id asOf="2012-03-15T10:57:24">vhsexpr</id>
+            <name xml:lan="en">VhsExpr</name>
+            <completeness>metaOnly</completeness>
+            <mimeType>text/x-script.scheme</mimeType>
+        </formatDefinition>
+        <formatDefinition>
+            <id asOf="2012-03-15T10:57:24">vhsexpr</id>
+            <name xml:lan="en">Vhscript</name>
+            <completeness>metaOnly</completeness>
+            <mimeType>application/javascript</mimeType>
+            <alternateMimeTypes>
+                <mimeType>text/javascript</mimeType>
+            </alternateMimeTypes>
+        </formatDefinition>
+        <formatDefinition>
+            <id asOf="2012-03-15T10:57:24">flv</id>
+            <name xml:lan="en">Flash Video</name>
+            <name xml:lan="sv">Flash-video</name>
+            <description xml:lan="en">Video and/or audio in Flash Video container (.flv).</description>
+            <description xml:lan="sv">Video och eller ljud i Flash Video-container (.flv).</description>
+            <completeness>complete</completeness>
+            <mimeType>video/x-flv</mimeType>
+        </formatDefinition>
+        <formatDefinition>
+            <id asOf="2012-03-15T10:57:24">srt</id>
+            <name xml:lan="en">SubRip subtitles</name>
+            <name xml:lan="sv">SubRip-undertexter</name>
+            <description xml:lan="en">SubRip formatted subtitles (.srt).</description>
+            <description xml:lan="sv">Undertexter i SubRip-format (.srt).</description>
+            <completeness>complete</completeness>
+            <mimeType prefer="yes">text/srt</mimeType>
+            <alternateMimeTypes>
+                <mimeType>application/x-subrip</mimeType>
+            </alternateMimeTypes>
+        </formatDefinition>
+    </formatDefinitions>
+</vhsxml>

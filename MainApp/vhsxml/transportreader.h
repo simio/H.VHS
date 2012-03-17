@@ -14,10 +14,26 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef VHSXMLTRANSPORTREADER_H
+#define VHSXMLTRANSPORTREADER_H
 
-#include "config/configuration.h"
-#include "config/messagehandler.h"
+#include <QList>
+#include <QPointer>
+#include <QDomDocument>
 
-#endif // MAIN_H
+#include "main.h"
+#include "extension/transportdefinition.h"
+
+namespace VhsXml {
+
+class TransportReader
+{
+public:
+    TransportReader();
+
+    static QList<TransportDefinition> getAll(const QDomDocument &document);
+};
+
+} // namespace VhsXml
+
+#endif // VHSXMLTRANSPORTREADER_H

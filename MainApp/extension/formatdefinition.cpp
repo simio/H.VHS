@@ -25,10 +25,26 @@ FormatDefinition::FormatDefinition(QObject *parent) :
     this->_dateTime = QDateTime();
 }
 
-QByteArray FormatDefinition::uid()                                                  { return this->_uid; }
-QString FormatDefinition::prettyName()                                              { return this->_prettyName; }
-FormatDefinition::ContentType FormatDefinition::contentType()                       { return this->_contentType; }
-QDateTime FormatDefinition::dateTime()                                              { return this->_dateTime; }
+FormatDefinition::FormatDefinition(const FormatDefinition &original, QObject *parent) :
+    QObject(parent),
+    _uid(original._uid),
+    _prettyName(original._prettyName),
+    _contentType(original._contentType),
+    _dateTime(original._dateTime) { }
+
+FormatDefinition &FormatDefinition::operator =(const FormatDefinition &original)
+{
+    this->_uid = original._uid;
+    this->_prettyName = original._prettyName;
+    this->_contentType = original._contentType;
+    this->_dateTime = original._dateTime;
+    return *this;
+}
+
+QByteArray FormatDefinition::uid() const                                            { return this->_uid; }
+QString FormatDefinition::prettyName() const                                        { return this->_prettyName; }
+FormatDefinition::ContentType FormatDefinition::contentType() const                 { return this->_contentType; }
+QDateTime FormatDefinition::dateTime() const                                        { return this->_dateTime; }
 
 void FormatDefinition::setUid(QByteArray uid)                                       { this->_uid = uid; }
 void FormatDefinition::setPrettyName(QString prettyName)                            { this->_prettyName = prettyName; }

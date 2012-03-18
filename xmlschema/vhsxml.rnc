@@ -100,11 +100,16 @@ grammar {
     #  DATA TYPES
     #
     timestampedId =
+	# asOf must use ISO Date format:
+	#	i.e. 2012-03-15T10:57:24
+	#	or
+	#	2012-03-15T10:57:24+0100
         element id {
             attribute asOf { xsd:dateTime },
             xsd:NMTOKEN
         }
     i18nName =
+	# Parsers may read only one language
         element name {
             attribute xml:lang { "en" },
             xsd:token
@@ -114,6 +119,7 @@ grammar {
             xsd:token
         }*
     i18nDesc =
+	# Parsers may read only one language
         element description {
             attribute xml:lang { "en" },
             xsd:token
@@ -124,13 +130,13 @@ grammar {
         }*
     author =
         element author {
-            attribute email { xsd:token },
-            attribute website { xsd:anyURI },
+            attribute email { xsd:token }?,
+            attribute website { xsd:anyURI }?,
             xsd:token
         }
     mimeType =
-        element mimeType { xsd:token },
-        element alternateMimeTypes {
+        # MIME types are in priority order.
+        element mimeTypes {
           element mimeType { xsd:token }+
         }?
 }

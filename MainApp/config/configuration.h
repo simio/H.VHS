@@ -50,12 +50,10 @@ public:
 
     enum StorageLocation {
         FaviconStorageLocation,
-        SystemExtensionsStorageLocation,
-        UserExtensionsStorageLocation,
-        SystemTransportDefinitionStorageLocation,
-        UserTransportDefinitionStorageLocation,
-        SystemFormatDefinitionStorageLocation,
-        UserFormatDefinitionStorageLocation
+        SystemPresetsLocation,
+        UserPresetsLocation,
+        SystemExtensionsLocation,
+        UserExtensionsLocation
     };
 
     QString appName(bool full = false);

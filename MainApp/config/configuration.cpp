@@ -168,47 +168,31 @@ QUrl Configuration::makeSearchUrl(QString query)
 QFileInfo Configuration::getStorageLocation(StorageLocation type)
 {
     QFileInfo location;
-    QString filename;
     switch (type)
     {
     case FaviconStorageLocation:
         location = QFileInfo(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
         break;
-    case SystemExtensionsStorageLocation:
+    case SystemExtensionsLocation:
         location = SystemDependent::pointer()->extensionsDir(SystemDependent::System);
         break;
-    case UserExtensionsStorageLocation:
+    case UserExtensionsLocation:
         location = SystemDependent::pointer()->extensionsDir(SystemDependent::User);
         break;
-    case SystemTransportDefinitionStorageLocation:
+    case SystemPresetsLocation:
         location = SystemDependent::pointer()->presetsDir(SystemDependent::System);
-        filename = "transport.xml";
         break;
-    case UserTransportDefinitionStorageLocation:
+    case UserPresetsLocation:
         location = SystemDependent::pointer()->presetsDir(SystemDependent::User);
-        filename = "transport.xml";
-        break;
-    case SystemFormatDefinitionStorageLocation:
-        location = SystemDependent::pointer()->presetsDir(SystemDependent::System);
-        filename = "format.xml";
-        break;
-    case UserFormatDefinitionStorageLocation:
-        location = SystemDependent::pointer()->presetsDir(SystemDependent::User);
-        filename = "format.xml";
         break;
     default:
         return QFileInfo();
     }
 
-    if (! filename.isEmpty())
-    {
-        if (location.isDir())
-            location = QFileInfo(location.canonicalFilePath() + "/" + filename);
-        else if (location.exists())
-            qWarning() << "Configuration::getStorateLocation(): path component"
-                       << location.filePath() << "is an existing non-directory and cannot contain files."
-                       << "(Filename:" << filename << ")";
-    }
+    if (! location.isDir() && location.exists())
+        qWarning() << "Configuration::getStorateLocation(): path component"
+                   << location.filePath() << "is an existing non-directory and cannot contain files."
+                   << "(Filename:" << filename << ")";
 
     return location;
 }

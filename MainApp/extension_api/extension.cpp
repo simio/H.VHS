@@ -26,47 +26,28 @@ Extension::Extension(const Extension &original, QObject *parent) :
     Definition(original, parent),
     _basePath(original._basePath),
     _info(original._info),
-    _inputTransports(original._inputTransports),
-    _inputFormats(original._inputFormats),
-    _outputTransports(original._outputTransports),
-    _outputFormats(original._outputFormats)
+    _readTransports(original._readTransports),
+    _readFormats(original._readFormats),
+    _writeTransports(original._writeTransports),
+    _writeFormats(original._writeFormats)
 { }
 
 Extension &Extension::operator=(const Extension &original)
 {
     this->_basePath = original._basePath;
     this->_info = original._info;
-    this->_inputTransports = original._inputTransports;
-    this->_inputFormats = original._inputFormats;
-    this->_outputTransports = original._outputTransports;
-    this->_outputFormats = original._outputFormats;
+    this->_readTransports = original._readTransports;
+    this->_readFormats = original._readFormats;
+    this->_writeTransports = original._writeTransports;
+    this->_writeFormats = original._writeFormats;
     return *this;
 }
 
-QVariant Extension::info(QString key, QVariant defaultValue) const      { return this->_info.value(key, defaultValue); }
-QString Extension::basePath() const                                     { return this->_basePath; }
-
-void Extension::addInfo(QString key, QVariant value)                    { this->_info.insert(key, value); }
-void Extension::setBasePath(QString basePath)                           { this->_basePath = basePath; }
-
-bool Extension::setup()                                                 { return this->_setup(); }
-
-bool Extension::canWriteFormat(QByteArray uid) const                    { return this->_outputFormats.contains(uid); }
-bool Extension::canReadFormat(QByteArray uid) const                     { return this->_inputFormats.contains(uid); }
-bool Extension::canWriteTransport(QByteArray uid) const                 { return this->_outputTransports.contains(uid); }
-bool Extension::canReadTransport(QByteArray uid) const                  { return this->_inputTransports.contains(uid); }
-
-QList<QByteArray> Extension::inputTransports() const                    { return this->_inputTransports; }
-QList<QByteArray> Extension::inputFormats() const                       { return this->_inputFormats; }
-QList<QByteArray> Extension::outputTransports() const                   { return this->_outputTransports; }
-QList<QByteArray> Extension::outputFormats() const                      { return this->_outputFormats; }
-
-void Extension::addInputTransports(QList<QByteArray> transport)         { this->_inputTransports.append(transport); }
-void Extension::addInputFormats(QList<QByteArray> format)               { this->_inputFormats.append(format); }
-void Extension::addOutputTransports(QList<QByteArray> transport)        { this->_outputTransports.append(transport); }
-void Extension::addOutputFormats(QList<QByteArray> format)              { this->_outputFormats.append(format); }
-
-bool Extension::_isReady() const                                        { return true; }
+bool Extension::_isReady() const
+{
+    // Fake it
+    return true;
+}
 
 bool Extension::_setup()
 {

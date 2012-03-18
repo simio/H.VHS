@@ -49,7 +49,7 @@ grammar {
             author?,
             element enabled { "true" | "false" },
             element stability { "broken" | "unstable" | "stable" | "testing" }?,
-            (externalImplementation | internalImplementation),
+            api,
             element input {
                 element transport { xsd:NMTOKEN }+,
                 element format { xsd:NMTOKEN }+
@@ -61,16 +61,14 @@ grammar {
             transportDefinitions?,
             formatDefinitions?
         }
-    externalImplementation =
-        element implementation {
-            attribute type { "qtdll" | "vhscheme" | "vhscript" },
-            attribute src { xsd:anyURI },
-            empty
-        }
-    internalImplementation =
-        element implementation {
-            attribute type { "vhscheme" | "vhscript" },
-            xsd:string
+    api =
+        element api {
+            attribute version { xsd:NMTOKEN },
+            (
+                ( attribute type { "api" }, empty )
+                | ( attribute type { "scheme" | "javascript" },
+                    ( ( attribute src { xsd:anyURI }, empty ) | xsd:string ) )
+            )
         }
 
     #
@@ -100,16 +98,16 @@ grammar {
     #  DATA TYPES
     #
     timestampedId =
-	# asOf must use ISO Date format:
-	#	i.e. 2012-03-15T10:57:24
-	#	or
-	#	2012-03-15T10:57:24+0100
+    # asOf must use ISO Date format:
+    #   i.e. 2012-03-15T10:57:24
+    #   or
+    #   2012-03-15T10:57:24+0100
         element id {
             attribute asOf { xsd:dateTime },
             xsd:NMTOKEN
         }
     i18nName =
-	# Parsers may read only one language
+    # Parsers may read only one language
         element name {
             attribute xml:lang { "en" },
             xsd:token
@@ -119,7 +117,7 @@ grammar {
             xsd:token
         }*
     i18nDesc =
-	# Parsers may read only one language
+    # Parsers may read only one language
         element description {
             attribute xml:lang { "en" },
             xsd:token

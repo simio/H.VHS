@@ -17,33 +17,25 @@
 #include "extension.h"
 
 Extension::Extension(QObject *parent) :
-    QObject(parent)
+    Definition(parent)
 {
-    this->_uid = QByteArray();
     this->_basePath = QString();
-    this->_version = -1;
 }
 
 Extension::Extension(const Extension &original, QObject *parent) :
-    QObject(parent),
-    _uid(original._uid),
+    Definition(original, parent),
     _basePath(original._basePath),
-    _version(original._version),
     _info(original._info),
     _inputTransports(original._inputTransports),
     _inputFormats(original._inputFormats),
     _outputTransports(original._outputTransports),
-    _outputFormats(original._outputFormats),
-    _setupData(original._setupData)
+    _outputFormats(original._outputFormats)
 { }
 
 Extension &Extension::operator=(const Extension &original)
 {
-    this->_uid = original._uid;
     this->_basePath = original._basePath;
-    this->_version = original._version;
     this->_info = original._info;
-    this->_setupData = original._setupData;
     this->_inputTransports = original._inputTransports;
     this->_inputFormats = original._inputFormats;
     this->_outputTransports = original._outputTransports;
@@ -51,15 +43,11 @@ Extension &Extension::operator=(const Extension &original)
     return *this;
 }
 
-QByteArray Extension::uid() const                                       { return this->_uid; }
 QVariant Extension::info(QString key, QVariant defaultValue) const      { return this->_info.value(key, defaultValue); }
 QString Extension::basePath() const                                     { return this->_basePath; }
-int Extension::version() const                                          { return this->_version; }
 
-void Extension::setUid(QByteArray uid)                                  { this->_uid = uid; }
 void Extension::addInfo(QString key, QVariant value)                    { this->_info.insert(key, value); }
 void Extension::setBasePath(QString basePath)                           { this->_basePath = basePath; }
-void Extension::setVersion(int version)                                 { this->_version = version; }
 
 bool Extension::setup()                                                 { return this->_setup(); }
 
@@ -78,32 +66,17 @@ void Extension::addInputFormats(QList<QByteArray> format)               { this->
 void Extension::addOutputTransports(QList<QByteArray> transport)        { this->_outputTransports.append(transport); }
 void Extension::addOutputFormats(QList<QByteArray> format)              { this->_outputFormats.append(format); }
 
-bool Extension::_isReady() const                                        { return (this->_setupData.size() > 0); }
+bool Extension::_isReady() const                                        { return true; }
 
 bool Extension::_setup()
 {
     if (this->_isReady())
         return true;
 
-    if (this->info("Implementation").toString().toLower() == "dll")
+    if (this->info("implementation").toString().toLower() == "dll")
     {
-        //this->_setupData.insert("dllFile", this->_findExtensionFile(this->uid(), ".dll"));
+        qDebug() << "Found DLL extension:" << this->info("name");
     }
-
-    qDebug() << "DLL location:" << this->_setupData.value("dllFile");
 
     return true;
 }
-
-
-/*
-QPointer<QDataStream> Extension::createWriter(QByteArray outputTransport, QByteArray outputFormat, QByteArray outputIdentifier)
-{
-
-}
-
-QPointer<QDataStream> Extension::createReader(QByteArray inputTransport, QByteArray inputFormat, QByteArray inputIdentifier)
-{
-
-}
-*/

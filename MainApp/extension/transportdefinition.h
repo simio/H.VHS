@@ -17,37 +17,23 @@
 #ifndef TRANSPORTDEFINITION_H
 #define TRANSPORTDEFINITION_H
 
-// Transport types: "QTextStream", "QDataStream", "http", "https", "ftp", "rtmp", "rtmpe", "FileProtocol", "LocalFile", etc
-
 #include <QObject>
 #include <QDateTime>
 
 #include "main.h"
+#include "definition.h"
 
-class TransportDefinition : public QObject
+class TransportDefinition : public Definition
 {
-    Q_OBJECT
 public:
     explicit TransportDefinition(QObject *parent = 0);
     TransportDefinition(const TransportDefinition &original, QObject *parent = 0);
-    TransportDefinition &operator=(const TransportDefinition &original);
-
-    QByteArray uid() const;
-    QString prettyName() const;
-    QDateTime dateTime() const;
-
-    void setUid(QByteArray uid);
-    void setPrettyName(QString prettyName);
-    void setDateTime(QDateTime dateTime);
 
 signals:
 
 public slots:
 
 private:
-    QByteArray _uid;            // Used in extensions
-    QString _prettyName;        // Defaults to _uid
-    QDateTime _dateTime;        // Up to date as of
 };
 
 #endif // TRANSPORTDEFINITION_H

@@ -17,51 +17,43 @@
 #ifndef FORMAT_H
 #define FORMAT_H
 
-// Format types: "Raw" (eg. any), "FLV", "VhsXml",
-
 #include <QObject>
 #include <QDateTime>
 
 #include "main.h"
 
-class FormatDefinition : public QObject
+#include "definition.h"
+
+class FormatDefinition : public Definition
 {
-    Q_OBJECT
 public:
     explicit FormatDefinition(QObject *parent = 0);
     FormatDefinition(const FormatDefinition &original, QObject *parent = 0);
     FormatDefinition &operator=(const FormatDefinition &original);
 
-    enum ContentType {
-        Unknown,
-        Empty,              // No data or metadata
-        Any,                // Any of the below
-        Meta,               // Contains all information necessary to access or build a complete file
-        Data,               // Does not contain enough all information necessary to access or build a complete file
+    enum Completeness {
+        NotEmpty,           // Format may not contain nothing
+        MetaOnly,           // Contains all information necessary to access and/or compile a complete file
+        DataOnly,           // Does not contain all information necessary to compile a complete file
         Complete            // Contains a complete file
     };
 
-    QByteArray uid() const;
-    QString prettyName() const;
-    ContentType contentType() const;
-    QDateTime dateTime() const;
+    // The MIME type list is prioritised. The first type is preferred for output.
+    QString mimeType(int index = 0) const;
+    QStringList mimeTypes() const;
+    void insertMimeType(int index, QString mimeType);
 
-    void setUid(QByteArray uid);
-    void setPrettyName(QString prettyName);
-    void setContentType(ContentType contentType);
-    void setContentType(QString contentType);
-    void setDateTime(QDateTime dateTime);
+    Completeness completeness() const;
+    void setCompleteness(Completeness c);
+    void setCompleteness(QString contentType);
 
 public slots:
 
 signals:
 
 private:
-    QByteArray _uid;               // Used in extensions
-    QString _prettyName;           // Defaults to _uid
-    ContentType _contentType;
-    QDateTime _dateTime;
-
+    Completeness _completeness;
+    QStringList _mimeTypes;
 };
 
 #endif // FORMAT_H

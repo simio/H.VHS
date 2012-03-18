@@ -25,12 +25,12 @@
 
 #include "main.h"
 
+#include "definition.h"
 #include "transportdefinition.h"
 #include "formatdefinition.h"
 
-class Extension : public QObject
+class Extension : public Definition
 {
-    Q_OBJECT
 public:
     explicit Extension(QObject *parent = 0);
     Extension(const Extension &original, QObject *parent = 0);
@@ -39,15 +39,11 @@ public:
     QPointer<QDataStream> createWriter(QByteArray outputTransports, QByteArray outputFormat, QByteArray outputIdentifier);
     QPointer<QDataStream> createReader(QByteArray inputTransports, QByteArray inputFormat, QByteArray inputIdentifier);
 
-    QByteArray uid() const;
     QVariant info(QString key, QVariant defaultValue = QVariant()) const;
     QString basePath() const;
-    int version() const;
 
-    void setUid(QByteArray uid);
     void addInfo(QString key, QVariant defaultValue = QVariant());
     void setBasePath(QString basePath);
-    void setVersion(int version);
 
     bool setup();
 
@@ -74,9 +70,7 @@ private:
     bool _setup();
     bool _isReady() const;
 
-    QByteArray _uid;
     QString _basePath;
-    int _version;
 
     QMap<QString,QVariant> _info;
 
@@ -84,8 +78,6 @@ private:
     QList<QByteArray> _inputFormats;
     QList<QByteArray> _outputTransports;
     QList<QByteArray> _outputFormats;
-
-    QMap<QString,QVariant> _setupData;
 };
 
 #endif // EXTENSION_H

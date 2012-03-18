@@ -17,53 +17,49 @@
 #include "formatdefinition.h"
 
 FormatDefinition::FormatDefinition(QObject *parent) :
-    QObject(parent)
+    Definition(parent)
 {
-    this->_uid = QByteArray();
-    this->_prettyName = QString(this->_uid);
-    this->_contentType = Empty;
-    this->_dateTime = QDateTime();
+    this->_completeness = NotEmpty;
 }
 
 FormatDefinition::FormatDefinition(const FormatDefinition &original, QObject *parent) :
-    QObject(parent),
-    _uid(original._uid),
-    _prettyName(original._prettyName),
-    _contentType(original._contentType),
-    _dateTime(original._dateTime) { }
+    Definition(original, parent),
+    _completeness(original._completeness)
+{ }
 
 FormatDefinition &FormatDefinition::operator =(const FormatDefinition &original)
 {
-    this->_uid = original._uid;
-    this->_prettyName = original._prettyName;
-    this->_contentType = original._contentType;
-    this->_dateTime = original._dateTime;
+    this->_completeness = original._completeness;
     return *this;
 }
 
-QByteArray FormatDefinition::uid() const                                            { return this->_uid; }
-QString FormatDefinition::prettyName() const                                        { return this->_prettyName; }
-FormatDefinition::ContentType FormatDefinition::contentType() const                 { return this->_contentType; }
-QDateTime FormatDefinition::dateTime() const                                        { return this->_dateTime; }
-
-void FormatDefinition::setUid(QByteArray uid)                                       { this->_uid = uid; }
-void FormatDefinition::setPrettyName(QString prettyName)                            { this->_prettyName = prettyName; }
-void FormatDefinition::setDateTime(QDateTime dateTime)                              { this->_dateTime = dateTime; }
-void FormatDefinition::setContentType(FormatDefinition::ContentType content)        { this->_contentType = content; }
-void FormatDefinition::setContentType(QString contentType)
+FormatDefinition::Completeness FormatDefinition::completeness() const                   { return this->_completeness; }
+QString FormatDefinition::mimeType(int index) const
 {
-    QString normalised = contentType.toLower().trimmed();
+    return (index >= 0 && index < this->_mimeTypes.size() ? this->_mimeTypes.at(index) : QString());
+}
+QStringList FormatDefinition::mimeTypes() const                                         { return this->_mimeTypes; }
 
-    if (normalised == "empty")
-        this->setContentType(Empty);
-    else if (normalised == "any")
-        this->setContentType(Any);
-    else if (normalised == "meta")
-        this->setContentType(Meta);
-    else if (normalised == "data")
-        this->setContentType(Data);
+void FormatDefinition::setCompleteness(FormatDefinition::Completeness c)                { this->_completeness = c; }
+void FormatDefinition::setCompleteness(QString str)
+{
+    QString normalised = str.toLower().trimmed();
+
+    if (normalised == "notempty")
+        this->setCompleteness(NotEmpty);
+    else if (normalised == "metaonly")
+        this->setCompleteness(MetaOnly);
+    else if (normalised == "dataonly")
+        this->setCompleteness(DataOnly);
     else if (normalised == "complete")
-        this->setContentType(Complete);
+        this->setCompleteness(Complete);
     else
-        this->setContentType(Unknown);
+    {
+        qWarning() << "Could not set FormatDefinition completeness to" << normalised
+                   << "Using \"NotEmpty\" instead";
+    }
+}
+
+void FormatDefinition::insertMimeType(int index, QString mimeType) {
+    this->_mimeTypes.insert(index, mimeType);
 }

@@ -57,25 +57,25 @@ int ExtensionManager::_loadAndMergeTransportDefinitions()
             TransportDefinition newTransport;
             foreach(newTransport, newTransports)
             {
-                QByteArray uid = newTransport.uid();
-                if (! this->_transports.contains(uid))
+                QByteArray id = newTransport.id();
+                if (! this->_transports.contains(id))
                 {
                     // Transport is not yet known, so add it
-                    qDebug() << "Found previously unknown transport definition:" << uid << "(adding)";
-                    this->_transports.insert(uid, newTransport);
+                    qDebug() << "Found previously unknown transport definition:" << id << "(adding)";
+                    this->_transports.insert(id, newTransport);
                 }
-                else if (this->_transports.value(uid).dateTime() > newTransport.dateTime())
+                else if (this->_transports.value(id).releaseDate() > newTransport.releaseDate())
                 {
                     // A newer definition is already known, so delete the one we just got.
-                    qDebug() << "Found older definition of already known transport:" << uid << "(deleting)";
+                    qDebug() << "Found older definition of already known transport:" << id << "(deleting)";
                     //delete newTransport;
                 }
                 else
                 {
                     // An older definition is known. Delete the old one and replace it with the new one.
-                    qDebug() << "Found newer definition of already known transport:" << uid << "(replacing)";
+                    qDebug() << "Found newer definition of already known transport:" << id << "(replacing)";
                     //delete this->_transports.take(uid);
-                    this->_transports.insert(uid, newTransport);
+                    this->_transports.insert(id, newTransport);
                 }
             }
         }
@@ -103,25 +103,25 @@ int ExtensionManager::_loadAndMergeFormatDefinitions()
             FormatDefinition newFormat;
             foreach(newFormat, newFormats)
             {
-                QByteArray uid = newFormat.uid();
-                if (! this->_formats.contains(uid))
+                QByteArray id = newFormat.id();
+                if (! this->_formats.contains(id))
                 {
                     // Format is not yet known, so add it
-                    qDebug() << "Found previously unknown format definition:" << uid << "(adding)";
-                    this->_formats.insert(uid, newFormat);
+                    qDebug() << "Found previously unknown format definition:" << id << "(adding)";
+                    this->_formats.insert(id, newFormat);
                 }
-                else if (this->_formats.value(uid).dateTime() > newFormat.dateTime())
+                else if (this->_formats.value(id).releaseDate() > newFormat.releaseDate())
                 {
                     // A newer definition is already known, so delete the one we just got.
-                    qDebug() << "Found older definition of already known format:" << uid << "(deleting)";
+                    qDebug() << "Found older definition of already known format:" << id << "(deleting)";
                     //delete newFormat;
                 }
                 else
                 {
                     // An older definition is known. Delete the old one and replace it with the new one.
-                    qDebug() << "Found newer definition of already known format:" << uid << "(replacing)";
+                    qDebug() << "Found newer definition of already known format:" << id << "(replacing)";
                     //delete this->_formats.take(uid);
-                    this->_formats.insert(uid, newFormat);
+                    this->_formats.insert(id, newFormat);
                 }
             }
         }
@@ -162,25 +162,25 @@ int ExtensionManager::_loadAndMergeExtensions()
                         Extension newExtension;
                         foreach(newExtension, newExtensions)
                         {
-                            QByteArray uid = newExtension.uid();
-                            if (! this->_extensions.contains(uid))
+                            QByteArray id = newExtension.id();
+                            if (! this->_extensions.contains(id))
                             {
                                 // Extension is not yet known, so add it
-                                qDebug() << "Found previously unknown extension:" << uid << "(adding)";
-                                this->_extensions.insert(uid, newExtension);
+                                qDebug() << "Found previously unknown extension:" << id << "(adding)";
+                                this->_extensions.insert(id, newExtension);
                             }
-                            else if (this->_extensions.value(uid).version() > newExtension.version())
+                            else if (this->_extensions.value(id).releaseDate() > newExtension.releaseDate())
                             {
                                 // A newer version of this extension is already known, so delete the one we just got.
-                                qDebug() << "Found older version of already known extension:" << uid << "(deleting)";
+                                qDebug() << "Found older version of already known extension:" << id << "(deleting)";
                                 //delete newExtension;
                             }
                             else
                             {
                                 // An older definition is known. Delete the old one and replace it with the new one.
-                                qDebug() << "Found newer version of already known extension:" << uid << "(replacing)";
+                                qDebug() << "Found newer version of already known extension:" << id << "(replacing)";
                                 //delete this->_extensions.take(uid);
-                                this->_extensions.insert(uid, newExtension);
+                                this->_extensions.insert(id, newExtension);
                             }
                         }
                         delete file;

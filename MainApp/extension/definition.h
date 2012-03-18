@@ -18,6 +18,8 @@
 #define DEFINITION_H
 
 #include <QObject>
+#include <QDate>
+#include <QUuid>
 
 // Till mig själv: Syftet med detta är att göra en virtuell klass som
 // som FormatDefinition, TransportDefinition och Extension (och senare Cassette?)
@@ -31,8 +33,9 @@ class Definition : public QObject
 public:
     explicit Definition(QObject *parent = 0);
     Definition(const Definition &original, QObject *parent = 0);
-
     virtual Definition &operator=(const Definition &original);
+
+    // ==, !=, <= and >= compares both id and release dates, while < and > compare only dates.
     virtual bool operator==(const Definition &original) const;
     virtual bool operator!=(const Definition &original) const;
     virtual bool operator<(const Definition &original) const;
@@ -40,16 +43,20 @@ public:
     virtual bool operator>(const Definition &original) const;
     virtual bool operator>=(const Definition &original) const;
 
+    QByteArray id() const;
+    QString name() const;
+    QString description() const;
+    QDateTime releaseDate() const;
+
 signals:
 
 public slots:
 
 private:
-    QByteArray _id;                 // Unique ID
+    QByteArray _id;                 // Unique ID (generated from QUuid by default)
     QString _name;                  // Localised name
     QString _description;           // Localised description
-    int _versionMajor;
-    int _versionMinor;
+    QDateTime _releaseDate;
 };
 
 #endif // DEFINITION_H

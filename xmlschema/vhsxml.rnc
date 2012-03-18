@@ -3,7 +3,7 @@ default namespace huggplay = "http://play.huggpunkt.org/vhsxml/1"
 grammar {
     start =
         element vhsxml {
-            attribute version { "2.0" },
+            attribute version { "1.1" },
             ( transportDefinitions?
                 & formatDefinitions?
                 & extensions?

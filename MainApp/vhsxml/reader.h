@@ -27,9 +27,9 @@
 
 #include "main.h"
 
-#include "extension/formatdefinition.h"
-#include "extension/transportdefinition.h"
-#include "extension/extension.h"
+#include "extension_api/formatdefinition.h"
+#include "extension_api/transportdefinition.h"
+#include "extension_api/extension.h"
 
 #include "vhsxml/transportreader.h"
 #include "vhsxml/formatreader.h"

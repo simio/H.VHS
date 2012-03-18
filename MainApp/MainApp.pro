@@ -54,17 +54,17 @@ SOURCES += \
     vhsxml/formatreader.cpp \
     vhsxml/cassettereader.cpp \
     vhsxml/extensionreader.cpp \
-    extension/extension.cpp \
-    extension/extensionmanager.cpp \
-    extension/formatdefinition.cpp \
-    extension/transportdefinition.cpp \
+    extension_api/extension.cpp \
+    extension_api/extensionmanager.cpp \
+    extension_api/formatdefinition.cpp \
+    extension_api/transportdefinition.cpp \
     browser/webbrowsercombobox.cpp \
     browser/webview.cpp \
     browser/webwindowguisetup.cpp \
     webwindow.cpp \
     config/configuration.cpp \
     config/messagehandler.cpp \
-    extension/definition.cpp \
+    extension_api/definition.cpp \
     config/systemdependent.cpp
 
 HEADERS  += \
@@ -76,15 +76,15 @@ HEADERS  += \
     vhsxml/formatreader.h \
     vhsxml/cassettereader.h \
     vhsxml/extensionreader.h \
-    extension/extension.h \
-    extension/extensionmanager.h \
-    extension/formatdefinition.h \
-    extension/transportdefinition.h \
+    extension_api/extension.h \
+    extension_api/extensionmanager.h \
+    extension_api/formatdefinition.h \
+    extension_api/transportdefinition.h \
     browser/webbrowsercombobox.h \
     browser/webview.h \
     config/configuration.h \
     config/messagehandler.h \
-    extension/definition.h \
+    extension_api/definition.h \
     config/systemdependent.h
 
 FORMS    += \

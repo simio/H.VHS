@@ -22,7 +22,7 @@
 #include <QDomDocument>
 
 #include "main.h"
-#include "extension/extension.h"
+#include "extension_api/extension.h"
 
 namespace VhsXml {
 

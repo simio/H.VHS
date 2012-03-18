@@ -22,7 +22,7 @@
 #include <QDomDocument>
 
 #include "main.h"
-#include "extension/transportdefinition.h"
+#include "extension_api/transportdefinition.h"
 
 namespace VhsXml {
 

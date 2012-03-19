@@ -22,9 +22,9 @@ FormatReader::FormatReader()
 {
 }
 
-QList<FormatDefinition> FormatReader::getAll(const QDomDocument &document)
+QList<QPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &document)
 {
-    QList<FormatDefinition> result;
+    QList<QPointer<FormatDefinition> > result;
     return result;
 }
 

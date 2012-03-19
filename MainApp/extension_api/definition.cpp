@@ -22,7 +22,8 @@ Definition::Definition(QObject *parent) :
     this->_id = QUuid::createUuid().toString().toAscii();
     this->_name = QString(tr("Undefined definition. :-)"));
     this->_description = QString();
-    this->_releaseDate = QDateTime(QDate(1712, 2, 30));             // http://tinyurl.com/feb30
+    this->_releaseDate = QDateTime(QDate(1712, 2, 30));             // http://gyt.se/xfeb30
+    this->_type = Definition::NoDefinitionType;
 }
 
 Definition::Definition(const Definition &original, QObject *parent) :
@@ -52,8 +53,3 @@ bool Definition::operator <=(const Definition &other) const     { return this->_
 bool Definition::operator >(const Definition &other) const      { return this->_releaseDate > other._releaseDate; }
 bool Definition::operator >=(const Definition &other) const     { return this->_id == other._id
                                                                     && this->_releaseDate >= other._releaseDate; }
-
-QByteArray Definition::id() const               { return this->_id; }
-QString Definition::name() const                { return this->_name; }
-QString Definition::description() const         { return this->_description; }
-QDateTime Definition::releaseDate() const           { return this->_releaseDate; }

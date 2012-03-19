@@ -69,7 +69,7 @@ public:
     QUrl getStartPage();
     QUrl makeSearchUrl(QString query);
 
-    QFileInfo getStorageLocation(StorageLocation type);
+    QDir getStorageLocation(StorageLocation type);
 
 public slots:
 

@@ -31,7 +31,7 @@ class FormatReader
 public:
     FormatReader();
 
-    static QList<FormatDefinition> getAll(const QDomDocument &document);
+    static QList<QPointer<FormatDefinition> > parse(const QDomDocument &document);
 };
 
 } // namespace VhsXml

@@ -41,8 +41,6 @@ public:
     QFileInfo basePath() const                                              { return this->_basePath; }
     bool isEnabled() const                                                  { return this->_enabled; }
 
-    bool setup(QFileInfo definition)                                        { return this->_setup(definition); }
-
     bool canWriteFormat(QByteArray uid) const                               { return this->_writeFormats.contains(uid); }
     bool canReadFormat(QByteArray uid) const                                { return this->_readFormats.contains(uid); }
     bool canWriteTransport(QByteArray uid) const                            { return this->_writeTransports.contains(uid); }

@@ -165,34 +165,34 @@ QUrl Configuration::makeSearchUrl(QString query)
     return url;
 }
 
-QFileInfo Configuration::getStorageLocation(StorageLocation type)
+QDir Configuration::getStorageLocation(StorageLocation type)
 {
-    QFileInfo location;
+    QDir location;
     switch (type)
     {
     case FaviconStorageLocation:
-        location = QFileInfo(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
+        location = QDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
         break;
     case SystemExtensionsLocation:
-        location = SystemDependent::pointer()->extensionsDir(SystemDependent::System);
+        location = QDir(SystemDependent::pointer()->extensionsDir(SystemDependent::System));
         break;
     case UserExtensionsLocation:
-        location = SystemDependent::pointer()->extensionsDir(SystemDependent::User);
+        location = QDir(SystemDependent::pointer()->extensionsDir(SystemDependent::User));
         break;
     case SystemPresetsLocation:
-        location = SystemDependent::pointer()->presetsDir(SystemDependent::System);
+        location = QDir(SystemDependent::pointer()->presetsDir(SystemDependent::System));
         break;
     case UserPresetsLocation:
-        location = SystemDependent::pointer()->presetsDir(SystemDependent::User);
+        location = QDir(SystemDependent::pointer()->presetsDir(SystemDependent::User));
         break;
     default:
-        return QFileInfo();
+        return QDir();
     }
 
-    if (! location.isDir() && location.exists())
-        qWarning() << "Configuration::getStorateLocation(): path component"
-                   << location.filePath() << "is an existing non-directory and cannot contain files."
-                   << "(Filename:" << filename << ")";
+    if (! location.isReadable() )
+        qWarning() << "Configuration::getStorateLocation(): "
+                   << location.path() << "is not readable!\n"
+                   << "Understood as" << location.canonicalPath();
 
     return location;
 }

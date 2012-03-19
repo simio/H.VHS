@@ -31,7 +31,7 @@ class CassetteReader
 public:
     CassetteReader();
 
-    //static QList< QPointer<Cassette> > getAll(const QDomDocument &document);
+    //static QList<QPointer<Cassette> > parse(const QDomDocument &document);
 };
 
 } // namespace VhsXml

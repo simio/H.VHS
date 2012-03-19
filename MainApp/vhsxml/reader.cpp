@@ -18,29 +18,18 @@
 
 namespace VhsXml {
 
-Reader::Reader(QObject *parent) :
-    QObject(parent)
+Reader::Reader(QFileInfo file, QObject *parent) : QObject(parent)
 {
+    QPointer<QFile> p = new QFile(file.canonicalFilePath());
+    this->_initialise(p);
 }
 
-Reader::Reader(QPointer<QFile> file, QObject *parent) : QObject(parent)         { this->_initialise(file); }
-Reader::Reader(QPointer<QIODevice> device, QObject *parent) : QObject(parent)   { this->_initialise(device); }
-Reader::Reader(QXmlInputSource *source, QObject *parent)                        { this->_initialise(source); }
-
-QList<FormatDefinition> Reader::getFormats()                                    { return FormatReader::getAll(this->_xml); }
-QList<TransportDefinition> Reader::getTransports()                              { return TransportReader::getAll(this->_xml); }
-QList<Extension> Reader::getExtensions()                                        { return ExtensionReader::getAll(this->_xml); }
-//QList<Cassette> Reader::getCassettes()                                          { return CassetteReader::getAll(this->_xml); }
-
-bool Reader::contains(XmlContents contents) { return this->contains().contains(contents); }
-bool Reader::isEmpty() { return this->_xml.isNull(); }
-
-QList<XmlContents> Reader::contains()
+QList<Definition::DefinitionType> Reader::contentList() const
 {
     if (this->isEmpty())
-        return QList<XmlContents>();
+        return QList<Definition::DefinitionType>();
 
-    QHash<XmlContents,bool> isPresent;
+    QHash<Definition::DefinitionType,bool> isPresent;
     QDomElement doc = this->_xml.documentElement();
     QDomNode node = doc.firstChild();
     while (! node.isNull())
@@ -49,19 +38,48 @@ QList<XmlContents> Reader::contains()
         // <transportDefinitions> without at least one <transportDefinition> are invalid,
         // so there's no need to look deeper into the tree.
         if (name == "formatDefinitions")
-            isPresent.insert(FormatDefinitions, true);
+            isPresent.insert(Definition::FormatDefinitionType, true);
         else if (name == "transportDefinitions")
-            isPresent.insert(TransportDefinitions, true);
+            isPresent.insert(Definition::TransportDefinitionType, true);
         else if (name == "extensions")
-            isPresent.insert(ExtensionDefinitions, true);
+            isPresent.insert(Definition::ExtensionDefinitionType, true);
         else if (name == "cassettes")
-            isPresent.insert(CassetteDefinitions, true);
+            isPresent.insert(Definition::CassetteDefinitionType, true);
     }
     return isPresent.keys();
 }
 
+// Dispatch request to appropriate reader(s).
+QList<QPointer<Definition> > Reader::definitions(Definition::DefinitionType defType) const
+{
+    QList<QPointer<FormatDefinition> > formats;
+    QList<QPointer<TransportDefinition> > transports;
+    QList<QPointer<Extension> > extensions;
+    //QList<QPointer<CassetteDefinition> > cassettes;
 
-bool Reader::_isCompatible(QString version)
+    if (defType == Definition::FormatDefinitionType || defType == Definition::NoDefinitionType)
+        formats = FormatReader::parse(this->_xml);
+    else if (defType == Definition::TransportDefinitionType || defType == Definition::NoDefinitionType)
+        transports = TransportReader::parse(this->_xml);
+    else if (defType == Definition::ExtensionDefinitionType || defType == Definition::NoDefinitionType)
+        extensions = ExtensionReader::parse(this->_xml);
+    //else if (defType == Definition::CassetteDefinitionType || defType == Definition::NoDefinitionType)
+    //    result.append(CassetteReader::parse(this->_xml);
+
+    QList<QPointer<Definition> > result;
+    foreach(QPointer<FormatDefinition> format, formats)
+        result << qobject_cast<Definition*>(format);
+    foreach(QPointer<TransportDefinition> transport, transports)
+        result << qobject_cast<Definition*>(transport);
+    foreach(QPointer<Extension> extension, extensions)
+        result << qobject_cast<Definition*>(extension);
+    //foreach(QPointer<FormatDefinition> cassette, cassettes)
+    //    result << qobject_cast<QPointer<Definition> >(cassette);
+
+    return result;
+}
+
+bool Reader::_isCompatibleWith(QString version)
 {
     QRegExp rx("([0-9]+)\\.([0-9]+)");
     if (rx.indexIn(version.trimmed()) < 0)
@@ -92,7 +110,7 @@ bool Reader::_initialise(QXmlInputSource *source)
         if (this->_xml.documentElement().tagName() == "vhsxml")
         {
             QString docVersion = this->_xml.documentElement().attribute("version");
-            if (this->_isCompatible(docVersion))
+            if (this->_isCompatibleWith(docVersion))
                 success = true;
             else
                 qWarning() << "XML Parser error!"

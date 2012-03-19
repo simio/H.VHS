@@ -31,7 +31,7 @@ class TransportReader
 public:
     TransportReader();
 
-    static QList<TransportDefinition> getAll(const QDomDocument &document);
+    static QList<QPointer<TransportDefinition> > parse(const QDomDocument &document);
 };
 
 } // namespace VhsXml

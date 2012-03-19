@@ -23,7 +23,7 @@ void WebWindow::_setupGui()
 
     // Create, configure and add webView
     this->_webView = new WebView(this);
-    this->_webView->settings()->setIconDatabasePath(Configuration::pointer()->getStorageLocation(Configuration::FaviconStorageLocation).canonicalFilePath());
+    this->_webView->settings()->setIconDatabasePath(Configuration::pointer()->getStorageLocation(Configuration::FaviconStorageLocation).canonicalPath());
     ui->horizontalLayoutMiddle->addWidget(this->_webView);
 
     // Create, configure and add browser toolbar

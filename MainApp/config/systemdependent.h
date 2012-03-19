@@ -35,8 +35,8 @@ public:
         System
     };
 
-    QFileInfo extensionsDir(Scope scope);
-    QFileInfo presetsDir(Scope scope);
+    QDir extensionsDir(Scope scope);
+    QDir presetsDir(Scope scope);
     QPointer<QSettings> makeSettings();
 
 private:

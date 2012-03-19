@@ -27,9 +27,7 @@
 
 #include "main.h"
 
-#include "extension_api/formatdefinition.h"
-#include "extension_api/transportdefinition.h"
-#include "extension_api/extension.h"
+#include "extension_api/definition.h"
 
 #include "vhsxml/transportreader.h"
 #include "vhsxml/formatreader.h"
@@ -38,30 +36,21 @@
 
 namespace VhsXml {
 
-enum XmlContents {
-    TransportDefinitions,
-    FormatDefinitions,
-    ExtensionDefinitions,
-    CassetteDefinitions
-};
-
 class Reader : public QObject
 {
     Q_OBJECT
 public:
-    explicit Reader(QObject *parent = 0);
-    Reader(QPointer<QFile> file, QObject *parent = 0);
-    Reader(QPointer<QIODevice> device, QObject *parent = 0);
-    Reader(QXmlInputSource *source, QObject *parent = 0);
+    explicit Reader(QObject *parent = 0) : QObject(parent) { }
+    Reader(QFileInfo file, QObject *parent);
+    Reader(QPointer<QIODevice> device, QObject *parent) : QObject(parent)   { this->_initialise(device); }
+    Reader(QXmlInputSource *source, QObject *parent) : QObject(parent)      { this->_initialise(source); }
 
-    QList<FormatDefinition> getFormats();
-    QList<TransportDefinition> getTransports();
-    QList<Extension> getExtensions();
-    //QList<Cassette> getCassettes();
+    QList<QPointer<Definition> > definitions(Definition::DefinitionType defType = Definition::NoDefinitionType) const;
 
-    bool isEmpty();
-    QList<XmlContents> contains();
-    bool contains(XmlContents contents);
+    bool isEmpty() const                                                    { return this->_xml.isNull(); }
+
+    QList<Definition::DefinitionType> contentList() const;
+    bool contains(Definition::DefinitionType contents) const                { return this->contentList().contains(contents); }
 
 signals:
 
@@ -73,7 +62,7 @@ private:
     static const int _legacyXmlMajor = 1;                   // Lowest compatible as above
     static const int _legacyXmlMinor = 1;                   // ...
 
-    bool _isCompatible(QString version);
+    bool _isCompatibleWith(QString version);
 
     bool _initialise(QPointer<QFile> file);
     bool _initialise(QPointer<QIODevice> device);

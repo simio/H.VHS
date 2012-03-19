@@ -30,33 +30,33 @@ SystemDependent *SystemDependent::pointer()
     return s_instance;
 }
 
-QFileInfo SystemDependent::extensionsDir(Scope scope)
+QDir SystemDependent::extensionsDir(Scope scope)
 {
 #ifdef WIN32
     switch (scope)
     {
     case System:
-        return QFileInfo(qApp->applicationDirPath() + "/extensions");
+        return QDir(qApp->applicationDirPath() + "/extensions");
         /* NOTREACHED */
     default:
     case User:
-        return QFileInfo(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions");
+        return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions");
         /* NOTREACHED */
     }
 #endif
 }
 
-QFileInfo SystemDependent::presetsDir(Scope scope)
+QDir SystemDependent::presetsDir(Scope scope)
 {
 #ifdef WIN32
     switch (scope)
     {
     case System:
-        return QFileInfo(qApp->applicationDirPath() + "/presets");
+        return QDir(qApp->applicationDirPath() + "/presets");
         /* NOTREACHED */
     default:
     case User:
-        return QFileInfo(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/presets");
+        return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/presets");
         /* NOTREACHED */
     }
 #endif

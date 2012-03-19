@@ -22,9 +22,9 @@ ExtensionReader::ExtensionReader()
 {
 }
 
-QList<Extension> ExtensionReader::getAll(const QDomDocument &document)
+QList<QPointer<Extension> > ExtensionReader::parse(const QDomDocument &document)
 {
-    QList<Extension> result;
+    QList<QPointer<Extension> > result;
     return result;
 }
 

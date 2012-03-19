@@ -65,7 +65,8 @@ SOURCES += \
     config/configuration.cpp \
     config/messagehandler.cpp \
     extension_api/definition.cpp \
-    config/systemdependent.cpp
+    config/systemdependent.cpp \
+    extension_api/definitiontable.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -85,7 +86,8 @@ HEADERS  += \
     config/configuration.h \
     config/messagehandler.h \
     extension_api/definition.h \
-    config/systemdependent.h
+    config/systemdependent.h \
+    extension_api/definitiontable.h
 
 FORMS    += \
     webwindow.ui \

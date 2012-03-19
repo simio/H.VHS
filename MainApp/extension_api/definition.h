@@ -21,18 +21,21 @@
 #include <QDate>
 #include <QUuid>
 
-// Till mig själv: Syftet med detta är att göra en virtuell klass som
-// som FormatDefinition, TransportDefinition och Extension (och senare Cassette?)
-// kan ärva, så att ExtensionManager kan ladda alla samtidigt.
-// Format- och TransportDefinition har i nuläget datum ist.f. versionnuffror,
-// vilket behöver åtgärdas i kod och relaxng. God morgon!
-
 class Definition : public QObject
 {
     Q_OBJECT
 public:
+    enum DefinitionType {
+        NoDefinitionType,
+        TransportDefinitionType,
+        FormatDefinitionType,
+        ExtensionDefinitionType,
+        CassetteDefinitionType
+    };
+
     explicit Definition(QObject *parent = 0);
     Definition(const Definition &original, QObject *parent = 0);
+
     virtual Definition &operator=(const Definition &original);
 
     // ==, !=, <= and >= compares both id and release dates, while < and > compare only dates.
@@ -43,10 +46,12 @@ public:
     virtual bool operator>(const Definition &original) const;
     virtual bool operator>=(const Definition &original) const;
 
-    QByteArray id() const;
-    QString name() const;
-    QString description() const;
-    QDateTime releaseDate() const;
+
+    QByteArray id() const                               { return this->_id; }
+    QString name() const                                { return this->_name; }
+    QString description() const                         { return this->_description; }
+    QDateTime releaseDate() const                       { return this->_releaseDate; }
+    Definition::DefinitionType type() const             { return this->_type; }
 
 signals:
 
@@ -57,6 +62,7 @@ private:
     QString _name;                  // Localised name
     QString _description;           // Localised description
     QDateTime _releaseDate;
+    DefinitionType _type;
 };
 
 #endif // DEFINITION_H

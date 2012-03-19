@@ -31,7 +31,7 @@ class ExtensionReader
 public:
     ExtensionReader();
 
-    static QList<Extension> getAll(const QDomDocument &document);
+    static QList<QPointer<Extension> > parse(const QDomDocument &document);
 };
 
 } // namespace VhsXml

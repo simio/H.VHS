@@ -22,9 +22,9 @@ TransportReader::TransportReader()
 {
 }
 
-QList<TransportDefinition> TransportReader::getAll(const QDomDocument &document)
+QList<QPointer<TransportDefinition> > TransportReader::parse(const QDomDocument &document)
 {
-    QList<TransportDefinition> result;
+    QList<QPointer<TransportDefinition> > result;
     return result;
 }
 

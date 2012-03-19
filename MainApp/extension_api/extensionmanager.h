@@ -18,15 +18,19 @@
 #define EXTENSIONMANAGER_H
 
 #include <QObject>
+#include <QPointer>
 #include <QList>
 #include <QDirIterator>
 #include <QDateTime>
 
 #include "main.h"
 
-#include "formatdefinition.h"
-#include "transportdefinition.h"
-#include "extension.h"
+#include "extension_api/definition.h"
+#include "extension_api/formatdefinition.h"
+#include "extension_api/transportdefinition.h"
+#include "extension_api/extension.h"
+#include "extension_api/definitiontable.h"
+
 #include "vhsxml/reader.h"
 
 class ExtensionManager : public QObject
@@ -36,8 +40,6 @@ public:
     explicit ExtensionManager(QObject *parent = 0);
     static ExtensionManager *pointer();
 
-    int count();
-
 signals:
 
 public slots:
@@ -45,14 +47,9 @@ public slots:
 private:
     static ExtensionManager *s_instance;
 
-    int _loadAndMergeTransportDefinitions();
-    int _loadAndMergeFormatDefinitions();
-    int _loadAndMergeExtensions();
+    void _initialise();
 
-    QHash< QByteArray, Extension> _extensions;
-    QHash< QByteArray, FormatDefinition> _formats;
-    QHash< QByteArray, TransportDefinition > _transports;
-
+    DefinitionTable _definitions;
 };
 
 #endif // EXTENSIONMANAGER_H

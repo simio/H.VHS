@@ -98,12 +98,10 @@ grammar {
     #  DATA TYPES
     #
     timestampedId =
-    # asOf must use ISO Date format:
-    #   i.e. 2012-03-15T10:57:24
-    #   or
-    #   2012-03-15T10:57:24+0100
+    # releaseDate must use ISO Date format: [-]CCYY-MM-DDThh:mm:ss[Z|(+|-)hh:mm]
+    # (http://books.xmlschemata.org/relaxng/ch19-77049.html)
         element id {
-            attribute asOf { xsd:dateTime },
+            attribute releaseDate { xsd:dateTime },
             xsd:NMTOKEN
         }
     i18nName =

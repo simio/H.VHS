@@ -18,8 +18,8 @@ grammar {
     transportDefinition =
         element transportDefinition {
             timestampedId,
-            i18nName,
-            i18nDesc
+            i18nName+,
+            i18nDesc*
         }
 
     #
@@ -30,8 +30,8 @@ grammar {
     formatDefinition =
         element formatDefinition {
             timestampedId,
-            i18nName,
-            i18nDesc,
+            i18nName+,
+            i18nDesc*,
             element completeness { "notEmpty" | "metaOnly" | "dataOnly" | "complete" },
             mimeType
         }
@@ -107,25 +107,15 @@ grammar {
             xsd:NMTOKEN
         }
     i18nName =
-    # Parsers may read only one language
         element name {
-            attribute xml:lang { "en" },
+            attribute xml:lang { xsd:language },
             xsd:token
         }
-        & element name {
-            attribute xml:lang { xsd:language },
-            xsd:token
-        }*
     i18nDesc =
-    # Parsers may read only one language
         element description {
-            attribute xml:lang { "en" },
-            xsd:token
-        }?
-        & element description {
             attribute xml:lang { xsd:language },
             xsd:token
-        }*
+        }
     author =
         element author {
             attribute email { xsd:token }?,

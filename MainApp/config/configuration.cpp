@@ -64,6 +64,11 @@ bool Configuration::clearStorage()
     return true;
 }
 
+QString Configuration::locale(bool full)
+{
+    return ( full ? "sv" : "sv-se" );
+}
+
 Configuration *Configuration::pointer()
 {
     if (s_instance == NULL)
@@ -190,8 +195,8 @@ QDir Configuration::getStorageLocation(StorageLocation type)
     }
 
     if (! location.isReadable() )
-        qWarning() << "Configuration::getStorateLocation(): "
-                   << location.path() << "is not readable!\n"
+        qDebug() << "Configuration::getStorageLocation(): "
+                   << location.path() << "is not readable\n"
                    << "Understood as" << location.canonicalPath();
 
     return location;

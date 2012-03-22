@@ -24,7 +24,7 @@
 #include <QDomNode>
 
 #include "main.h"
-#include "vhsxml/datatype.h"
+#include "vhsxml/elementparser.h"
 #include "extension_api/formatdefinition.h"
 
 namespace VhsXml {
@@ -37,7 +37,6 @@ public:
 private:
     FormatReader();
 
-    static bool _expectElement(const QDomElement &element, const QString &tagName, bool mandatory = true);
     static QPointer<FormatDefinition> _parseFormat(const QDomElement &formatNode);
 };
 

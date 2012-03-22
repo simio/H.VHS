@@ -49,19 +49,6 @@ QList<QPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &docum
     return result;
 }
 
-bool FormatReader::_expectElement(const QDomElement &element, const QString &tagName, bool mandatory)
-{
-    if (element.isNull())
-        return false;
-    else if (tagName == element.tagName())
-        return true;
-    else if (mandatory)
-        qDebug() << "FormatReader error: Expected" << tagName << "element but got" << element.tagName()
-                    << "in line" << element.lineNumber();
-
-    return false;
-}
-
 QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatNode)
 {
     QString id;                                     // Unique; mandatory
@@ -73,19 +60,19 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
 
     // <id releaseDate="xsd:dateTime">xsd:NMTOKEN</id>
     QDomElement e = formatNode.firstChildElement();
-    if (FormatReader::_expectElement(e, "id"))
+    if (ElementParser::expect(e, "id"))
     {
-        releaseDate = DataType::dateTime(e.attribute("releaseDate"));
-        id = DataType::nmtoken(e.text());
+        releaseDate = ElementParser::dateTime(e.attribute("releaseDate"));
+        id = ElementParser::nmtoken(e.text());
         e = e.nextSiblingElement();
     }
     else return NULL;
 
     // <name xml:lang="xsd:language">xsd:token</name>
     // (one or more, with unique xml:lang attributes)
-    if (FormatReader::_expectElement(e, "name"))
+    if (ElementParser::expect(e, "name"))
     {
-        name = DataType::localisedString(e);
+        name = ElementParser::localisedString(e);
         e = e.nextSiblingElement();
     }
     else
@@ -93,16 +80,16 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
 
     // <description xml:lang="xsd:language">xsd:token</description>
     // (zero or more, with unique xml:lang attributes)
-    if (FormatReader::_expectElement(e, "description", false))
+    if (ElementParser::expect(e, "description", false))
     {
-        description = DataType::localisedString(e);
+        description = ElementParser::localisedString(e);
         e = e.nextSiblingElement();
     }
     else if (e.isNull())
         return NULL;
 
     // <completeness> ( notEmpty | metaOnly | dataOnly | complete ) </completeness>
-    if (FormatReader::_expectElement(e, "completeness"))
+    if (ElementParser::expect(e, "completeness"))
     {
         completeness = e.text();
         e = e.nextSiblingElement();
@@ -114,10 +101,10 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
     //     <mimeType>xxx/yyy</mimeType>
     //     ...
     // <mimeTypes>
-    if (FormatReader::_expectElement(e, "mimeTypes"))
-        mimeTypes = DataType::tokenList(e, "mimeType");
+    if (ElementParser::expect(e, "mimeTypes"))
+        mimeTypes = ElementParser::tokenList(e, "mimeType");
 
-    // new: Caller is responsible
+    // alloc: Caller is responsible
     QPointer<FormatDefinition> format = new FormatDefinition(id, name, description, releaseDate, completeness, mimeTypes, 0);
     if (format->isValid())
         return format;

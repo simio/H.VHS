@@ -46,7 +46,7 @@ void ExtensionManager::_initialise()
 
     foreach (QFileInfo file, files)
     {
-        // new: Deleted here.
+        // alloc: Deleted here.
         QPointer<VhsXml::DocumentReader> xml = new VhsXml::DocumentReader(QFile(file.canonicalFilePath()), this);
         this->_definitions.update(xml->definitions());
         delete xml;

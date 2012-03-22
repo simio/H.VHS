@@ -56,19 +56,25 @@ public:
         UserExtensionsLocation
     };
 
+    QString locale(bool full = false);
+
+    // App and version info
     QString appName(bool full = false);
     QString appVersion();
     QString fullAppName(bool fullVersion = false);
 
+    // GUI states
     void saveWindow(Window window, QByteArray state, QByteArray geometry);
     QByteArray getWindowState(Window window);
     QByteArray getWindowGeometry(Window window);
     void saveWebViewSettings(QMap<QString,QVariant> settings);
     QMap<QString,QVariant> getWebViewSettings();
 
+    // Browser stuff
     QUrl getStartPage();
     QUrl makeSearchUrl(QString query);
 
+    // Filesystem things
     QDir getStorageLocation(StorageLocation type);
 
 public slots:

@@ -33,7 +33,13 @@ public:
         CassetteDefinitionType
     };
 
-    explicit Definition(QObject *parent = 0);
+    explicit Definition();
+    Definition(QString id,
+               QString name,
+               QString description,
+               QDateTime releaseDate,
+               DefinitionType type,
+               QObject *parent = 0);
     Definition(const Definition &original, QObject *parent = 0);
 
     virtual Definition &operator=(const Definition &original);
@@ -46,8 +52,9 @@ public:
     virtual bool operator>(const Definition &original) const;
     virtual bool operator>=(const Definition &original) const;
 
+    virtual bool isValid();
 
-    QByteArray id() const                               { return this->_id; }
+    QString id() const                               { return this->_id; }
     QString name() const                                { return this->_name; }
     QString description() const                         { return this->_description; }
     QDateTime releaseDate() const                       { return this->_releaseDate; }
@@ -58,7 +65,7 @@ signals:
 public slots:
 
 private:
-    QByteArray _id;                 // Unique ID (generated from QUuid by default)
+    QString _id;                 // Unique ID (generated from QUuid by default)
     QString _name;                  // Localised name
     QString _description;           // Localised description
     QDateTime _releaseDate;

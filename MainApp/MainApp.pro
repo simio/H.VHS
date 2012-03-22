@@ -49,7 +49,6 @@ contains(APP_CONFIG, deploy_dist):DEFINES += HIDE_DEVEL_INFO
 SOURCES += \
     main.cpp\
     consolewindow.cpp \
-    vhsxml/reader.cpp \
     vhsxml/transportreader.cpp \
     vhsxml/formatreader.cpp \
     vhsxml/cassettereader.cpp \
@@ -66,13 +65,14 @@ SOURCES += \
     config/messagehandler.cpp \
     extension_api/definition.cpp \
     config/systemdependent.cpp \
-    extension_api/definitiontable.cpp
+    extension_api/definitiontable.cpp \
+    vhsxml/documentreader.cpp \
+    vhsxml/datatype.cpp
 
 HEADERS  += \
     webwindow.h \
     consolewindow.h \
     main.h \
-    vhsxml/reader.h \
     vhsxml/transportreader.h \
     vhsxml/formatreader.h \
     vhsxml/cassettereader.h \
@@ -87,7 +87,9 @@ HEADERS  += \
     config/messagehandler.h \
     extension_api/definition.h \
     config/systemdependent.h \
-    extension_api/definitiontable.h
+    extension_api/definitiontable.h \
+    vhsxml/documentreader.h \
+    vhsxml/datatype.h
 
 FORMS    += \
     webwindow.ui \

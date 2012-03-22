@@ -16,14 +16,19 @@
 
 #include "definition.h"
 
-Definition::Definition(QObject *parent) :
+Definition::Definition(QString id,
+                       QString name,
+                       QString description,
+                       QDateTime releaseDate,
+                       DefinitionType type,
+                       QObject *parent) :
     QObject(parent)
 {
-    this->_id = QUuid::createUuid().toString().toAscii();
-    this->_name = QString(tr("Undefined definition. :-)"));
-    this->_description = QString();
-    this->_releaseDate = QDateTime(QDate(1712, 2, 30));             // http://gyt.se/xfeb30
-    this->_type = Definition::NoDefinitionType;
+    this->_id = id;
+    this->_name = name;
+    this->_description = description;
+    this->_releaseDate = releaseDate;
+    this->_type = type;
 }
 
 Definition::Definition(const Definition &original, QObject *parent) :
@@ -31,7 +36,8 @@ Definition::Definition(const Definition &original, QObject *parent) :
     _id(original._id),
     _name(original._name),
     _description(original._description),
-    _releaseDate(original._releaseDate)
+    _releaseDate(original._releaseDate),
+    _type(original._type)
 { }
 
 Definition &Definition::operator =(const Definition &original)
@@ -40,6 +46,7 @@ Definition &Definition::operator =(const Definition &original)
     this->_name = original._name;
     this->_description = original._description;
     this->_releaseDate = original._releaseDate;
+    this->_type = original._type;
     return *this;
 }
 
@@ -53,3 +60,11 @@ bool Definition::operator <=(const Definition &other) const     { return this->_
 bool Definition::operator >(const Definition &other) const      { return this->_releaseDate > other._releaseDate; }
 bool Definition::operator >=(const Definition &other) const     { return this->_id == other._id
                                                                     && this->_releaseDate >= other._releaseDate; }
+
+bool Definition::isValid()
+{
+    return (!this->_id.isEmpty()
+            && !this->_name.isEmpty()
+            && this->_releaseDate.isValid()
+            && this->_type != NoDefinitionType);
+}

@@ -61,7 +61,7 @@ int DefinitionTable::update(QList<QPointer<Definition> > defs)
     return sum;
 }
 
-bool DefinitionTable::contains(Definition::DefinitionType type, QByteArray id)
+bool DefinitionTable::contains(Definition::DefinitionType type, QString id)
 {
     return this->_definitions.value(type).contains(id);
 }
@@ -71,7 +71,7 @@ bool DefinitionTable::contains(QPointer<Definition> def)
     return this->contains(def->type(), def->id());
 }
 
-QPointer<Definition> DefinitionTable::get(Definition::DefinitionType type, QByteArray id)
+QPointer<Definition> DefinitionTable::get(Definition::DefinitionType type, QString id)
 {
     return this->_definitions.value(type).value(id);
 }
@@ -84,6 +84,7 @@ QPointer<Definition> DefinitionTable::get(QPointer<Definition> def)
 bool DefinitionTable::_set(QPointer<Definition> def)
 {
     bool overwrite = this->contains(def);
+    def->setParent(this);
     this->_definitions[def->type()].insert(def->id(), def);
     return overwrite;
 }

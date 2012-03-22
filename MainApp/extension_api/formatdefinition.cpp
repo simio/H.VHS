@@ -16,10 +16,17 @@
 
 #include "formatdefinition.h"
 
-FormatDefinition::FormatDefinition(QObject *parent) :
-    Definition(parent)
+FormatDefinition::FormatDefinition(QString id,
+                                   QString name,
+                                   QString description,
+                                   QDateTime releaseDate,
+                                   QString completeness,
+                                   QStringList mimeTypes,
+                                   QObject *parent) :
+    Definition(id, name, description, releaseDate, Definition::FormatDefinitionType, parent)
 {
-    this->_completeness = NotEmpty;
+    this->setCompleteness(completeness);
+    this->_mimeTypes = mimeTypes;
 }
 
 FormatDefinition::FormatDefinition(const FormatDefinition &original, QObject *parent) :
@@ -33,6 +40,13 @@ FormatDefinition &FormatDefinition::operator =(const FormatDefinition &original)
     return *this;
 }
 
+bool FormatDefinition::isValid()
+{
+    return (Definition::isValid()
+            && this->_completeness != Invalid
+            && this->_mimeTypes.count() > 0);
+}
+
 FormatDefinition::Completeness FormatDefinition::completeness() const                   { return this->_completeness; }
 QString FormatDefinition::mimeType(int index) const
 {
@@ -41,7 +55,7 @@ QString FormatDefinition::mimeType(int index) const
 QStringList FormatDefinition::mimeTypes() const                                         { return this->_mimeTypes; }
 
 void FormatDefinition::setCompleteness(FormatDefinition::Completeness c)                { this->_completeness = c; }
-void FormatDefinition::setCompleteness(QString str)
+FormatDefinition::Completeness FormatDefinition::setCompleteness(QString str)
 {
     QString normalised = str.toLower().trimmed();
 
@@ -54,10 +68,9 @@ void FormatDefinition::setCompleteness(QString str)
     else if (normalised == "complete")
         this->setCompleteness(Complete);
     else
-    {
-        qWarning() << "Could not set FormatDefinition completeness to" << normalised
-                   << "Using \"NotEmpty\" instead";
-    }
+        qWarning() << "Could not set FormatDefinition completeness to" << normalised;
+
+    return this->_completeness;
 }
 
 void FormatDefinition::insertMimeType(int index, QString mimeType) {

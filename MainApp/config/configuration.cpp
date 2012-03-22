@@ -196,8 +196,7 @@ QDir Configuration::getStorageLocation(StorageLocation type)
 
     if (! location.isReadable() )
         qDebug() << "Configuration::getStorageLocation(): "
-                   << location.path() << "is not readable\n"
-                   << "Understood as" << location.canonicalPath();
+                   << location.path() << "is not readable.";
 
     return location;
 }

@@ -14,27 +14,45 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef VHSXMLTRANSPORTREADER_H
-#define VHSXMLTRANSPORTREADER_H
+#ifndef VHSXML_DATATYPE_H
+#define VHSXML_DATATYPE_H
 
-#include <QList>
-#include <QPointer>
-#include <QDomDocument>
+#include <QObject>
+#include <QString>
+#include <QDateTime>
+#include <QDomElement>
 
 #include "main.h"
-#include "extension_api/transportdefinition.h"
 
 namespace VhsXml {
 
-class TransportReader
+class DataType : public QObject
 {
+    Q_OBJECT
 public:
-    static QList<QPointer<TransportDefinition> > parse(const QDomDocument &document);
+    // Parse as ISO date (xsd:dateTime)
+    static QDateTime dateTime(const QString &str);
+
+    // Parse child elements and return list of text() from all childElementName childs, parsed as xsd:token
+    static QStringList tokenList(const QDomElement &parent, const QString &childElementName);
+
+    // Parse as xsd:NMTOKEN.
+    static QString nmtoken(const QString &str);
+
+    // Parse this and all following elements of the same tagname,
+    // text() from the element that best matches the current locale.
+    static QString localisedString(QDomElement &e);
+
+
+signals:
+
+public slots:
 
 private:
-    TransportReader();
+    DataType();
+
 };
 
 } // namespace VhsXml
 
-#endif // VHSXMLTRANSPORTREADER_H
+#endif // VHSXML_DATATYPE_H

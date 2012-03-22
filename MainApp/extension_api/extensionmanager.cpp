@@ -40,13 +40,14 @@ void ExtensionManager::_initialise()
               << Configuration::pointer()->getStorageLocation(Configuration::SystemExtensionsLocation).entryList(QDir::Dirs | QDir::NoDotAndDotDot)
               << Configuration::pointer()->getStorageLocation(Configuration::UserExtensionsLocation).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
-    QStringList files;
+    QFileInfoList files;
     foreach (QString dir, locations)
-        files.append(QDir(dir).entryList(QStringList("*.xml"), QDir::Files | QDir::Readable));
+        files.append(QDir(dir).entryInfoList(QStringList("*.xml"), QDir::Files | QDir::Readable));
 
-    foreach (QString file, files)
+    foreach (QFileInfo file, files)
     {
-        QPointer<VhsXml::Reader> xml = new VhsXml::Reader(QFile(file), this);
+        // new: Deleted here.
+        QPointer<VhsXml::DocumentReader> xml = new VhsXml::DocumentReader(QFile(file.canonicalFilePath()), this);
         this->_definitions.update(xml->definitions());
         delete xml;
     }

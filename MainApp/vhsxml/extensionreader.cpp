@@ -18,10 +18,6 @@
 
 namespace VhsXml {
 
-ExtensionReader::ExtensionReader()
-{
-}
-
 QList<QPointer<Extension> > ExtensionReader::parse(const QDomDocument &document)
 {
     QList<QPointer<Extension> > result;

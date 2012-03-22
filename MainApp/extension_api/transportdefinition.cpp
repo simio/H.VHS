@@ -16,9 +16,10 @@
 
 #include "transportdefinition.h"
 
-TransportDefinition::TransportDefinition(QObject *parent) :
-    Definition(parent)
-{ }
+TransportDefinition::TransportDefinition(QString id, QString name, QString description, QDateTime releaseDate, QObject *parent) :
+    Definition(id, name, description, releaseDate, Definition::TransportDefinitionType, parent)
+{
+}
 
 TransportDefinition::TransportDefinition(const TransportDefinition &original, QObject *parent) :
     Definition(original, parent)

@@ -18,8 +18,4 @@
 
 namespace VhsXml {
 
-CassetteReader::CassetteReader()
-{
-}
-
 } // namespace VhsXml

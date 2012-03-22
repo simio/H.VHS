@@ -20,8 +20,11 @@
 #include <QList>
 #include <QPointer>
 #include <QDomDocument>
+#include <QDomElement>
+#include <QDomNode>
 
 #include "main.h"
+#include "vhsxml/datatype.h"
 #include "extension_api/formatdefinition.h"
 
 namespace VhsXml {
@@ -29,9 +32,13 @@ namespace VhsXml {
 class FormatReader
 {
 public:
+    static QList<QPointer<FormatDefinition> > parse(const QDomDocument &document);
+
+private:
     FormatReader();
 
-    static QList<QPointer<FormatDefinition> > parse(const QDomDocument &document);
+    static bool _expectElement(const QDomElement &element, const QString &tagName, bool mandatory = true);
+    static QPointer<FormatDefinition> _parseFormat(const QDomElement &formatNode);
 };
 
 } // namespace VhsXml

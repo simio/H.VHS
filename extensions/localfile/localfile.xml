@@ -10,7 +10,7 @@
             <author email="jesper@huggpunkt.org" website="http://huggpunkt.org/">Jesper Räftegård</author>
             <implementation>dll</implementation>
             <input>
-                <format>any</format>
+                <format>notEmpty</format>
                 <transport>localfile</transport>
                 <transport>textstream</transport>
                 <transport>datastream</transport>

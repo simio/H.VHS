@@ -27,16 +27,26 @@
 class FormatDefinition : public Definition
 {
 public:
-    explicit FormatDefinition(QObject *parent = 0);
-    FormatDefinition(const FormatDefinition &original, QObject *parent = 0);
-    FormatDefinition &operator=(const FormatDefinition &original);
-
     enum Completeness {
+        Invalid,
         NotEmpty,           // Format may not contain nothing
         MetaOnly,           // Contains all information necessary to access and/or compile a complete file
         DataOnly,           // Does not contain all information necessary to compile a complete file
         Complete            // Contains a complete file
     };
+
+    explicit FormatDefinition();
+    FormatDefinition(QString id,
+                     QString name,
+                     QString description,
+                     QDateTime releaseDate,
+                     QString completeness,
+                     QStringList mimeTypes,
+                     QObject *parent = 0);
+    FormatDefinition(const FormatDefinition &original, QObject *parent = 0);
+    FormatDefinition &operator=(const FormatDefinition &original);
+
+    bool isValid();
 
     // The MIME type list is prioritised. The first type is preferred for output.
     QString mimeType(int index = 0) const;
@@ -45,7 +55,7 @@ public:
 
     Completeness completeness() const;
     void setCompleteness(Completeness c);
-    void setCompleteness(QString contentType);
+    Completeness setCompleteness(QString contentType);
 
 public slots:
 

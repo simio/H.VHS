@@ -18,10 +18,6 @@
 
 namespace VhsXml {
 
-TransportReader::TransportReader()
-{
-}
-
 QList<QPointer<TransportDefinition> > TransportReader::parse(const QDomDocument &document)
 {
     QList<QPointer<TransportDefinition> > result;

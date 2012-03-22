@@ -33,6 +33,8 @@ class Extension : public Definition
 {
 public:
     explicit Extension(QObject *parent = 0);
+    Extension(QString id, QString name, QString description, QDateTime releaseDate, QString basePath, QObject *parent = 0);
+    Extension(QString basePath, QObject *parent = 0);
     Extension(const Extension &original, QObject *parent = 0);
     Extension &operator=(const Extension &original);
 
@@ -41,20 +43,20 @@ public:
     QFileInfo basePath() const                                              { return this->_basePath; }
     bool isEnabled() const                                                  { return this->_enabled; }
 
-    bool canWriteFormat(QByteArray uid) const                               { return this->_writeFormats.contains(uid); }
-    bool canReadFormat(QByteArray uid) const                                { return this->_readFormats.contains(uid); }
-    bool canWriteTransport(QByteArray uid) const                            { return this->_writeTransports.contains(uid); }
-    bool canReadTransport(QByteArray uid) const                             { return this->_readTransports.contains(uid); }
+    bool canWriteFormat(QString uid) const                               { return this->_writeFormats.contains(uid); }
+    bool canReadFormat(QString uid) const                                { return this->_readFormats.contains(uid); }
+    bool canWriteTransport(QString uid) const                            { return this->_writeTransports.contains(uid); }
+    bool canReadTransport(QString uid) const                             { return this->_readTransports.contains(uid); }
 
-    QList<QByteArray> readTransports() const                                { return this->_readTransports; }
-    QList<QByteArray> readFormats() const                                   { return this->_readFormats; }
-    QList<QByteArray> writeTransports() const                               { return this->_writeTransports; }
-    QList<QByteArray> writeFormats() const                                  { return this->_writeFormats; }
+    QList<QString> readTransports() const                                { return this->_readTransports; }
+    QList<QString> readFormats() const                                   { return this->_readFormats; }
+    QList<QString> writeTransports() const                               { return this->_writeTransports; }
+    QList<QString> writeFormats() const                                  { return this->_writeFormats; }
 
-    void addReadTransport(QByteArray transport)                             { this->_readTransports.append(transport); }
-    void addReadFormat(QByteArray format)                                   { this->_readFormats.append(format); }
-    void addWriteTransport(QByteArray transport)                            { this->_writeTransports.append(transport); }
-    void addWriteFormat(QByteArray format)                                  { this->_writeFormats.append(format); }
+    void addReadTransport(QString transport)                             { this->_readTransports.append(transport); }
+    void addReadFormat(QString format)                                   { this->_readFormats.append(format); }
+    void addWriteTransport(QString transport)                            { this->_writeTransports.append(transport); }
+    void addWriteFormat(QString format)                                  { this->_writeFormats.append(format); }
 
 signals:
 
@@ -69,10 +71,10 @@ private:
 
     QMap<QString,QVariant> _info;
 
-    QList<QByteArray> _readTransports;
-    QList<QByteArray> _readFormats;
-    QList<QByteArray> _writeTransports;
-    QList<QByteArray> _writeFormats;
+    QList<QString> _readTransports;
+    QList<QString> _readFormats;
+    QList<QString> _writeTransports;
+    QList<QString> _writeFormats;
 };
 
 #endif // EXTENSION_H

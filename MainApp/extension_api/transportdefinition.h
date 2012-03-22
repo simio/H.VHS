@@ -26,7 +26,8 @@
 class TransportDefinition : public Definition
 {
 public:
-    explicit TransportDefinition(QObject *parent = 0);
+    explicit TransportDefinition();
+    TransportDefinition(QString id, QString name, QString description, QDateTime releaseDate, QObject *parent = 0);
     TransportDefinition(const TransportDefinition &original, QObject *parent = 0);
 
 signals:

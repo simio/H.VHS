@@ -15,11 +15,15 @@
  */
 
 #include "extension.h"
-
-Extension::Extension(QObject *parent) :
-    Definition(parent)
+Extension::Extension(QString id,
+                     QString name,
+                     QString description,
+                     QDateTime releaseDate,
+                     QString basePath,
+                     QObject *parent) :
+    Definition(id, name, description, releaseDate, Definition::ExtensionDefinitionType, parent)
 {
-    this->_basePath = QString();
+    this->_basePath = basePath;
 }
 
 Extension::Extension(const Extension &original, QObject *parent) :

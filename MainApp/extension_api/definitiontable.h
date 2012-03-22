@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QPointer>
-#include <QByteArray>
+#include <QString>
 
 #include "main.h"
 
@@ -34,9 +34,9 @@ public:
     int count(Definition::DefinitionType type = Definition::NoDefinitionType);
     bool update(QPointer<Definition> def);                                      // returns true iff definition table changed
     int update(QList<QPointer<Definition> > defs);                              // returns number of changes to definition table
-    bool contains(Definition::DefinitionType type, QByteArray id);
+    bool contains(Definition::DefinitionType type, QString id);
     bool contains(QPointer<Definition> def);
-    QPointer<Definition> get(Definition::DefinitionType type, QByteArray id);
+    QPointer<Definition> get(Definition::DefinitionType type, QString id);
     QPointer<Definition> get(QPointer<Definition> def);
 
 signals:
@@ -46,7 +46,7 @@ public slots:
 private:
     bool _set(QPointer<Definition> def);                                      // returns true if the total number of definitions changed
 
-    QHash<Definition::DefinitionType, QHash<QByteArray, QPointer<Definition> > > _definitions;
+    QHash<Definition::DefinitionType, QHash<QString, QPointer<Definition> > > _definitions;
 
 };
 

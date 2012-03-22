@@ -29,9 +29,10 @@ namespace VhsXml {
 class CassetteReader
 {
 public:
-    CassetteReader();
-
     //static QList<QPointer<Cassette> > parse(const QDomDocument &document);
+
+private:
+    CassetteReader();
 };
 
 } // namespace VhsXml

@@ -29,9 +29,10 @@ namespace VhsXml {
 class ExtensionReader
 {
 public:
-    ExtensionReader();
-
     static QList<QPointer<Extension> > parse(const QDomDocument &document);
+
+private:
+    ExtensionReader();
 };
 
 } // namespace VhsXml

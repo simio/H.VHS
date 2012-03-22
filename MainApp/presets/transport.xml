@@ -2,80 +2,80 @@
 <vhsxml version="1.1" xmlns="http://play.huggpunkt.org/vhsxml/1">
     <transportDefinitions>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">textstream</id>
+            <id releaseDate="2012-03-15T10:57:24">textstream</id>
             <name xml:lang="en">Text Stream</name>
             <name xml:lang="sv">Textström</name>
             <description xml:lang="en">QTextStream.</description>
             <description xml:lang="sv">QTextStream</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">datastream</id>
+            <id releaseDate="2012-03-15T10:57:24">datastream</id>
             <name xml:lang="en">Binary Stream</name>
             <name xml:lang="sv">Dataström</name>
             <description xml:lang="en">QDataStream.</description>
             <description xml:lang="sv">QDataStream.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">localfile</id>
+            <id releaseDate="2012-03-15T10:57:24">localfile</id>
             <name xml:lang="en">Local file</name>
             <name xml:lang="sv">Lokalt filsystem</name>
             <description xml:lang="en">Local filenames.</description>
             <description xml:lang="sv">Lokala filnamn.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">fileuri</id>
+            <id releaseDate="2012-03-15T10:57:24">fileuri</id>
             <name xml:lang="en">file://</name>
             <name xml:lang="sv">file://</name>
             <description xml:lang="en">File URI.</description>
             <description xml:lang="sv">Filer som URI.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">http</id>
+            <id releaseDate="2012-03-15T10:57:24">http</id>
             <name xml:lang="en">HTTP</name>
             <description xml:lang="en">Hypertext Transfer Protocol.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">https</id>
+            <id releaseDate="2012-03-15T10:57:24">https</id>
             <name xml:lang="en">HTTPS</name>
             <description xml:lang="en">Hypertext Transfer Protocol Secure.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">ftp</id>
+            <id releaseDate="2012-03-15T10:57:24">ftp</id>
             <name xml:lang="en">FTP</name>
             <description xml:lang="en">File Transfer Protocol.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">rtmp</id>
+            <id releaseDate="2012-03-15T10:57:24">rtmp</id>
             <name xml:lang="en">RTMP</name>
             <description xml:lang="en">Real Time Messaging Protocol.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">rtmpe</id>
+            <id releaseDate="2012-03-15T10:57:24">rtmpe</id>
             <name xml:lang="en">RTMPE</name>
             <description xml:lang="en">Real Time Messaging Protocol Encrypted.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">rtmpt</id>
+            <id releaseDate="2012-03-15T10:57:24">rtmpt</id>
             <name xml:lang="en">RTMPT</name>
             <description xml:lang="en">Real Time Messaging Protocol via HTTP.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">rtmpte</id>
+            <id releaseDate="2012-03-15T10:57:24">rtmpte</id>
             <name xml:lang="en">RTMPTE</name>
             <description xml:lang="en">Real Time Messaging Protocol Encrypted via HTTP.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">rtmps</id>
+            <id releaseDate="2012-03-15T10:57:24">rtmps</id>
             <name xml:lang="en">RTMPS</name>
             <description xml:lang="en">Real Time Messaging Protocol via HTTPS.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">rtmfp</id>
+            <id releaseDate="2012-03-15T10:57:24">rtmfp</id>
             <name xml:lang="en">RTMFP</name>
             <description xml:lang="en">Real Time transport Flow Protocol.</description>
         </transportDefinition>
         <transportDefinition>
-            <id asOf="2012-03-15T10:57:24">realworld</id>
+            <id releaseDate="2012-03-15T10:57:24">realworld</id>
             <name xml:lang="en">transport endpoint</name>
             <name xml:lang="sv">Verkligheten</name>
             <description xml:lang="en">Local Playback/Recording device.</description>

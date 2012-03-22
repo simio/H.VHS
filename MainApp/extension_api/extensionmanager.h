@@ -31,7 +31,7 @@
 #include "extension_api/extension.h"
 #include "extension_api/definitiontable.h"
 
-#include "vhsxml/reader.h"
+#include "vhsxml/documentreader.h"
 
 class ExtensionManager : public QObject
 {

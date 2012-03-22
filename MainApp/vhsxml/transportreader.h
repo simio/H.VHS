@@ -22,6 +22,7 @@
 #include <QDomDocument>
 
 #include "main.h"
+#include "vhsxml/elementparser.h"
 #include "extension_api/transportdefinition.h"
 
 namespace VhsXml {
@@ -33,6 +34,8 @@ public:
 
 private:
     TransportReader();
+
+    static QPointer<TransportDefinition> _parseTransport(const QDomElement &transportNode);
 };
 
 } // namespace VhsXml

@@ -149,7 +149,6 @@ bool DocumentReader::_initialise(QPointer<QFile> file)
         QXmlInputSource *source = new QXmlInputSource(file);
         bool retVal = this->_initialise(source);
         delete source;
-        qDebug() << "DocumentReader initialised for" << file->fileName();
         return retVal;
     }
     qDebug() << "DocumentReader failed to initialise on" << file->fileName();

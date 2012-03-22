@@ -40,15 +40,14 @@ QList<QPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &docum
                 formatNode = formatNode.nextSiblingElement();
             }
         }
-        else
-            qDebug() << "FormatReader::parse() found no <formatDefinitions> tag.";
 
         node = node.nextSiblingElement();
     }
-    qDebug() << "FormatReader::parse() returning" << result.count() << "formats.";
     return result;
 }
 
+// The purpose of the rather brutish way in which this member parses xml is to
+// enforce a specific ordering of the xml elements in the xml document.
 QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatNode)
 {
     QString id;                                     // Unique; mandatory

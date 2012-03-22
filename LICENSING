@@ -1,0 +1,82 @@
+The source code is ISC licensed. The extremely simple and useful ISC
+License is registered with and approved by the Open Source Initiative.
+Here's what it might look like:
+
+    * Copyright (c) 2012 Some person <s.person@example.org>
+    * Copyright (c) 2012 Another person <a.person@example.org>
+    *
+    * Permission to use, copy, modify, and/or distribute this software for
+    * any purpose with or without fee is hereby granted, provided that the
+    * above copyright notice and this permission notice appear in all copies.
+
+There are many reasons why this license is used here, with these being the
+foremost:
+
+    1. It is simple and understandable, which is always good.
+    2. It is essentially free from political purposes.
+    3. It allows code reuse under more circumstances.
+       No commercial and/or closed source alternatives to this
+       software exists today, but would be welcome.
+    4. The possibility of a commercial broadcasting company viewing the
+       ISC licensing terms as a deliberate provocation is extremely small.
+
+Perhaps (4) could use some clarification. The purpose of this software
+is to make downloading content from the video streaming sites of (not 
+only) commercial and public service broadcasting companies easy and 
+available to the general public. This is indeed legal in many (or most?) 
+countries, including Sweden where this project is based. There is even a 
+governmental system in place where a percentage of what one pays for 
+DVD:s, hard drives and other writable media is distributed to copyright 
+holders holders, to compensate for recording or downloading copyrighted 
+content when made available legally, and sharing it amongst relatives 
+and close friends.
+
+Still, this endeavour is sometimes confused with copyright infringement, 
+political "piratism" and other non-related issues. Due to this, the 
+effort to steer clear of any political purposes become even more 
+important, as do the aim of keeping any interests of economic gain or 
+anti-commercialism away. 
+
+
+THE ISC LICENSE AND CODE REUSE
+These copyright and permission notices appear in every source code file 
+of this project. Though it permits almost anything, please note that you 
+are not allowed to remove or modify these notices in any derivative 
+works, though you should add your name to the list of copyright holders, 
+if you choose to use the same license. 
+
+When reusing ISC licensed code in code distributed under some other 
+license, these notices must still be present in the resulting code, 
+documentation and binaries where applicable. When copying or reusing 
+parts of the code rather than copying whole files, you are required to
+copy these notices from into your own.
+
+
+MIXING WITH OTHER LICENSES
+The ISC license is extremely permissive. It allows reusing code in any
+open or closed source project. ISC licensed code will peacefully coexist
+with code licensed under any other license known, as long as the copyright
+and permission notices are neither modified nor removed.
+
+If you reuse this code under a copyleft license like the GPL, please 
+appreciate the fact that your GPL licensed improvements to this code 
+cannot be reused in this porject without it being relicensed. The GPL is
+more restrictive than the ISC license, and more to the point, it demands
+that all source code compiled with GPL licensed code itself is licensed
+under the the GPL. Due to the nature of this project, as stated in the
+above section, relicensing in such a way would be a bad thing.
+
+We do however like code reuse, and very much so, so please consider dual 
+licensing your modifications, whether you use the GPL or any other 
+closed or open source license. You can allow this either in your own 
+source tree, if publicly available, or by sending an email to 
+<h-vhs@huggpunkt.org>, allowing the reuse under the ISC license of those
+parts of your code which are based on this project.
+
+If you do grant this project such a permission, also emailing the dual 
+licensed code in question would be most helpful, as it would rid us of
+any doubts as to which parts of your code we are allowed to use and
+distribute under the ISC license.
+
+This project will always be licensed under the ISC or any functionally
+equivalent license, like the "Simplified BSD License".

@@ -1,3 +1,26 @@
-Projektet flyttar till GitHub med version 0.4.
+This repository contains a full rewrite and the next version of H.VHS,
+while the previous, unfortunately quite broken version is still hosted
+at Google Code. (http://code.google.com/p/huggpunktplay)
 
-Version 0.3x utvecklas fortfarande på http://code.google.com/p/huggpunktplay
+The LICENSING file contains information on not only the ISC license 
+used in this project and what the licensing terms means for code reuse,
+but also on WHY the nature of project gives good reason to use it.
+
+The purpose of this software is to make downloading content from the 
+video streaming sites of (not only) commercial and public service 
+broadcasting companies easy and available to the general public. This is 
+indeed legal in many (or most?) countries, including Sweden where this
+project is based. There is even a governmental system in place where 
+a percentage of what one pays for DVD:s, hard drives and other writable 
+media is distributed to copyright holders holders, to compensate for 
+recording or downloading copyrighted content when made available legally,
+and sharing it amongst relatives and close friends.
+
+Please also note that it is NOT legal, at least not in Sweden, to record
+or download copyrighted content made available illegally (i.e. without the
+copyright holders permission).
+
+The purpose of this software IS NOT to facilitate copyright 
+infringement, and any contributions aimed to adapt the software 
+specifically to such a purpose will not be included. Please do not 
+confuse this project with pirate activity.

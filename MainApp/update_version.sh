@@ -12,17 +12,14 @@ if [ X$PLATFORM = Xwin32 ]; then
     GIT="$CYGWIN_BIN/git.exe"
     CAT="$CYGWIN_BIN/cat.exe"
     WC="$CYGWIN_BIN/wc.exe"
+    DATE="$CYGWIN_BIN/date.exe"
 fi
 
 PRO_PWD=$($DIRNAME "$0")
 VERSION_H="$PRO_PWD/version.h"
-COMMIT_COUNT_FILE="$PRO_PWD/.commitcounter"
 GIT_HASH_FILE="$PRO_PWD/.lastgithash"
+DATETIME_FILE="$PRO_PWD/.lastdatetime"
 RC_FILE="$PRO_PWD/$RC_FILENAME"
-
-# Append git commit count to version number
-#COMMIT_COUNT=$(cd "$PRO_PWD" && $GIT rev-list --all --abbrev-commit --no-merges | $WC -l)
-#APP_VERSION=$APP_VERSION.$COMMIT_COUNT
 
 # Get git hash
 GIT_HASH=$(cd "$PRO_PWD" && $GIT log "--pretty=format:%h" -n 1)
@@ -33,28 +30,31 @@ GIT_BRANCH=$(cd "$PRO_PWD" && $GIT rev-parse --abbrev-ref HEAD)
 # Get git (annotated) tag, if an exact match exists
 GIT_TAG=$(cd "$PRO_PWD" && $GIT describe --exact-match HEAD 2> /dev/null)
 
-# Update commit counter when hash has changed
+# Check if hash has changed
 LAST_GIT_HASH=$($CAT "$GIT_HASH_FILE" | $SED 's/^[ \t]*//;s/[ \t]*$//')
-LAST_COMMIT_COUNT=$($CAT "$COMMIT_COUNT_FILE" | $SED 's/^[ \t]*//;s/[ \t]*$//')
+LAST_DATETIME=$($CAT "$DATETIME_FILE" | $SED 's/^[ \t]*//;s/[ \t]*$//')
+
 if [ X$GIT_HASH != X$LAST_GIT_HASH ]; then
+    # Append current date and time to version number
+    DATETIME=$($DATE -u +%y%m%d%H%M)
+    echo -n $DATETIME > "$DATETIME_FILE"
+
+    # Update hash file
     echo -n $GIT_HASH > "$GIT_HASH_FILE"
-    COMMIT_COUNT=$(($LAST_COMMIT_COUNT+1))
-    echo -n $COMMIT_COUNT > "$COMMIT_COUNT_FILE"
 else
-    COMMIT_COUNT=$LAST_COMMIT_COUNT
+    # No new commits. Use last datetime.
+    DATETIME=$($CAT "$DATETIME_FILE")
+    if [ -e "$VERSION_H" ]; then
+        exit 0
+    fi
 fi
 
-APP_VERSION=$APP_VERSION.$COMMIT_COUNT
+APP_VERSION=$APP_VERSION.$DATETIME
 
 if [ X$GIT_TAG = X ]; then
     DISP_TAG="(none)"
 else
     DISP_TAG=$GIT_TAG
-fi
-
-# Exit if git commit count hasn't changed since last run
-if [ X$LAST_COMMIT_COUNT = X$COMMIT_COUNT -a -e "$VERSION_H" ]; then
-    exit 0
 fi
 
 echo "------------------------------------------------------------------------"

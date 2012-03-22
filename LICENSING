@@ -1,6 +1,6 @@
-The source code is ISC licensed. The extremely simple and useful ISC
-License is registered with and approved by the Open Source Initiative.
-Here's what it might look like:
+The source code is ISC licensed. The simple and useful ISC license is
+registered with and approved by the Open Source Initiative. Here's what
+it might look like:
 
     * Copyright (c) 2012 Some person <s.person@example.org>
     * Copyright (c) 2012 Another person <a.person@example.org>
@@ -49,7 +49,7 @@ When reusing ISC licensed code in code distributed under some other
 license, these notices must still be present in the resulting code, 
 documentation and binaries where applicable. When copying or reusing 
 parts of the code rather than copying whole files, you are required to
-copy these notices from into your own.
+also copy these notices.
 
 
 MIXING WITH OTHER LICENSES
@@ -59,24 +59,25 @@ with code licensed under any other license known, as long as the copyright
 and permission notices are neither modified nor removed.
 
 If you reuse this code under a copyleft license like the GPL, please 
-appreciate the fact that your GPL licensed improvements to this code 
-cannot be reused in this porject without it being relicensed. The GPL is
-more restrictive than the ISC license, and more to the point, it demands
+appreciate the fact that your GPL licensed improvements to this code, 
+though they are indeed open source, cannot be reused in this project 
+without it being relicensed. As a copyleft license, the GPL is more
+restrictive than the ISC license, and more to the point, it demands
 that all source code compiled with GPL licensed code itself is licensed
-under the the GPL. Due to the nature of this project, as stated in the
-above section, relicensing in such a way would be a bad thing.
+under the the GPL. Due to the nature of this project, as stated above,
+relicensing in such a way would be a bad thing.
 
 We do however like code reuse, and very much so, so please consider dual 
 licensing your modifications, whether you use the GPL or any other 
-closed or open source license. You can allow this either in your own 
-source tree, if publicly available, or by sending an email to 
-<h-vhs@huggpunkt.org>, allowing the reuse under the ISC license of those
-parts of your code which are based on this project.
+closed or open source license. You can allow this by including a notice 
+either in your own source tree, if publicly available, or by sending an 
+email to <h-vhs@huggpunkt.org>, allowing the reuse under the ISC license 
+of those parts of your code which are based on this project.
 
 If you do grant this project such a permission, also emailing the dual 
 licensed code in question would be most helpful, as it would rid us of
-any doubts as to which parts of your code we are allowed to use and
-distribute under the ISC license.
+any doubts as to which parts of your code you allow use and distribution
+under the ISC license of.
 
 This project will always be licensed under the ISC or any functionally
 equivalent license, like the "Simplified BSD License".

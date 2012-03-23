@@ -22,6 +22,7 @@
 #include <QDomDocument>
 
 #include "main.h"
+#include "vhsxml/elementparser.h"
 #include "extension_api/extension.h"
 
 namespace VhsXml {
@@ -33,6 +34,8 @@ public:
 
 private:
     ExtensionReader();
+
+    static QPointer<Extension> _parseExtension(const QDomElement &extensionNode);
 };
 
 } // namespace VhsXml

@@ -32,49 +32,79 @@
 class Extension : public Definition
 {
 public:
-    explicit Extension(QObject *parent = 0);
-    Extension(QString id, QString name, QString description, QDateTime releaseDate, QString basePath, QObject *parent = 0);
-    Extension(QString basePath, QObject *parent = 0);
+    enum Condition {
+        Broken,
+        Unstable,
+        Stable,
+        Testing
+    };
+
+    enum ApiInterface {
+        Javascript,
+        Qt
+    };
+
+    // Nice
+    Extension(QString id,
+              QString name,
+              QString description,
+              QDateTime releaseDate,
+              QList<Person> authors,
+              QString statement,
+              bool enabled,
+              Condition condition,
+              QString basePath,
+              Version apiVersion,
+              ApiInterface apiInterface,
+              QString source,
+              Version highestCompatibleVersion,
+              Version lowestCompatibleVersion,
+              QList<QString> inputTransports,
+              QList<QString> inputFormats,
+              QList<QString> outputTransports,
+              QList<QString> outputFormats,
+              QList<Person> audits,
+              QObject *parent = 0);
     Extension(const Extension &original, QObject *parent = 0);
     Extension &operator=(const Extension &original);
 
-    QVariant info(QString key, QVariant defaultValue = QVariant()) const    { return this->_info.value(key, defaultValue); }
-    void setInfo(QString key, QVariant value)                               { this->_info.insert(key, value); }
-    QFileInfo basePath() const                                              { return this->_basePath; }
     bool isEnabled() const                                                  { return this->_enabled; }
 
-    bool canWriteFormat(QString uid) const                               { return this->_writeFormats.contains(uid); }
-    bool canReadFormat(QString uid) const                                { return this->_readFormats.contains(uid); }
-    bool canWriteTransport(QString uid) const                            { return this->_writeTransports.contains(uid); }
-    bool canReadTransport(QString uid) const                             { return this->_readTransports.contains(uid); }
+    bool canWriteFormat(QString uid) const                                  { return this->_outputFormats.contains(uid); }
+    bool canReadFormat(QString uid) const                                   { return this->_inputFormats.contains(uid); }
+    bool canWriteTransport(QString uid) const                               { return this->_outputTransports.contains(uid); }
+    bool canReadTransport(QString uid) const                                { return this->_inputTransports.contains(uid); }
 
-    QList<QString> readTransports() const                                { return this->_readTransports; }
-    QList<QString> readFormats() const                                   { return this->_readFormats; }
-    QList<QString> writeTransports() const                               { return this->_writeTransports; }
-    QList<QString> writeFormats() const                                  { return this->_writeFormats; }
-
-    void addReadTransport(QString transport)                             { this->_readTransports.append(transport); }
-    void addReadFormat(QString format)                                   { this->_readFormats.append(format); }
-    void addWriteTransport(QString transport)                            { this->_writeTransports.append(transport); }
-    void addWriteFormat(QString format)                                  { this->_writeFormats.append(format); }
+    QList<QString> inputTransports() const                                  { return this->_inputTransports; }
+    QList<QString> inputFormats() const                                     { return this->_inputFormats; }
+    QList<QString> outputTransports() const                                 { return this->_outputTransports; }
+    QList<QString> outputFormats() const                                    { return this->_outputFormats; }
 
 signals:
 
 public slots:
 
 private:
+    Extension();
     bool _setup();
     bool _isReady() const;
 
     bool _enabled;
+    QList<Person> _authors;
+    QString _statement;
+    Condition _condition;
     QString _basePath;
+    Version _apiVersion;
+    ApiInterface _apiInterface;
+    QString _source;
+    Version _highestCompatibleVersion;
+    Version _lowestCompatibleVersion;
+    QList<Person> _audits;
 
-    QMap<QString,QVariant> _info;
-
-    QList<QString> _readTransports;
-    QList<QString> _readFormats;
-    QList<QString> _writeTransports;
-    QList<QString> _writeFormats;
+    QList<QString> _inputTransports;
+    QList<QString> _inputFormats;
+    QList<QString> _outputTransports;
+    QList<QString> _outputFormats;
 };
 
 #endif // EXTENSION_H

@@ -32,6 +32,7 @@
 #include "version.h"
 #include "config/systemdependent.h"
 #include "config/messagehandler.h"
+#include "config/appwideclasses.h"
 
 class Configuration : public QObject
 {

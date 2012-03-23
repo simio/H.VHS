@@ -67,7 +67,8 @@ SOURCES += \
     config/systemdependent.cpp \
     extension_api/definitiontable.cpp \
     vhsxml/documentreader.cpp \
-    vhsxml/elementparser.cpp
+    vhsxml/elementparser.cpp \
+    config/appwideclasses.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -89,7 +90,8 @@ HEADERS  += \
     config/systemdependent.h \
     extension_api/definitiontable.h \
     vhsxml/documentreader.h \
-    vhsxml/elementparser.h
+    vhsxml/elementparser.h \
+    config/appwideclasses.h
 
 FORMS    += \
     webwindow.ui \

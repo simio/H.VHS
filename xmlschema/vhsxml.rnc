@@ -77,7 +77,7 @@ grammar {
                     attribute interface { "qt" }, empty
                 ) | (
                     # might later accept "scheme"
-                    attribute type { "javascript" },
+                    attribute interface { "javascript" },
                     (
                         ( attribute src { xsd:anyURI }, empty )
                         | xsd:string

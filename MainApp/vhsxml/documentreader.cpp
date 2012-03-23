@@ -79,21 +79,11 @@ QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionT
     return result;
 }
 
-bool DocumentReader::_isCompatibleWith(QString version)
+bool DocumentReader::_isCompatibleWith(QString foulString)
 {
-    QRegExp rx("([0-9]+)\\.([0-9]+)");
-    if (rx.indexIn(version.trimmed()) < 0)
-        return false;
-    int major = rx.cap(1).toInt();
-    int minor = rx.cap(2).toInt();
+    Version version = Version(foulString);
 
-    if (major < this->_legacyXmlMajor
-            || major > this->_currentXmlMajor
-            || (major == this->_legacyXmlMajor && minor < this->_legacyXmlMinor)
-            || (major == this->_currentXmlMajor && minor > this->_currentXmlMinor))
-        return false;
-
-    return true;
+    return (DocumentReader::oldestCompatibleVersion() <= version && DocumentReader::version() >= version);
 }
 
 // Cannot use QPointer for source

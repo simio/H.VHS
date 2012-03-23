@@ -64,6 +64,8 @@ public:
     virtual bool operator> (const Version &other) const         { return !(*this <= other); }
     virtual bool operator>=(const Version &other) const         { return !(*this < other); }
 
+    Version toVersion(QString version);
+
     QString version() const                                     { return QString::number(this->_major) + "." + QString::number(this->_minor); }
     qint64 major() const                                        { return this->_major; }
     qint64 minor() const                                        { return this->_minor; }

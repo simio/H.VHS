@@ -40,6 +40,9 @@ class DocumentReader : public QObject
 {
     Q_OBJECT
 public:
+    static Version version()                    { return Version(1, 1); }
+    static Version oldestCompatibleVersion()    { return Version(1, 1); }
+
     explicit DocumentReader(QObject *parent = 0) : QObject(parent) { }
     DocumentReader(QFileInfo file, QObject *parent);
     DocumentReader(QPointer<QIODevice> device, QObject *parent) : QObject(parent)   { this->_initialise(device); }
@@ -57,12 +60,7 @@ signals:
 public slots:
 
 private:
-    static const int _currentXmlMajor = 1;                  // Highest compatible major version number
-    static const int _currentXmlMinor = 1;                  // ...and minor
-    static const int _legacyXmlMajor = 1;                   // Lowest compatible as above
-    static const int _legacyXmlMinor = 1;                   // ...
-
-    bool _isCompatibleWith(QString version);
+    static bool _isCompatibleWith(QString foulString);
 
     bool _initialise(QPointer<QFile> file);
     bool _initialise(QPointer<QIODevice> device);

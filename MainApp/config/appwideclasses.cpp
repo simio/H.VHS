@@ -60,17 +60,24 @@ QMultiMap<QDateTime, QString> Person::activities(QDateTime earliest, QDateTime l
 
 Version::Version(QString version)
 {
+    *this = Version::toVersion(version);
+}
+
+Version Version::toVersion(QString version)
+{
+    qint64 major, minor;
     QStringList numbers = version.split(".", QString::SkipEmptyParts);
     if (numbers.isEmpty())
-        this->_major = this->_minor = 0;
+        minor = major = 0;
     else if (numbers.count() == 1)
     {
-        this->_major = numbers.first().toInt(); // Returns 0 if conversion fails
-        this->_minor = 0;
+        major = numbers.first().toInt(); // Returns 0 if conversion fails
+        minor = 0;
     }
     else
     {
-        this->_major = numbers.first().toInt(); // Returns 0 if conversion fails
-        this->_minor = numbers.at(1).toInt();   // as above
+        major = numbers.first().toInt(); // Returns 0 if conversion fails
+        minor = numbers.at(1).toInt();   // as above
     }
+    return Version(major, minor);
 }

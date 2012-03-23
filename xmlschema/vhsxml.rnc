@@ -50,7 +50,7 @@ grammar {
                 person+
             },
             element enabled { "true" | "false" },
-            element stability { "broken" | "unstable" | "stable" | "testing" }?,
+            element condition { "broken" | "unstable" | "stable" | "testing" }?,
             api,
             element input {
                 element transport { xsd:NMTOKEN }+,

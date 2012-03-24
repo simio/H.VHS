@@ -29,6 +29,12 @@
 #include "transportdefinition.h"
 #include "formatdefinition.h"
 
+/*
+ *  This class is expected to neither change nor expand much
+ *  over time, which (probably) means the code is more easily
+ *  maintained if it uses hardcoded vars rather than a QMap.
+ */
+
 class Extension : public Definition
 {
 public:
@@ -50,15 +56,14 @@ public:
               QString description,
               QDateTime releaseDate,
               QList<Person> authors,
-              QString statement,
+              QString licenseName,
+              QUrl licenseUrl,
               bool enabled,
               Condition condition,
               QString basePath,
               Version apiVersion,
               ApiInterface apiInterface,
               QString source,
-              Version highestCompatibleVersion,
-              Version lowestCompatibleVersion,
               QList<QString> inputTransports,
               QList<QString> inputFormats,
               QList<QString> outputTransports,
@@ -69,6 +74,7 @@ public:
     Extension &operator=(const Extension &original);
 
     bool isEnabled() const                                                  { return this->_enabled; }
+    bool isValid() const;
 
     bool canWriteFormat(QString uid) const                                  { return this->_outputFormats.contains(uid); }
     bool canReadFormat(QString uid) const                                   { return this->_inputFormats.contains(uid); }
@@ -89,22 +95,21 @@ private:
     bool _setup();
     bool _isReady() const;
 
-    bool _enabled;
-    QList<Person> _authors;
-    QString _statement;
+    bool _enabled;                                  // Whether the extension is enabled on this machine/installation
+    QList<Person> _authors;                         // Author(s) of this extension. Years of the (c)-notice is stored as 'copyright' activity in Person.
+    QString _licenseName;                           // License statement.
+    QUrl _licenseUrl;                               // If relative, ./ is the location of the extension definition XML file.
     Condition _condition;
     QString _basePath;
     Version _apiVersion;
     ApiInterface _apiInterface;
     QString _source;
-    Version _highestCompatibleVersion;
-    Version _lowestCompatibleVersion;
     QList<Person> _audits;
 
-    QList<QString> _inputTransports;
-    QList<QString> _inputFormats;
-    QList<QString> _outputTransports;
-    QList<QString> _outputFormats;
+    QStringList _inputTransports;
+    QStringList _inputFormats;
+    QStringList _outputTransports;
+    QStringList _outputFormats;
 };
 
 #endif // EXTENSION_H

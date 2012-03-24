@@ -2,25 +2,40 @@
 <vhsxml version="1.1" xmlns="http://play.huggpunkt.org/vhsxml/1">
     <extensions>
         <extension>
-            <uid>dummy</uid>
-            <version>1</version>
+            <id releaseDate="2012-03-24T23:10:00">dummy</id>
+            <name xml:lang="en">Dummy extension</name>
+            <name xml:lang="sv">LÃ¥tsastillÃ¤g</name>
+            <description xml:lang="en">The extension, it does nothing.</description>
+            <authors>
+                <author email="jesper@huggpunkt.org"
+                        website="http://huggpunkt.org/"
+                        username="jesper"
+                        copyright="2012"
+                        >Jesper</author>
+            </authors>
+            <license href="http://www.isc.org/software/license">ISC License</license>
             <enabled>false</enabled>
-            <name>Dummy extension</name>
-            <description>Does nothing.</description>
-            <author email="jesper@huggpunkt.org" website="http://huggpunkt.org/">Jesper Räftegård</author>
-            <implementation>dll</implementation>
-            <input>
+            <condition>stable</condition>
+            <source version="1.0" interface="javascript"/>
+            <acceptsInputFrom>
                 <format>notEmpty</format>
                 <transport>localfile</transport>
                 <transport>textstream</transport>
                 <transport>datastream</transport>
-            </input>
-            <output>
+            </acceptsInputFrom>
+            <acceptsOutputTo>
                 <format>copy</format>
                 <transport>localfile</transport>
                 <transport>textstream</transport>
                 <transport>datastream</transport>
-            </output>
+            </acceptsOutputTo>
+            <audits>
+                <audit username="jesper"
+                       website="http://huggpunkt.org/"
+                       date="2012-03-24T23:20:00"
+                       email="jesper@huggpunkt.org"
+                       >Jesper</audit>
+            </audits>
         </extension>
     </extensions>
 </vhsxml>

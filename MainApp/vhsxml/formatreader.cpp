@@ -46,20 +46,25 @@ QList<QPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &docum
     return result;
 }
 
-// The purpose of the rather brutish way in which this member parses xml is to
-// enforce a specific ordering of the xml elements in the xml document.
+
+/*
+ *  While this way of parsing is not optimal (as in being nice and readable),
+ *  the enforcing of xml element ordering is intentional. The order in which
+ *  the elements appear is defined in the RELAX NG Schema.
+ */
+
 QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatNode)
 {
-    QString id;                                     // Unique; mandatory
-    QDateTime releaseDate;                          // As attribute of id; mandatory
-    QString name;                                   // Localised; mandatory
+    QString id;                                     // Unique; required
+    QDateTime releaseDate;                          // As attribute of id; required
+    QString name;                                   // Localised; required
     QString description;                            // Localised; optional
-    QString completeness;                           // From presets; mandatory
-    QStringList mimeTypes;                          // Prioritised when outputting; mandatory to specify at least one
+    QString completeness;                           // From presets; required
+    QStringList mimeTypes;                          // Prioritised when outputting; required to specify at least one
 
     // <id releaseDate="xsd:dateTime">xsd:NMTOKEN</id>
     QDomElement e = formatNode.firstChildElement();
-    if (ElementParser::expect(e, "id"))
+    if (ElementParser::expect(e, "id", ElementParser::Required))
     {
         releaseDate = ElementParser::dateTime(e.attribute("releaseDate"));
         id = ElementParser::nmtoken(e.text());
@@ -69,7 +74,7 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
 
     // <name xml:lang="xsd:language">xsd:token</name>
     // (one or more, with unique xml:lang attributes)
-    if (ElementParser::expect(e, "name"))
+    if (ElementParser::expect(e, "name", ElementParser::Required))
     {
         name = ElementParser::localisedString(e);
         e = e.nextSiblingElement();
@@ -79,7 +84,7 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
 
     // <description xml:lang="xsd:language">xsd:token</description>
     // (zero or more, with unique xml:lang attributes)
-    if (ElementParser::expect(e, "description", false))
+    if (ElementParser::expect(e, "description", ElementParser::Optional))
     {
         description = ElementParser::localisedString(e);
         e = e.nextSiblingElement();
@@ -88,7 +93,7 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
         return NULL;
 
     // <completeness> ( notEmpty | metaOnly | dataOnly | complete ) </completeness>
-    if (ElementParser::expect(e, "completeness"))
+    if (ElementParser::expect(e, "completeness", ElementParser::Required))
     {
         completeness = e.text();
         e = e.nextSiblingElement();
@@ -100,8 +105,9 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
     //     <mimeType>xxx/yyy</mimeType>
     //     ...
     // <mimeTypes>
-    if (ElementParser::expect(e, "mimeTypes"))
+    if (ElementParser::expect(e, "mimeTypes", ElementParser::Required))
         mimeTypes = ElementParser::tokenList(e, "mimeType");
+    e = e.nextSiblingElement();
 
     // alloc: Caller is responsible
     QPointer<FormatDefinition> format = new FormatDefinition(id, name, description, releaseDate, completeness, mimeTypes, 0);

@@ -46,7 +46,7 @@ public:
     FormatDefinition(const FormatDefinition &original, QObject *parent = 0);
     FormatDefinition &operator=(const FormatDefinition &original);
 
-    bool isValid();
+    bool isValid() const;
 
     // The MIME type list is prioritised. The first type is preferred for output.
     QString mimeType(int index = 0) const;

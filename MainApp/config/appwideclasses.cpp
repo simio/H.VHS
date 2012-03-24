@@ -66,7 +66,7 @@ Version::Version(QString version)
 Version Version::toVersion(QString version)
 {
     qint64 major, minor;
-    QStringList numbers = version.split(".", QString::SkipEmptyParts);
+    QStringList numbers = version.trimmed().split(".", QString::SkipEmptyParts);
     if (numbers.isEmpty())
         minor = major = 0;
     else if (numbers.count() == 1)

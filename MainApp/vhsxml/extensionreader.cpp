@@ -47,18 +47,37 @@ QList<QPointer<Extension> > ExtensionReader::parse(const QDomDocument &document)
 }
 
 
-// The purpose of the rather brutish way in which this member parses xml is to
-// enforce a specific ordering of the xml elements in the xml document.
+/*
+ *  While this way of parsing is not optimal (as in being nice and readable),
+ *  the enforcing of xml element ordering is intentional. The order in which
+ *  the elements appear is defined in the RELAX NG Schema.
+ */
+
 QPointer<Extension> ExtensionReader::_parseExtension(const QDomElement &extensionNode)
 {
-    QString id;                                     // Unique; mandatory
-    QDateTime releaseDate;                          // As attribute of id; mandatory
-    QString name;                                   // Localised; mandatory
+    QString id;                                     // Unique; required
+    QDateTime releaseDate;                          // As attribute of id; required
+    QString name;                                   // Localised; required
     QString description;                            // Localised; optional
-
+    QList<Person> authors;                          // A minimum of one; required
+    QString licenseName;                            // Required
+    QUrl licenseUrl;                                // Optional
+    bool enabled;                                   // Optional (set by application or extension repository)
+    QString basePath;                               // Optional (set by application)
+    Extension::Condition condition;                 // Required
+    Version apiVersion;                             // Required
+    Extension::ApiInterface apiInterface;           // Required
+    QString source;                                 // Source code for scripted extensions; optional
+                                                    // (If source.isEmpty(), <basePath>/<id>.<apiInterface extension> will be used automatically.)
+    QStringList inputTransports;                    // Required
+    QStringList inputFormats;                       // Required
+    QStringList outputTransports;                   // Required
+    QStringList outputFormats;                      // Required
+    QList<Person> audits;                           // Required, though it might contain zero <audit> elements
+                                                    // (set by application or extension repository)
 
     QDomElement e = extensionNode.firstChildElement();
-    if (ElementParser::expect(e, "id"))
+    if (ElementParser::expect(e, "id", ElementParser::Required))
     {
         releaseDate = ElementParser::dateTime(e.attribute("releaseDate"));
         id = ElementParser::nmtoken(e.text());
@@ -68,7 +87,7 @@ QPointer<Extension> ExtensionReader::_parseExtension(const QDomElement &extensio
 
     // <name xml:lang="xsd:language">xsd:token</name>
     // (one or more, with unique xml:lang attributes)
-    if (ElementParser::expect(e, "name"))
+    if (ElementParser::expect(e, "name", ElementParser::Required))
     {
         name = ElementParser::localisedString(e);
         e = e.nextSiblingElement();
@@ -78,7 +97,7 @@ QPointer<Extension> ExtensionReader::_parseExtension(const QDomElement &extensio
 
     // <description xml:lang="xsd:language">xsd:token</description>
     // (zero or more, with unique xml:lang attributes)
-    if (ElementParser::expect(e, "description", false))
+    if (ElementParser::expect(e, "description", ElementParser::Optional))
     {
         description = ElementParser::localisedString(e);
         e = e.nextSiblingElement();
@@ -86,13 +105,188 @@ QPointer<Extension> ExtensionReader::_parseExtension(const QDomElement &extensio
     else if (e.isNull())
         return NULL;
 
+    //  <authors>
+    //  <author username="xsd:NMTOKEN" copyright="xsd:token"
+    //         email="xsd:token" website="xsd:anyURI">
+    //      xsd:token
+    //  </author>
+    //  ...
+    //  </authors>
+    // At least one author is required.
+    // All author attributes are optional.
+    if (ElementParser::expect(e, "authors", ElementParser::Required))
+    {
+        QDomElement author = e.firstChildElement();
+        while (ElementParser::expect(author, "author", ElementParser::Optional))
+        {
+            QString copyright = ElementParser::token(author.attribute("copyright", QString()));
+            QString email = ElementParser::token(author.attribute("email", QString()));
+            QUrl website = QUrl(author.attribute("website", QString()));
+            QString username = ElementParser::nmtoken(author.attribute("username", QString()));
+            QString name = ElementParser::nmtoken(author.text());
+            Person person = Person(name, email, website, username);
+            person.addInfo("copyright", copyright);
+            authors << person;
+            author = author.nextSiblingElement();
+        }
+        e = e.nextSiblingElement();
+    }
+    else
+        return NULL;
+
+    // <license href="xsd:anyURI">xsd:token</license>
+    // href is optional
+    if (ElementParser::expect(e, "license", ElementParser::Required))
+    {
+        licenseUrl = QUrl(e.attribute("href", QString()));
+        licenseName = ElementParser::token(e.text());
+        e = e.nextSiblingElement();
+    }
+    else
+        return NULL;
+
+    // <enabled> ( "true" | "false" ) </enabled>
+    if (ElementParser::expect(e, "enabled", ElementParser::Optional))
+    {
+        enabled = ElementParser::boolean(e.text());
+        e = e.nextSiblingElement();
+    }
+    else if (e.isNull())
+        return NULL;
+    else
+        enabled = false;
+
+    // <basePath>xsd:string</basePath>
+    if (ElementParser::expect(e, "basePath", ElementParser::Optional))
+    {
+        basePath = e.text();
+        e = e.nextSiblingElement();
+    }
+    else if (e.isNull())
+        return NULL;
+
+    // <condition> ( "broken" | "unstable" | "stable" | "testing" ) </condition>
+    if (ElementParser::expect(e, "condition", ElementParser::Required))
+    {
+        QString str = ElementParser::nmtoken(e.text()).trimmed();
+        if (str == "broken")
+            condition = Extension::Broken;
+        else if (str == "unstable")
+            condition = Extension::Unstable;
+        else if (str == "stable")
+            condition = Extension::Stable;
+        else if (str == "testing")
+            condition = Extension::Testing;
+        else
+        {
+            qDebug() << "ExtensionReader expected <condition> of broken, unstable, stable or testing, but got"
+                     << str;
+            qDebug() << "Discarding extension" << name;
+            return NULL;
+        }
+        e = e.nextSiblingElement();
+    }
+    else
+        return NULL;
+
+    //      <source version="xsd:NMTOKEN" interface=" ( "qt" | "javascript" ) " />
+    // or   <source version="xsd:NMTOKEN" interface="javascript">xsd:string</source>
+    if (ElementParser::expect(e, "source", ElementParser::Required))
+    {
+        apiVersion = Version(e.attribute("version", QString()));
+        QString str = e.attribute("interface").trimmed();
+        if (str == "qt")
+            apiInterface = Extension::Qt;
+        else if (str == "javascript")
+            apiInterface = Extension::Javascript;
+        else
+        {
+            qDebug() << "ExtensionReader expected interface qt or javascript, but got" << str;
+            qDebug() << "Discarding extension" << name;
+            return NULL;
+        }
+        source = e.text().trimmed();
+        e = e.nextSiblingElement();
+    }
+    else
+        return NULL;
+
+    //  <acceptsInputFrom>
+    //      <transport>xsd:NMTOKEN</transport>
+    //      ...
+    //      <format>xsd:NMTOKEN</format>
+    //      ...
+    //  </acceptsInputFrom>
+    if (ElementParser::expect(e, "acceptsInputFrom", ElementParser::Required))
+    {
+        inputTransports = ElementParser::nmtokenList(e, "transport");
+        inputFormats = ElementParser::nmtokenList(e, "format");
+        if (inputTransports.count() < 1 || inputFormats.count() < 1)
+        {
+            qDebug() << "ExtensionReader expected at least one input transport and format, but got 0.";
+            qDebug() << "Discarding extension" << name;
+            return NULL;
+        }
+        e = e.nextSiblingElement();
+    }
+    else
+        return NULL;
+
+    //  <acceptsOutputTo>
+    //      <transport>xsd:NMTOKEN</transport>
+    //      ...
+    //      <format>xsd:NMTOKEN</format>
+    //      ...
+    //  </acceptsOutputTo>
+    if (ElementParser::expect(e, "acceptsOutputTo", ElementParser::Required))
+    {
+        outputTransports = ElementParser::nmtokenList(e, "transport");
+        outputFormats = ElementParser::nmtokenList(e, "format");
+        if (outputTransports.count() < 1 || outputFormats.count() < 1)
+        {
+            qDebug() << "ExtensionReader expected at least one output transport and format, but got 0.";
+            qDebug() << "Discarding extension" << name;
+            return NULL;
+        }
+        e = e.nextSiblingElement();
+    }
+    else
+        return NULL;
+
+    //  <audits>
+    //      <audit email="xsd:token" website="xsd:anyURI" date="xsd:dateTime" username="xsd:token">xsd:token</audit>
+    //      ...
+    //  </audits>
+    // All attributes are optional
+    if (ElementParser::expect(e, "audits", ElementParser::Required))
+    {
+        QDomElement audit = e.firstChildElement();
+        while (ElementParser::expect(audit, "audit", ElementParser::Optional))
+        {
+            QDateTime date = ElementParser::dateTime(audit.attribute("date"));
+            QString email = ElementParser::token(audit.attribute("email", QString()));
+            QUrl website = QUrl(audit.attribute("website", QString()));
+            QString username = ElementParser::nmtoken(audit.attribute("username", QString()));
+            QString name = ElementParser::nmtoken(audit.text());
+            Person person = Person(name, email, website, username);
+            person.addActivity(date, "audit");
+            audits << person;
+            audit = audit.nextSiblingElement();
+        }
+        e = e.nextSiblingElement();
+    }
+    else
+        return NULL;
+
     // alloc: Caller is responsible
-    //QPointer<Extension> extension = new Extension(id, name, description, releaseDate, 0);
-    //if (extension->isValid())
-    //    return extension;
+    QPointer<Extension> extension = new Extension(id, name, description, releaseDate, authors, licenseName, licenseUrl, enabled, condition,
+                                                  basePath, apiVersion, apiInterface, source, inputTransports, inputFormats,
+                                                  outputTransports, outputFormats, audits, 0);
+    if (extension->isValid())
+        return extension;
 
     qDebug() << "ExtensionReader::parseExtension() discarded invalid extension definition.";
-    //delete extension;
+    delete extension;
     return NULL;
 }
 

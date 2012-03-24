@@ -61,7 +61,7 @@ bool Definition::operator >(const Definition &other) const      { return this->_
 bool Definition::operator >=(const Definition &other) const     { return this->_id == other._id
                                                                     && this->_releaseDate >= other._releaseDate; }
 
-bool Definition::isValid()
+bool Definition::isValid() const
 {
     return (!this->_id.isEmpty()
             && !this->_name.isEmpty()

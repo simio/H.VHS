@@ -36,9 +36,15 @@ void ExtensionManager::_initialise()
 {
     QStringList locations;
     locations << Configuration::pointer()->getStorageLocation(Configuration::SystemPresetsLocation).canonicalPath()
-              << Configuration::pointer()->getStorageLocation(Configuration::UserPresetsLocation).canonicalPath()
-              << Configuration::pointer()->getStorageLocation(Configuration::SystemExtensionsLocation).entryList(QDir::Dirs | QDir::NoDotAndDotDot)
-              << Configuration::pointer()->getStorageLocation(Configuration::UserExtensionsLocation).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+              << Configuration::pointer()->getStorageLocation(Configuration::UserPresetsLocation).canonicalPath();
+
+    QDir base = Configuration::pointer()->getStorageLocation(Configuration::SystemExtensionsLocation);
+    foreach(QString folder, base.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+        locations << base.canonicalPath() + "/" + folder;
+
+    base = Configuration::pointer()->getStorageLocation(Configuration::UserExtensionsLocation);
+    foreach(QString folder, base.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+        locations << base.canonicalPath() + "/" + folder;
 
     QFileInfoList files;
     foreach (QString dir, locations)

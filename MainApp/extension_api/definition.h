@@ -52,9 +52,9 @@ public:
     virtual bool operator>(const Definition &original) const;
     virtual bool operator>=(const Definition &original) const;
 
-    virtual bool isValid();
+    virtual bool isValid() const;
 
-    QString id() const                               { return this->_id; }
+    QString id() const                                  { return this->_id; }
     QString name() const                                { return this->_name; }
     QString description() const                         { return this->_description; }
     QDateTime releaseDate() const                       { return this->_releaseDate; }

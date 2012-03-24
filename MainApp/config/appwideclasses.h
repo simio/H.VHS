@@ -18,6 +18,7 @@
 #define APPWIDECLASSES_H
 
 #include <QString>
+#include <QVariant>
 #include <QUrl>
 #include <QMultiMap>
 #include <QDateTime>
@@ -34,10 +35,13 @@ public:
     QString email() const                                                       { return this->_email; }
     QUrl website() const                                                        { return this->_website; }
     QString username() const                                                    { return this->_username; }
-    void addActivity(QDateTime timestamp, QString activity)                     { this->_activities.insertMulti(timestamp, activity); }
     QDateTime activity(QString activity) const                                  { return this->_activities.key(activity); }
-
+    void addActivity(QDateTime timestamp, QString activity)                     { this->_activities.insert(timestamp, activity); }
     QMultiMap<QDateTime,QString> activities(QDateTime earliest, QDateTime latest) const;
+
+    void addInfo(QString key, QVariant value)                                   { this->_info.insert(key, value); }
+    QMultiMap<QString,QVariant> info(void) const                                { return this->_info; }
+    QList<QVariant> info(QString key) const                                     { return this->_info.values(key); }
 
 private:
     QString _name;
@@ -45,6 +49,7 @@ private:
     QUrl _website;
     QString _username;
     QMultiMap<QDateTime,QString> _activities;
+    QMultiMap<QString,QVariant> _info;
 };
 
 class Version

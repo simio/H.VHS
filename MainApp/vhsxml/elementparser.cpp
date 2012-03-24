@@ -23,14 +23,33 @@ QDateTime ElementParser::dateTime(const QString &str)
     return QDateTime::fromString(str, Qt::ISODate);
 }
 
-bool ElementParser::expect(const QDomElement &element, const QString &tagName, bool mandatory)
+bool ElementParser::boolean(const QString &str, bool defaultValue)
+{
+    if (str.trimmed() == "true")
+        return true;
+    else if (str.trimmed() == "false")
+        return false;
+
+    qDebug() << "ElementParser error: Expected \"true\" or \"false\" but got" << str;
+    qDebug() << "Assuming" << (defaultValue ? "true" : "false");
+
+    return false;
+}
+
+QString ElementParser::token(const QString &str)
+{
+    QString result = str;
+    return result.replace("\\s+", " ");
+}
+
+bool ElementParser::expect(const QDomElement &element, const QString &tagName, ElementParser::ElementAttribute attribute)
 {
     if (element.isNull())
         return false;
     else if (tagName == element.tagName())
         return true;
-    else if (mandatory)
-        qDebug() << "FormatReader error: Expected" << tagName << "element but got" << element.tagName()
+    else if (attribute == ElementParser::Required)
+        qDebug() << "ElementParser error: Expected" << tagName << "element but got" << element.tagName()
                     << "in line" << element.lineNumber();
     return false;
 }
@@ -41,7 +60,7 @@ QStringList ElementParser::tokenList(const QDomElement &parent, const QString &c
     QDomElement element = parent.firstChildElement();
     while (! element.isNull())
     {
-        result << element.text().replace("\\s", " ");
+        result << ElementParser::token(element.text());
         element = element.nextSiblingElement();
     }
     return result;
@@ -60,6 +79,18 @@ QString ElementParser::nmtoken(const QString &str)
         ch++;
     }
 
+    return result;
+}
+
+QStringList ElementParser::nmtokenList(const QDomElement &parent, const QString &childElementName)
+{
+    QStringList result;
+    QDomElement element = parent.firstChildElement();
+    while (! element.isNull())
+    {
+        result << ElementParser::nmtoken(element.text());
+        element = element.nextSiblingElement();
+    }
     return result;
 }
 

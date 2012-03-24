@@ -40,7 +40,7 @@ FormatDefinition &FormatDefinition::operator =(const FormatDefinition &original)
     return *this;
 }
 
-bool FormatDefinition::isValid()
+bool FormatDefinition::isValid() const
 {
     return (Definition::isValid()
             && this->_completeness != Invalid

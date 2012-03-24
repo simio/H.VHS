@@ -46,17 +46,22 @@ QList<QPointer<TransportDefinition> > TransportReader::parse(const QDomDocument 
     return result;
 }
 
-// The purpose of the rather brutish way in which this member parses xml is to
-// enforce a specific ordering of the xml elements in the xml document.
+
+/*
+ *  While this way of parsing is not optimal (as in being nice and readable),
+ *  the enforcing of xml element ordering is intentional. The order in which
+ *  the elements appear is defined in the RELAX NG Schema.
+ */
+
 QPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement &transportNode)
 {
-    QString id;                                     // Unique; mandatory
-    QDateTime releaseDate;                          // As attribute of id; mandatory
-    QString name;                                   // Localised; mandatory
+    QString id;                                     // Unique; required
+    QDateTime releaseDate;                          // As attribute of id; required
+    QString name;                                   // Localised; required
     QString description;                            // Localised; optional
 
     QDomElement e = transportNode.firstChildElement();
-    if (ElementParser::expect(e, "id"))
+    if (ElementParser::expect(e, "id", ElementParser::Required))
     {
         releaseDate = ElementParser::dateTime(e.attribute("releaseDate"));
         id = ElementParser::nmtoken(e.text());
@@ -66,7 +71,7 @@ QPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement
 
     // <name xml:lang="xsd:language">xsd:token</name>
     // (one or more, with unique xml:lang attributes)
-    if (ElementParser::expect(e, "name"))
+    if (ElementParser::expect(e, "name", ElementParser::Required))
     {
         name = ElementParser::localisedString(e);
         e = e.nextSiblingElement();
@@ -76,7 +81,7 @@ QPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement
 
     // <description xml:lang="xsd:language">xsd:token</description>
     // (zero or more, with unique xml:lang attributes)
-    if (ElementParser::expect(e, "description", false))
+    if (ElementParser::expect(e, "description", ElementParser::Optional))
     {
         description = ElementParser::localisedString(e);
         e = e.nextSiblingElement();

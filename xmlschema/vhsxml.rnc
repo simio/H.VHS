@@ -47,7 +47,7 @@ grammar {
             i18nName+,
             i18nDesc*,
             element authors {
-                person+
+                author+
             },
             # Copyright and license statement
             element license { xsd:string },
@@ -132,15 +132,16 @@ grammar {
             # Present description elements must be not empty
             xsd:token
         }
-    person =
-        element person {
+    author =
+        element author {
+            attribute copyrightYear { xsd:token }?,
             attribute email { xsd:token }?,
             attribute website { xsd:anyURI }?,
             attribute username { xsd:token }?,
             xsd:token
         }
     auditor =
-        element by {
+        element audit {
             attribute email { xsd:token }?,
             attribute website { xsd:anyURI }?,
             attribute date { xsd:dateTime }?,

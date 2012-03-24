@@ -50,7 +50,7 @@ grammar {
                 person+
             },
             # Copyright and license statement
-            element statement { xsd:string },
+            element license { xsd:string },
             element enabled { "true" | "false" },
             element condition { "broken" | "unstable" | "stable" | "testing" }?,
             api,

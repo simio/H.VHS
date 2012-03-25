@@ -36,7 +36,7 @@ LAST_DATETIME=$($CAT "$DATETIME_FILE" | $SED 's/^[ \t]*//;s/[ \t]*$//')
 
 if [ X$GIT_HASH != X$LAST_GIT_HASH ]; then
     # Append current date and time to version number
-    DATETIME=$($DATE -u +%y%m%d%H%M)
+    DATETIME=$($DATE -u +%Y%m%d%H%M)
     echo -n $DATETIME > "$DATETIME_FILE"
 
     # Update hash file

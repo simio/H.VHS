@@ -54,43 +54,6 @@ ExtensionDefinition::ExtensionDefinition(
     this->_audits = audits;
 }
 
-ExtensionDefinition::ExtensionDefinition(const ExtensionDefinition &original, QObject *parent) :
-    Definition(original, parent),
-    _enabled(original._enabled),
-    _authors(original._authors),
-    _licenseName(original._licenseName),
-    _licenseUrl(original._licenseUrl),
-    _condition(original._condition),
-    _basePath(original._basePath),
-    _apiVersion(original._apiVersion),
-    _apiInterface(original._apiInterface),
-    _source(original._source),
-    _audits(original._audits),
-    _inputTransports(original._inputTransports),
-    _inputFormats(original._inputFormats),
-    _outputTransports(original._outputTransports),
-    _outputFormats(original._outputFormats)
-{ }
-
-ExtensionDefinition &ExtensionDefinition::operator=(const ExtensionDefinition &original)
-{
-    this->_enabled = original._enabled;
-    this->_authors = original._authors;
-    this->_licenseName = original._licenseName;
-    this->_licenseUrl = original._licenseUrl;
-    this->_condition = original._condition;
-    this->_basePath = original._basePath;
-    this->_apiVersion = original._apiVersion;
-    this->_apiInterface = original._apiInterface;
-    this->_source = original._source;
-    this->_inputTransports = original._inputTransports;
-    this->_inputFormats = original._inputFormats;
-    this->_outputFormats = original._outputFormats;
-    this->_outputFormats = original._outputFormats;
-    this->_audits = original._audits;
-    return *this;
-}
-
 bool ExtensionDefinition::isValid() const
 {
     return (Definition::isValid()

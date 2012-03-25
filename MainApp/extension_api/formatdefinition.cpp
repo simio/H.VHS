@@ -29,17 +29,6 @@ FormatDefinition::FormatDefinition(QString id,
     this->_mimeTypes = mimeTypes;
 }
 
-FormatDefinition::FormatDefinition(const FormatDefinition &original, QObject *parent) :
-    Definition(original, parent),
-    _completeness(original._completeness)
-{ }
-
-FormatDefinition &FormatDefinition::operator =(const FormatDefinition &original)
-{
-    this->_completeness = original._completeness;
-    return *this;
-}
-
 bool FormatDefinition::isValid() const
 {
     return (Definition::isValid()

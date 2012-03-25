@@ -35,7 +35,6 @@ public:
         Complete            // Contains a complete file
     };
 
-    explicit FormatDefinition();
     FormatDefinition(QString id,
                      QString name,
                      QString description,
@@ -43,8 +42,6 @@ public:
                      QString completeness,
                      QStringList mimeTypes,
                      QObject *parent = 0);
-    FormatDefinition(const FormatDefinition &original, QObject *parent = 0);
-    FormatDefinition &operator=(const FormatDefinition &original);
 
     bool isValid() const;
 
@@ -62,6 +59,8 @@ public slots:
 signals:
 
 private:
+    FormatDefinition();
+
     Completeness _completeness;
     QStringList _mimeTypes;
 };

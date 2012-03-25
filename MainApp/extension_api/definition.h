@@ -32,17 +32,12 @@ public:
         ExtensionDefinitionType,
         CassetteDefinitionType
     };
-
-    explicit Definition();
     Definition(QString id,
                QString name,
                QString description,
                QDateTime releaseDate,
                DefinitionType type,
                QObject *parent = 0);
-    Definition(const Definition &original, QObject *parent = 0);
-
-    virtual Definition &operator=(const Definition &original);
 
     // ==, !=, <= and >= compares both id and release dates, while < and > compare only dates.
     virtual bool operator==(const Definition &original) const;
@@ -65,6 +60,7 @@ signals:
 public slots:
 
 private:
+    explicit Definition();
     QString _id;                 // Unique ID (generated from QUuid by default)
     QString _name;                  // Localised name
     QString _description;           // Localised description

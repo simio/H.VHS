@@ -20,7 +20,3 @@ TransportDefinition::TransportDefinition(QString id, QString name, QString descr
     Definition(id, name, description, releaseDate, Definition::TransportDefinitionType, parent)
 {
 }
-
-TransportDefinition::TransportDefinition(const TransportDefinition &original, QObject *parent) :
-    Definition(original, parent)
-{ }

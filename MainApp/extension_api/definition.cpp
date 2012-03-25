@@ -31,25 +31,6 @@ Definition::Definition(QString id,
     this->_type = type;
 }
 
-Definition::Definition(const Definition &original, QObject *parent) :
-    QObject(parent),
-    _id(original._id),
-    _name(original._name),
-    _description(original._description),
-    _releaseDate(original._releaseDate),
-    _type(original._type)
-{ }
-
-Definition &Definition::operator =(const Definition &original)
-{
-    this->_id = original._id;
-    this->_name = original._name;
-    this->_description = original._description;
-    this->_releaseDate = original._releaseDate;
-    this->_type = original._type;
-    return *this;
-}
-
 // ==, !=, <= and >= compares both id and release dates, while < and > compare only dates.
 bool Definition::operator ==(const Definition &other) const     { return this->_id == other._id
                                                                     && this->_releaseDate == other._releaseDate; }

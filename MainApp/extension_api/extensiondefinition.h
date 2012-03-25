@@ -70,8 +70,6 @@ public:
               QList<QString> outputFormats,
               QList<Person> audits,
               QObject *parent = 0);
-    ExtensionDefinition(const ExtensionDefinition &original, QObject *parent = 0);
-    ExtensionDefinition &operator=(const ExtensionDefinition &original);
 
     bool isEnabled() const                                                  { return this->_enabled; }
     bool isValid() const;
@@ -92,6 +90,7 @@ public slots:
 
 private:
     ExtensionDefinition();
+
     bool _setup();
     bool _isReady() const;
 

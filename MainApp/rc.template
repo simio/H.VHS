@@ -14,7 +14,7 @@ BEGIN
       VALUE "FileDescription", "Huggunkt VHS"
       VALUE "FileVersion", "_FILEVERSION_"
       VALUE "InternalName", "Huggpunkt VHS"
-      VALUE "LegalCopyright", "Copyright Â© 2012 Jesper RÃ¤ftegÃ¥rd"
+      VALUE "LegalCopyright", "Copyright © 2012 Jesper Räftegård"
       VALUE "OriginalFilename", "HuggpunktVHS.exe"
       VALUE "ProductName", "Huggpunkt VHS"
       VALUE "ProductVersion", "_FILEVERSION_"

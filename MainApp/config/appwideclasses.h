@@ -57,7 +57,7 @@ class Version
 public:
     Version()                                                   { this->_major = this->_minor = 0; }
     Version(QString version);
-    Version(int major, int minor)                               { this->_major = major; this->_minor = minor; }
+    Version(qint64 major, qint64 minor)                         { this->_major = major; this->_minor = minor; }
     Version(const Version &original)                          : _major(original._major), _minor(original._minor) {}
     virtual Version &operator=(const Version &original)         { this->_major = original._major; this->_minor = original._minor; return *this; }
 

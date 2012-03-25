@@ -37,7 +37,7 @@ public:
 
     QDir extensionsDir(Scope scope);
     QDir presetsDir(Scope scope);
-    QPointer<QSettings> makeSettings();
+    QPointer<QSettings> makeSettings(QObject *parent);
 
 private:
     static SystemDependent *s_instance;

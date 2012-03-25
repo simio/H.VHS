@@ -22,12 +22,12 @@ void WebWindow::_setupGui()
     this->setMinimumSize(300, 100);
 
     // Create, configure and add webView
-    this->_webView = new WebView(this);
+    this->_webView = new WebView(this);                                                             // alloc: Has parent
     this->_webView->settings()->setIconDatabasePath(Configuration::pointer()->getStorageLocation(Configuration::FaviconStorageLocation).canonicalPath());
     ui->horizontalLayoutMiddle->addWidget(this->_webView);
 
     // Create, configure and add browser toolbar
-    this->_toolBarBrowser = new QToolBar(tr("Browser Navigation"), this);
+    this->_toolBarBrowser = new QToolBar(tr("Browser Navigation"), this);                           // alloc: Has parent
     this->_toolBarBrowser->layout()->setSpacing(3);
     this->_toolBarBrowser->layout()->setObjectName("BrowserToolBarLayout");
     this->_toolBarBrowser->setObjectName("BrowserToolBar");
@@ -40,16 +40,17 @@ void WebWindow::_setupGui()
     this->_actionBrowseReload = this->_webView->pageAction(QWebPage::Reload);
     this->_actionBrowseReloadAndBypassCache = this->_webView->pageAction(QWebPage::ReloadAndBypassCache);
     this->_actionBrowseStop = this->_webView->pageAction(QWebPage::Stop);
+    // alloc: Has parent
     this->_actionBrowseHome = new QAction(tr("Go Home"), this);
 
-    this->_actionFocusAddressBar = new QAction(tr("Set Focus on Address Bar"), this);
-    this->_actionFocusSearchBox = new QAction(tr("Set Focus on Search Box"), this);
+    this->_actionFocusAddressBar = new QAction(tr("Set Focus on Address Bar"), this);               // alloc: Has parent
+    this->_actionFocusSearchBox = new QAction(tr("Set Focus on Search Box"), this);                 // alloc: Has parent
 
     // ...and widgets
-    this->_comboBoxAddressBar = new WebBrowserComboBox;
-    this->_comboBoxQuickPicker = new QComboBox;
-    this->_lineEditSearch = new QLineEdit;
-    this->_browserProgressBar = new QProgressBar;
+    this->_comboBoxAddressBar = new WebBrowserComboBox(this);                                       // alloc: Has parent
+    this->_comboBoxQuickPicker = new QComboBox(this);                                               // alloc: Has parent
+    this->_lineEditSearch = new QLineEdit(this);                                                    // alloc: Has parent
+    this->_browserProgressBar = new QProgressBar(this);                                             // alloc: Has parent
 
     // Configure actions
     this->_actionBrowseBack->setIcon(QIcon(":/icons/browseBack"));
@@ -129,28 +130,28 @@ void WebWindow::_setupGui()
     }
 
     // Create top menus
-    this->_menuFile = new QMenu(tr("&File"), ui->menuBar);
-    this->_menuSettings = new QMenu(tr("&Settings"), ui->menuBar);
-    this->_menuAdvanced = new QMenu(tr("&Advanced"), ui->menuBar);
-    this->_menuInfo = new QMenu(tr("&Info"), ui->menuBar);
+    this->_menuFile = new QMenu(tr("&File"), ui->menuBar);                                          // alloc: Has parent
+    this->_menuSettings = new QMenu(tr("&Settings"), ui->menuBar);                                  // alloc: Has parent
+    this->_menuAdvanced = new QMenu(tr("&Advanced"), ui->menuBar);                                  // alloc: Has parent
+    this->_menuInfo = new QMenu(tr("&Info"), ui->menuBar);                                          // alloc: Has parent
 
     // FILE MENU
     // += Quit
-    this->_actionQuit = new QAction(QIcon(":/icons/exit"), tr("&Quit"), this->_menuFile);
+    this->_actionQuit = new QAction(QIcon(":/icons/exit"), tr("&Quit"), this->_menuFile);           // alloc: Has parent
     this->_actionQuit->setShortcut(QKeySequence(tr("Ctrl+Q")));
     connect(this->_actionQuit, SIGNAL(triggered()), this, SLOT(_quit()));
     this->_menuFile->addAction(this->_actionQuit);
 
     // SETTINGS MENU
     // +- Toggle Plugins
-    this->_actionToggleWebViewPlugins = new QAction(tr("Allow Browser &Plugins"), this->_menuSettings);
+    this->_actionToggleWebViewPlugins = new QAction(tr("Allow Browser &Plugins"), this->_menuSettings); // alloc: Has parent
     this->_actionToggleWebViewPlugins->setCheckable(true);
     this->_actionToggleWebViewPlugins->setChecked(this->_webView->pluginsEnabled());
     this->_actionToggleWebViewPlugins->setShortcut(QKeySequence(tr("Ctrl+Alt+P")));
     connect(this->_actionToggleWebViewPlugins, SIGNAL(toggled(bool)), this->_webView, SLOT(setPluginsEnabled(bool)));
     this->_menuSettings->addAction(this->_actionToggleWebViewPlugins);
     // +- Toggle Java
-    this->_actionToggleWebViewJava = new QAction(tr("Allow &Java"), this->_menuSettings);
+    this->_actionToggleWebViewJava = new QAction(tr("Allow &Java"), this->_menuSettings);           // alloc: Has parent
     this->_actionToggleWebViewJava->setCheckable(true);
     this->_actionToggleWebViewJava->setChecked(this->_webView->javaEnabled());
     this->_actionToggleWebViewJava->setShortcut(QKeySequence(tr("Ctrl+Alt+J")));
@@ -159,19 +160,19 @@ void WebWindow::_setupGui()
 
     // ADVANCED MENU
     // += Launch Console Window
-    this->_actionLaunchConsoleWindow = new QAction(tr("Launch &Console Window"), this->_menuAdvanced);
+    this->_actionLaunchConsoleWindow = new QAction(tr("Launch &Console Window"), this->_menuAdvanced);  // alloc: Has parent
     this->_actionLaunchConsoleWindow->setShortcut(QKeySequence(tr("F12")));
     connect(this->_actionLaunchConsoleWindow, SIGNAL(triggered()), this, SLOT(_launchConsoleWindow()));
     this->_menuAdvanced->addAction(this->_actionLaunchConsoleWindow);
     // += Clear storage and quit
-    this->_actionClearStorageAndQuit = new QAction(tr("Clear &Storage and Quit"), this->_menuAdvanced);
+    this->_actionClearStorageAndQuit = new QAction(tr("Clear &Storage and Quit"), this->_menuAdvanced); // alloc: Has parent
     this->_actionClearStorageAndQuit->setShortcut(QKeySequence(tr("Ctrl+Alt+Q")));
     connect(this->_actionClearStorageAndQuit, SIGNAL(triggered()), this, SLOT(_clearStorageAndQuit()));
     this->_menuAdvanced->addAction(this->_actionClearStorageAndQuit);
 
     // INFO MENU
     // += About
-    this->_actionAbout = new QAction(QIcon(":/icons/bitmapVideoCassette"),
+    this->_actionAbout = new QAction(QIcon(":/icons/bitmapVideoCassette"),                              // alloc: Has parent
                                      tr("&About") + QString(" ") + Configuration::pointer()->appName(true),
                                      this->_menuSettings);
     this->_menuInfo->addAction(this->_actionAbout);

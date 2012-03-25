@@ -39,8 +39,7 @@ Configuration::Configuration(QObject *parent) :
 
     this->_writeBlock = false;
 
-    this->_settings = SystemDependent::pointer()->makeSettings();
-    this->_settings->setParent(this);
+    this->_settings = SystemDependent::pointer()->makeSettings(this);
     this->_settings->setIniCodec("UTF-8");
 
     this->_publicAppTag = QString( PUBLIC_APP_TAG );
@@ -72,7 +71,7 @@ QString Configuration::locale(bool full)
 Configuration *Configuration::pointer()
 {
     if (s_instance == NULL)
-        s_instance = new Configuration;
+        s_instance = new Configuration;                                             // alloc: Singleton object
     return s_instance;
 }
 

@@ -47,13 +47,12 @@ contains(APP_CONFIG, deploy_dist):DEFINES += HIDE_DEVEL_INFO
 
 ## PROJECT
 SOURCES += \
-    main.cpp\
+    main.cpp \
     consolewindow.cpp \
     vhsxml/transportreader.cpp \
     vhsxml/formatreader.cpp \
     vhsxml/cassettereader.cpp \
     vhsxml/extensionreader.cpp \
-    extension_api/extension.cpp \
     extension_api/extensionmanager.cpp \
     extension_api/formatdefinition.cpp \
     extension_api/transportdefinition.cpp \
@@ -68,7 +67,8 @@ SOURCES += \
     extension_api/definitiontable.cpp \
     vhsxml/documentreader.cpp \
     vhsxml/elementparser.cpp \
-    config/appwideclasses.cpp
+    config/appwideclasses.cpp \
+    extension_api/extensiondefinition.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -78,7 +78,7 @@ HEADERS  += \
     vhsxml/formatreader.h \
     vhsxml/cassettereader.h \
     vhsxml/extensionreader.h \
-    extension_api/extension.h \
+    extension_api/extensiondefinition.h \
     extension_api/extensionmanager.h \
     extension_api/formatdefinition.h \
     extension_api/transportdefinition.h \

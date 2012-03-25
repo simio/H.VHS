@@ -23,19 +23,19 @@
 
 #include "main.h"
 #include "vhsxml/elementparser.h"
-#include "extension_api/extension.h"
+#include "extension_api/extensiondefinition.h"
 
 namespace VhsXml {
 
 class ExtensionReader
 {
 public:
-    static QList<QPointer<Extension> > parse(const QDomDocument &document);
+    static QList<QPointer<ExtensionDefinition> > parse(const QDomDocument &document, QObject *extensionParent);
 
 private:
     ExtensionReader();
 
-    static QPointer<Extension> _parseExtension(const QDomElement &extensionNode);
+    static QPointer<ExtensionDefinition> _parseExtension(const QDomElement &extensionNode, QObject *extensionParent);
 };
 
 } // namespace VhsXml

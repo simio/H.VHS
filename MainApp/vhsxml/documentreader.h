@@ -48,7 +48,7 @@ public:
     DocumentReader(QPointer<QIODevice> device, QObject *parent) : QObject(parent)   { this->_initialise(device); }
     DocumentReader(QXmlInputSource *source, QObject *parent) : QObject(parent)      { this->_initialise(source); }
 
-    QList<QPointer<Definition> > definitions(Definition::DefinitionType defType = Definition::NoDefinitionType) const;
+    QList<QPointer<Definition> > definitions(Definition::DefinitionType defType, QObject *definitionParent) const;
 
     bool isEmpty() const                                                    { return this->_xml.isNull(); }
 

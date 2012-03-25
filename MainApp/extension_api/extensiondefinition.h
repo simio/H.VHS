@@ -35,7 +35,7 @@
  *  maintained if it uses hardcoded vars rather than a QMap.
  */
 
-class Extension : public Definition
+class ExtensionDefinition : public Definition
 {
 public:
     enum Condition {
@@ -51,7 +51,7 @@ public:
     };
 
     // Nice
-    Extension(QString id,
+    ExtensionDefinition(QString id,
               QString name,
               QString description,
               QDateTime releaseDate,
@@ -70,8 +70,8 @@ public:
               QList<QString> outputFormats,
               QList<Person> audits,
               QObject *parent = 0);
-    Extension(const Extension &original, QObject *parent = 0);
-    Extension &operator=(const Extension &original);
+    ExtensionDefinition(const ExtensionDefinition &original, QObject *parent = 0);
+    ExtensionDefinition &operator=(const ExtensionDefinition &original);
 
     bool isEnabled() const                                                  { return this->_enabled; }
     bool isValid() const;
@@ -91,7 +91,7 @@ signals:
 public slots:
 
 private:
-    Extension();
+    ExtensionDefinition();
     bool _setup();
     bool _isReady() const;
 

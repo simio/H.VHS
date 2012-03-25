@@ -27,7 +27,7 @@ ExtensionManager::ExtensionManager(QObject *parent) :
 ExtensionManager *ExtensionManager::pointer()
 {
     if (s_instance == NULL)
-        s_instance = new ExtensionManager;
+        s_instance = new ExtensionManager;                              // alloc: Singleton object
 
     return s_instance;
 }
@@ -52,9 +52,9 @@ void ExtensionManager::_initialise()
 
     foreach (QFileInfo file, files)
     {
-        // alloc: Deleted here.
+        // alloc: Has parent and is deleted here.
         QPointer<VhsXml::DocumentReader> xml = new VhsXml::DocumentReader(QFile(file.canonicalFilePath()), this);
-        this->_definitions.update(xml->definitions());
+        this->_definitions.update(xml->definitions(Definition::NoDefinitionType, &(this->_definitions)));
         delete xml;
     }
 }

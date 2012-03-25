@@ -26,7 +26,7 @@ SystemDependent::SystemDependent()
 SystemDependent *SystemDependent::pointer()
 {
     if (s_instance == NULL)
-        s_instance = new SystemDependent;
+        s_instance = new SystemDependent;                               // alloc: Singleton object
     return s_instance;
 }
 
@@ -63,10 +63,11 @@ QDir SystemDependent::presetsDir(Scope scope)
 }
 
 
-QPointer<QSettings> SystemDependent::makeSettings()
+QPointer<QSettings> SystemDependent::makeSettings(QObject * parent)
 {
 #ifdef WIN32
+    // alloc: Has parent
     return new QSettings(QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/hvhs.ini"),
-                         QSettings::IniFormat);
+                         QSettings::IniFormat, parent);
 #endif
 }

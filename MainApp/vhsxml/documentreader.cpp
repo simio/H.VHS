@@ -20,7 +20,7 @@ namespace VhsXml {
 
 DocumentReader::DocumentReader(QFileInfo file, QObject *parent) : QObject(parent)
 {
-    QPointer<QFile> p = new QFile(file.canonicalFilePath());
+    QPointer<QFile> p = new QFile(file.canonicalFilePath(), this);             // alloc: Has parent
     this->_initialise(p);
 }
 
@@ -50,19 +50,19 @@ QList<Definition::DefinitionType> DocumentReader::contentList() const
 }
 
 // Dispatch request to appropriate reader(s).
-QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionType defType) const
+QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionType defType, QObject *definitionParent) const
 {
     QList<QPointer<FormatDefinition> > formats;
     QList<QPointer<TransportDefinition> > transports;
-    QList<QPointer<Extension> > extensions;
+    QList<QPointer<ExtensionDefinition> > extensions;
     //QList<QPointer<CassetteDefinition> > cassettes;
 
     if (defType == Definition::FormatDefinitionType || defType == Definition::NoDefinitionType)
-        formats = FormatReader::parse(this->_xml);
+        formats = FormatReader::parse(this->_xml, definitionParent);
     if (defType == Definition::TransportDefinitionType || defType == Definition::NoDefinitionType)
-        transports = TransportReader::parse(this->_xml);
+        transports = TransportReader::parse(this->_xml, definitionParent);
     if (defType == Definition::ExtensionDefinitionType || defType == Definition::NoDefinitionType)
-        extensions = ExtensionReader::parse(this->_xml);
+        extensions = ExtensionReader::parse(this->_xml, definitionParent);
     //else if (defType == Definition::CassetteDefinitionType || defType == Definition::NoDefinitionType)
     //    result.append(CassetteReader::parse(this->_xml);
 
@@ -71,7 +71,7 @@ QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionT
         result << qobject_cast<Definition*>(format);
     foreach(QPointer<TransportDefinition> transport, transports)
         result << qobject_cast<Definition*>(transport);
-    foreach(QPointer<Extension> extension, extensions)
+    foreach(QPointer<ExtensionDefinition> extension, extensions)
         result << qobject_cast<Definition*>(extension);
     //foreach(QPointer<FormatDefinition> cassette, cassettes)
     //    result << qobject_cast<QPointer<Definition> >(cassette);
@@ -89,9 +89,9 @@ bool DocumentReader::_isCompatibleWith(QString foulString)
 // Cannot use QPointer for source
 bool DocumentReader::_initialise(QXmlInputSource *source)
 {
-    QString *error = new QString;
-    int *errorLine = new int;
-    int *errorColumn = new int;
+    QString *error = new QString;                       // alloc: Deleted here
+    int *errorLine = new int;                           // alloc: Deleted here
+    int *errorColumn = new int;                         // alloc: Deleted here
 
     bool success = false;
     this->_xml = QDomDocument("VhsXml");
@@ -103,7 +103,7 @@ bool DocumentReader::_initialise(QXmlInputSource *source)
             if (this->_isCompatibleWith(docVersion))
                 success = true;
             else
-                qWarning() << "XML Parser error!"
+                qWarning() << "XML Parser error:"
                            << "Document contains VhsXml version" << docVersion
                            << "which is incompatible with this version of H.VHS.";
         }
@@ -112,13 +112,12 @@ bool DocumentReader::_initialise(QXmlInputSource *source)
         qWarning() << "XML Parser error:" << *error << endl
                    << "Line " << *errorLine << "column" << *errorColumn;
 
-
-    if (!success)
-        this->_xml.clear();
-
     delete error;
     delete errorLine;
     delete errorColumn;
+
+    if (!success)
+        this->_xml.clear();
 
     return success;
 }
@@ -126,7 +125,7 @@ bool DocumentReader::_initialise(QXmlInputSource *source)
 bool DocumentReader::_initialise(QPointer<QIODevice> device)
 {
     // Cannot use QPointer for source
-    QXmlInputSource *source = new QXmlInputSource(device);
+    QXmlInputSource *source = new QXmlInputSource(device);              // alloc: Deleted here
     bool retVal = this->_initialise(source);
     delete source;
     return retVal;
@@ -136,7 +135,7 @@ bool DocumentReader::_initialise(QPointer<QFile> file)
 {
     if (file->exists())
     {
-        QXmlInputSource *source = new QXmlInputSource(file);
+        QXmlInputSource *source = new QXmlInputSource(file);            // alloc: Deleted here
         bool retVal = this->_initialise(source);
         delete source;
         return retVal;

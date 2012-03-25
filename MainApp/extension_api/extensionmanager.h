@@ -28,7 +28,7 @@
 #include "extension_api/definition.h"
 #include "extension_api/formatdefinition.h"
 #include "extension_api/transportdefinition.h"
-#include "extension_api/extension.h"
+#include "extension_api/extensiondefinition.h"
 #include "extension_api/definitiontable.h"
 
 #include "vhsxml/documentreader.h"

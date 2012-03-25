@@ -56,6 +56,7 @@ void WebBrowserLineEdit::keyPressEvent(QKeyEvent *e)
 WebBrowserComboBox::WebBrowserComboBox(QWidget *parent) :
     QComboBox(parent)
 {
+    // alloc: Has parent
     QPointer<WebBrowserLineEdit> lineEdit = new WebBrowserLineEdit(this);
     this->setLineEdit(lineEdit);
     this->setInsertPolicy(QComboBox::NoInsert);

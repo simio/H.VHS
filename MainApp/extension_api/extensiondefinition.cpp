@@ -14,27 +14,28 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "extension.h"
+#include "extensiondefinition.h"
 
-Extension::Extension(QString id,
-                     QString name,
-                     QString description,
-                     QDateTime releaseDate,
-                     QList<Person> authors,
-                     QString licenseName,
-                     QUrl licenseUrl,
-                     bool enabled,
-                     Extension::Condition condition,
-                     QString basePath,
-                     Version apiVersion,
-                     ApiInterface apiInterface,
-                     QString source,
-                     QList<QString> inputTransports,
-                     QList<QString> inputFormats,
-                     QList<QString> outputTransports,
-                     QList<QString> outputFormats,
-                     QList<Person> audits,
-                     QObject *parent) :
+ExtensionDefinition::ExtensionDefinition(
+        QString id,
+        QString name,
+        QString description,
+        QDateTime releaseDate,
+        QList<Person> authors,
+        QString licenseName,
+        QUrl licenseUrl,
+        bool enabled,
+        ExtensionDefinition::Condition condition,
+        QString basePath,
+        Version apiVersion,
+        ApiInterface apiInterface,
+        QString source,
+        QList<QString> inputTransports,
+        QList<QString> inputFormats,
+        QList<QString> outputTransports,
+        QList<QString> outputFormats,
+        QList<Person> audits,
+        QObject *parent) :
     Definition(id, name, description, releaseDate, Definition::ExtensionDefinitionType, parent)
 {
     this->_authors = authors;
@@ -53,7 +54,7 @@ Extension::Extension(QString id,
     this->_audits = audits;
 }
 
-Extension::Extension(const Extension &original, QObject *parent) :
+ExtensionDefinition::ExtensionDefinition(const ExtensionDefinition &original, QObject *parent) :
     Definition(original, parent),
     _enabled(original._enabled),
     _authors(original._authors),
@@ -71,7 +72,7 @@ Extension::Extension(const Extension &original, QObject *parent) :
     _outputFormats(original._outputFormats)
 { }
 
-Extension &Extension::operator=(const Extension &original)
+ExtensionDefinition &ExtensionDefinition::operator=(const ExtensionDefinition &original)
 {
     this->_enabled = original._enabled;
     this->_authors = original._authors;
@@ -90,7 +91,7 @@ Extension &Extension::operator=(const Extension &original)
     return *this;
 }
 
-bool Extension::isValid() const
+bool ExtensionDefinition::isValid() const
 {
     return (Definition::isValid()
             &&  this->_authors.count() > 0
@@ -102,13 +103,13 @@ bool Extension::isValid() const
             &&  this->_outputFormats.count() > 0);
 }
 
-bool Extension::_isReady() const
+bool ExtensionDefinition::_isReady() const
 {
     // Fake it
     return true;
 }
 
-bool Extension::_setup()
+bool ExtensionDefinition::_setup()
 {
     if (this->_isReady())
         return true;

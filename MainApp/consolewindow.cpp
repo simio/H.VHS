@@ -19,7 +19,7 @@
 
 ConsoleWindow::ConsoleWindow(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ConsoleWindow)
+    ui(new Ui::ConsoleWindow)                                   // alloc: Deleted in destructor
 {
     ui->setupUi(this);
 }

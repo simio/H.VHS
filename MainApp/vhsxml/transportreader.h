@@ -30,12 +30,12 @@ namespace VhsXml {
 class TransportReader
 {
 public:
-    static QList<QPointer<TransportDefinition> > parse(const QDomDocument &document);
+    static QList<QPointer<TransportDefinition> > parse(const QDomDocument &document, QObject *definitionParent);
 
 private:
     TransportReader();
 
-    static QPointer<TransportDefinition> _parseTransport(const QDomElement &transportNode);
+    static QPointer<TransportDefinition> _parseTransport(const QDomElement &transportNode, QObject *definitionParent);
 };
 
 } // namespace VhsXml

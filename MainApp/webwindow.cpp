@@ -19,7 +19,7 @@
 
 WebWindow::WebWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::WebWindow)
+    ui(new Ui::WebWindow)                               // alloc: Deleted in destructor
 {
     ui->setupUi(this);
 

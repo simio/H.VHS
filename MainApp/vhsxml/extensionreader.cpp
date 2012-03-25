@@ -18,9 +18,9 @@
 
 namespace VhsXml {
 
-QList<QPointer<Extension> > ExtensionReader::parse(const QDomDocument &document)
+QList<QPointer<ExtensionDefinition> > ExtensionReader::parse(const QDomDocument &document, QObject *extensionParent)
 {
-    QList<QPointer<Extension> > result;
+    QList<QPointer<ExtensionDefinition> > result;
 
     QDomNode node = document.documentElement().firstChild();
     while (! node.isNull())
@@ -32,7 +32,7 @@ QList<QPointer<Extension> > ExtensionReader::parse(const QDomDocument &document)
             {
                 if (extensionNode.toElement().tagName() == "extension")
                 {
-                    QPointer<Extension> extension = _parseExtension(extensionNode.toElement());
+                    QPointer<ExtensionDefinition> extension = _parseExtension(extensionNode.toElement(), extensionParent);
                     if (! extension.isNull())
                         result << extension;
                 }
@@ -53,7 +53,7 @@ QList<QPointer<Extension> > ExtensionReader::parse(const QDomDocument &document)
  *  the elements appear is defined in the RELAX NG Schema.
  */
 
-QPointer<Extension> ExtensionReader::_parseExtension(const QDomElement &extensionNode)
+QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement &extensionNode, QObject *extensionParent)
 {
     QString id;                                     // Unique; required
     QDateTime releaseDate;                          // As attribute of id; required
@@ -64,9 +64,9 @@ QPointer<Extension> ExtensionReader::_parseExtension(const QDomElement &extensio
     QUrl licenseUrl;                                // Optional
     bool enabled;                                   // Optional (set by application or extension repository)
     QString basePath;                               // Optional (set by application)
-    Extension::Condition condition;                 // Required
+    ExtensionDefinition::Condition condition;                 // Required
     Version apiVersion;                             // Required
-    Extension::ApiInterface apiInterface;           // Required
+    ExtensionDefinition::ApiInterface apiInterface;           // Required
     QString source;                                 // Source code for scripted extensions; optional
                                                     // (If source.isEmpty(), <basePath>/<id>.<apiInterface extension> will be used automatically.)
     QStringList inputTransports;                    // Required
@@ -170,13 +170,13 @@ QPointer<Extension> ExtensionReader::_parseExtension(const QDomElement &extensio
     {
         QString str = ElementParser::nmtoken(e.text()).trimmed();
         if (str == "broken")
-            condition = Extension::Broken;
+            condition = ExtensionDefinition::Broken;
         else if (str == "unstable")
-            condition = Extension::Unstable;
+            condition = ExtensionDefinition::Unstable;
         else if (str == "stable")
-            condition = Extension::Stable;
+            condition = ExtensionDefinition::Stable;
         else if (str == "testing")
-            condition = Extension::Testing;
+            condition = ExtensionDefinition::Testing;
         else
         {
             qDebug() << "ExtensionReader expected <condition> of broken, unstable, stable or testing, but got"
@@ -196,9 +196,9 @@ QPointer<Extension> ExtensionReader::_parseExtension(const QDomElement &extensio
         apiVersion = Version(e.attribute("version", QString()));
         QString str = e.attribute("interface").trimmed();
         if (str == "qt")
-            apiInterface = Extension::Qt;
+            apiInterface = ExtensionDefinition::Qt;
         else if (str == "javascript")
-            apiInterface = Extension::Javascript;
+            apiInterface = ExtensionDefinition::Javascript;
         else
         {
             qDebug() << "ExtensionReader expected interface qt or javascript, but got" << str;
@@ -278,10 +278,10 @@ QPointer<Extension> ExtensionReader::_parseExtension(const QDomElement &extensio
     else
         return NULL;
 
-    // alloc: Caller is responsible
-    QPointer<Extension> extension = new Extension(id, name, description, releaseDate, authors, licenseName, licenseUrl, enabled, condition,
+    // alloc: Has parent
+    QPointer<ExtensionDefinition> extension = new ExtensionDefinition(id, name, description, releaseDate, authors, licenseName, licenseUrl, enabled, condition,
                                                   basePath, apiVersion, apiInterface, source, inputTransports, inputFormats,
-                                                  outputTransports, outputFormats, audits, 0);
+                                                  outputTransports, outputFormats, audits, extensionParent);
     if (extension->isValid())
         return extension;
 

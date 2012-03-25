@@ -27,7 +27,7 @@ MessageHandler::MessageHandler(QObject *parent) :
 MessageHandler *MessageHandler::pointer()
 {
     if (s_instance == NULL)
-        s_instance = new MessageHandler;
+        s_instance = new MessageHandler;                                // alloc: Singleton object
 
     return s_instance;
 }
@@ -58,7 +58,7 @@ void MessageHandler::message(QtMsgType type, const char *msg)
 QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
 {
     if (this->_consoleWindow.isNull())
-        this->_consoleWindow = new ConsoleWindow(0);
+        this->_consoleWindow = new ConsoleWindow(0);                            // alloc: Independent window; don't delete
 
     this->_consoleWindow->show();
     this->_consoleWindow->raise();

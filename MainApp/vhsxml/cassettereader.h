@@ -22,7 +22,7 @@
 #include <QDomDocument>
 
 #include "main.h"
-//#include "cassettereader.h"
+#include "elementparser.h"
 
 namespace VhsXml {
 

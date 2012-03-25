@@ -53,22 +53,22 @@ SOURCES += \
     vhsxml/formatreader.cpp \
     vhsxml/cassettereader.cpp \
     vhsxml/extensionreader.cpp \
-    extension_api/extensionmanager.cpp \
-    extension_api/formatdefinition.cpp \
-    extension_api/transportdefinition.cpp \
+    converter/formatdefinition.cpp \
+    converter/transportdefinition.cpp \
     browser/webbrowsercombobox.cpp \
     browser/webview.cpp \
     browser/webwindowguisetup.cpp \
     webwindow.cpp \
     config/configuration.cpp \
     config/messagehandler.cpp \
-    extension_api/definition.cpp \
+    converter/definition.cpp \
     config/systemdependent.cpp \
-    extension_api/definitiontable.cpp \
+    converter/definitiontable.cpp \
     vhsxml/documentreader.cpp \
     vhsxml/elementparser.cpp \
     config/appwideclasses.cpp \
-    extension_api/extensiondefinition.cpp
+    converter/extensiondefinition.cpp \
+    converter/conversionmanager.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -78,20 +78,20 @@ HEADERS  += \
     vhsxml/formatreader.h \
     vhsxml/cassettereader.h \
     vhsxml/extensionreader.h \
-    extension_api/extensiondefinition.h \
-    extension_api/extensionmanager.h \
-    extension_api/formatdefinition.h \
-    extension_api/transportdefinition.h \
+    converter/extensiondefinition.h \
+    converter/formatdefinition.h \
+    converter/transportdefinition.h \
     browser/webbrowsercombobox.h \
     browser/webview.h \
     config/configuration.h \
     config/messagehandler.h \
-    extension_api/definition.h \
+    converter/definition.h \
     config/systemdependent.h \
-    extension_api/definitiontable.h \
+    converter/definitiontable.h \
     vhsxml/documentreader.h \
     vhsxml/elementparser.h \
-    config/appwideclasses.h
+    config/appwideclasses.h \
+    converter/conversionmanager.h
 
 FORMS    += \
     webwindow.ui \

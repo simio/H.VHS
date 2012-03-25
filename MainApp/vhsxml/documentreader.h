@@ -27,7 +27,7 @@
 
 #include "main.h"
 
-#include "extension_api/definition.h"
+#include "converter/definition.h"
 
 #include "vhsxml/transportreader.h"
 #include "vhsxml/formatreader.h"

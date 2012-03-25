@@ -23,7 +23,7 @@
 
 #include "main.h"
 #include "vhsxml/elementparser.h"
-#include "extension_api/transportdefinition.h"
+#include "converter/transportdefinition.h"
 
 namespace VhsXml {
 

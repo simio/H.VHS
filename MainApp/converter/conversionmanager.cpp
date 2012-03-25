@@ -14,25 +14,25 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "extensionmanager.h"
+#include "conversionmanager.h"
 
-ExtensionManager *ExtensionManager::s_instance = NULL;
+ConversionManager *ConversionManager::s_instance = NULL;
 
-ExtensionManager::ExtensionManager(QObject *parent) :
+ConversionManager::ConversionManager(QObject *parent) :
     QObject(parent)
 {
     this->_initialise();
 }
 
-ExtensionManager *ExtensionManager::pointer()
+ConversionManager *ConversionManager::pointer()
 {
     if (s_instance == NULL)
-        s_instance = new ExtensionManager;                              // alloc: Singleton object
+        s_instance = new ConversionManager;                              // alloc: Singleton object
 
     return s_instance;
 }
 
-void ExtensionManager::_initialise()
+void ConversionManager::_initialise()
 {
     QStringList locations;
     locations << Configuration::pointer()->getStorageLocation(Configuration::SystemPresetsLocation).canonicalPath()

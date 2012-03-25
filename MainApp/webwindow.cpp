@@ -26,7 +26,7 @@ WebWindow::WebWindow(QWidget *parent) :
     this->_browserStatus = Idle;
 
     // For testing -- without this, it won't initialise until used somewhere.
-    ExtensionManager::pointer();
+    ConversionManager::pointer();
 
     this->_setupGui();
 

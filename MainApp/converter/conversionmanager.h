@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONMANAGER_H
-#define EXTENSIONMANAGER_H
+#ifndef CONVERSIONMANAGER_H
+#define CONVERSIONMANAGER_H
 
 #include <QObject>
 #include <QPointer>
@@ -25,31 +25,31 @@
 
 #include "main.h"
 
-#include "extension_api/definition.h"
-#include "extension_api/formatdefinition.h"
-#include "extension_api/transportdefinition.h"
-#include "extension_api/extensiondefinition.h"
-#include "extension_api/definitiontable.h"
+#include "converter/definition.h"
+#include "converter/formatdefinition.h"
+#include "converter/transportdefinition.h"
+#include "converter/extensiondefinition.h"
+#include "converter/definitiontable.h"
 
 #include "vhsxml/documentreader.h"
 
-class ExtensionManager : public QObject
+class ConversionManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ExtensionManager(QObject *parent = 0);
-    static ExtensionManager *pointer();
+    explicit ConversionManager(QObject *parent = 0);
+    static ConversionManager *pointer();
 
 signals:
 
 public slots:
 
 private:
-    static ExtensionManager *s_instance;
+    static ConversionManager *s_instance;
 
     void _initialise();
 
     DefinitionTable _definitions;
 };
 
-#endif // EXTENSIONMANAGER_H
+#endif // CONVERSIONMANAGER_H

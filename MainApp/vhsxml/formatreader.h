@@ -25,7 +25,7 @@
 
 #include "main.h"
 #include "vhsxml/elementparser.h"
-#include "extension_api/formatdefinition.h"
+#include "converter/formatdefinition.h"
 
 namespace VhsXml {
 

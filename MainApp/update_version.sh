@@ -36,7 +36,8 @@ LAST_DATETIME=$($CAT "$DATETIME_FILE" | $SED 's/^[ \t]*//;s/[ \t]*$//')
 
 if [ X$GIT_HASH != X$LAST_GIT_HASH ]; then
     # Append current date and time to version number
-    DATETIME=$($DATE -u +%Y%m%d%H%M)
+    DATETIME=$($DATE -u +%Y%m%d-%H%M)
+    RC_DATE=$($DATE -u +%y%W%u)
     echo -n $DATETIME > "$DATETIME_FILE"
 
     # Update hash file
@@ -49,6 +50,7 @@ else
     fi
 fi
 
+RC_VERSION=$(echo $APP_VERSION.$RC_DATE | $SED s/\\./,/g)
 APP_VERSION=$APP_VERSION.$DATETIME
 
 if [ X$GIT_TAG = X ]; then
@@ -62,7 +64,6 @@ echo -n "    Updated "
 
 # Write to Windows resource file
 if [ X$PLATFORM = Xwin32 ]; then
-    RC_VERSION=$(echo $APP_VERSION | $SED s/\\./,/g)
     $SED s/_FILEVERSION_/$RC_VERSION/g < "$PRO_PWD/rc.template" > "$RC_FILE"
     echo -n "$RC_FILENAME and "
 fi
@@ -77,5 +78,8 @@ $CAT << EOF > "$VERSION_H"
 EOF
 
 echo "version.h:"
-echo "    $APP_VERSION $PUBLIC_APP_TAG:$GIT_TAG ($GIT_BRANCH/$GIT_HASH)"
+echo "    Version: $APP_VERSION $PUBLIC_APP_TAG:$GIT_TAG ($GIT_BRANCH/$GIT_HASH)"
+if [ X$PLATFORM = Xwin32 ]; then
+    echo "    ProductVersion / FileVersion: $RC_VERSION"
+fi
 echo "------------------------------------------------------------------------"

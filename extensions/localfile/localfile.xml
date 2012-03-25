@@ -2,25 +2,39 @@
 <vhsxml version="1.1" xmlns="http://play.huggpunkt.org/vhsxml/1">
     <extensions>
         <extension>
-            <uid>localfile</uid>
-            <version>1</version>
+            <id releaseDate="2012-03-25T20:30:00">localfile</id>
+            <name xml:lang="en">Local file access</name>
+            <name xml:lang="sv">Lokal filåtkomst</name>
+            <description xml:lang="en">Provides access to files on local drives.</description>
+            <description xml:lang="sv">Ger åtkomst till filer på lokala enheter.</description>
+            <authors>
+                <author email="jesper@huggpunkt.org"
+                        website="http://huggpunkt.org/"
+                        username="jesper"
+                        copyright="2012"
+                        >Jesper Räftegård</author>
+            </authors>
+            <license href="http://www.isc.org/software/license">ISC License</license>
             <enabled>false</enabled>
-            <name>Local file interface</name>
-            <description>Writing to and reading from files</description>
-            <author email="jesper@huggpunkt.org" website="http://huggpunkt.org/">Jesper R�fteg�rd</author>
-            <implementation>dll</implementation>
-            <input>
+            <condition>unstable</condition>
+            <source version="1.0" interface="javascript"/>
+            <convertsFrom>
                 <format>notEmpty</format>
                 <transport>localfile</transport>
-                <transport>textstream</transport>
                 <transport>datastream</transport>
-            </input>
-            <output>
+            </convertsFrom>
+            <convertsTo>
                 <format>copy</format>
                 <transport>localfile</transport>
-                <transport>textstream</transport>
                 <transport>datastream</transport>
-            </output>
+            </convertsTo>
+            <audits>
+                <audit username="jesper"
+                       website="http://huggpunkt.org/"
+                       date="2012-03-25T20:32:00"
+                       email="jesper@huggpunkt.org"
+                       >Jesper</audit>
+            </audits>
         </extension>
     </extensions>
 </vhsxml>

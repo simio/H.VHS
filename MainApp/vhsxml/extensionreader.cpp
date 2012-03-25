@@ -211,13 +211,13 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     else
         return NULL;
 
-    //  <acceptsInputFrom>
+    //  <convertsFrom>
     //      <transport>xsd:NMTOKEN</transport>
     //      ...
     //      <format>xsd:NMTOKEN</format>
     //      ...
-    //  </acceptsInputFrom>
-    if (ElementParser::expect(e, "acceptsInputFrom", ElementParser::Required))
+    //  </convertsFrom>
+    if (ElementParser::expect(e, "convertsFrom", ElementParser::Required))
     {
         inputTransports = ElementParser::nmtokenList(e, "transport");
         inputFormats = ElementParser::nmtokenList(e, "format");
@@ -232,13 +232,13 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     else
         return NULL;
 
-    //  <acceptsOutputTo>
+    //  <convertsTo>
     //      <transport>xsd:NMTOKEN</transport>
     //      ...
     //      <format>xsd:NMTOKEN</format>
     //      ...
-    //  </acceptsOutputTo>
-    if (ElementParser::expect(e, "acceptsOutputTo", ElementParser::Required))
+    //  </convertsTo>
+    if (ElementParser::expect(e, "convertsTo", ElementParser::Required))
     {
         outputTransports = ElementParser::nmtokenList(e, "transport");
         outputFormats = ElementParser::nmtokenList(e, "format");

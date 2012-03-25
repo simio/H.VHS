@@ -61,11 +61,11 @@ grammar {
             element basePath { xsd:string }?,
             element condition { "broken" | "unstable" | "stable" | "testing" }?,
             source,
-            element acceptsInputFrom {
+            element convertsFrom {
                 element transport { xsd:NMTOKEN }+,
                 element format { xsd:NMTOKEN }+
             },
-            element acceptsOutputTo {
+            element convertsTo {
                 element transport { xsd:NMTOKEN }+,
                 element format { xsd:NMTOKEN }+
             },

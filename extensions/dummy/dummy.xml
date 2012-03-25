@@ -4,7 +4,7 @@
         <extension>
             <id releaseDate="2012-03-24T23:10:00">dummy</id>
             <name xml:lang="en">Dummy extension</name>
-            <name xml:lang="sv">Låtsastilläg</name>
+            <name xml:lang="sv">Låtsastillägg</name>
             <description xml:lang="en">The extension, it does nothing.</description>
             <authors>
                 <author email="jesper@huggpunkt.org"
@@ -14,21 +14,17 @@
                         >Jesper</author>
             </authors>
             <license href="http://www.isc.org/software/license">ISC License</license>
-            <enabled>false</enabled>
+            <enabled>true</enabled>
             <condition>stable</condition>
             <source version="1.0" interface="javascript"/>
-            <acceptsInputFrom>
+            <convertsFrom>
                 <format>notEmpty</format>
-                <transport>localfile</transport>
                 <transport>textstream</transport>
-                <transport>datastream</transport>
-            </acceptsInputFrom>
-            <acceptsOutputTo>
+            </convertsFrom>
+            <convertsTo>
                 <format>copy</format>
-                <transport>localfile</transport>
                 <transport>textstream</transport>
-                <transport>datastream</transport>
-            </acceptsOutputTo>
+            </convertsTo>
             <audits>
                 <audit username="jesper"
                        website="http://huggpunkt.org/"

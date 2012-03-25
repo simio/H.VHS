@@ -7,3 +7,9 @@ include( ../hvhs_extension.pri )
 
 OTHER_FILES += \
     localfile.xml
+
+HEADERS += \
+    localfile.h
+
+SOURCES += \
+    localfile.cpp

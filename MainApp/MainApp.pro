@@ -68,7 +68,10 @@ SOURCES += \
     vhsxml/elementparser.cpp \
     config/appwideclasses.cpp \
     converter/extensiondefinition.cpp \
-    converter/conversionmanager.cpp
+    converter/conversionmanager.cpp \
+    cassette.cpp \
+    hurl.cpp \
+    cassettecontent.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -91,7 +94,11 @@ HEADERS  += \
     vhsxml/documentreader.h \
     vhsxml/elementparser.h \
     config/appwideclasses.h \
-    converter/conversionmanager.h
+    converter/conversionmanager.h \
+    extensioninterface.h \
+    cassette.h \
+    hurl.h \
+    cassettecontent.h
 
 FORMS    += \
     webwindow.ui \
@@ -106,3 +113,9 @@ OTHER_FILES += \
 
 RESOURCES += \
     vhs.qrc
+
+#win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../extensions/dummy/release/ -ldummy1
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../extensions/dummy/debug/ -ldummy1
+#else:unix:!symbian: LIBS += -L$$OUT_PWD/../extensions/dummy/ -ldummy
+#INCLUDEPATH += $$PWD/../extensions/dummy
+#DEPENDPATH += $$PWD/../extensions/dummy

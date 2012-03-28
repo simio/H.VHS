@@ -55,7 +55,6 @@ QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionT
     QList<QPointer<FormatDefinition> > formats;
     QList<QPointer<TransportDefinition> > transports;
     QList<QPointer<ExtensionDefinition> > extensions;
-    //QList<QPointer<CassetteDefinition> > cassettes;
 
     if (defType == Definition::FormatDefinitionType || defType == Definition::NoDefinitionType)
         formats = FormatReader::parse(this->_xml, definitionParent);
@@ -63,8 +62,6 @@ QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionT
         transports = TransportReader::parse(this->_xml, definitionParent);
     if (defType == Definition::ExtensionDefinitionType || defType == Definition::NoDefinitionType)
         extensions = ExtensionReader::parse(this->_xml, definitionParent);
-    //else if (defType == Definition::CassetteDefinitionType || defType == Definition::NoDefinitionType)
-    //    result.append(CassetteReader::parse(this->_xml);
 
     QList<QPointer<Definition> > result;
     foreach(QPointer<FormatDefinition> format, formats)
@@ -73,8 +70,6 @@ QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionT
         result << qobject_cast<Definition*>(transport);
     foreach(QPointer<ExtensionDefinition> extension, extensions)
         result << qobject_cast<Definition*>(extension);
-    //foreach(QPointer<FormatDefinition> cassette, cassettes)
-    //    result << qobject_cast<QPointer<Definition> >(cassette);
 
     return result;
 }

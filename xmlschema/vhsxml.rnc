@@ -121,9 +121,17 @@ grammar {
     #
     #  CASSETTES
     #
-    # Glöm inte "<![CDATA[xxx]]>"
+    # While subCassettes define (completing) content, for
+    # example video streams of different bitrates but the same
+    # actual content, associatedCassettes define content which
+    # is not actually part of this cassette, but complementary,
+    # for example movie subtitles.
+    #
+    # The subCassettes element contain mutually exclusive
+    # cassettes, and the associatedCassettes element does not.
     cassettes = element cassettes { cassette+ }
-    subcassettes = element subcassettes { cassette+ }
+    subCassettes = element subCassettes { cassette+ }
+    associatedCassettes = element associatedCassettes { cassette+ }
     cassette =
         element cassette {
             timestampedId,  # must begin with "cassette:"
@@ -132,14 +140,21 @@ grammar {
                 element value {
                     attribute name { xsd:NMTOKEN },
                     xsd:string
-                }*
+                }+
             }*,
-            ( internalTypedContent | externalTypedContent | subcassettes )
+            ( internalTypedContent | externalTypedContent | subCassettes ),
+            associatedCassettes*
         }
     internalTypedContent =
         element content {
             attribute format { xsd:NMTOKEN },
             attribute mimeType { xsd:token },
+            # Enclose in <![CDATA[ ... ]]>
+            # Which type is used is defined by the formatDefinition
+            # referenced by the "format" attribute of this element.
+            # Entering base64 content but referencing a text
+            # formatDefinition will result in the content being read as
+            # a string, which probably isn't what you want.
             ( xsd:base64Binary | xsd:string )
         }
     externalTypedContent =

@@ -17,25 +17,22 @@ foremost:
     3. It allows code reuse under more circumstances.
        No commercial and/or closed source alternatives to this
        software exists today, but would be welcome.
-    4. The possibility of a commercial broadcasting company viewing the
-       ISC licensing terms as a deliberate provocation is extremely small.
+    4. The possibility of this project being in any way misunderstood
+       as inflammatory or deliberately provoking must be kept at a
+       minimum.
 
 Perhaps (4) could use some clarification. The purpose of this software 
-is to make downloading content from the video streaming sites of (not 
-only) commercial and public service broadcasting companies easy and 
-available to the general public. This is indeed legal in many (or most?) 
-countries, including Sweden where this project is based. There is also a 
-governmental system in place where a percentage of what one pays for 
-DVD:s and other writable storage media is distributed to copyright 
-holders, to compensate for economic losses attributed to the recording 
-or downloading and sharing amongst relatives and close friends of 
-copyrighted content made available legally.
+is to make it easier to download content from video streaming sites of
+(not exclusively) commercial and public service broadcasting companies.
+This is indeed legal in many (or most?) countries, including Sweden
+where this project is based, and this software is designed with this
+use only in mind. There is no political purpose to this project
+whatsoever, except perhaps against the appearent lack of accessibility
+in other, similar software.
 
-Still, this endeavour is sometimes confused with copyright infringement, 
-political "piratism" and other non-related issues. Due to this, the 
-effort to steer clear of any political purposes become even more 
-important, as do the aim of keeping any interests of economic gain or 
-anti-commercialism away. 
+The purpose of this software IS NOT to facilitate copyright 
+infringement, and any contributions aimed at adapting the software 
+specifically to such a purpose will not be included.
 
 
 THE ISC LICENSE AND CODE REUSE

@@ -6,6 +6,7 @@
             <name xml:lang="en">Unidentified data</name>
             <name xml:lang="sv">Oidentifierad data</name>
             <completeness>notEmpty</completeness>
+            <isText>false</isText>
             <mimeTypes>
                 <mimeType>application/octet-stream</mimeType>
             </mimeTypes>
@@ -15,15 +16,7 @@
             <name xml:lang="en">Copy of input stream</name>
             <name xml:lang="sv">Kopia av inström</name>
             <completeness>notEmpty</completeness>
-            <mimeTypes>
-                <mimeType>application/octet-stream</mimeType>
-            </mimeTypes>
-        </formatDefinition>
-        <formatDefinition>
-            <id releaseDate="2012-03-15T10:57:24">internal</id>
-            <name xml:lang="en">Internal representation</name>
-            <name xml:lang="sv">Intern datarepresentation</name>
-            <completeness>metaOnly</completeness>
+            <isText>false</isText>
             <mimeTypes>
                 <mimeType>application/octet-stream</mimeType>
             </mimeTypes>
@@ -34,6 +27,7 @@
             <name xml:lang="sv">Webbsajt</name>
             <description xml:lang="en">A URI for use in a normal web browser.</description>
             <completeness>metaOnly</completeness>
+            <isText>true</isText>
             <mimeTypes>
                 <mimeType>text/url</mimeType>
             </mimeTypes>
@@ -42,6 +36,7 @@
             <id releaseDate="2012-03-15T10:57:24">vhsxml</id>
             <name xml:lang="en">VhsXml</name>
             <completeness>metaOnly</completeness>
+            <isText>true</isText>
             <mimeTypes>
                 <mimeType>text/xml</mimeType>
             </mimeTypes>
@@ -50,6 +45,7 @@
             <id releaseDate="2012-03-15T10:57:24">vhsexpr</id>
             <name xml:lang="en">VhsExpr</name>
             <completeness>metaOnly</completeness>
+            <isText>true</isText>
             <mimeTypes>
                 <mimeType>text/x-script.scheme</mimeType>
             </mimeTypes>
@@ -58,6 +54,7 @@
             <id releaseDate="2012-03-15T10:57:24">vhsexpr</id>
             <name xml:lang="en">Vhscript</name>
             <completeness>metaOnly</completeness>
+            <isText>true</isText>
             <mimeTypes>
                 <mimeType>application/javascript</mimeType>
                 <mimeType>text/javascript</mimeType>
@@ -70,6 +67,7 @@
             <description xml:lang="en">Video and/or audio in Flash Video container (.flv).</description>
             <description xml:lang="sv">Video och eller ljud i Flash Video-container (.flv).</description>
             <completeness>complete</completeness>
+            <isText>false</isText>
             <mimeTypes>
                 <mimeType>video/x-flv</mimeType>
             </mimeTypes>
@@ -81,6 +79,7 @@
             <description xml:lang="en">SubRip formatted subtitles (.srt).</description>
             <description xml:lang="sv">Undertexter i SubRip-format (.srt).</description>
             <completeness>complete</completeness>
+            <isText>true</isText>
             <mimeTypes>
                 <mimeType>text/srt</mimeType>
                 <mimeType>application/x-subrip</mimeType>

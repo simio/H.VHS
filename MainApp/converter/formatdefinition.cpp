@@ -21,11 +21,13 @@ FormatDefinition::FormatDefinition(QString id,
                                    QString description,
                                    QDateTime releaseDate,
                                    QString completeness,
+                                   bool isText,
                                    QStringList mimeTypes,
                                    QObject *parent) :
     Definition(id, name, description, releaseDate, Definition::FormatDefinitionType, parent)
 {
-    this->setCompleteness(completeness);
+    this->_setCompleteness(completeness);
+    this->_isText = isText;
     this->_mimeTypes = mimeTypes;
 }
 
@@ -36,32 +38,49 @@ bool FormatDefinition::isValid() const
             && this->_mimeTypes.count() > 0);
 }
 
-FormatDefinition::Completeness FormatDefinition::completeness() const                   { return this->_completeness; }
+FormatDefinition::Completeness FormatDefinition::completeness() const
+{
+    return this->_completeness;
+}
+
+bool FormatDefinition::isText() const
+{
+    return this->_isText;
+}
+
 QString FormatDefinition::mimeType(int index) const
 {
     return (index >= 0 && index < this->_mimeTypes.size() ? this->_mimeTypes.at(index) : QString());
 }
-QStringList FormatDefinition::mimeTypes() const                                         { return this->_mimeTypes; }
 
-void FormatDefinition::setCompleteness(FormatDefinition::Completeness c)                { this->_completeness = c; }
-FormatDefinition::Completeness FormatDefinition::setCompleteness(QString str)
+QStringList FormatDefinition::mimeTypes() const
+{
+    return this->_mimeTypes;
+}
+
+void FormatDefinition::_setCompleteness(FormatDefinition::Completeness c)
+{
+    this->_completeness = c;
+}
+
+FormatDefinition::Completeness FormatDefinition::_setCompleteness(QString str)
 {
     QString normalised = str.toLower().trimmed();
 
     if (normalised == "notempty")
-        this->setCompleteness(NotEmpty);
+        this->_setCompleteness(NotEmpty);
     else if (normalised == "metaonly")
-        this->setCompleteness(MetaOnly);
+        this->_setCompleteness(MetaOnly);
     else if (normalised == "dataonly")
-        this->setCompleteness(DataOnly);
+        this->_setCompleteness(DataOnly);
     else if (normalised == "complete")
-        this->setCompleteness(Complete);
+        this->_setCompleteness(Complete);
     else
         qWarning() << "Could not set FormatDefinition completeness to" << normalised;
 
     return this->_completeness;
 }
 
-void FormatDefinition::insertMimeType(int index, QString mimeType) {
+void FormatDefinition::_insertMimeType(int index, QString mimeType) {
     this->_mimeTypes.insert(index, mimeType);
 }

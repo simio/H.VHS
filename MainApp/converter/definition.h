@@ -61,7 +61,7 @@ public slots:
 
 private:
     explicit Definition();
-    QString _id;                 // Unique ID (generated from QUuid by default)
+    QString _id;                    // Unique ID (generated from QUuid by default)
     QString _name;                  // Localised name
     QString _description;           // Localised description
     QDateTime _releaseDate;

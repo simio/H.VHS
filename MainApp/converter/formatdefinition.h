@@ -40,6 +40,7 @@ public:
                      QString description,
                      QDateTime releaseDate,
                      QString completeness,
+                     bool isText,
                      QStringList mimeTypes,
                      QObject *parent = 0);
 
@@ -48,11 +49,10 @@ public:
     // The MIME type list is prioritised. The first type is preferred for output.
     QString mimeType(int index = 0) const;
     QStringList mimeTypes() const;
-    void insertMimeType(int index, QString mimeType);
 
     Completeness completeness() const;
-    void setCompleteness(Completeness c);
-    Completeness setCompleteness(QString contentType);
+
+    bool isText() const;
 
 public slots:
 
@@ -61,7 +61,12 @@ signals:
 private:
     FormatDefinition();
 
+    void _insertMimeType(int index, QString mimeType);
+    void _setCompleteness(Completeness c);
+    Completeness _setCompleteness(QString contentType);
+
     Completeness _completeness;
+    bool _isText;
     QStringList _mimeTypes;
 };
 

@@ -59,7 +59,8 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
     QDateTime releaseDate;                          // As attribute of id; required
     QString name;                                   // Localised; required
     QString description;                            // Localised; optional
-    QString completeness;                           // From presets; required
+    QString completeness;                           // From enum; required
+    bool isText;                                    // True or false; required
     QStringList mimeTypes;                          // Prioritised when outputting; required to specify at least one
 
     // <id releaseDate="xsd:dateTime">xsd:NMTOKEN</id>
@@ -98,7 +99,16 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
         completeness = e.text();
         e = e.nextSiblingElement();
     }
-    else if (e.isNull())
+    else
+        return NULL;
+
+    // <isText> ( true | false ) </isText>
+    if (ElementParser::expect(e, "isText", ElementParser::Required))
+    {
+        isText = ElementParser::boolean(e.text());
+        e = e.nextSiblingElement();
+    }
+    else
         return NULL;
 
     // <mimeTypes>
@@ -110,7 +120,7 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
     e = e.nextSiblingElement();
 
     // alloc: Has parent
-    QPointer<FormatDefinition> format = new FormatDefinition(id, name, description, releaseDate, completeness, mimeTypes, definitionParent);
+    QPointer<FormatDefinition> format = new FormatDefinition(id, name, description, releaseDate, completeness, isText, mimeTypes, definitionParent);
     if (format->isValid())
         return format;
 

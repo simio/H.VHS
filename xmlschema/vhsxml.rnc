@@ -33,6 +33,7 @@ grammar {
             i18nName+,
             i18nDesc*,
             element completeness { "notEmpty" | "metaOnly" | "dataOnly" | "complete" },
+            element isText { "true" | "false" }
             mimeType
         }
 
@@ -118,22 +119,32 @@ grammar {
         }
 
     #
-    #  CASSETTES (stub)
+    #  CASSETTES
     #
     # Glöm inte "<![CDATA[xxx]]>"
     cassettes = element cassettes { cassette+ }
+    subcassettes = element subcassettes { cassette+ }
     cassette =
         element cassette {
-            timestampedId,
-            ( internalTypedContent | externalTypedContent )
+            timestampedId,  # must begin with "cassette:"
+            element presentation {
+                attribute xml:lang { xsd:language }?,
+                element value {
+                    attribute name { xsd:NMTOKEN },
+                    xsd:string
+                }*
+            }*,
+            ( internalTypedContent | externalTypedContent | subcassettes )
         }
     internalTypedContent =
         element content {
+            attribute format { xsd:NMTOKEN },
             attribute mimeType { xsd:token },
-            xsd:base64Binary
+            ( xsd:base64Binary | xsd:string )
         }
     externalTypedContent =
         element content {
+            attribute format { xsd:NMTOKEN },
             attribute mimeType { xsd:token },
             attribute src { xsd:anyURI },
             empty

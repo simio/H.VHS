@@ -20,11 +20,11 @@ HUrl::HUrl()                                                { this->_set(QString
 HUrl::HUrl(QString url, QDateTime timestamp )               { this->_set(url, timestamp); }
 HUrl::HUrl(QUrl url, QDateTime timestamp)                   { this->_set(url.toString(), timestamp); }
 
-QUrl HUrl::toUrl()                                          { return QUrl(this->_url); }
-QString HUrl::toString()                                    { return this->_url; }
-QDateTime HUrl::dateTime()                                  { return this->_timestamp; }
+QUrl HUrl::toUrl() const                                    { return QUrl(this->_url); }
+QString HUrl::toString() const                              { return this->_url; }
+QDateTime HUrl::dateTime() const                            { return this->_timestamp; }
 
-bool HUrl::isValid()
+bool HUrl::isValid() const
 {
     // Just a basic check for now
     return (! this->_url.isEmpty() && this->_timestamp.isValid());

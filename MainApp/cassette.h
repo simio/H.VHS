@@ -49,8 +49,8 @@ public:
     };
     explicit Cassette(QObject * parent);
 
-    QString id();
-    HUrl url();
+    QString id() const;
+    HUrl url() const;
 
 private:
     QString _id;

@@ -23,22 +23,17 @@ CassetteContent::CassetteContent(QObject *parent) :
     this->_form = CassetteContent::Empty;
 }
 
-bool CassetteContent::isEmpty()
+bool CassetteContent::isEmpty() const
 {
     return (this->_form == CassetteContent::Empty);
 }
 
-void CassetteContent::empty()
-{
-    this->_empty();
-}
-
-CassetteContent::ContentForm CassetteContent::form()
+CassetteContent::ContentForm CassetteContent::form() const
 {
     return this->_form;
 }
 
-QString CassetteContent::textContent()
+QString CassetteContent::textContent() const
 {
     if (this->_form == CassetteContent::Text)
         return this->_textContent;
@@ -50,7 +45,7 @@ QString CassetteContent::textContent()
     }
 }
 
-QByteArray CassetteContent::binaryContent()
+QByteArray CassetteContent::binaryContent() const
 {
     if (this->_form == CassetteContent::Binary)
         return this->_binaryData;
@@ -62,7 +57,7 @@ QByteArray CassetteContent::binaryContent()
     }
 }
 
-QPointer<Cassette> CassetteContent::subCassette(QString id)
+QPointer<Cassette> CassetteContent::subCassette(QString id) const
 {
     if (this->_form == CassetteContent::SubCassettes)
         return this->_subCassettes.value(id, NULL);
@@ -74,7 +69,7 @@ QPointer<Cassette> CassetteContent::subCassette(QString id)
     }
 }
 
-QHash<QString, QPointer<Cassette> > CassetteContent::subCassettes()
+QHash<QString, QPointer<Cassette> > CassetteContent::subCassettes() const
 {
     if (this->_form == CassetteContent::SubCassettes)
         return this->_subCassettes;
@@ -84,6 +79,11 @@ QHash<QString, QPointer<Cassette> > CassetteContent::subCassettes()
                    << "Form is type" << (int)this->_form;
         return QHash<QString,QPointer<Cassette> >();
     }
+}
+
+void CassetteContent::empty()
+{
+    this->_empty();
 }
 
 void CassetteContent::setContent(QString str)

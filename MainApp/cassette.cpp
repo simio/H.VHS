@@ -23,12 +23,12 @@ Cassette::Cassette(QObject *parent) :
     this->_content = new CassetteContent;
 }
 
-QString Cassette::id()
+QString Cassette::id() const
 {
     return this->_id;
 }
 
-HUrl Cassette::url()
+HUrl Cassette::url() const
 {
     return this->_url;
 }

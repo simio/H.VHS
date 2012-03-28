@@ -46,15 +46,15 @@ public:
         SubCassettes
     };
 
-    bool isEmpty();
+    bool isEmpty() const;
+    ContentForm form() const;
+
+    QString textContent() const;
+    QByteArray binaryContent() const;
+    QPointer<Cassette> subCassette(QString id) const;
+    QHash<QString,QPointer<Cassette> > subCassettes() const;
+
     void empty();
-    ContentForm form();
-
-    QString textContent();
-    QByteArray binaryContent();
-    QPointer<Cassette> subCassette(QString id);
-    QHash<QString,QPointer<Cassette> > subCassettes();
-
     void setContent(QString str);
     void setContent(QByteArray binaryData);
     void setContent(QList<QPointer<Cassette> > cassettes);

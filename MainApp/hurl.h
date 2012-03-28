@@ -30,10 +30,10 @@ public:
     HUrl(QString url, QDateTime timestamp = QDateTime());
     HUrl(QUrl url, QDateTime timestamp = QDateTime());
 
-    inline bool isValid();
-    inline QUrl toUrl();
-    inline QString toString();
-    inline QDateTime dateTime();
+    inline bool isValid() const;
+    inline QUrl toUrl() const;
+    inline QString toString() const;
+    inline QDateTime dateTime() const;
 
 
 private:

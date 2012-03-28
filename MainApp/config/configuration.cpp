@@ -28,7 +28,9 @@ Configuration::Configuration(QObject *parent) :
     qApp->setApplicationVersion( APP_VER );
 
 #ifdef DEPLOY
-    qApp->setLibraryPaths(QStringList(qApp->applicationDirPath()));
+#   ifdef WIN32
+        qApp->setLibraryPaths(QStringList(qApp->applicationDirPath()));
+#   endif
 #endif
 
 #ifdef HIDE_DEVEL_INFO

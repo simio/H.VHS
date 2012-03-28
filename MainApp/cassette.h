@@ -21,7 +21,7 @@
  *  in circular dependence. Inlining any members or adding
  *  CassetteContent typed members will break the build.
  *
- *  Use QPointer<Cassette>.
+ *  Instead, use QPointer<CassetteContent>.
  */
 
 #include <QObject>

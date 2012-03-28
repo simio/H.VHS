@@ -98,7 +98,8 @@ HEADERS  += \
     extensioninterface.h \
     cassette.h \
     hurl.h \
-    cassettecontent.h
+    cassettecontent.h \
+    extensionhooks.h
 
 FORMS    += \
     webwindow.ui \

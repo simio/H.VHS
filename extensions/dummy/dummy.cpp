@@ -14,7 +14,27 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONHOOKS_H
-#define EXTENSIONHOOKS_H
+#include "dummy.h"
 
-#endif // EXTENSIONHOOKS_H
+DummyExtension::DummyExtension(QObject *parent) :
+    QObject(parent)
+{
+}
+
+qint64 DummyExtension::suggestedHookPriority() const
+{
+    return 100;
+}
+
+qint64 DummyExtension::pluginHook(const qint64 hook, QHash<QString, QVariant> &hookData)
+{
+    if (hook == EXT_HOOK_AFTER_APP_INITIALISED)
+    {
+        std::cout << "Hej";
+        return EXT_RETVAL_DONE;
+    }
+
+    return EXT_RETVAL_NOOP;
+}
+
+Q_EXPORT_PLUGIN2(dummyextension, DummyExtension)

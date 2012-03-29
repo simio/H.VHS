@@ -94,12 +94,13 @@ HEADERS  += \
     vhsxml/elementparser.h \
     config/appwideclasses.h \
     converter/conversionmanager.h \
-    extensioninterface.h \
     cassette.h \
     hurl.h \
     cassettecontent.h \
-    extensionhooks.h \
-    config/platformdependent.h
+    config/platformdependent.h \
+    extensioninterfaces/hooks.h \
+    extensioninterfaces/streams.h \
+    extensioninterfaces/defines.h
 
 FORMS    += \
     webwindow.ui \

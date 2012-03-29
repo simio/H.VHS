@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
  *
- * Permission to use, copy, modify, and/or distribute this software for any
+ * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
  *
@@ -14,14 +14,20 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef EXTENSIONINTERFACES_DEFINES_H
+#define EXTENSIONINTERFACES_DEFINES_H
 
-#ifndef HVHS_EXTENSION_BUILD
+// Extension::pluginHook() hooks
+#define EXT_HOOK_AFTER_INIT_EXT             10
+#define EXT_HOOK_BEFORE_KILL_EXT            20
+#define EXT_HOOK_WEBVIEW_LOADSTARTED        30
+#define EXT_HOOK_WEBVIEW_LOADFINISHED       40
+#define EXT_HOOK_AFTER_APP_INITIALISED      50
 
-#include "config/configuration.h"
-#include "config/messagehandler.h"
+// Extension::pluginHook() return values (is NOOP or any combination of the other)
+#define EXT_RETVAL_NOOP                     0
+#define EXT_RETVAL_DONE                     1
+#define EXT_RETVAL_BLOCK                    2
+#define EXT_RETVAL_DATA_MODIFIED            4
 
-#endif // HVHS_EXTENSION_BUILD
-
-#endif // MAIN_H
+#endif // EXTENSIONINTERFACES_DEFINES_H

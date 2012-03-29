@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
  *
- * Permission to use, copy, modify, and/or distribute this software for any
+ * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
  *
@@ -14,14 +14,32 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef DUMMY_H
+#define DUMMY_H
 
-#ifndef HVHS_EXTENSION_BUILD
+#include <iostream>
 
-#include "config/configuration.h"
-#include "config/messagehandler.h"
+#include <QtGui/QtGui>
+#include <QObject>
+#include <QHash>
+#include <QString>
+#include <QVariant>
 
-#endif // HVHS_EXTENSION_BUILD
+#include "../../MainApp/extensioninterfaces/hooks.h"
 
-#endif // MAIN_H
+class DummyExtension : public QObject, ExtensionInterfaceHooks
+{
+    Q_OBJECT
+    Q_INTERFACES(ExtensionInterfaceHooks)
+
+public:
+    explicit DummyExtension(QObject *parent = 0);
+
+    qint64 suggestedHookPriority() const;
+    qint64 pluginHook(const qint64 hook, QHash<QString, QVariant> &hookData);
+
+private:
+
+};
+
+#endif // DUMMY_H

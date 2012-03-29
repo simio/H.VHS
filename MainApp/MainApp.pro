@@ -53,25 +53,25 @@ SOURCES += \
     vhsxml/formatreader.cpp \
     vhsxml/cassettereader.cpp \
     vhsxml/extensionreader.cpp \
-    converter/formatdefinition.cpp \
-    converter/transportdefinition.cpp \
+    extensionmanager/formatdefinition.cpp \
+    extensionmanager/transportdefinition.cpp \
     browser/webbrowsercombobox.cpp \
     browser/webview.cpp \
     browser/webwindowguisetup.cpp \
     webwindow.cpp \
     config/configuration.cpp \
     config/messagehandler.cpp \
-    converter/definition.cpp \
-    converter/definitiontable.cpp \
+    extensionmanager/definition.cpp \
+    extensionmanager/definitiontable.cpp \
     vhsxml/documentreader.cpp \
     vhsxml/elementparser.cpp \
     config/appwideclasses.cpp \
-    converter/extensiondefinition.cpp \
-    converter/conversionmanager.cpp \
+    extensionmanager/extensiondefinition.cpp \
     cassette.cpp \
     hurl.cpp \
     cassettecontent.cpp \
-    config/platformdependent.cpp
+    config/platformdependent.cpp \
+    extensionmanager/extensionmanager.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -81,26 +81,26 @@ HEADERS  += \
     vhsxml/formatreader.h \
     vhsxml/cassettereader.h \
     vhsxml/extensionreader.h \
-    converter/extensiondefinition.h \
-    converter/formatdefinition.h \
-    converter/transportdefinition.h \
+    extensionmanager/extensiondefinition.h \
+    extensionmanager/formatdefinition.h \
+    extensionmanager/transportdefinition.h \
     browser/webbrowsercombobox.h \
     browser/webview.h \
     config/configuration.h \
     config/messagehandler.h \
-    converter/definition.h \
-    converter/definitiontable.h \
+    extensionmanager/definition.h \
+    extensionmanager/definitiontable.h \
     vhsxml/documentreader.h \
     vhsxml/elementparser.h \
     config/appwideclasses.h \
-    converter/conversionmanager.h \
     cassette.h \
     hurl.h \
     cassettecontent.h \
     config/platformdependent.h \
     extensioninterfaces/hooks.h \
     extensioninterfaces/streams.h \
-    extensioninterfaces/defines.h
+    extensioninterfaces/defines.h \
+    extensionmanager/extensionmanager.h
 
 FORMS    += \
     webwindow.ui \

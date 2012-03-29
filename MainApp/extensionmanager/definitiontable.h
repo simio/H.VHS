@@ -23,7 +23,7 @@
 
 #include "main.h"
 
-#include "converter/definition.h"
+#include "extensionmanager/definition.h"
 
 class DefinitionTable : public QObject
 {

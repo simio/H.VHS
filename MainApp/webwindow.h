@@ -30,7 +30,7 @@
 #include "browser/webbrowsercombobox.h"
 #include "browser/webview.h"
 
-#include "converter/conversionmanager.h"
+#include "extensionmanager/extensionmanager.h"
 
 namespace Ui {
 class WebWindow;

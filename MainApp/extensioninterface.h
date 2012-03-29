@@ -86,8 +86,7 @@ class ExtensionPrivate;
 class ExtensionInterface
 {
 public:
-    virtual ExtensionInterface();                                   // Remember to new the d-pointer!
-    virtual ~ExtensionInterface();                                  // And delete it too.
+    virtual ~ExtensionInterface();
 
     /*
      *      PLUGIN HOOK EXTENSION INTERFACE

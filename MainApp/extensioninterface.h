@@ -71,7 +71,7 @@ public:
      *
      * The hook names are defined in extensionhooks.h
      */
-    virtual QString pluginHook(const QString hookName, QHash<QString,QVariant> hookData);
+    virtual QString pluginHook(const int hook, QHash<QString,QVariant> hookData);
 
     // Returns NULL and sets error()/errorStr() on failure
     virtual QPointer<QDataStream> pluginStream(QIODevice::OpenModeFlag openMode, const QPointer<const Cassette> cassette);

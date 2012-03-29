@@ -1,11 +1,7 @@
-This repository contains a full rewrite and the next version of H.VHS,
-while the previous, unfortunately quite broken version is still hosted
-at Google Code. (http://code.google.com/p/huggpunktplay)
+This repository contains what will become a full rewrite of H.VHS. The
+previous, unfortunately quite broken version is still hosted at Google
+Code.
 
 The H.VHS home page is currently only available in Swedish:
 
     http://planka.huggpunkt.org/h-vhs
-
-The LICENSING file contains information on not only the ISC license 
-used in this project and what the licensing terms means for code reuse,
-but also on WHY the nature of this project gives good reason to use it.

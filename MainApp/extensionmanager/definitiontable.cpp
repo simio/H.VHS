@@ -21,7 +21,7 @@ DefinitionTable::DefinitionTable(QObject *parent) :
 {
 }
 
-int DefinitionTable::count(Definition::DefinitionType type)
+int DefinitionTable::count(Definition::DefinitionType type) const
 {
     int sum = 0;
     if (type == Definition::NoDefinitionType)
@@ -61,24 +61,29 @@ int DefinitionTable::update(QList<QPointer<Definition> > defs)
     return sum;
 }
 
-bool DefinitionTable::contains(Definition::DefinitionType type, QString id)
+bool DefinitionTable::contains(Definition::DefinitionType type, QString id) const
 {
     return this->_definitions.value(type).contains(id);
 }
 
-bool DefinitionTable::contains(QPointer<Definition> def)
+bool DefinitionTable::contains(QPointer<Definition> def) const
 {
     return this->contains(def->type(), def->id());
 }
 
-QPointer<Definition> DefinitionTable::get(Definition::DefinitionType type, QString id)
+QPointer<Definition> DefinitionTable::get(Definition::DefinitionType type, QString id) const
 {
     return this->_definitions.value(type).value(id);
 }
 
-QPointer<Definition> DefinitionTable::get(QPointer<Definition> def)
+QPointer<Definition> DefinitionTable::get(QPointer<Definition> def) const
 {
     return this->get(def->type(), def->id());
+}
+
+QHash<QString, QPointer<Definition> > DefinitionTable::getAll(Definition::DefinitionType type) const
+{
+    return this->_definitions.value(type, QHash<QString,QPointer<Definition> >());
 }
 
 bool DefinitionTable::_set(QPointer<Definition> def)

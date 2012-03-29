@@ -20,6 +20,7 @@
 #include <QObject>
 #include <QPointer>
 #include <QString>
+#include <QHash>
 
 #include "main.h"
 
@@ -31,13 +32,14 @@ class DefinitionTable : public QObject
 public:
     explicit DefinitionTable(QObject *parent = 0);
 
-    int count(Definition::DefinitionType type = Definition::NoDefinitionType);
+    int count(Definition::DefinitionType type = Definition::NoDefinitionType) const;
     bool update(QPointer<Definition> def);                                      // returns true iff definition table changed
     int update(QList<QPointer<Definition> > defs);                              // returns number of changes to definition table
-    bool contains(Definition::DefinitionType type, QString id);
-    bool contains(QPointer<Definition> def);
-    QPointer<Definition> get(Definition::DefinitionType type, QString id);
-    QPointer<Definition> get(QPointer<Definition> def);
+    bool contains(Definition::DefinitionType type, QString id) const;
+    bool contains(QPointer<Definition> def) const;
+    QPointer<Definition> get(Definition::DefinitionType type, QString id) const;
+    QPointer<Definition> get(QPointer<Definition> def) const;
+    QHash<QString,QPointer<Definition> > getAll(Definition::DefinitionType type) const;
 
 signals:
 

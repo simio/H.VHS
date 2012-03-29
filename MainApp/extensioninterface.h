@@ -25,67 +25,23 @@
 
 /*  H.VHS QPlugin Extension Interface, version 1.0
  *
- *  All extensions should use the herein declared d-pointer.
+ *  The application will create exactly one instance of each extension at
+ *  startup. This instance will be called exactly once per plugin hook in
+ *  the main application.
  *
- *  STREAM EXTENSIONS
- *  To the caller, this extension looks like a wrapper around a QDataStream.
- *  Every instance of the extension object exposes exactly one QDataStream.
- *  If, for example, a local file access extension is to be used to copy
- *  a file from one filename to another, two instances of that extension must
- *  be created; one object for reading from the source file, and another for
- *  writing to the target file.
+ *  If, during the startup process, an extension instance suggests a hook
+ *  call priority of zero, it might get deleted.
  *
- *  The QDataStream must use QDataStream::setVersion(QDataStream::Qt_4_8).
  *
- *  When the stream is no longer needed, the instance will be deleted.
  *
- *  PLUGIN HOOK EXTENSIONS
- *  The application will create exactly one instance of each hooked extension,
- *  which will not be used as a stream extension. It will be called exactly
- *  once per plugin hook in the main application.
- *
- *  If, during this process, an extension instance suggests a hook call priority
- *  of zero, it might get deleted.
- *
- *  STREAM AND PLUGIN HOOK EXTENSIONS
- *  Extensions may provide both streams and hook handling. If they do, H.VHS
- *  will still create one instance of the extension to only handle hooks, plus
- *  additional instances for for stream handling, as specified above.
- *
- *  Instances not created for hook handling only won't get deleted if they
- *  suggest a hook priority of zero. This way, instances with active streams
- *  will get hook calls.
  */
 
-enum ExtensionStreamControl {
-    None,
-    Start,
-    Abort,
-    Pause,
-    Restart
-};
-enum ExtensionStreamErrorCode {
-    Ok                  = 0,
-    NotInitialised      = 1,
-    UnspecifiedError    = 2,
-    TransportFailure    = 4,
-    FormatFailure       = 8,
-    ControlFailure      = 16
-};
-enum ExtensionStreamDirection {
-    Read,
-    Write
-};
-enum ExtensionPluginHookHandling {
-    Unhandled           = 0,
-    Handled             = 1,
-    Blocked             = 2,
-    DataChanged         = 4
-};
-
 class ExtensionPrivate;
+
 class ExtensionInterface
 {
+protected:
+    QPointer<ExtensionPrivate> d;
 public:
     virtual ~ExtensionInterface();
 
@@ -106,7 +62,7 @@ public:
      * The main application (and user) may and quite possibly will
      * change the call order to their own preferences.
      */
-    virtual int suggestedHookPriority() const;
+    virtual qint64 suggestedHookPriority() const;
 
     /* This member will get called exactly once each time the main application
      * hits a plugin hook. The return value should specify how this extension
@@ -115,35 +71,14 @@ public:
      *
      * The hook names are defined in extensionhooks.h
      */
-    virtual qint64 pluginHook(const QString hookName, QPointer<QVariant> hookData);
+    virtual QString pluginHook(const QString hookName, QHash<QString,QVariant> hookData);
 
+    // Returns NULL and sets error()/errorStr() on failure
+    virtual QPointer<QDataStream> pluginStream(QIODevice::OpenModeFlag openMode, const QPointer<const Cassette> cassette);
 
-    /*
-     *      STREAM EXTENSION INTERFACE
-     */
-
-    virtual QList<qint64> availableStreamControls() const;          // Return a QList of the Control commands this object accepts.
-    virtual bool streamControl(qint64 control);                     // Send a Control command. Return true for success.
-    virtual bool streamReset();                                     // Reset extension to an empty, ready state. Returns true on success.
-    virtual qint64 streamError() const;                             // Returns the current state(s) of the extension.
-    virtual QString streamErrorStr() const;                         // Human readable description of current state. For prettyprinting only.
-
-    // Initialise a connection. Returns false on failure, otherwise true.
-    virtual bool streamInitialise(ExtensionStreamControl direction, QPointer<const Cassette> cassette);
-
-    /* Returns a pointer to the QDataStream, or NULL if the internal
-     * state (i.e. streamError()) is non-zero or this extension does not
-     * supply data streams (in which case the extension XML definition
-     * should not have any <inputs> or <outputs> elements, and this
-     * member should not be called at all.
-     */
-    virtual QPointer<QDataStream> stream() const;
-
-
-private:
-    QPointer<ExtensionPrivate> *d;
-    qint64 _state;
-    QPointer<QDataStream> _stream;
+    virtual bool reset();                               // Reset extension to an empty, ready state. Returns true on success.
+    virtual qint64 error() const;                       // Returns the current state(s) of the extension.
+    virtual QString errorStr() const;                   // Human readable description of current state. For prettyprinting only.
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterface,

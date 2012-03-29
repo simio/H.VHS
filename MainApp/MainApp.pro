@@ -62,7 +62,6 @@ SOURCES += \
     config/configuration.cpp \
     config/messagehandler.cpp \
     converter/definition.cpp \
-    config/systemdependent.cpp \
     converter/definitiontable.cpp \
     vhsxml/documentreader.cpp \
     vhsxml/elementparser.cpp \
@@ -71,7 +70,8 @@ SOURCES += \
     converter/conversionmanager.cpp \
     cassette.cpp \
     hurl.cpp \
-    cassettecontent.cpp
+    cassettecontent.cpp \
+    config/platformdependent.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -89,7 +89,6 @@ HEADERS  += \
     config/configuration.h \
     config/messagehandler.h \
     converter/definition.h \
-    config/systemdependent.h \
     converter/definitiontable.h \
     vhsxml/documentreader.h \
     vhsxml/elementparser.h \
@@ -99,7 +98,8 @@ HEADERS  += \
     cassette.h \
     hurl.h \
     cassettecontent.h \
-    extensionhooks.h
+    extensionhooks.h \
+    config/platformdependent.h
 
 FORMS    += \
     webwindow.ui \

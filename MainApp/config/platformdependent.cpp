@@ -14,23 +14,23 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "systemdependent.h"
+#include "platformdependent.h"
 
 // Singleton (Portability::pointer())
-SystemDependent *SystemDependent::s_instance = NULL;
+PlatformDependent *PlatformDependent::s_instance = NULL;
 
-SystemDependent::SystemDependent()
+PlatformDependent::PlatformDependent()
 {
 }
 
-SystemDependent *SystemDependent::pointer()
+PlatformDependent *PlatformDependent::pointer()
 {
     if (s_instance == NULL)
-        s_instance = new SystemDependent;                               // alloc: Singleton object
+        s_instance = new PlatformDependent;                               // alloc: Singleton object
     return s_instance;
 }
 
-QDir SystemDependent::extensionsDir(Scope scope)
+QDir PlatformDependent::extensionsDir(Scope scope)
 {
 #ifdef WIN32
     switch (scope)
@@ -46,7 +46,7 @@ QDir SystemDependent::extensionsDir(Scope scope)
 #endif
 }
 
-QDir SystemDependent::presetsDir(Scope scope)
+QDir PlatformDependent::presetsDir(Scope scope)
 {
 #ifdef WIN32
     switch (scope)
@@ -63,7 +63,7 @@ QDir SystemDependent::presetsDir(Scope scope)
 }
 
 
-QPointer<QSettings> SystemDependent::makeSettings(QObject * parent)
+QPointer<QSettings> PlatformDependent::makeSettings(QObject * parent)
 {
 #ifdef WIN32
     // alloc: Has parent

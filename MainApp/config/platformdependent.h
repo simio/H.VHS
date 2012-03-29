@@ -24,11 +24,11 @@
 #include <QString>
 #include <QSettings>
 
-class SystemDependent
+class PlatformDependent
 {
 public:
-    SystemDependent();
-    static SystemDependent *pointer();
+    PlatformDependent();
+    static PlatformDependent *pointer();
 
     enum Scope {
         User,
@@ -40,7 +40,7 @@ public:
     QPointer<QSettings> makeSettings(QObject *parent);
 
 private:
-    static SystemDependent *s_instance;
+    static PlatformDependent *s_instance;
 
 };
 

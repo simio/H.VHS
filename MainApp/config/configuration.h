@@ -30,7 +30,7 @@
 #include <QStringList>
 
 #include "version.h"
-#include "config/systemdependent.h"
+#include "config/platformdependent.h"
 #include "config/messagehandler.h"
 #include "config/appwideclasses.h"
 

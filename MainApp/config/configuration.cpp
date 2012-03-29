@@ -41,7 +41,7 @@ Configuration::Configuration(QObject *parent) :
 
     this->_writeBlock = false;
 
-    this->_settings = SystemDependent::pointer()->makeSettings(this);
+    this->_settings = PlatformDependent::pointer()->makeSettings(this);
     this->_settings->setIniCodec("UTF-8");
 
     this->_publicAppTag = QString( PUBLIC_APP_TAG );
@@ -180,16 +180,16 @@ QDir Configuration::getStorageLocation(StorageLocation type)
         location = QDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
         break;
     case SystemExtensionsLocation:
-        location = QDir(SystemDependent::pointer()->extensionsDir(SystemDependent::System));
+        location = QDir(PlatformDependent::pointer()->extensionsDir(PlatformDependent::System));
         break;
     case UserExtensionsLocation:
-        location = QDir(SystemDependent::pointer()->extensionsDir(SystemDependent::User));
+        location = QDir(PlatformDependent::pointer()->extensionsDir(PlatformDependent::User));
         break;
     case SystemPresetsLocation:
-        location = QDir(SystemDependent::pointer()->presetsDir(SystemDependent::System));
+        location = QDir(PlatformDependent::pointer()->presetsDir(PlatformDependent::System));
         break;
     case UserPresetsLocation:
-        location = QDir(SystemDependent::pointer()->presetsDir(SystemDependent::User));
+        location = QDir(PlatformDependent::pointer()->presetsDir(PlatformDependent::User));
         break;
     default:
         return QDir();

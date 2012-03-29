@@ -27,6 +27,8 @@
 #include <QObject>
 #include <QString>
 #include <QDateTime>
+#include <QMap>
+#include <QHash>
 
 #include "main.h"
 

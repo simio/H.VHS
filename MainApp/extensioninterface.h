@@ -79,7 +79,8 @@ enum ExtensionStreamDirection {
 enum ExtensionPluginHookHandling {
     Unhandled           = 0,
     Handled             = 1,
-    Blocked             = 2
+    Blocked             = 2,
+    DataChanged         = 4
 };
 
 class ExtensionPrivate;
@@ -114,7 +115,7 @@ public:
      *
      * The hook names are defined in extensionhooks.h
      */
-    virtual qint64 callHook(const QString hookName, QPointer<QVariant> hookData);
+    virtual qint64 pluginHook(const QString hookName, QPointer<QVariant> hookData);
 
 
     /*

@@ -17,7 +17,11 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#ifndef EXTENSION_BUILD
+
 #include "config/configuration.h"
 #include "config/messagehandler.h"
+
+#endif // EXTENSION_BUILD
 
 #endif // MAIN_H

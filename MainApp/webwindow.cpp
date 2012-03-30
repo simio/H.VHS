@@ -30,7 +30,7 @@ WebWindow::WebWindow(QWidget *parent) :
 
     this->_setupGui();
 
-    this->_loadPage(Configuration::pointer()->getStartPage());
+    this->_loadPage(Configuration::p()->getStartPage());
 }
 
 WebWindow::~WebWindow()
@@ -60,8 +60,8 @@ void WebWindow::_quit()
 
 void WebWindow::_clearStorageAndQuit()
 {
-    Configuration::pointer()->setWriteBlock(true);
-    Configuration::pointer()->clearStorage();
+    Configuration::p()->setWriteBlock(true);
+    Configuration::p()->clearStorage();
     this->_quit();
 }
 
@@ -92,12 +92,12 @@ void WebWindow::_whenWebViewIconChanged()
 
 void WebWindow::_whenWebViewTitleChanged(const QString &title)
 {
-    this->setWindowTitle(title + (title.isEmpty() ? "" : " - ") + Configuration::pointer()->appName());
+    this->setWindowTitle(title + (title.isEmpty() ? "" : " - ") + Configuration::p()->appName());
 }
 
 void WebWindow::_whenSearchBoxReturnPressed()
 {
-    this->_loadPage(Configuration::pointer()->makeSearchUrl(this->_lineEditSearch->text()));
+    this->_loadPage(Configuration::p()->makeSearchUrl(this->_lineEditSearch->text()));
 }
 
 void WebWindow::_receiveStatusBarMessage(const QString &text)
@@ -133,6 +133,6 @@ void WebWindow::_updateBrowserIcon(int index, bool force)
 
 void WebWindow::closeEvent(QCloseEvent *event)
 {
-    Configuration::pointer()->saveWindow(Configuration::WebWindow, this->saveState(), this->saveGeometry());
+    Configuration::p()->saveWindow(Configuration::WebWindow, this->saveState(), this->saveGeometry());
     QMainWindow::closeEvent(event);
 }

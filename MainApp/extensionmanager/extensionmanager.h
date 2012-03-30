@@ -17,13 +17,37 @@
 #ifndef EXTENSIONMANAGER_EXTENSIONMANAGER_H
 #define EXTENSIONMANAGER_EXTENSIONMANAGER_H
 
+/*  This singleton's work is centered around three lists.
+ *
+ *   - The definition list, kept in a DefinitionTable, which
+ *     consists of definitions Formats, Transports and Extensions.
+ *
+ *   - The first circle of extensions, i.e. a list consisting
+ *     of one instance of each extension implementing the
+ *     ExtensionInterfaceHooks interface. These are kept until
+ *     the singleton is destructed. They are only ever accessed
+ *     through the ExtensionInterfaceHooks interface.
+ *
+ *   - The second circle of extensions, i.e. a job manager.
+ *     The extensions active in the job manager are also called
+ *     as part of the plugin hook facilities. While the extension
+ *     manager singleton is responsible for the first circle
+ *     of extensions, the job manager is responsible for the second.
+ *     All we care about here is telling the job manager when to
+ *     run what hook on it's extensions.
+ */
+
 #include <QObject>
 #include <QPointer>
 #include <QList>
+#include <QHash>
 #include <QDirIterator>
 #include <QDateTime>
+#include <QPluginLoader>
 
 #include "main.h"
+
+#include "extensioninterfaces/hooks.h"
 
 #include "extensionmanager/definition.h"
 #include "extensionmanager/formatdefinition.h"
@@ -50,6 +74,10 @@ private:
     void _initialise();
 
     DefinitionTable _definitions;
+
+    // These extensions are loaded at startup and kept for as long
+    // as the ExtensionManager is around.
+    QHash<QString,ExtensionInterfaceHooks*> _persistentExtensions;
 };
 
 #endif // EXTENSIONMANAGER_EXTENSIONMANAGER_H

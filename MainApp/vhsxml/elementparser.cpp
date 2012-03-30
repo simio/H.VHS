@@ -107,9 +107,9 @@ QString ElementParser::localisedString(QDomElement &e)
     while (!e.nextSiblingElement().isNull() && e.nextSiblingElement().tagName() == name)
     {
         e = e.nextSiblingElement();
-        if (e.attribute("xml:lang") == Configuration::pointer()->locale(true))
+        if (e.attribute("xml:lang") == Configuration::p()->locale(true))
             return e.text();
-        else if (e.attribute("xml:lang") == Configuration::pointer()->locale(false))
+        else if (e.attribute("xml:lang") == Configuration::p()->locale(false))
             bestMatch = e.text();
     }
 

@@ -30,7 +30,12 @@ qint64 DummyExtension::pluginHook(const qint64 hook, QHash<QString, QVariant> &h
 {
     if (hook == EXT_HOOK_AFTER_APP_INITIALISED)
     {
-        std::cout << "Hej";
+        std::cout << "Hej!";
+        return EXT_RETVAL_DONE;
+    }
+    else if (hook == EXT_HOOK_AFTER_APP_INITIALISED)
+    {
+        std::cout << "Äntligen!";
         return EXT_RETVAL_DONE;
     }
 

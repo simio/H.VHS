@@ -22,6 +22,7 @@
 #include <QVariant>
 #include <QMap>
 #include <QDataStream>
+#include <QStringList>
 
 #include "main.h"
 
@@ -52,27 +53,29 @@ public:
 
     // Nice
     ExtensionDefinition(QString id,
-              QString name,
-              QString description,
-              QDateTime releaseDate,
-              QList<Person> authors,
-              QString licenseName,
-              QUrl licenseUrl,
-              bool enabled,
-              Condition condition,
-              QString basePath,
-              Version apiVersion,
-              ApiInterface apiInterface,
-              QString source,
-              QList<QString> inputTransports,
-              QList<QString> inputFormats,
-              QList<QString> outputTransports,
-              QList<QString> outputFormats,
-              QList<Person> audits,
-              QObject *parent = 0);
+                        QString name,
+                        QString description,
+                        QDateTime releaseDate,
+                        QList<Person> authors,
+                        QString licenseName,
+                        QUrl licenseUrl,
+                        bool enabled,
+                        Condition condition,
+                        QString basePath,
+                        QStringList interfaces,
+                        Version apiVersion,
+                        ApiInterface apiInterfaceClass,
+                        QString source,
+                        QList<QString> inputTransports,
+                        QList<QString> inputFormats,
+                        QList<QString> outputTransports,
+                        QList<QString> outputFormats,
+                        QList<Person> audits,
+                        QObject *parent = 0);
 
     bool isEnabled() const                                                  { return this->_enabled; }
     bool isValid() const;
+    bool implementsInterface(QString interface) const                       { return this->_interfaces.contains(interface); }
 
     bool canWriteFormat(QString uid) const                                  { return this->_outputFormats.contains(uid); }
     bool canReadFormat(QString uid) const                                   { return this->_inputFormats.contains(uid); }
@@ -100,8 +103,9 @@ private:
     QUrl _licenseUrl;                               // If relative, ./ is the location of the extension definition XML file.
     Condition _condition;
     QString _basePath;
+    QStringList _interfaces;
     Version _apiVersion;
-    ApiInterface _apiInterface;
+    ApiInterface _apiInterfaceClass;
     QString _source;
     QList<Person> _audits;
 

@@ -20,6 +20,7 @@
 #include <QList>
 #include <QPointer>
 #include <QDomDocument>
+#include <QStringList>
 
 #include "main.h"
 #include "vhsxml/elementparser.h"

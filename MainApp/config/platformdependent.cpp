@@ -23,7 +23,7 @@ PlatformDependent::PlatformDependent()
 {
 }
 
-PlatformDependent *PlatformDependent::pointer()
+PlatformDependent *PlatformDependent::p()
 {
     if (s_instance == NULL)
         s_instance = new PlatformDependent;                               // alloc: Singleton object

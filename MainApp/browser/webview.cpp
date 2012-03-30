@@ -19,7 +19,7 @@
 WebView::WebView(QWidget *parent) :
     QWebView(parent)
 {
-    this->_configuration = Configuration::pointer()->getWebViewSettings();
+    this->_configuration = Configuration::p()->getWebViewSettings();
     this->_readConfiguration();
 }
 
@@ -41,7 +41,7 @@ void WebView::_setSetting(QString key, QVariant value)
     this->_readConfiguration();
 }
 
-void WebView::_writeConfiguration()                 { Configuration::pointer()->saveWebViewSettings(this->_configuration); }
+void WebView::_writeConfiguration()                 { Configuration::p()->saveWebViewSettings(this->_configuration); }
 void WebView::_readConfiguration()
 {
     this->settings()->setAttribute(QWebSettings::JavaEnabled, ! this->_setting("JavaDisabled").toBool());

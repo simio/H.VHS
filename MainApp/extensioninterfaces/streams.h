@@ -26,7 +26,7 @@
 /*  H.VHS QPlugin Extension Interface for QDataStreams, version 1.0
  *
  *  When the main application needs to call createStream(), it will create
- *  a new instance of the extension. This new instance will be put on the
+ *  a new instance of the extension. This new instance will be put on a
  *  pluginHook() calling list, meaning more than one instance of every
  *  stream-creating extension might be called for each hook. Avoid conflicts!
  */
@@ -40,6 +40,6 @@ public:
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceStreams,
-                    "org.huggpunkt.VHS.Streams/1.0")
+                    HVHS_STREAMS_INTERFACE)
 
 #endif // EXTENSIONINTERFACES_STREAMS_H

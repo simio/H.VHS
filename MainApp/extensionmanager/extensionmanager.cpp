@@ -34,27 +34,36 @@ ExtensionManager *ExtensionManager::pointer()
 
 void ExtensionManager::_initialise()
 {
-    QStringList locations;
-    locations << Configuration::pointer()->getStorageLocation(Configuration::SystemPresetsLocation).canonicalPath()
-              << Configuration::pointer()->getStorageLocation(Configuration::UserPresetsLocation).canonicalPath();
+    /*
+     *  Populate the first plugin hook ring with extensions
+     */
 
-    QDir base = Configuration::pointer()->getStorageLocation(Configuration::SystemExtensionsLocation);
-    foreach(QString folder, base.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
-        locations << base.canonicalPath() + "/" + folder;
-
-    base = Configuration::pointer()->getStorageLocation(Configuration::UserExtensionsLocation);
-    foreach(QString folder, base.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
-        locations << base.canonicalPath() + "/" + folder;
-
-    QFileInfoList files;
-    foreach (QString dir, locations)
-        files.append(QDir(dir).entryInfoList(QStringList("*.xml"), QDir::Files | QDir::Readable));
-
-    foreach (QFileInfo file, files)
+    QHash<QString,QPointer<Definition> > extensions = this->_definitions.getAll(Definition::ExtensionDefinitionType);
+    QHash<QString,QPointer<Definition> >::const_iterator i = extensions.begin();
+    while (i != extensions.end())
     {
-        // alloc: Has parent and is deleted here.
-        QPointer<VhsXml::DocumentReader> xml = new VhsXml::DocumentReader(QFile(file.canonicalFilePath()), this);
-        this->_definitions.update(xml->definitions(Definition::NoDefinitionType, &(this->_definitions)));
-        delete xml;
+        QPointer<ExtensionDefinition> extension = (ExtensionDefinition*)(Definition*)i.value();
+        if (extension->implementsInterface( HVHS_HOOKS_INTERFACE ) && ! this->_persistentExtensions.contains(extension->id()))
+        {
+            QList<QFileInfo> pluginFiles = Configuration::p()->extensionQPluginFiles(extension->id());
+            foreach(QFileInfo pluginFile, pluginFiles)
+            {
+                if (pluginFile.isReadable())
+                {
+                    QPluginLoader loader(pluginFile.canonicalFilePath());
+                    QPointer<QObject> plugin = loader.instance();
+                    if (plugin)
+                    {
+                        ExtensionInterfaceHooks * exIf = qobject_cast<ExtensionInterfaceHooks*>(plugin);
+                        if (exIf)
+                        {
+                            qDebug() << "Extension" << extension->name() << "loaded.";
+                            this->_persistentExtensions.insert(extension->id(), exIf);
+                        }
+                    }
+                }
+            }
+        }
+        i++;
     }
 }

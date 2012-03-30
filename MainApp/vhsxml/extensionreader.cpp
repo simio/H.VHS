@@ -64,9 +64,10 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     QUrl licenseUrl;                                // Optional
     bool enabled;                                   // Optional (set by application or extension repository)
     QString basePath;                               // Optional (set by application)
-    ExtensionDefinition::Condition condition;                 // Required
+    ExtensionDefinition::Condition condition;       // Required
+    QStringList interfaces;                         // Required
     Version apiVersion;                             // Required
-    ExtensionDefinition::ApiInterface apiInterface;           // Required
+    ExtensionDefinition::ApiInterface apiInterfaceClass;           // Required
     QString source;                                 // Source code for scripted extensions; optional
                                                     // (If source.isEmpty(), <basePath>/<id>.<apiInterface extension> will be used automatically.)
     QStringList inputTransports;                    // Required
@@ -189,19 +190,37 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     else
         return NULL;
 
-    //      <source version="xsd:NMTOKEN" interface=" ( "qtplugin" | "javascript" ) " />
-    // or   <source version="xsd:NMTOKEN" interface="javascript">xsd:string</source>
+    // <interfaces>
+    //     <interface>...</interface>
+    //     (...)
+    // </interface>
+    if (ElementParser::expect(e, "interfaces", ElementParser::Required))
+    {
+        interfaces = ElementParser::tokenList(e, "interface");
+        if (interfaces.count() < 1)
+        {
+            qDebug() << "ExtensionReader expected at least one interface, but got 0.";
+            qDebug() << "Discarding extension" << name;
+            return NULL;
+        }
+        e = e.nextSiblingElement();
+    }
+    else
+        return NULL;
+
+    //      <source version="xsd:NMTOKEN" interfaceClass=" ( "qtplugin" | "javascript" ) " />
+    // or   <source version="xsd:NMTOKEN" interfaceClass="javascript">xsd:string</source>
     if (ElementParser::expect(e, "source", ElementParser::Required))
     {
         apiVersion = Version(e.attribute("version", QString()));
-        QString str = e.attribute("interface").trimmed();
+        QString str = e.attribute("interfaceClass").trimmed();
         if (str == "qtplugin")
-            apiInterface = ExtensionDefinition::QtPlugin;
+            apiInterfaceClass = ExtensionDefinition::QtPlugin;
         else if (str == "javascript")
-            apiInterface = ExtensionDefinition::Javascript;
+            apiInterfaceClass = ExtensionDefinition::Javascript;
         else
         {
-            qDebug() << "ExtensionReader expected interface qtplugin or javascript, but got" << str;
+            qDebug() << "ExtensionReader expected interfaceClass qtplugin or javascript, but got" << str;
             qDebug() << "Discarding extension" << name;
             return NULL;
         }
@@ -279,9 +298,10 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         return NULL;
 
     // alloc: Has parent
-    QPointer<ExtensionDefinition> extension = new ExtensionDefinition(id, name, description, releaseDate, authors, licenseName, licenseUrl, enabled, condition,
-                                                  basePath, apiVersion, apiInterface, source, inputTransports, inputFormats,
-                                                  outputTransports, outputFormats, audits, extensionParent);
+    QPointer<ExtensionDefinition> extension = new ExtensionDefinition(id, name, description, releaseDate, authors, licenseName,
+                                                                      licenseUrl, enabled, condition, basePath, interfaces, apiVersion,
+                                                                      apiInterfaceClass, source, inputTransports, inputFormats,
+                                                                      outputTransports, outputFormats, audits, extensionParent);
     if (extension->isValid())
         return extension;
 

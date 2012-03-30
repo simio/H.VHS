@@ -17,17 +17,21 @@
 #ifndef EXTENSIONINTERFACES_DEFINES_H
 #define EXTENSIONINTERFACES_DEFINES_H
 
+#define HVHS_HOOKS_INTERFACE                    "org.huggpunkt.VHS.Hooks/1.0"
+#define HVHS_STREAMS_INTERFACE                  "org.huggpunkt.VHS.Streams/1.0"
+
 // Extension::pluginHook() hooks
-#define EXT_HOOK_AFTER_INIT_EXT             10
-#define EXT_HOOK_BEFORE_KILL_EXT            20
-#define EXT_HOOK_WEBVIEW_LOADSTARTED        30
-#define EXT_HOOK_WEBVIEW_LOADFINISHED       40
-#define EXT_HOOK_AFTER_APP_INITIALISED      50
+#define EXT_HOOK_INIT_EXTENSION_FIRST_CIRCLE    10
+#define EXT_HOOK_INIT_EXTENSION                 20
+#define EXT_HOOK_BEFORE_KILL_EXT                30
+#define EXT_HOOK_WEBVIEW_LOADSTARTED            40
+#define EXT_HOOK_WEBVIEW_LOADFINISHED           50
+#define EXT_HOOK_AFTER_APP_INITIALISED          60
 
 // Extension::pluginHook() return values (is NOOP or any combination of the other)
-#define EXT_RETVAL_NOOP                     0
-#define EXT_RETVAL_DONE                     1
-#define EXT_RETVAL_BLOCK                    2
-#define EXT_RETVAL_DATA_MODIFIED            4
+#define EXT_RETVAL_NOOP                         0
+#define EXT_RETVAL_DONE                         1
+#define EXT_RETVAL_BLOCK                        2
+#define EXT_RETVAL_DATA_MODIFIED                4
 
 #endif // EXTENSIONINTERFACES_DEFINES_H

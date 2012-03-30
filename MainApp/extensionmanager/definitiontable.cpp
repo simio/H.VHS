@@ -19,6 +19,35 @@
 DefinitionTable::DefinitionTable(QObject *parent) :
     QObject(parent)
 {
+    /*
+     *  Read all transport, format and extension definitions
+     *  and put them inte to the table.
+     */
+    QStringList locations;
+    locations << Configuration::p()->getStorageLocation(Configuration::SystemPresetsLocation).canonicalPath()
+              << Configuration::p()->getStorageLocation(Configuration::UserPresetsLocation).canonicalPath();
+
+    QDir base = Configuration::p()->getStorageLocation(Configuration::SystemExtensionsLocation);
+    foreach(QString folder, base.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+        locations << base.canonicalPath() + "/" + folder;
+
+    base = Configuration::p()->getStorageLocation(Configuration::UserExtensionsLocation);
+    foreach(QString folder, base.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+        locations << base.canonicalPath() + "/" + folder;
+
+    QFileInfoList files;
+    foreach (QString dir, locations)
+        files.append(QDir(dir).entryInfoList(QStringList("*.xml"), QDir::Files | QDir::Readable));
+
+    foreach (QFileInfo file, files)
+    {
+        // alloc: Has parent and is deleted here.
+        QPointer<VhsXml::DocumentReader> xml = new VhsXml::DocumentReader(file, this);
+        this->update(xml->definitions(Definition::NoDefinitionType, this));
+        delete xml;
+    }
+
+    qDebug() << "DefinitionTable constructed with" << this->_definitions.size() << "definition types";
 }
 
 int DefinitionTable::count(Definition::DefinitionType type) const

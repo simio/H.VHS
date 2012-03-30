@@ -27,15 +27,15 @@ ExtensionDefinition::ExtensionDefinition(
         bool enabled,
         ExtensionDefinition::Condition condition,
         QString basePath,
+        QStringList interfaces,
         Version apiVersion,
-        ApiInterface apiInterface,
+        ApiInterface apiInterfaceClass,
         QString source,
         QList<QString> inputTransports,
         QList<QString> inputFormats,
         QList<QString> outputTransports,
         QList<QString> outputFormats,
-        QList<Person> audits,
-        QObject *parent) :
+        QList<Person> audits, QObject *parent) :
     Definition(id, name, description, releaseDate, Definition::ExtensionDefinitionType, parent)
 {
     this->_authors = authors;
@@ -44,8 +44,9 @@ ExtensionDefinition::ExtensionDefinition(
     this->_enabled = enabled;
     this->_condition = condition;
     this->_basePath = basePath;
+    this->_interfaces = interfaces;
     this->_apiVersion = apiVersion;
-    this->_apiInterface = apiInterface;
+    this->_apiInterfaceClass = apiInterfaceClass;
     this->_source = source;
     this->_inputTransports = inputTransports;
     this->_inputFormats = inputFormats;

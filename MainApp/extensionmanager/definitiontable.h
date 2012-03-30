@@ -21,10 +21,15 @@
 #include <QPointer>
 #include <QString>
 #include <QHash>
+#include <QDir>
+#include <QFileInfo>
+#include <QFileInfoList>
 
 #include "main.h"
 
 #include "extensionmanager/definition.h"
+
+#include "vhsxml/documentreader.h"
 
 class DefinitionTable : public QObject
 {

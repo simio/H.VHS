@@ -39,7 +39,7 @@ class Configuration : public QObject
     Q_OBJECT
 public:
     explicit Configuration(QObject *parent = 0);
-    static Configuration *pointer();
+    static Configuration *p();
 
     void setWriteBlock(bool blocked);
     bool clearStorage();
@@ -77,6 +77,8 @@ public:
 
     // Filesystem things
     QDir getStorageLocation(StorageLocation type);
+
+    QList<QFileInfo> extensionQPluginFiles(QString id);
 
 public slots:
 

@@ -41,7 +41,7 @@ Configuration::Configuration(QObject *parent) :
 
     this->_writeBlock = false;
 
-    this->_settings = PlatformDependent::pointer()->makeSettings(this);
+    this->_settings = PlatformDependent::p()->makeSettings(this);
     this->_settings->setIniCodec("UTF-8");
 
     this->_publicAppTag = QString( PUBLIC_APP_TAG );
@@ -70,7 +70,7 @@ QString Configuration::locale(bool full)
     return ( full ? "sv" : "sv-se" );
 }
 
-Configuration *Configuration::pointer()
+Configuration *Configuration::p()
 {
     if (s_instance == NULL)
         s_instance = new Configuration;                                             // alloc: Singleton object
@@ -180,16 +180,16 @@ QDir Configuration::getStorageLocation(StorageLocation type)
         location = QDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
         break;
     case SystemExtensionsLocation:
-        location = QDir(PlatformDependent::pointer()->extensionsDir(PlatformDependent::System));
+        location = QDir(PlatformDependent::p()->extensionsDir(PlatformDependent::System));
         break;
     case UserExtensionsLocation:
-        location = QDir(PlatformDependent::pointer()->extensionsDir(PlatformDependent::User));
+        location = QDir(PlatformDependent::p()->extensionsDir(PlatformDependent::User));
         break;
     case SystemPresetsLocation:
-        location = QDir(PlatformDependent::pointer()->presetsDir(PlatformDependent::System));
+        location = QDir(PlatformDependent::p()->presetsDir(PlatformDependent::System));
         break;
     case UserPresetsLocation:
-        location = QDir(PlatformDependent::pointer()->presetsDir(PlatformDependent::User));
+        location = QDir(PlatformDependent::p()->presetsDir(PlatformDependent::User));
         break;
     default:
         return QDir();
@@ -199,6 +199,22 @@ QDir Configuration::getStorageLocation(StorageLocation type)
         return QDir();
 
     return location;
+}
+
+QList<QFileInfo> Configuration::extensionQPluginFiles(QString id)
+{
+    QHash<QString,QFileInfo> uniqueMap;
+    QDir base = PlatformDependent::p()->extensionsDir(PlatformDependent::System);
+    base.cd(id);
+    foreach(QFileInfo file, base.entryInfoList(QDir::Files | QDir::Readable))
+        uniqueMap.insert(file.fileName(), file);
+
+    base = PlatformDependent::p()->extensionsDir(PlatformDependent::User);
+    base.cd(id);
+    foreach(QFileInfo file, base.entryInfoList(QDir::Files | QDir::Readable))
+        uniqueMap.insert(file.fileName(), file);
+
+    return uniqueMap.values();
 }
 
 void Configuration::_setValue(const QString &key, const QVariant &value)

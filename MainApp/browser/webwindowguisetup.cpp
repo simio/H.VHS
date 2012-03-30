@@ -23,7 +23,7 @@ void WebWindow::_setupGui()
 
     // Create, configure and add webView
     this->_webView = new WebView(this);                                                             // alloc: Has parent
-    this->_webView->settings()->setIconDatabasePath(Configuration::pointer()->getStorageLocation(Configuration::FaviconStorageLocation).canonicalPath());
+    this->_webView->settings()->setIconDatabasePath(Configuration::p()->getStorageLocation(Configuration::FaviconStorageLocation).canonicalPath());
     ui->horizontalLayoutMiddle->addWidget(this->_webView);
 
     // Create, configure and add browser toolbar
@@ -118,10 +118,10 @@ void WebWindow::_setupGui()
     this->addAction(this->_actionFocusSearchBox);
 
     // Restore window state and geometry, or set default geometry if no previous settings exist
-    if (! Configuration::pointer()->getWindowState(Configuration::WebWindow).isEmpty())
-        this->restoreState(Configuration::pointer()->getWindowState(Configuration::WebWindow));
-    if (! Configuration::pointer()->getWindowGeometry(Configuration::WebWindow).isEmpty())
-        this->restoreGeometry(Configuration::pointer()->getWindowGeometry(Configuration::WebWindow));
+    if (! Configuration::p()->getWindowState(Configuration::WebWindow).isEmpty())
+        this->restoreState(Configuration::p()->getWindowState(Configuration::WebWindow));
+    if (! Configuration::p()->getWindowGeometry(Configuration::WebWindow).isEmpty())
+        this->restoreGeometry(Configuration::p()->getWindowGeometry(Configuration::WebWindow));
     else
     {
         int defaultWidth  = ((QApplication::desktop()->availableGeometry().width() >= 1024)  ? 1024 : QApplication::desktop()->availableGeometry().width());
@@ -173,7 +173,7 @@ void WebWindow::_setupGui()
     // INFO MENU
     // += About
     this->_actionAbout = new QAction(QIcon(":/icons/bitmapVideoCassette"),                              // alloc: Has parent
-                                     tr("&About") + QString(" ") + Configuration::pointer()->appName(true),
+                                     tr("&About") + QString(" ") + Configuration::p()->appName(true),
                                      this->_menuSettings);
     this->_menuInfo->addAction(this->_actionAbout);
 

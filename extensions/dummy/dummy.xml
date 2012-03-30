@@ -16,7 +16,10 @@
             <license href="http://www.isc.org/software/license">ISC License</license>
             <enabled>true</enabled>
             <condition>stable</condition>
-            <source version="1.0" interface="javascript"/>
+            <interfaces>
+                <interface>org.huggpunkt.VHS.Hooks/1.0</interface>
+            </interfaces>
+            <source version="1.0" interfaceClass="javascript" />
             <convertsFrom>
                 <format>notEmpty</format>
                 <transport>textstream</transport>

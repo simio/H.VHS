@@ -61,6 +61,9 @@ grammar {
             # <basePath> will be ignored if set by extension authors
             element basePath { xsd:string }?,
             element condition { "broken" | "unstable" | "stable" | "testing" }?,
+            element interfaces {
+                element interface { xsd:token }+
+            },
             source,
             element convertsFrom {
                 element transport { xsd:NMTOKEN }+,
@@ -105,13 +108,13 @@ grammar {
                     # if no source is included, an external source file will be
                     # loaded based on the extension id
                     # might later also accept: "swig", "cabi", "scheme"
-                    attribute interface { "qtplugin" | "javascript" },
+                    attribute interfaceClass { "qtplugin" | "javascript" },
                     empty
                 ) | (
                     # This group is used for scripted extensions where the
                     # source code is included in this file.
                     # <interface> later also accept "scheme"
-                    attribute interface { "javascript" },
+                    attribute interfaceClass { "javascript" },
                     # source code should be encoded as <![CDATA[ ... ]]>
                     xsd:string
                 )

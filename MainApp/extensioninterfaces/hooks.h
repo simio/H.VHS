@@ -26,9 +26,11 @@
 
 /*  H.VHS QPlugin Extension Interface for plugin hooks, version 1.0
  *
- *  The application will create exactly one instance of each extension at
- *  startup and put it on the pluginHook() calling list. The createStream()
- *  member of this instance will not be called.
+ *  The application will create exactly one instance of each extension
+ *  implementing this interface, which will be called for each plugin
+ *  hook. These instances are never accessed through any other plugin
+ *  interfaces.
+ *
  */
 
 class ExtensionInterfaceHooks
@@ -40,11 +42,15 @@ public:
     /* A suggestion to what priority this extension should have
      * when constructing the pluginHook calling list.
      *
+     *  0           means "Don't call me"                   (Use if hooks are only answered to while
+     *                                                       other interfaces are active.)
      *  1           means F1RST PLZ!                        (Use only if blocking all other extensions.)
      *  2           means I FIX BROKEN THINGS               (Use only if fixing broken things.)
-     *  0,3-9       are reserved for future use.            (Don't use them at all.)
+     *  3-9         are reserved for future use.            (Don't use them at all.)
      *
      *  100         Use this value if the extension doesn't care about ordering.
+     *
+     * Suggesting a hook priority of 0 might lead to the instance being deleted.
      *
      * The main application (and user) may and quite possibly will
      * change the call order to their own preferences.
@@ -64,6 +70,6 @@ public:
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceHooks,
-                    "org.huggpunkt.VHS.Hooks/1.0")
+                    HVHS_HOOKS_INTERFACE)
 
 #endif // EXTENSIONINTERFACES_HOOKS_H

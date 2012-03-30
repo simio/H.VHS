@@ -28,7 +28,7 @@ class PlatformDependent
 {
 public:
     PlatformDependent();
-    static PlatformDependent *pointer();
+    static PlatformDependent *p();
 
     enum Scope {
         User,

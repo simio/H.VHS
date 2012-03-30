@@ -21,7 +21,7 @@
 #define HVHS_STREAMS_INTERFACE                  "org.huggpunkt.VHS.Streams/1.0"
 
 // Extension::pluginHook() hooks
-#define EXT_HOOK_INIT_EXTENSION_FIRST_CIRCLE    10
+#define EXT_HOOK_INIT_EXTENSION_PERSISTENT      10
 #define EXT_HOOK_INIT_EXTENSION                 20
 #define EXT_HOOK_BEFORE_KILL_EXT                30
 #define EXT_HOOK_WEBVIEW_LOADSTARTED            40

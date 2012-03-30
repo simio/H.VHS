@@ -40,7 +40,7 @@
 #include <QObject>
 #include <QPointer>
 #include <QList>
-#include <QHash>
+#include <QMultiMap>
 #include <QDirIterator>
 #include <QDateTime>
 #include <QPluginLoader>
@@ -64,6 +64,10 @@ public:
     explicit ExtensionManager(QObject *parent = 0);
     static ExtensionManager *pointer();
 
+    // Run "hook" on all plugins with supplied hookData and return the number of non-NOOP responses.
+    int callHook(const qint64 hook, QMultiMap<QString, QVariant> &hookData);
+    int callHook(const qint64 hook);
+
 signals:
 
 public slots:
@@ -77,7 +81,7 @@ private:
 
     // These extensions are loaded at startup and kept for as long
     // as the ExtensionManager is around.
-    QHash<QString,ExtensionInterfaceHooks*> _persistentExtensions;
+    QMultiMap<qint64,ExtensionInterfaceHooks*> _persistentExtensions;
 };
 
 #endif // EXTENSIONMANAGER_EXTENSIONMANAGER_H

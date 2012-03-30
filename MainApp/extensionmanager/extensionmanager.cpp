@@ -32,6 +32,34 @@ ExtensionManager *ExtensionManager::pointer()
     return s_instance;
 }
 
+int ExtensionManager::callHook(const qint64 hook, QMultiMap<QString, QVariant> &hookData)
+{
+    int result = 0;
+
+    // values() returns in ascending order, so the iteration follows priority
+    foreach(ExtensionInterfaceHooks *exIf, this->_persistentExtensions.values())
+    {
+        switch (exIf->pluginHook(hook, hookData))
+        {
+        case EXT_RETVAL_NOOP:
+            break;
+        case EXT_RETVAL_BLOCK:
+            return ++result;
+        case EXT_RETVAL_DONE:
+        case EXT_RETVAL_DATA_MODIFIED:
+        default:
+            result++;
+        }
+    }
+    return result;
+}
+
+int ExtensionManager::callHook(const qint64 hook)
+{
+    QMultiMap<QString,QVariant> temp;
+    return this->callHook(hook, temp);
+}
+
 void ExtensionManager::_initialise()
 {
     /*
@@ -43,7 +71,8 @@ void ExtensionManager::_initialise()
     while (i != extensions.end())
     {
         QPointer<ExtensionDefinition> extension = (ExtensionDefinition*)(Definition*)i.value();
-        if (extension->implementsInterface( HVHS_HOOKS_INTERFACE ) && ! this->_persistentExtensions.contains(extension->id()))
+        if (extension->implementsInterface( HVHS_HOOKS_INTERFACE )
+                && extension->isEnabled())
         {
             QList<QFileInfo> pluginFiles = Configuration::p()->extensionQPluginFiles(extension->id());
             foreach(QFileInfo pluginFile, pluginFiles)
@@ -54,11 +83,16 @@ void ExtensionManager::_initialise()
                     QPointer<QObject> plugin = loader.instance();
                     if (plugin)
                     {
-                        ExtensionInterfaceHooks * exIf = qobject_cast<ExtensionInterfaceHooks*>(plugin);
+                        ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(plugin);
                         if (exIf)
                         {
                             qDebug() << "Extension" << extension->name() << "loaded.";
-                            this->_persistentExtensions.insert(extension->id(), exIf);
+                            if (exIf->suggestedHookPriority())
+                            {
+                                QMultiMap<QString,QVariant> temp;
+                                exIf->pluginHook(EXT_HOOK_INIT_EXTENSION_PERSISTENT, temp);
+                                this->_persistentExtensions.insert(exIf->suggestedHookPriority(), exIf);
+                            }
                         }
                     }
                 }

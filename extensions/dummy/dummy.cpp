@@ -26,9 +26,9 @@ qint64 DummyExtension::suggestedHookPriority() const
     return 100;
 }
 
-qint64 DummyExtension::pluginHook(const qint64 hook, QHash<QString, QVariant> &hookData)
+qint64 DummyExtension::pluginHook(const qint64 hook, QMultiMap<QString, QVariant> &hookData)
 {
-    if (hook == EXT_HOOK_AFTER_APP_INITIALISED)
+    if (hook == EXT_HOOK_INIT_EXTENSION_PERSISTENT)
     {
         std::cout << "Hej!";
         return EXT_RETVAL_DONE;

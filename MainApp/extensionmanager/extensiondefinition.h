@@ -47,7 +47,7 @@ public:
 
     enum ApiInterface {
         Javascript,
-        Qt
+        QtPlugin
     };
 
     // Nice

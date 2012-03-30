@@ -115,9 +115,3 @@ OTHER_FILES += \
 
 RESOURCES += \
     vhs.qrc
-
-#win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../extensions/dummy/release/ -ldummy1
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../extensions/dummy/debug/ -ldummy1
-#else:unix:!symbian: LIBS += -L$$OUT_PWD/../extensions/dummy/ -ldummy
-#INCLUDEPATH += $$PWD/../extensions/dummy
-#DEPENDPATH += $$PWD/../extensions/dummy

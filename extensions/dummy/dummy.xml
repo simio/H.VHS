@@ -19,7 +19,7 @@
             <interfaces>
                 <interface>org.huggpunkt.VHS.Hooks/1.0</interface>
             </interfaces>
-            <source apiVersion="1.0" api="javascript" />
+            <source apiVersion="1.0" api="qtplugin" />
             <convertsFrom>
                 <format>notEmpty</format>
                 <transport>textstream</transport>

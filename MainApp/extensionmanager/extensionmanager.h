@@ -54,6 +54,8 @@
 #include "extensionmanager/definitions/transportdefinition.h"
 #include "extensionmanager/definitions/extensiondefinition.h"
 #include "extensionmanager/definitiontable.h"
+#include "extensionmanager/extension/qtpluginextension.h"
+#include "extensionmanager/extension/javascriptextension.h"
 
 #include "vhsxml/documentreader.h"
 
@@ -81,7 +83,9 @@ private:
 
     // These extensions are loaded at startup and kept for as long
     // as the ExtensionManager is around.
-    QMultiMap<qint64,ExtensionInterfaceHooks*> _persistentExtensions;
+    QMultiMap<qint64,QPointer<Extension> > _persistentExtensions;
+
+    QPointer<Extension> loadExtension(QPointer<ExtensionDefinition> definition);
 };
 
 #endif // EXTENSIONMANAGER_EXTENSIONMANAGER_H

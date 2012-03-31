@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSION_H
-#define EXTENSION_H
+#ifndef EXTENSIONDEFINITION_H
+#define EXTENSIONDEFINITION_H
 
 #include <QObject>
 #include <QString>
@@ -76,7 +76,9 @@ public:
     bool isEnabled() const                                                  { return this->_enabled; }
     bool isValid() const;
     bool implementsInterface(QString interface) const                       { return this->_interfaces.contains(interface); }
+    QStringList interfaces() const                                          { return this->_interfaces; }
     ApiInterface api() const                                                { return this->_api; }
+    Version apiVersion() const                                              { return this->_apiVersion; }
 
     bool canWriteFormat(QString uid) const                                  { return this->_outputFormats.contains(uid); }
     bool canReadFormat(QString uid) const                                   { return this->_inputFormats.contains(uid); }
@@ -113,4 +115,4 @@ private:
     QStringList _outputFormats;
 };
 
-#endif // EXTENSION_H
+#endif // EXTENSIONDEFINITION_H

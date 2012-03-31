@@ -37,9 +37,9 @@ int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
     int result = 0;
 
     // values() returns in ascending order, so the iteration follows priority
-    foreach(ExtensionInterfaceHooks *exIf, this->_persistentExtensions.values())
+    foreach(QPointer<Extension> extension, this->_persistentExtensions.values())
     {
-        switch (exIf->pluginHook(hook, hookData))
+        switch (extension->pluginHook(hook, hookData))
         {
         case EXT_RETVAL_NOOP:
             break;
@@ -70,33 +70,49 @@ void ExtensionManager::_initialise()
     QHash<QString,QPointer<Definition> >::const_iterator i = extensions.begin();
     while (i != extensions.end())
     {
-        QPointer<ExtensionDefinition> extension = (ExtensionDefinition*)(Definition*)i.value();
-        if (extension->implementsInterface( HVHS_HOOKS_INTERFACE )
-                && extension->isEnabled())
+        QPointer<ExtensionDefinition> definition = (ExtensionDefinition*)(Definition*)i.value();
+        if (definition->implementsInterface( HVHS_INTERFACE_HOOKS )
+                && definition->isEnabled())
         {
-            QFileInfo pluginFile = Configuration::p()->extensionRootFile(extension->id(), extension->apiVersion());
-            if (pluginFile.isReadable())
+            QPointer<Extension> extension = this->loadExtension(definition);
+            if (extension && extension->implementsInterface( HVHS_INTERFACE_HOOKS ))
             {
-                QPluginLoader loader(pluginFile.canonicalFilePath());
-                QPointer<QObject> plugin = loader.instance();
-                if (plugin)
-                {
-                    ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(plugin);
-                    if (exIf)
-                    {
-                        qDebug() << "Extension" << extension->name() << "loaded.";
-                        if (exIf->suggestedHookPriority())
-                        {
-                            QVariant temp;
-                            exIf->pluginHook(EXT_HOOK_INIT_EXTENSION_PERSISTENT, temp);
-                            this->_persistentExtensions.insert(exIf->suggestedHookPriority(), exIf);
-                        }
-                        else
-                            loader.unload();
-                    }
-                }
+                qDebug() << "Extension" << definition->name() << "loaded to persistent circle.";
+                qint64 priority = extension->suggestedHookPriority();
+                if (priority == EXT_NO_HOOK_PRIORITY_SUGGESTION)
+                    priority = 1000;
+                this->_persistentExtensions.insert(priority, extension);
+                extension->pluginHook(EXT_HOOK_INIT_EXTENSION_PERSISTENT);
             }
         }
         i++;
+    }
+    qDebug() << this->_persistentExtensions;
+}
+
+// Load an extension and return a pointer to it (or NULL). Checking which
+// interfaces are supported, or if the extension is enabled,
+// is not done here.
+QPointer<Extension> ExtensionManager::loadExtension(QPointer<ExtensionDefinition> definition)
+{
+    QtPluginExtension * qtplugin;
+    if (definition->api() == ExtensionDefinition::QtPlugin)
+        qtplugin = new QtPluginExtension(definition, this);                      // alloc: Has parent
+    else
+    {
+        qDebug() << "Unimplemented extension api:" << definition->api() << "for extension" << definition->id();
+        return NULL;
+    }
+
+    if (qtplugin->isValid())
+    {
+        QPointer<Extension> extension;
+        extension = qobject_cast<Extension*>((QtPluginExtension*)qtplugin);
+        return extension;
+    }
+    else
+    {
+        delete qtplugin;
+        return NULL;
     }
 }

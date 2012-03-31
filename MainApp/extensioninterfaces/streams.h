@@ -40,6 +40,6 @@ public:
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceStreams,
-                    HVHS_STREAMS_INTERFACE)
+                    HVHS_INTERFACE_STREAMS)
 
 #endif // EXTENSIONINTERFACES_STREAMS_H

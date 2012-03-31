@@ -17,8 +17,12 @@
 #ifndef EXTENSIONINTERFACES_DEFINES_H
 #define EXTENSIONINTERFACES_DEFINES_H
 
-#define HVHS_HOOKS_INTERFACE                    "org.huggpunkt.VHS.Hooks/1.0"
-#define HVHS_STREAMS_INTERFACE                  "org.huggpunkt.VHS.Streams/1.0"
+#define EXT_INTERFACE_NOT_SUPPORTED            -1
+#define HVHS_INTERFACE_HOOKS                    "org.huggpunkt.VHS.Hooks/1.0"
+#define HVHS_INTERFACE_STREAMS                  "org.huggpunkt.VHS.Streams/1.0"
+
+// Extension::suggestHookPriority()
+#define EXT_NO_HOOK_PRIORITY_SUGGESTION        -1
 
 // Extension::pluginHook() hooks
 #define EXT_HOOK_INIT_EXTENSION_PERSISTENT      10

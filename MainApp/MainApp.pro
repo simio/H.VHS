@@ -71,7 +71,9 @@ SOURCES += \
     extensionmanager/definitions/definition.cpp \
     extensionmanager/definitions/extensiondefinition.cpp \
     extensionmanager/definitions/formatdefinition.cpp \
-    extensionmanager/definitions/transportdefinition.cpp
+    extensionmanager/definitions/transportdefinition.cpp \
+    extensionmanager/extension/javascriptextension.cpp \
+    extensionmanager/extension/qtpluginextension.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -100,7 +102,10 @@ HEADERS  += \
     extensionmanager/definitions/definition.h \
     extensionmanager/definitions/extensiondefinition.h \
     extensionmanager/definitions/formatdefinition.h \
-    extensionmanager/definitions/transportdefinition.h
+    extensionmanager/definitions/transportdefinition.h \
+    extensionmanager/extension/javascriptextension.h \
+    extensionmanager/extension/extension.h \
+    extensionmanager/extension/qtpluginextension.h
 
 FORMS    += \
     webwindow.ui \

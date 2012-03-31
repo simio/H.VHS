@@ -30,12 +30,12 @@ qint64 DummyExtension::pluginHook(const qint64 hook, QVariant &hookData)
 {
     if (hook == EXT_HOOK_INIT_EXTENSION_PERSISTENT)
     {
-        std::cout << "Hej!";
+        std::cout << "Dummy: Hej!\n";
         return EXT_RETVAL_DONE;
     }
     else if (hook == EXT_HOOK_AFTER_APP_INITIALISED)
     {
-        std::cout << "Äntligen!";
+        std::cout << "Dummy: Äntligen!\n";
         return EXT_RETVAL_DONE;
     }
 

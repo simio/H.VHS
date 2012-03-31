@@ -16,7 +16,7 @@
 
 #include "localfile.h"
 
-Extension::Extension(QObject *parent) :
+LocalFile::LocalFile(QObject *parent) :
     QObject(parent)
 {
 }

@@ -14,21 +14,21 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSION_H
-#define EXTENSION_H
+#ifndef LOCALFILE_H
+#define LOCALFILE_H
 
 #include <QObject>
 
-class Extension : public QObject
+class LocalFile : public QObject
 {
     Q_OBJECT
 public:
-    explicit Extension(QObject *parent = 0);
-    
+    explicit LocalFile(QObject *parent = 0);
+
 signals:
-    
+
 public slots:
-    
+
 };
 
-#endif // EXTENSION_H
+#endif // LOCALFILE_H

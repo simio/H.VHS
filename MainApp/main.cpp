@@ -17,7 +17,6 @@
 #include <QtGui/QApplication>
 #include <QTranslator>
 
-#undef HVHS_EXTENSION_BUILD
 #include "main.h"
 
 #include "webwindow.h"

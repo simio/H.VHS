@@ -14,38 +14,11 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef DUMMY_H
-#define DUMMY_H
+#include "javascriptextension.h"
 
-#include <iostream>
-
-#include <QtGui/QtGui>
-#include <QObject>
-#include <QHash>
-#include <QString>
-#include <QVariant>
-
-// This crap works around a display bug in Qt Creator,
-// where it thinks define here is defined in other projects.
-#ifndef HVHS_EXTENSION_BUILD
-#   define HVHS_EXTENSION_BUILD
-#endif
-#include "../../MainApp/extensioninterfaces/hooks.h"
-#undef HVHS_EXTENSION_BUILD
-
-class DummyExtension : public QObject, ExtensionInterfaceHooks
+/*
+JavaScriptExtension::JavaScriptExtension(ExtensionDefinition definition, QObject *parent) :
+    Extension(parent)
 {
-    Q_OBJECT
-    Q_INTERFACES(ExtensionInterfaceHooks)
-
-public:
-    explicit DummyExtension(QObject *parent = 0);
-
-    qint64 suggestedHookPriority() const;
-    qint64 pluginHook(const qint64 hook, QVariant &hookData);
-
-private:
-
-};
-
-#endif // DUMMY_H
+}
+*/

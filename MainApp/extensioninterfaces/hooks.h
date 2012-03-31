@@ -40,15 +40,24 @@ public:
     virtual ~ExtensionInterfaceHooks() {}
 
     /* A suggestion to what priority this extension should have
-     * when constructing the pluginHook calling list.
+     * when ordering a pluginHook calling list.
      *
-     *  0           means "Don't call me"                   (Use if hooks are only answered to while
-     *                                                       other interfaces are active.)
-     *  1           means F1RST PLZ!                        (Use only if blocking all other extensions.)
-     *  2           means I FIX BROKEN THINGS               (Use only if fixing broken things.)
-     *  3-9         are reserved for future use.            (Don't use them at all.)
+     *  0           SPECIAL: Suggesting 0 as a priority means the extension
+     *              isn't interested in answering hook calls at this time,
+     *              and doesn't want to be on this particular calling list.
      *
-     *  100         Use this value if the extension doesn't care about ordering.
+     *  1           For blockers. The extension wants to be called first. Use
+     *              iff the extension's purpose is to block one or more hooks
+     *              from ever reaching any other extensions.
+     *
+     *  2           For hotfixes. Use iff this extension fixes stuff that
+     *              other extensions might need fixed.
+     *
+     *  3-9         reserved (don't use them)
+     *
+     *  EXT_NO_HOOK_PRIORITY_SUGGESTION
+     *              Use this predefined value if call ordering doesn't matter
+     *              to this extension.
      *
      * Suggesting a hook priority of 0 might lead to the instance being deleted.
      *
@@ -70,6 +79,6 @@ public:
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceHooks,
-                    HVHS_HOOKS_INTERFACE)
+                    HVHS_INTERFACE_HOOKS)
 
 #endif // EXTENSIONINTERFACES_HOOKS_H

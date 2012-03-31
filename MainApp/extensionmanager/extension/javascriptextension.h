@@ -14,38 +14,27 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef DUMMY_H
-#define DUMMY_H
+#ifndef JAVASCRIPTWRAPPER_H
+#define JAVASCRIPTWRAPPER_H
 
-#include <iostream>
-
-#include <QtGui/QtGui>
 #include <QObject>
-#include <QHash>
-#include <QString>
-#include <QVariant>
 
-// This crap works around a display bug in Qt Creator,
-// where it thinks define here is defined in other projects.
-#ifndef HVHS_EXTENSION_BUILD
-#   define HVHS_EXTENSION_BUILD
-#endif
-#include "../../MainApp/extensioninterfaces/hooks.h"
-#undef HVHS_EXTENSION_BUILD
+#include "main.h"
 
-class DummyExtension : public QObject, ExtensionInterfaceHooks
+#include "extensionmanager/definitions/extensiondefinition.h"
+#include "extensionmanager/extension/extension.h"
+
+/*
+class JavaScriptExtension : public Extension
 {
-    Q_OBJECT
-    Q_INTERFACES(ExtensionInterfaceHooks)
-
 public:
-    explicit DummyExtension(QObject *parent = 0);
+    explicit JavaScriptExtension(ExtensionDefinition definition, QObject *parent = 0);
 
-    qint64 suggestedHookPriority() const;
-    qint64 pluginHook(const qint64 hook, QVariant &hookData);
+signals:
 
-private:
+public slots:
 
 };
+*/
 
-#endif // DUMMY_H
+#endif // JAVASCRIPTWRAPPER_H

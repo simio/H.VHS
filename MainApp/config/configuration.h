@@ -78,7 +78,7 @@ public:
     // Filesystem things
     QDir getStorageLocation(StorageLocation type);
 
-    QList<QFileInfo> extensionQPluginFiles(QString id);
+    QFileInfo extensionRootFile(QString id, Version apiVersion);
 
 public slots:
 

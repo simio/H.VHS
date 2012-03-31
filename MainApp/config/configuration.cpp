@@ -201,20 +201,37 @@ QDir Configuration::getStorageLocation(StorageLocation type)
     return location;
 }
 
-QList<QFileInfo> Configuration::extensionQPluginFiles(QString id)
+/*  Return the first file matching the pattern "extensions/<id>/<id><extension-apiversion-mejor>.*".
+ *  For the "dummy" extension using API version 1.2, this means "extensions/dummy/dummy1.*".
+ *  In other words: Extensions must provide exactly one file matching this pattern, and
+ *  that file must contain root class/function of the extension.
+ *
+ *  Scripted extensions with the root class inlined in the XML file are not affected by this restriction.
+ *
+ *  Returns QFileInfo() if no such file was found.
+ */
+QFileInfo Configuration::extensionRootFile(QString id, Version apiVersion)
 {
-    QHash<QString,QFileInfo> uniqueMap;
-    QDir base = PlatformDependent::p()->extensionsDir(PlatformDependent::System);
-    base.cd(id);
-    foreach(QFileInfo file, base.entryInfoList(QDir::Files | QDir::Readable))
-        uniqueMap.insert(file.fileName(), file);
+    QFileInfoList candidateFiles;
+    QString pattern = id + QString::number(apiVersion.major()) + ".*";
 
-    base = PlatformDependent::p()->extensionsDir(PlatformDependent::User);
+    // Check the user extension repository first.
+    QDir base = PlatformDependent::p()->extensionsDir(PlatformDependent::User);
     base.cd(id);
-    foreach(QFileInfo file, base.entryInfoList(QDir::Files | QDir::Readable))
-        uniqueMap.insert(file.fileName(), file);
+    candidateFiles = base.entryInfoList(QStringList(pattern), QDir::Files | QDir::Readable);
 
-    return uniqueMap.values();
+    // If there were no such files in the user extension repository, check the system repository.
+    if (candidateFiles.isEmpty())
+    {
+        base = PlatformDependent::p()->extensionsDir(PlatformDependent::System);
+        base.cd(id);
+        candidateFiles = base.entryInfoList(QStringList(pattern), QDir::Files | QDir::Readable);
+    }
+
+    if (candidateFiles.isEmpty())
+        return QFileInfo();
+    else
+        return candidateFiles.first();
 }
 
 void Configuration::_setValue(const QString &key, const QVariant &value)

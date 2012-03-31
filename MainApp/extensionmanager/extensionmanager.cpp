@@ -74,28 +74,25 @@ void ExtensionManager::_initialise()
         if (extension->implementsInterface( HVHS_HOOKS_INTERFACE )
                 && extension->isEnabled())
         {
-            QList<QFileInfo> pluginFiles = Configuration::p()->extensionQPluginFiles(extension->id());
-            foreach(QFileInfo pluginFile, pluginFiles)
+            QFileInfo pluginFile = Configuration::p()->extensionRootFile(extension->id(), extension->apiVersion());
+            if (pluginFile.isReadable())
             {
-                if (pluginFile.isReadable())
+                QPluginLoader loader(pluginFile.canonicalFilePath());
+                QPointer<QObject> plugin = loader.instance();
+                if (plugin)
                 {
-                    QPluginLoader loader(pluginFile.canonicalFilePath());
-                    QPointer<QObject> plugin = loader.instance();
-                    if (plugin)
+                    ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(plugin);
+                    if (exIf)
                     {
-                        ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(plugin);
-                        if (exIf)
+                        qDebug() << "Extension" << extension->name() << "loaded.";
+                        if (exIf->suggestedHookPriority())
                         {
-                            qDebug() << "Extension" << extension->name() << "loaded.";
-                            if (exIf->suggestedHookPriority())
-                            {
-                                QVariant temp;
-                                exIf->pluginHook(EXT_HOOK_INIT_EXTENSION_PERSISTENT, temp);
-                                this->_persistentExtensions.insert(exIf->suggestedHookPriority(), exIf);
-                            }
-                            else
-                                loader.unload();
+                            QVariant temp;
+                            exIf->pluginHook(EXT_HOOK_INIT_EXTENSION_PERSISTENT, temp);
+                            this->_persistentExtensions.insert(exIf->suggestedHookPriority(), exIf);
                         }
+                        else
+                            loader.unload();
                     }
                 }
             }

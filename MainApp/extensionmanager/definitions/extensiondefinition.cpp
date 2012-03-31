@@ -29,7 +29,7 @@ ExtensionDefinition::ExtensionDefinition(
         QString basePath,
         QStringList interfaces,
         Version apiVersion,
-        ApiInterface apiInterfaceClass,
+        ApiInterface api,
         QString source,
         QList<QString> inputTransports,
         QList<QString> inputFormats,
@@ -46,7 +46,7 @@ ExtensionDefinition::ExtensionDefinition(
     this->_basePath = basePath;
     this->_interfaces = interfaces;
     this->_apiVersion = apiVersion;
-    this->_apiInterfaceClass = apiInterfaceClass;
+    this->_api = api;
     this->_source = source;
     this->_inputTransports = inputTransports;
     this->_inputFormats = inputFormats;

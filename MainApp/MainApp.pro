@@ -53,25 +53,25 @@ SOURCES += \
     vhsxml/formatreader.cpp \
     vhsxml/cassettereader.cpp \
     vhsxml/extensionreader.cpp \
-    extensionmanager/formatdefinition.cpp \
-    extensionmanager/transportdefinition.cpp \
     browser/webbrowsercombobox.cpp \
     browser/webview.cpp \
     browser/webwindowguisetup.cpp \
     webwindow.cpp \
     config/configuration.cpp \
     config/messagehandler.cpp \
-    extensionmanager/definition.cpp \
     extensionmanager/definitiontable.cpp \
     vhsxml/documentreader.cpp \
     vhsxml/elementparser.cpp \
     config/appwideclasses.cpp \
-    extensionmanager/extensiondefinition.cpp \
     cassette.cpp \
     hurl.cpp \
     cassettecontent.cpp \
     config/platformdependent.cpp \
-    extensionmanager/extensionmanager.cpp
+    extensionmanager/extensionmanager.cpp \
+    extensionmanager/definitions/definition.cpp \
+    extensionmanager/definitions/extensiondefinition.cpp \
+    extensionmanager/definitions/formatdefinition.cpp \
+    extensionmanager/definitions/transportdefinition.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -81,14 +81,10 @@ HEADERS  += \
     vhsxml/formatreader.h \
     vhsxml/cassettereader.h \
     vhsxml/extensionreader.h \
-    extensionmanager/extensiondefinition.h \
-    extensionmanager/formatdefinition.h \
-    extensionmanager/transportdefinition.h \
     browser/webbrowsercombobox.h \
     browser/webview.h \
     config/configuration.h \
     config/messagehandler.h \
-    extensionmanager/definition.h \
     extensionmanager/definitiontable.h \
     vhsxml/documentreader.h \
     vhsxml/elementparser.h \
@@ -100,7 +96,11 @@ HEADERS  += \
     extensioninterfaces/hooks.h \
     extensioninterfaces/streams.h \
     extensioninterfaces/defines.h \
-    extensionmanager/extensionmanager.h
+    extensionmanager/extensionmanager.h \
+    extensionmanager/definitions/definition.h \
+    extensionmanager/definitions/extensiondefinition.h \
+    extensionmanager/definitions/formatdefinition.h \
+    extensionmanager/definitions/transportdefinition.h
 
 FORMS    += \
     webwindow.ui \

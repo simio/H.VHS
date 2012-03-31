@@ -208,16 +208,16 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     else
         return NULL;
 
-    //      <source version="xsd:NMTOKEN" interfaceClass=" ( "qtplugin" | "javascript" ) " />
-    // or   <source version="xsd:NMTOKEN" interfaceClass="javascript">xsd:string</source>
+    //      <source apiVersion="xsd:NMTOKEN" api=" ( "qtplugin" | "javascript" ) " />
+    // or   <source apiVersion="xsd:NMTOKEN" api="javascript">xsd:string</source>
     if (ElementParser::expect(e, "source", ElementParser::Required))
     {
-        apiVersion = Version(e.attribute("version", QString()));
-        QString str = e.attribute("interfaceClass").trimmed();
+        apiVersion = Version(e.attribute("apiVersion", QString()));
+        QString str = e.attribute("api").trimmed();
         if (str == "qtplugin")
             apiInterfaceClass = ExtensionDefinition::QtPlugin;
         else if (str == "javascript")
-            apiInterfaceClass = ExtensionDefinition::Javascript;
+            apiInterfaceClass = ExtensionDefinition::JavaScript;
         else
         {
             qDebug() << "ExtensionReader expected interfaceClass qtplugin or javascript, but got" << str;

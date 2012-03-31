@@ -102,7 +102,7 @@ grammar {
         element source {
             # Which version of the API is used. Backwards compatibility
             # is managed by the application.
-            attribute version { xsd:NMTOKEN },
+            attribute apiVersion { xsd:NMTOKEN },
             # This group is used for binary extensions and scripted
             # extensions where the source code is not included in this file.
             (
@@ -110,13 +110,13 @@ grammar {
                     # if no source is included, an external source file will be
                     # loaded based on the extension id
                     # might later also accept: "swig", "cabi", "scheme"
-                    attribute interfaceClass { "qtplugin" | "javascript" },
+                    attribute api { "qtplugin" | "javascript" },
                     empty
                 ) | (
                     # This group is used for scripted extensions where the
                     # source code is included in this file.
                     # <interface> later also accept "scheme"
-                    attribute interfaceClass { "javascript" },
+                    attribute api { "javascript" },
                     # source code should be encoded as <![CDATA[ ... ]]>
                     xsd:string
                 )

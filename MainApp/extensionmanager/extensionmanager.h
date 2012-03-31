@@ -49,10 +49,10 @@
 
 #include "extensioninterfaces/hooks.h"
 
-#include "extensionmanager/definition.h"
-#include "extensionmanager/formatdefinition.h"
-#include "extensionmanager/transportdefinition.h"
-#include "extensionmanager/extensiondefinition.h"
+#include "extensionmanager/definitions/definition.h"
+#include "extensionmanager/definitions/formatdefinition.h"
+#include "extensionmanager/definitions/transportdefinition.h"
+#include "extensionmanager/definitions/extensiondefinition.h"
 #include "extensionmanager/definitiontable.h"
 
 #include "vhsxml/documentreader.h"

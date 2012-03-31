@@ -47,7 +47,7 @@ public:
     };
 
     enum ApiInterface {
-        Javascript,
+        JavaScript,
         QtPlugin
     };
 
@@ -64,7 +64,7 @@ public:
                         QString basePath,
                         QStringList interfaces,
                         Version apiVersion,
-                        ApiInterface apiInterfaceClass,
+                        ApiInterface api,
                         QString source,
                         QList<QString> inputTransports,
                         QList<QString> inputFormats,
@@ -76,6 +76,7 @@ public:
     bool isEnabled() const                                                  { return this->_enabled; }
     bool isValid() const;
     bool implementsInterface(QString interface) const                       { return this->_interfaces.contains(interface); }
+    ApiInterface api() const                                                { return this->_api; }
 
     bool canWriteFormat(QString uid) const                                  { return this->_outputFormats.contains(uid); }
     bool canReadFormat(QString uid) const                                   { return this->_inputFormats.contains(uid); }
@@ -102,7 +103,7 @@ private:
     QString _basePath;
     QStringList _interfaces;
     Version _apiVersion;
-    ApiInterface _apiInterfaceClass;
+    ApiInterface _api;
     QString _source;
     QList<Person> _audits;
 

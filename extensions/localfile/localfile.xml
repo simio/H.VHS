@@ -20,7 +20,7 @@
             <interface>
                 <interface>org.Huggpunkt.VHS.Streams/1.0</interface>
             </interface>
-            <source version="1.0" interfaceClass="javascript"/>
+            <source apiVersion="1.0" api="qtplugin" />
             <convertsFrom>
                 <format>notEmpty</format>
                 <transport>localfile</transport>

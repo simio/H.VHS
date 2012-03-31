@@ -220,7 +220,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
             apiInterfaceClass = ExtensionDefinition::JavaScript;
         else
         {
-            qDebug() << "ExtensionReader expected interfaceClass qtplugin or javascript, but got" << str;
+            qDebug() << "ExtensionReader expected api qtplugin or javascript, but got" << str;
             qDebug() << "Discarding extension" << name;
             return NULL;
         }

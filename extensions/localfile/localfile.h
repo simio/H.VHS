@@ -17,6 +17,8 @@
 #ifndef LOCALFILE_H
 #define LOCALFILE_H
 
+#define HVHS_EXTENSION
+
 #include <QObject>
 
 class LocalFile : public QObject

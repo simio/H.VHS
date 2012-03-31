@@ -20,11 +20,11 @@
 #include "config/appwideclasses.h"
 #include "extensionmanager/interfaces/defines.h"
 
-#ifndef HVHS_EXTENSION_BUILD
+#ifndef HVHS_EXTENSION
 
 #include "config/configuration.h"
 #include "config/messagehandler.h"
 
-#endif // HVHS_EXTENSION_BUILD
+#endif // HVHS_EXTENSION
 
 #endif // MAIN_H

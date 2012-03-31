@@ -17,7 +17,7 @@
 #ifndef DUMMY_H
 #define DUMMY_H
 
-#define HVHS_EXTENSION_BUILD
+#define HVHS_EXTENSION
 
 #include <iostream>
 

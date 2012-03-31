@@ -42,8 +42,8 @@
             </mimeTypes>
         </formatDefinition>
         <formatDefinition>
-            <id releaseDate="2012-03-15T10:57:24">vhsexpr</id>
-            <name xml:lang="en">VhsExpr</name>
+            <id releaseDate="2012-03-15T10:57:24">vhs-expr</id>
+            <name xml:lang="en">vhs-expr</name>
             <completeness>metaOnly</completeness>
             <isText>true</isText>
             <mimeTypes>
@@ -51,8 +51,8 @@
             </mimeTypes>
         </formatDefinition>
         <formatDefinition>
-            <id releaseDate="2012-03-15T10:57:24">vhsexpr</id>
-            <name xml:lang="en">Vhscript</name>
+            <id releaseDate="2012-03-15T10:57:24">vhscript</id>
+            <name xml:lang="en">vhscript</name>
             <completeness>metaOnly</completeness>
             <isText>true</isText>
             <mimeTypes>

@@ -21,7 +21,7 @@
 #include <QDataStream>
 
 #include "defines.h"
-#include "../cassette.h"
+#include "cassette.h"
 
 /*  H.VHS QPlugin Extension Interface for QDataStreams, version 1.0
  *

@@ -24,9 +24,9 @@
 #include "main.h"
 
 #include "cassette.h"
-#include "extensioninterfaces/defines.h"
-#include "extensioninterfaces/hooks.h"
-#include "extensioninterfaces/streams.h"
+#include "extensionmanager/interfaces/defines.h"
+#include "extensionmanager/interfaces/hooks.h"
+#include "extensionmanager/interfaces/streams.h"
 
 class Extension : public QObject
 {

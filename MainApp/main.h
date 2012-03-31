@@ -18,7 +18,7 @@
 #define MAIN_H
 
 #include "config/appwideclasses.h"
-#include "extensioninterfaces/defines.h"
+#include "extensionmanager/interfaces/defines.h"
 
 #ifndef HVHS_EXTENSION_BUILD
 

@@ -3,7 +3,8 @@ HVHS_EXTENSION_VERSION = 1
 HVHS_EXTENSION_TEMPLATE = lib
 HVHS_EXTENSION_QT = core
 
-INCLUDEPATH    += ../../MainApp/extensioninterfaces
+INCLUDEPATH    += ../../MainApp/extensionmanager/interfaces
+INCLUDEPATH    += ../../MainApp
 CONFIG         += plugin
 TARGET          = $$qtLibraryTarget(dummy)
 

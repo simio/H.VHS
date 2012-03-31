@@ -47,7 +47,7 @@
 
 #include "main.h"
 
-#include "extensioninterfaces/hooks.h"
+#include "extensionmanager/interfaces/hooks.h"
 
 #include "extensionmanager/definitions/definition.h"
 #include "extensionmanager/definitions/formatdefinition.h"

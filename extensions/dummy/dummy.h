@@ -30,7 +30,7 @@
 #ifndef HVHS_EXTENSION_BUILD
 #   define HVHS_EXTENSION_BUILD
 #endif
-#include "../../MainApp/extensioninterfaces/hooks.h"
+#include "hooks.h"
 #undef HVHS_EXTENSION_BUILD
 
 class DummyExtension : public QObject, ExtensionInterfaceHooks

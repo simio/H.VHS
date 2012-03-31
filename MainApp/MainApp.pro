@@ -95,9 +95,6 @@ HEADERS  += \
     hurl.h \
     cassettecontent.h \
     config/platformdependent.h \
-    extensioninterfaces/hooks.h \
-    extensioninterfaces/streams.h \
-    extensioninterfaces/defines.h \
     extensionmanager/extensionmanager.h \
     extensionmanager/definitions/definition.h \
     extensionmanager/definitions/extensiondefinition.h \
@@ -105,7 +102,10 @@ HEADERS  += \
     extensionmanager/definitions/transportdefinition.h \
     extensionmanager/extension/javascriptextension.h \
     extensionmanager/extension/extension.h \
-    extensionmanager/extension/qtpluginextension.h
+    extensionmanager/extension/qtpluginextension.h \
+    extensionmanager/interfaces/defines.h \
+    extensionmanager/interfaces/hooks.h \
+    extensionmanager/interfaces/streams.h
 
 FORMS    += \
     webwindow.ui \

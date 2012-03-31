@@ -94,9 +94,6 @@ public slots:
 private:
     ExtensionDefinition();
 
-    bool _setup();
-    bool _isReady() const;
-
     bool _enabled;                                  // Whether the extension is enabled on this machine/installation
     QList<Person> _authors;                         // Author(s) of this extension. Years of the (c)-notice is stored as 'copyright' activity in Person.
     QString _licenseName;                           // License statement.

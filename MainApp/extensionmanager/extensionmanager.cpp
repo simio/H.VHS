@@ -93,6 +93,8 @@ void ExtensionManager::_initialise()
                                 exIf->pluginHook(EXT_HOOK_INIT_EXTENSION_PERSISTENT, temp);
                                 this->_persistentExtensions.insert(exIf->suggestedHookPriority(), exIf);
                             }
+                            else
+                                loader.unload();
                         }
                     }
                 }

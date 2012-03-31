@@ -236,7 +236,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     //      <format>xsd:NMTOKEN</format>
     //      ...
     //  </convertsFrom>
-    if (ElementParser::expect(e, "convertsFrom", ElementParser::Required))
+    if (ElementParser::expect(e, "convertsFrom", ElementParser::Optional))
     {
         inputTransports = ElementParser::nmtokenList(e, "transport");
         inputFormats = ElementParser::nmtokenList(e, "format");
@@ -247,30 +247,31 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
             return NULL;
         }
         e = e.nextSiblingElement();
+
+        //  <convertsTo>
+        //      <transport>xsd:NMTOKEN</transport>
+        //      ...
+        //      <format>xsd:NMTOKEN</format>
+        //      ...
+        //  </convertsTo>
+        if (ElementParser::expect(e, "convertsTo", ElementParser::Required))
+        {
+            outputTransports = ElementParser::nmtokenList(e, "transport");
+            outputFormats = ElementParser::nmtokenList(e, "format");
+            if (outputTransports.count() < 1 || outputFormats.count() < 1)
+            {
+                qDebug() << "ExtensionReader expected at least one output transport and format, but got 0.";
+                qDebug() << "Discarding extension" << name;
+                return NULL;
+            }
+            e = e.nextSiblingElement();
+        }
+        else
+            return NULL;
     }
-    else
+    else if (e.isNull())
         return NULL;
 
-    //  <convertsTo>
-    //      <transport>xsd:NMTOKEN</transport>
-    //      ...
-    //      <format>xsd:NMTOKEN</format>
-    //      ...
-    //  </convertsTo>
-    if (ElementParser::expect(e, "convertsTo", ElementParser::Required))
-    {
-        outputTransports = ElementParser::nmtokenList(e, "transport");
-        outputFormats = ElementParser::nmtokenList(e, "format");
-        if (outputTransports.count() < 1 || outputFormats.count() < 1)
-        {
-            qDebug() << "ExtensionReader expected at least one output transport and format, but got 0.";
-            qDebug() << "Discarding extension" << name;
-            return NULL;
-        }
-        e = e.nextSiblingElement();
-    }
-    else
-        return NULL;
 
     //  <audits>
     //      <audit email="xsd:token" website="xsd:anyURI" date="xsd:dateTime" username="xsd:token">xsd:token</audit>

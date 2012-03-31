@@ -65,14 +65,16 @@ grammar {
                 element interface { xsd:token }+
             },
             source,
-            element convertsFrom {
-                element transport { xsd:NMTOKEN }+,
-                element format { xsd:NMTOKEN }+
-            },
-            element convertsTo {
-                element transport { xsd:NMTOKEN }+,
-                element format { xsd:NMTOKEN }+
-            },
+            (
+                element convertsFrom {
+                    element transport { xsd:NMTOKEN }+,
+                    element format { xsd:NMTOKEN }+
+                },
+                element convertsTo {
+                    element transport { xsd:NMTOKEN }+,
+                    element format { xsd:NMTOKEN }+
+                }
+            )?,
             # <audits> will be ignored if set by extension authors
             element audits {
                 auditor+

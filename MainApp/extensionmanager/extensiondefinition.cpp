@@ -61,22 +61,6 @@ bool ExtensionDefinition::isValid() const
             &&  this->_authors.count() > 0
             && !this->_licenseName.isEmpty()
             &&  this->_apiVersion > Version(0, 0)
-            &&  this->_inputTransports.count() > 0
-            &&  this->_inputFormats.count() > 0
-            &&  this->_outputTransports.count() > 0
-            &&  this->_outputFormats.count() > 0);
-}
-
-bool ExtensionDefinition::_isReady() const
-{
-    // Fake it
-    return true;
-}
-
-bool ExtensionDefinition::_setup()
-{
-    if (this->_isReady())
-        return true;
-
-    return true;
+            && (! (this->_inputTransports.count() || this->_inputFormats.count() || this->_outputTransports.count() || this->_outputFormats.count())
+                || (this->_inputTransports.count() && this->_inputFormats.count() && this->_outputTransports.count() && this->_outputFormats.count())));
 }

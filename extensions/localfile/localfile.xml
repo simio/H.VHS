@@ -17,7 +17,10 @@
             <license href="http://www.isc.org/software/license">ISC License</license>
             <enabled>false</enabled>
             <condition>unstable</condition>
-            <source version="1.0" interface="javascript"/>
+            <interface>
+                <interface>org.Huggpunkt.VHS.Streams/1.0</interface>
+            </interface>
+            <source version="1.0" interfaceClass="javascript"/>
             <convertsFrom>
                 <format>notEmpty</format>
                 <transport>localfile</transport>

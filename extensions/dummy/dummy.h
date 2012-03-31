@@ -17,6 +17,8 @@
 #ifndef DUMMY_H
 #define DUMMY_H
 
+#define HVHS_EXTENSION_BUILD
+
 #include <iostream>
 
 #include <QtGui/QtGui>
@@ -25,13 +27,7 @@
 #include <QString>
 #include <QVariant>
 
-// This crap works around a display bug in Qt Creator,
-// where it thinks define here is defined in other projects.
-#ifndef HVHS_EXTENSION_BUILD
-#   define HVHS_EXTENSION_BUILD
-#endif
 #include "hooks.h"
-#undef HVHS_EXTENSION_BUILD
 
 class DummyExtension : public QObject, ExtensionInterfaceHooks
 {

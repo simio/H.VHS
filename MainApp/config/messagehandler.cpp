@@ -16,7 +16,7 @@
 
 #include "messagehandler.h"
 
-// Singleton (MessageHandler::pointer())
+// Singleton (MessageHandler::p())
 MessageHandler *MessageHandler::s_instance = NULL;
 
 MessageHandler::MessageHandler(QObject *parent) :
@@ -24,7 +24,7 @@ MessageHandler::MessageHandler(QObject *parent) :
 {
 }
 
-MessageHandler *MessageHandler::pointer()
+MessageHandler *MessageHandler::p()
 {
     if (s_instance == NULL)
         s_instance = new MessageHandler;                                // alloc: Singleton object
@@ -64,7 +64,7 @@ QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
     this->_consoleWindow->raise();
     this->_consoleWindow->activateWindow();
 
-    if (QObject::connect(MessageHandler::pointer(), SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString))))
+    if (QObject::connect(MessageHandler::p(), SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString))))
         qDebug() << tr("Console connected.");
     else
         qWarning() << tr("Could not connect console.");
@@ -75,5 +75,5 @@ QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
 // OBS: Inte del av klass
 void messageHandler(QtMsgType type, const char *msg)
 {
-    MessageHandler::pointer()->message(type, msg);
+    MessageHandler::p()->message(type, msg);
 }

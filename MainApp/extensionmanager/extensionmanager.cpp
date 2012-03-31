@@ -24,7 +24,7 @@ ExtensionManager::ExtensionManager(QObject *parent) :
     this->_initialise();
 }
 
-ExtensionManager *ExtensionManager::pointer()
+ExtensionManager *ExtensionManager::p()
 {
     if (s_instance == NULL)
         s_instance = new ExtensionManager;                              // alloc: Singleton object

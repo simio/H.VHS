@@ -26,11 +26,13 @@ WebWindow::WebWindow(QWidget *parent) :
     this->_browserStatus = Idle;
 
     // For testing -- without this, it won't initialise until used somewhere.
-    ExtensionManager::pointer();
+    ExtensionManager::p();
 
     this->_setupGui();
 
     this->_loadPage(Configuration::p()->getStartPage());
+
+    ExtensionManager::p()->callHook(EXT_HOOK_AFTER_WEBWINDOW_CONSTRUCTOR);
 }
 
 WebWindow::~WebWindow()
@@ -40,6 +42,8 @@ WebWindow::~WebWindow()
 
 void WebWindow::_loadPage(const QUrl &url)
 {
+    QVariant vUrl = QVariant(url);
+    ExtensionManager::p()->callHook(EXT_HOOK_WEBVIEW_LOADREQUESTED, vUrl);
     this->_webView->load(url);
     this->_webView->setFocus();
 }
@@ -67,6 +71,8 @@ void WebWindow::_clearStorageAndQuit()
 
 void WebWindow::_whenWebViewLoadFinished(bool ok)
 {
+    QVariant vOk = QVariant(ok);
+    ExtensionManager::p()->callHook(EXT_HOOK_WEBVIEW_LOADFINISHED, vOk);
     this->_browserStatus = Idle;
     this->_browserProgressBar->setEnabled(false);
     this->_browserProgressBar->setValue(0);
@@ -74,6 +80,7 @@ void WebWindow::_whenWebViewLoadFinished(bool ok)
 
 void WebWindow::_whenWebViewLoadStarted()
 {
+    ExtensionManager::p()->callHook(EXT_HOOK_WEBVIEW_LOADSTARTED);
     this->_browserStatus = Busy;
     this->_browserProgressBar->setEnabled(true);
 }
@@ -122,7 +129,7 @@ void WebWindow::_setFocusOnSearchBox()
 
 void WebWindow::_launchConsoleWindow()
 {
-    MessageHandler::pointer()->createConsoleWindow();
+    MessageHandler::p()->createConsoleWindow();
 }
 
 void WebWindow::_updateBrowserIcon(int index, bool force)

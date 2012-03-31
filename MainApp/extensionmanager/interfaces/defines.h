@@ -29,8 +29,9 @@
 #define EXT_HOOK_INIT_EXTENSION                 20
 #define EXT_HOOK_BEFORE_KILL_EXT                30
 #define EXT_HOOK_WEBVIEW_LOADSTARTED            40
+#define EXT_HOOK_WEBVIEW_LOADREQUESTED          41
 #define EXT_HOOK_WEBVIEW_LOADFINISHED           50
-#define EXT_HOOK_AFTER_APP_INITIALISED          60
+#define EXT_HOOK_AFTER_WEBWINDOW_CONSTRUCTOR    60
 
 // Extension::pluginHook() return values (is NOOP or any combination of the other)
 #define EXT_RETVAL_NOOP                         0

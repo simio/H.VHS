@@ -16,7 +16,7 @@
 
 #include "platformdependent.h"
 
-// Singleton (Portability::pointer())
+// Singleton (Portability::p())
 PlatformDependent *PlatformDependent::s_instance = NULL;
 
 PlatformDependent::PlatformDependent()

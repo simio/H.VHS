@@ -27,8 +27,9 @@
  *
  *  When the main application needs to call createStream(), it will create
  *  a new instance of the extension. This new instance will be put on a
- *  pluginHook() calling list, meaning more than one instance of every
- *  stream-creating extension might be called for each hook. Avoid conflicts!
+ *  pluginHook() calling list, if the hooks interface is supported by this
+ *  extension. This means more than one instance of every stream-creating
+ *  extension might be called for each hook. Avoid conflicts!
  */
 
 class ExtensionInterfaceStreams

@@ -16,7 +16,7 @@
 
 #include "configuration.h"
 
-// Singleton (Configuration::pointer())
+// Singleton (Configuration::p())
 Configuration *Configuration::s_instance = NULL;
 
 Configuration::Configuration(QObject *parent) :

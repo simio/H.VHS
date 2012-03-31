@@ -30,7 +30,7 @@ class MessageHandler : public QObject
     Q_OBJECT
 public:
     explicit MessageHandler(QObject *parent = 0);
-    static MessageHandler *pointer();
+    static MessageHandler *p();
 
     void message(QtMsgType type, const char *msg);
     QPointer<ConsoleWindow> createConsoleWindow();

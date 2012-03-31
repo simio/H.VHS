@@ -64,7 +64,7 @@ class ExtensionManager : public QObject
     Q_OBJECT
 public:
     explicit ExtensionManager(QObject *parent = 0);
-    static ExtensionManager *pointer();
+    static ExtensionManager *p();
 
     // Run "hook" on all plugins with supplied hookData and return the number of non-NOOP responses.
     int callHook(const qint64 hook, QVariant &hookData);

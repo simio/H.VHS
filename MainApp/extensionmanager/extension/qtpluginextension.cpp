@@ -35,6 +35,7 @@ QtPluginExtension::QtPluginExtension(QPointer<ExtensionDefinition> definition, Q
 
 QtPluginExtension::~QtPluginExtension()
 {
+    ExtensionManager::p()->callHook(EXT_HOOK_BEFORE_KILL_EXT);
     this->_loader.unload();
 }
 

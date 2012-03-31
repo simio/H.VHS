@@ -36,7 +36,7 @@ public:
     explicit DummyExtension(QObject *parent = 0);
 
     qint64 suggestedHookPriority() const;
-    qint64 pluginHook(const qint64 hook, QMultiMap<QString, QVariant> &hookData);
+    qint64 pluginHook(const qint64 hook, QVariant &hookData);
 
 private:
 

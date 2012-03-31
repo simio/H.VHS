@@ -66,7 +66,7 @@ public:
      * Hook names and possible return values are defined in extensionhooks.h
      * Extensions are (for some hooks) allowed or required to modify hookData
      */
-    virtual qint64 pluginHook(const qint64 hook, QMultiMap<QString,QVariant> &hookData) = 0;
+    virtual qint64 pluginHook(const qint64 hook, QVariant &hookData) = 0;
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceHooks,

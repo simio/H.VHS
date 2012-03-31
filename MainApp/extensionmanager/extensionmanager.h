@@ -65,7 +65,7 @@ public:
     static ExtensionManager *pointer();
 
     // Run "hook" on all plugins with supplied hookData and return the number of non-NOOP responses.
-    int callHook(const qint64 hook, QMultiMap<QString, QVariant> &hookData);
+    int callHook(const qint64 hook, QVariant &hookData);
     int callHook(const qint64 hook);
 
 signals:

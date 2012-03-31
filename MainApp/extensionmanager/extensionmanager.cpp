@@ -32,7 +32,7 @@ ExtensionManager *ExtensionManager::pointer()
     return s_instance;
 }
 
-int ExtensionManager::callHook(const qint64 hook, QMultiMap<QString, QVariant> &hookData)
+int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
 {
     int result = 0;
 
@@ -56,7 +56,7 @@ int ExtensionManager::callHook(const qint64 hook, QMultiMap<QString, QVariant> &
 
 int ExtensionManager::callHook(const qint64 hook)
 {
-    QMultiMap<QString,QVariant> temp;
+    QVariant temp;
     return this->callHook(hook, temp);
 }
 
@@ -89,7 +89,7 @@ void ExtensionManager::_initialise()
                             qDebug() << "Extension" << extension->name() << "loaded.";
                             if (exIf->suggestedHookPriority())
                             {
-                                QMultiMap<QString,QVariant> temp;
+                                QVariant temp;
                                 exIf->pluginHook(EXT_HOOK_INIT_EXTENSION_PERSISTENT, temp);
                                 this->_persistentExtensions.insert(exIf->suggestedHookPriority(), exIf);
                             }

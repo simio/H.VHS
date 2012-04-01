@@ -22,7 +22,8 @@
 #include <QtGui/QtGui>
 #include <QObject>
 #include <QPointer>
-#include <QDataStream>
+#include <QIODevice>
+#include <QFileInfo>
 
 #include "streams.h"
 
@@ -35,8 +36,7 @@ public:
     explicit LocalFileExtension(QObject *parent = 0);
     ~LocalFileExtension();
 
-    QDataStream * createStream(QIODevice::OpenModeFlag openMode, const QString hurl);
-    QTextStream * createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 signals:
 
@@ -44,10 +44,8 @@ public slots:
 
 private:
     QPointer<QFile> _file;
-    QDataStream * _stream;
-    QTextStream * _textStream;
 
-    QFileInfo _resolveHurl(QString hurl);
+    QPointer<QFile> _resolveHurl(QString hurl);
 
 };
 

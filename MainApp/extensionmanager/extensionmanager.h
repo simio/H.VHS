@@ -66,6 +66,8 @@ public:
     explicit ExtensionManager(QObject *parent = 0);
     static ExtensionManager *p();
 
+    QPointer<Extension> debugLoadExtension(QString id);
+
     // Run "hook" on all plugins with supplied hookData and return the number of non-NOOP responses.
     int callHook(const qint64 hook, QVariant &hookData);
     int callHook(const qint64 hook);

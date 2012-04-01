@@ -21,7 +21,7 @@
 #include <QString>
 #include <QVariant>
 #include <QMap>
-#include <QDataStream>
+#include <QIODevice>
 #include <QStringList>
 
 #include "main.h"

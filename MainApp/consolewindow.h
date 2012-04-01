@@ -34,6 +34,8 @@ public:
 public slots:
     void printMessage(QString message);
 
+private slots:
+
 private:
     Ui::ConsoleWindow *ui;
 };

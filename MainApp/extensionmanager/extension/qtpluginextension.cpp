@@ -44,16 +44,6 @@ bool QtPluginExtension::isValid()
     return this->_loader.isLoaded();
 }
 
-QStringList QtPluginExtension::interfaces()
-{
-    return this->_interfaces;
-}
-
-bool QtPluginExtension::implementsInterface(QString interface) const
-{
-    return this->_interfaces.contains(interface);
-}
-
 qint64 QtPluginExtension::suggestedHookPriority() const
 {
     if (! this->implementsInterface(HVHS_INTERFACE_HOOKS))
@@ -70,18 +60,10 @@ qint64 QtPluginExtension::pluginHook(const qint64 hook, QVariant &hookData)
     return exIf->pluginHook(hook, hookData);
 }
 
-QDataStream * QtPluginExtension::createStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+QPointer<QIODevice> QtPluginExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
 {
     if (! this->implementsInterface(HVHS_INTERFACE_STREAMS))
         return NULL;
     ExtensionInterfaceStreams *exIf = qobject_cast<ExtensionInterfaceStreams*>(this->_plugin);
-    return exIf->createStream(openMode, hurl);
-}
-
-QTextStream *QtPluginExtension::createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl)
-{
-    if (! this->implementsInterface(HVHS_INTERFACE_STREAMS))
-        return NULL;
-    ExtensionInterfaceStreams *exIf = qobject_cast<ExtensionInterfaceStreams*>(this->_plugin);
-    return exIf->createTextStream(openMode, hurl);
+    return exIf->openStream(openMode, hurl);
 }

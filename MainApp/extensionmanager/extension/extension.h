@@ -20,6 +20,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QPointer>
+#include <QIODevice>
 
 #include "main.h"
 
@@ -32,60 +33,26 @@ class Extension : public QObject
 {
     Q_OBJECT
 public:
-    explicit Extension(QObject *parent = 0) :
-        QObject(parent)
-    {
-    }
-
-    virtual ~Extension()
-    {
-    }
-
-    virtual bool isValid()
-    {
-        return false;
-    }
+    virtual ~Extension()                                                        { }
+    virtual bool isValid()                                                      { return false; }
 
     // Return StringList of supported interfaces
-    virtual QStringList interfaces() const
-    {
-        return QStringList();
-    }
-
-    // Return true iff supplied interface is implemented
-    virtual bool implementsInterface(QString) const
-    {
-        return false;
-    }
+    QString id()                                                                { return this->_extensionId; }
+    QStringList interfaces() const                                              { return this->_interfaces; }
+    bool implementsInterface(QString interface) const                           { return this->_interfaces.contains(QString(interface)); }
 
     // HVHS_INTERFACE_HOOKS
-    virtual qint64 suggestedHookPriority() const
-    {
-        return EXT_NO_HOOK_PRIORITY_SUGGESTION;
-    }
-
-    virtual qint64 pluginHook(const qint64 hook, QVariant &hookData)
-    {
-        return EXT_RETVAL_NOOP;
-    }
-
-    virtual qint64 pluginHook(const qint64 hook)
-    {
-        QVariant temp;
-        return this->pluginHook(hook, temp);
-    }
+    virtual qint64 suggestedHookPriority() const                                { return EXT_NO_HOOK_PRIORITY_SUGGESTION; }
+    virtual qint64 pluginHook(const qint64 hook, QVariant &hookData)            { return EXT_RETVAL_NOOP; }
+    virtual qint64 pluginHook(const qint64 hook)                                { QVariant temp; return this->pluginHook(hook, temp); }
 
     // HVHS_INTERFACE_STREAMS
-    virtual QDataStream * createStream(QIODevice::OpenModeFlag openMode, const QString hurl)
-    {
-        return NULL;
-    }
+    virtual QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl)        { return NULL; }
 
-    virtual QTextStream * createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl)
-    {
-        return NULL;
-    }
-
+protected:
+    explicit Extension(QObject *parent = 0) : QObject(parent)                   { }
+    QString _extensionId;
+    QStringList _interfaces;
 };
 
 #endif // EXTENSION_H

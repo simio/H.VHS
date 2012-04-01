@@ -2,18 +2,11 @@
 <vhsxml version="1.1" xmlns="http://play.huggpunkt.org/vhsxml/1">
     <transportDefinitions>
         <transportDefinition>
-            <id releaseDate="2012-03-15T10:57:24">textstream</id>
-            <name xml:lang="en">Text Stream</name>
-            <name xml:lang="sv">Textström</name>
-            <description xml:lang="en">QTextStream.</description>
-            <description xml:lang="sv">QTextStream</description>
-        </transportDefinition>
-        <transportDefinition>
             <id releaseDate="2012-03-15T10:57:24">datastream</id>
             <name xml:lang="en">Binary Stream</name>
             <name xml:lang="sv">Dataström</name>
-            <description xml:lang="en">QDataStream.</description>
-            <description xml:lang="sv">QDataStream.</description>
+            <description xml:lang="en">QIODevice.</description>
+            <description xml:lang="sv">QIODevice.</description>
         </transportDefinition>
         <transportDefinition>
             <id releaseDate="2012-03-15T10:57:24">localfile</id>

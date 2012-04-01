@@ -32,6 +32,15 @@ ExtensionManager *ExtensionManager::p()
     return s_instance;
 }
 
+QPointer<Extension> ExtensionManager::debugLoadExtension(QString id)
+{
+    QPointer<ExtensionDefinition> definition = (ExtensionDefinition*)(Definition*)this->_definitions.get(Definition::ExtensionDefinitionType, id);
+    if (definition.isNull())
+        return NULL;
+
+    return this->_loadExtension(definition);
+}
+
 int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
 {
     int result = 0;
@@ -87,7 +96,6 @@ void ExtensionManager::_initialise()
         }
         i++;
     }
-    qDebug() << this->_persistentExtensions;
 }
 
 // Load an extension and return a pointer to it (or NULL). Checking which
@@ -107,7 +115,7 @@ QPointer<Extension> ExtensionManager::_loadExtension(QPointer<ExtensionDefinitio
     if (qtplugin->isValid())
     {
         QPointer<Extension> extension;
-        extension = qobject_cast<Extension*>((QtPluginExtension*)qtplugin);
+        extension = (Extension*)(QtPluginExtension*)qtplugin;
         return extension;
     }
     else

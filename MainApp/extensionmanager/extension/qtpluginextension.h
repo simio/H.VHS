@@ -40,17 +40,12 @@ public:
 
     bool isValid();
 
-    // Return StringList of supported interfaces
-    QStringList interfaces();
-    bool implementsInterface(QString interface) const;
-
     // HVHS_INTERFACE_HOOKS
     qint64 suggestedHookPriority() const;
     qint64 pluginHook(const qint64 hook, QVariant &hookData);
 
     // HVHS_INTERFACE_STREAMS
-    QDataStream * createStream(QIODevice::OpenModeFlag openMode, const QString hurl);
-    QTextStream * createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 signals:
 
@@ -59,8 +54,6 @@ public slots:
 private:
     QPointer<QObject> _plugin;
     QPluginLoader _loader;
-    QString _extensionId;
-    QStringList _interfaces;
 };
 
 #endif // QTPLUGINWRAPPER_H

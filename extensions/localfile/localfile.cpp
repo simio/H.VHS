@@ -19,64 +19,28 @@
 LocalFileExtension::LocalFileExtension(QObject *parent) :
     QObject(parent)
 {
-    this->_stream = NULL;
-    this->_textStream = NULL;
 }
 
 LocalFileExtension::~LocalFileExtension()
 {
-    if (this->_stream != NULL)
-        delete this->_stream;
-    else if (this->_textStream != NULL)
-        delete this->_textStream;
+    qDebug() << "LocalFileExtension() destructing.";
 }
 
-QDataStream * LocalFileExtension::createStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+QPointer<QIODevice> LocalFileExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
 {
-    if (this->_textStream != NULL || this->_stream != NULL)
+    if (this->_file != NULL)
     {
-        qWarning() << "LocalFileExtension::createStream(): Bad. I was asked to open a stream when I already had one.";
+        qWarning() << "LocalFileExtension::openStream(): Bad. I was asked to open a stream when I already had one.";
         return NULL;
     }
 
-    QFileInfo fileinfo = this->_resolveHurl(hurl);
-    this->_file = new QFile(fileinfo.canonicalFilePath(), this);                    // alloc: Has parent
-    if (this->_file->open(openMode))
-    {
-        this->_stream = new QDataStream(this->_file);           // alloc: Deleted in destructor or here
-        if (this->_stream->status() != QDataStream::Ok)
+    this->_file = this->_resolveHurl(hurl);
+    if (! this->_file.isNull())
+        if (this->_file->open(openMode))
         {
-            delete this->_stream;
-            this->_stream = NULL;
+            qDebug() << "openStream for" << this->_file->fileName();
+            return (QIODevice*)this->_file;
         }
-        else
-            return this->_stream;
-    }
-
-    return NULL;
-}
-
-QTextStream * LocalFileExtension::createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl)
-{
-    if (this->_textStream != NULL || this->_stream != NULL)
-    {
-        qWarning() << "LocalFileExtension::createTextStream(): Bad. I was asked to open a stream when I already had one.";
-        return NULL;
-    }
-
-    QFileInfo fileinfo = this->_resolveHurl(hurl);
-    this->_file = new QFile(fileinfo.canonicalFilePath(), this);                    // alloc: Has parent
-    if (this->_file->open(openMode))
-    {
-        this->_textStream = new QTextStream(this->_file);       // alloc: Deleted in destructor or here
-        if (this->_textStream->status() != QTextStream::Ok)
-        {
-            delete this->_textStream;
-            this->_textStream = NULL;
-        }
-        else
-            return this->_textStream;
-    }
 
     return NULL;
 }
@@ -84,13 +48,14 @@ QTextStream * LocalFileExtension::createTextStream(QIODevice::OpenModeFlag openM
 // We support fileuri and localfile transports, which means
 // the hurl might be either a local filepath or a local filepath
 // prepended by "file://".
-QFileInfo LocalFileExtension::_resolveHurl(QString hurl)
+QPointer<QFile> LocalFileExtension::_resolveHurl(QString hurl)
 {
     QString prefix = "file://";
     if (hurl.startsWith(prefix))
         hurl.remove(0, prefix.length());
 
-    return QFileInfo(hurl);
+    qDebug() << "Trying to QFile(" << hurl;
+    return new QFile(hurl, this);                                       // alloc: Has parent
 }
 
 Q_EXPORT_PLUGIN2(localfileextension, LocalFileExtension)

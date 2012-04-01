@@ -18,14 +18,13 @@
 #define EXTENSIONINTERFACES_STREAMS_H
 
 #include <QPointer>
-#include <QDataStream>
-#include <QTextStream>
+#include <QIODevice>
 
 #include "defines.h"
 
-/*  H.VHS QPlugin Extension Interface for QDataStreams, version 1.0
+/*  H.VHS QPlugin Extension Interface for QIODevices, version 1.0
  *
- *  When the main application needs to call createStream(), it will create
+ *  When the main application needs to call openStream(), it will create
  *  a new instance of the extension. This new instance will be put on a
  *  pluginHook() calling list, if the hooks interface is supported by this
  *  extension. This means more than one instance of every stream-creating
@@ -37,8 +36,7 @@ class ExtensionInterfaceStreams
 public:
     virtual ~ExtensionInterfaceStreams() {}
 
-    virtual QDataStream * createStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
-    virtual QTextStream * createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
+    virtual QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceStreams,

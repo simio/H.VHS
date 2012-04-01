@@ -17,18 +17,20 @@
             <license href="http://www.isc.org/software/license">ISC License</license>
             <enabled>false</enabled>
             <condition>unstable</condition>
-            <interface>
+            <interfaces>
                 <interface>org.Huggpunkt.VHS.Streams/1.0</interface>
-            </interface>
+            </interfaces>
             <source apiVersion="1.0" api="qtplugin" />
             <convertsFrom>
                 <format>notEmpty</format>
                 <transport>localfile</transport>
+                <transport>fileuri</transport>
                 <transport>datastream</transport>
             </convertsFrom>
             <convertsTo>
                 <format>copy</format>
                 <transport>localfile</transport>
+                <transport>fileuri</transport>
                 <transport>datastream</transport>
             </convertsTo>
             <audits>

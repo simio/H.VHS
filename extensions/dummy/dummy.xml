@@ -20,14 +20,6 @@
                 <interface>org.huggpunkt.VHS.Hooks/1.0</interface>
             </interfaces>
             <source apiVersion="1.0" api="qtplugin" />
-            <convertsFrom>
-                <format>notEmpty</format>
-                <transport>textstream</transport>
-            </convertsFrom>
-            <convertsTo>
-                <format>copy</format>
-                <transport>textstream</transport>
-            </convertsTo>
             <audits>
                 <audit username="jesper"
                        website="http://huggpunkt.org/"

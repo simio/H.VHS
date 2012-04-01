@@ -23,24 +23,30 @@
 
 #include "main.h"
 
+/* Url class to hold anything. File paths and names should be interpretable by
+ * QFileInfo. While being stored in the _url QString, they are prepended with file://
+ */
+
 class HUrl
 {
 public:
     HUrl();
-    HUrl(QString url, QDateTime timestamp = QDateTime());
+    HUrl(QString uri, QDateTime timestamp = QDateTime());
     HUrl(QUrl url, QDateTime timestamp = QDateTime());
+    HUrl(QFileInfo file, QDateTime timestamp = QDateTime());
 
     inline bool isValid() const;
     inline QUrl toUrl() const;
     inline QString toString() const;
+    inline QFileInfo toFileInfo() const;
     inline QDateTime dateTime() const;
 
 
 private:
-    QString _url;
+    QString _uri;
     QDateTime _timestamp;
 
-    void _set(QString url, QDateTime timestamp);
+    void _set(QString uri, QDateTime timestamp);
 };
 
 #endif // HURL_H

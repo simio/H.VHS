@@ -17,22 +17,39 @@
 #include "hurl.h"
 
 HUrl::HUrl()                                                { this->_set(QString(), QDateTime()); } // Null QDateTime is not valid()
-HUrl::HUrl(QString url, QDateTime timestamp )               { this->_set(url, timestamp); }
+HUrl::HUrl(QString uri, QDateTime timestamp )               { this->_set(uri, timestamp); }
 HUrl::HUrl(QUrl url, QDateTime timestamp)                   { this->_set(url.toString(), timestamp); }
+HUrl::HUrl(QFileInfo file, QDateTime timestamp)
+{
+    if (! timestamp.isValid())
+        timestamp = file.lastModified();
+    this->_set("file://" + file.canonicalFilePath(), timestamp);
+}
 
-QUrl HUrl::toUrl() const                                    { return QUrl(this->_url); }
-QString HUrl::toString() const                              { return this->_url; }
+QUrl HUrl::toUrl() const                                    { return QUrl(this->_uri); }
+QString HUrl::toString() const                              { return this->_uri; }
+
+QFileInfo HUrl::toFileInfo() const
+{
+    QString filename = this->_uri;
+    if (! filename.startsWith("file://"))
+        return QString();
+
+    filename.remove(0, 7);
+    return QFileInfo(filename);
+}
+
 QDateTime HUrl::dateTime() const                            { return this->_timestamp; }
 
 bool HUrl::isValid() const
 {
     // Just a basic check for now
-    return (! this->_url.isEmpty() && this->_timestamp.isValid());
+    return (! this->_uri.isEmpty() && this->_timestamp.isValid());
 }
 
-void HUrl::_set(QString url, QDateTime timestamp)
+void HUrl::_set(QString uri, QDateTime timestamp)
 {
-    this->_url = url;
+    this->_uri = uri;
     if (timestamp.isNull() || ! timestamp.isValid())
         this->_timestamp = QDateTime::currentDateTimeUtc();
     else

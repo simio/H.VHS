@@ -52,11 +52,11 @@ public:
     explicit Cassette(QObject * parent);
 
     QString id() const;
-    HUrl url() const;
+    HUrl uri() const;
 
 private:
     QString _id;
-    HUrl _url;
+    HUrl _uri;
 
     QPointer<CassetteContent> _content;
 

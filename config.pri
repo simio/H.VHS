@@ -8,7 +8,7 @@ APP_VERSION  =              0.4.0                   # MainApp/update_version.sh 
 PUBLIC_APP_TAG =            devel
 APP_CONFIG +=               #deploy_dist
 
-HVHS_ENABLED_EXTENSIONS =    dummy
+HVHS_ENABLED_EXTENSIONS =    dummy localfile
 
 
 ## WIN32

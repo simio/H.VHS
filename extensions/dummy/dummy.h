@@ -40,6 +40,10 @@ public:
     qint64 suggestedHookPriority() const;
     qint64 pluginHook(const qint64 hook, QVariant &hookData);
 
+signals:
+
+public slots:
+
 private:
 
 };

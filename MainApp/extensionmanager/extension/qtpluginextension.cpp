@@ -70,10 +70,18 @@ qint64 QtPluginExtension::pluginHook(const qint64 hook, QVariant &hookData)
     return exIf->pluginHook(hook, hookData);
 }
 
-QPointer<QDataStream> QtPluginExtension::createStream(QIODevice::OpenModeFlag openMode, const QPointer<Cassette> cassette)
+QDataStream * QtPluginExtension::createStream(QIODevice::OpenModeFlag openMode, const QString hurl)
 {
     if (! this->implementsInterface(HVHS_INTERFACE_STREAMS))
-        return QPointer<QDataStream>();
+        return NULL;
     ExtensionInterfaceStreams *exIf = qobject_cast<ExtensionInterfaceStreams*>(this->_plugin);
-    return exIf->createStream(openMode, cassette);
+    return exIf->createStream(openMode, hurl);
+}
+
+QTextStream *QtPluginExtension::createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+{
+    if (! this->implementsInterface(HVHS_INTERFACE_STREAMS))
+        return NULL;
+    ExtensionInterfaceStreams *exIf = qobject_cast<ExtensionInterfaceStreams*>(this->_plugin);
+    return exIf->createTextStream(openMode, hurl);
 }

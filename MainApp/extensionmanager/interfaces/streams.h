@@ -19,9 +19,9 @@
 
 #include <QPointer>
 #include <QDataStream>
+#include <QTextStream>
 
 #include "defines.h"
-#include "cassette.h"
 
 /*  H.VHS QPlugin Extension Interface for QDataStreams, version 1.0
  *
@@ -37,7 +37,8 @@ class ExtensionInterfaceStreams
 public:
     virtual ~ExtensionInterfaceStreams() {}
 
-    virtual QPointer<QDataStream> createStream(QIODevice::OpenModeFlag openMode, const QPointer<Cassette> cassette) = 0;
+    virtual QDataStream * createStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
+    virtual QTextStream * createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceStreams,

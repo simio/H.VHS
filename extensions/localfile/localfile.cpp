@@ -16,7 +16,81 @@
 
 #include "localfile.h"
 
-LocalFile::LocalFile(QObject *parent) :
+LocalFileExtension::LocalFileExtension(QObject *parent) :
     QObject(parent)
 {
+    this->_stream = NULL;
+    this->_textStream = NULL;
 }
+
+LocalFileExtension::~LocalFileExtension()
+{
+    if (this->_stream != NULL)
+        delete this->_stream;
+    else if (this->_textStream != NULL)
+        delete this->_textStream;
+}
+
+QDataStream * LocalFileExtension::createStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+{
+    if (this->_textStream != NULL || this->_stream != NULL)
+    {
+        qWarning() << "LocalFileExtension::createStream(): Bad. I was asked to open a stream when I already had one.";
+        return NULL;
+    }
+
+    QFileInfo fileinfo = this->_resolveHurl(hurl);
+    this->_file = new QFile(fileinfo.canonicalFilePath(), this);                    // alloc: Has parent
+    if (this->_file->open(openMode))
+    {
+        this->_stream = new QDataStream(this->_file);           // alloc: Deleted in destructor or here
+        if (this->_stream->status() != QDataStream::Ok)
+        {
+            delete this->_stream;
+            this->_stream = NULL;
+        }
+        else
+            return this->_stream;
+    }
+
+    return NULL;
+}
+
+QTextStream * LocalFileExtension::createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+{
+    if (this->_textStream != NULL || this->_stream != NULL)
+    {
+        qWarning() << "LocalFileExtension::createTextStream(): Bad. I was asked to open a stream when I already had one.";
+        return NULL;
+    }
+
+    QFileInfo fileinfo = this->_resolveHurl(hurl);
+    this->_file = new QFile(fileinfo.canonicalFilePath(), this);                    // alloc: Has parent
+    if (this->_file->open(openMode))
+    {
+        this->_textStream = new QTextStream(this->_file);       // alloc: Deleted in destructor or here
+        if (this->_textStream->status() != QTextStream::Ok)
+        {
+            delete this->_textStream;
+            this->_textStream = NULL;
+        }
+        else
+            return this->_textStream;
+    }
+
+    return NULL;
+}
+
+// We support fileuri and localfile transports, which means
+// the hurl might be either a local filepath or a local filepath
+// prepended by "file://".
+QFileInfo LocalFileExtension::_resolveHurl(QString hurl)
+{
+    QString prefix = "file://";
+    if (hurl.startsWith(prefix))
+        hurl.remove(0, prefix.length());
+
+    return QFileInfo(hurl);
+}
+
+Q_EXPORT_PLUGIN2(localfileextension, LocalFileExtension)

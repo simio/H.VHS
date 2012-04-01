@@ -49,7 +49,8 @@ public:
     qint64 pluginHook(const qint64 hook, QVariant &hookData);
 
     // HVHS_INTERFACE_STREAMS
-    QPointer<QDataStream> createStream(QIODevice::OpenModeFlag openMode, const QPointer<Cassette> cassette);
+    QDataStream * createStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    QTextStream * createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 signals:
 

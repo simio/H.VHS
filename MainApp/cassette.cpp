@@ -28,7 +28,7 @@ QString Cassette::id() const
     return this->_id;
 }
 
-HUrl Cassette::url() const
+HUrl Cassette::uri() const
 {
-    return this->_url;
+    return this->_uri;
 }

@@ -19,17 +19,35 @@
 
 #define HVHS_EXTENSION
 
+#include <QtGui/QtGui>
 #include <QObject>
+#include <QPointer>
+#include <QDataStream>
 
-class LocalFile : public QObject
+#include "streams.h"
+
+class LocalFileExtension : public QObject, ExtensionInterfaceStreams
 {
     Q_OBJECT
+    Q_INTERFACES(ExtensionInterfaceStreams)
+
 public:
-    explicit LocalFile(QObject *parent = 0);
+    explicit LocalFileExtension(QObject *parent = 0);
+    ~LocalFileExtension();
+
+    QDataStream * createStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    QTextStream * createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 signals:
 
 public slots:
+
+private:
+    QPointer<QFile> _file;
+    QDataStream * _stream;
+    QTextStream * _textStream;
+
+    QFileInfo _resolveHurl(QString hurl);
 
 };
 

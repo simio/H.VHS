@@ -76,9 +76,14 @@ public:
     }
 
     // HVHS_INTERFACE_STREAMS
-    virtual QPointer<QDataStream> createStream(QIODevice::OpenModeFlag openMode, const QPointer<Cassette> cassette)
+    virtual QDataStream * createStream(QIODevice::OpenModeFlag openMode, const QString hurl)
     {
-        return QPointer<QDataStream>();
+        return NULL;
+    }
+
+    virtual QTextStream * createTextStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+    {
+        return NULL;
     }
 
 };

@@ -85,7 +85,7 @@ private:
     // as the ExtensionManager is around.
     QMultiMap<qint64,QPointer<Extension> > _persistentExtensions;
 
-    QPointer<Extension> loadExtension(QPointer<ExtensionDefinition> definition);
+    QPointer<Extension> _loadExtension(QPointer<ExtensionDefinition> definition);
 };
 
 #endif // EXTENSIONMANAGER_EXTENSIONMANAGER_H

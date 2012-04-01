@@ -74,7 +74,7 @@ void ExtensionManager::_initialise()
         if (definition->implementsInterface( HVHS_INTERFACE_HOOKS )
                 && definition->isEnabled())
         {
-            QPointer<Extension> extension = this->loadExtension(definition);
+            QPointer<Extension> extension = this->_loadExtension(definition);
             if (extension && extension->implementsInterface( HVHS_INTERFACE_HOOKS ))
             {
                 qDebug() << "Extension" << definition->name() << "loaded to persistent circle.";
@@ -93,7 +93,7 @@ void ExtensionManager::_initialise()
 // Load an extension and return a pointer to it (or NULL). Checking which
 // interfaces are supported, or if the extension is enabled,
 // is not done here.
-QPointer<Extension> ExtensionManager::loadExtension(QPointer<ExtensionDefinition> definition)
+QPointer<Extension> ExtensionManager::_loadExtension(QPointer<ExtensionDefinition> definition)
 {
     QtPluginExtension * qtplugin;
     if (definition->api() == ExtensionDefinition::QtPlugin)

@@ -83,7 +83,7 @@ bool DefinitionTable::update(QPointer<Definition> def)
 
 int DefinitionTable::update(QList<QPointer<Definition> > defs)
 {
-    int sum;
+    int sum = 0;
     foreach(QPointer<Definition> newDef, defs)
         if (this->update(newDef))
             sum++;

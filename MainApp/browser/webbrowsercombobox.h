@@ -33,14 +33,16 @@ public:
 protected:
     void focusInEvent(QFocusEvent *e);
     void focusOutEvent(QFocusEvent *e);
-    void mouseDoubleClickEvent(QMouseEvent *e);
     void keyPressEvent(QKeyEvent *e);
+    void mouseDoubleClickEvent(QMouseEvent *e);
 
 signals:
     void completedInput(const QString &text);
 
-public slots:
+private slots:
+    void onTextChanged(const QString &text);
 
+public slots:
 };
 
 class WebBrowserComboBox : public QComboBox

@@ -19,6 +19,7 @@
 WebBrowserLineEdit::WebBrowserLineEdit(QWidget *parent) :
     QLineEdit(parent)
 {
+    connect(this, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
 }
 
 void WebBrowserLineEdit::focusInEvent(QFocusEvent *e)
@@ -35,6 +36,8 @@ void WebBrowserLineEdit::focusOutEvent(QFocusEvent *e)
 
     if (this->hasSelectedText())
         this->deselect();
+
+    this->setCursorPosition(0);
 }
 
 void WebBrowserLineEdit::mouseDoubleClickEvent(QMouseEvent *e)
@@ -86,4 +89,10 @@ bool WebBrowserComboBox::addUrl(const QIcon &icon, const QUrl &url)
 
     // Returns false if nothing was changed, which currently never happens.
     return true;
+}
+
+void WebBrowserLineEdit::onTextChanged(const QString &text)
+{
+    if (! this->hasFocus())
+        this->setCursorPosition(0);
 }

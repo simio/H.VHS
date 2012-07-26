@@ -22,6 +22,8 @@
 #include <QObject>
 #include <QDebug>
 #include <QPointer>
+#include <QQueue>
+#include <QDateTime>
 
 #include "consolewindow.h"
 
@@ -42,6 +44,9 @@ signals:
 
 private:
     static MessageHandler *s_instance;
+
+    QQueue<QString> _buffer;
+    static const qint64 _bufferLength = 10240;                 // Lines
 
     QPointer<ConsoleWindow> _consoleWindow;
 };

@@ -36,18 +36,24 @@ void MessageHandler::message(QtMsgType type, const char *msg)
 {
     QString message;
 
+    message = QDateTime::currentDateTime().toString(Qt::ISODate) + " ";
+
     switch (type)
     {
-    case QtDebugMsg:        message = "";         break;
-    case QtWarningMsg:      message = tr("Warning:");       break;
-    case QtCriticalMsg:     message = tr("Critical:");      break;
-    case QtFatalMsg:        message = tr("Fatal:");         break;
-    default:                message = tr("Message:");
+    case QtDebugMsg:        message += "";         break;
+    case QtWarningMsg:      message += tr("Warning:");       break;
+    case QtCriticalMsg:     message += tr("Critical:");      break;
+    case QtFatalMsg:        message += tr("Fatal:");         break;
+    default:                message += tr("Message:");
     }
 
     message += QString(" ") + QString(msg);
 
     emit deliverMessage(message);
+
+    this->_buffer.enqueue(message);
+    if (this->_buffer.length() > this->_bufferLength)
+        this->_buffer.dequeue();
 
     std::cerr << message.toStdString() << std::endl;
 
@@ -60,14 +66,15 @@ QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
     if (this->_consoleWindow.isNull())
         this->_consoleWindow = new ConsoleWindow(0);                            // alloc: Independent window; don't delete
 
+    if (! QObject::connect(MessageHandler::p(), SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString))))
+        qWarning() << "Could not connect console.";
+
     this->_consoleWindow->show();
     this->_consoleWindow->raise();
     this->_consoleWindow->activateWindow();
 
-    if (QObject::connect(MessageHandler::p(), SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString))))
-        qDebug() << tr("Console connected.");
-    else
-        qWarning() << tr("Could not connect console.");
+    foreach(QString m, this->_buffer)
+        emit deliverMessage(m);
 
     return this->_consoleWindow;
 }

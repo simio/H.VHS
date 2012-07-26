@@ -54,6 +54,7 @@ int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
             break;
         case EXT_RETVAL_BLOCK:
             return ++result;
+            /* NOTREACHED */
         case EXT_RETVAL_DONE:
         case EXT_RETVAL_DATA_MODIFIED:
         default:

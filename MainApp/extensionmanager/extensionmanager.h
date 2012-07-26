@@ -83,6 +83,8 @@ private:
 
     DefinitionTable _definitions;
 
+    static const qint64 _defaultPluginHookPriority = 1000;
+
     // These extensions are loaded at startup and kept for as long
     // as the ExtensionManager is around.
     QMultiMap<qint64,QPointer<Extension> > _persistentExtensions;

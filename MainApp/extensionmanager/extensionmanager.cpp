@@ -90,7 +90,7 @@ void ExtensionManager::_initialise()
                 qDebug() << "Extension" << definition->name() << "loaded to persistent circle.";
                 qint64 priority = extension->suggestedHookPriority();
                 if (priority == EXT_NO_HOOK_PRIORITY_SUGGESTION)
-                    priority = 1000;
+                    priority = this->_defaultPluginHookPriority;
                 this->_persistentExtensions.insert(priority, extension);
                 extension->pluginHook(EXT_HOOK_INIT_EXTENSION_PERSISTENT);
             }

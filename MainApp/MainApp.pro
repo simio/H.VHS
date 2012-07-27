@@ -73,7 +73,10 @@ SOURCES += \
     extensionmanager/definitions/formatdefinition.cpp \
     extensionmanager/definitions/transportdefinition.cpp \
     extensionmanager/extension/javascriptextension.cpp \
-    extensionmanager/extension/qtpluginextension.cpp
+    extensionmanager/extension/qtpluginextension.cpp \
+    extensionmanager/jobmanager/job.cpp \
+    extensionmanager/jobmanager/jobmanager.cpp \
+    extensionmanager/jobmanager/jobthread.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -105,7 +108,10 @@ HEADERS  += \
     extensionmanager/extension/qtpluginextension.h \
     extensionmanager/interfaces/defines.h \
     extensionmanager/interfaces/hooks.h \
-    extensionmanager/interfaces/streams.h
+    extensionmanager/interfaces/streams.h \
+    extensionmanager/jobmanager/job.h \
+    extensionmanager/jobmanager/jobmanager.h \
+    extensionmanager/jobmanager/jobthread.h
 
 FORMS    += \
     webwindow.ui \

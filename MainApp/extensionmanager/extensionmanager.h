@@ -17,24 +17,23 @@
 #ifndef EXTENSIONMANAGER_EXTENSIONMANAGER_H
 #define EXTENSIONMANAGER_EXTENSIONMANAGER_H
 
-/*  This singleton's work is centered around three lists.
+/*  All extensions are accessed through the ExtensionManager.
+ *  This singleton's work is centered around two lists.
  *
- *   - The definition list, kept in a DefinitionTable, which
- *     consists of definitions Formats, Transports and Extensions.
+ *   - The definition list, kept in a DefinitionTable, which is a
+ *     list of all definitions of Formats, Transports and Extensions.
  *
- *   - The first circle of extensions, i.e. a list consisting
- *     of one instance of each extension implementing the
+ *   - The persistent list of extensions, i.e. a list containing
+ *     one instance of each extension implementing the
  *     ExtensionInterfaceHooks interface. These are kept until
  *     the singleton is destructed. They are only ever accessed
  *     through the ExtensionInterfaceHooks interface.
  *
- *   - The second circle of extensions, i.e. a job manager.
- *     The extensions active in the job manager are also called
- *     as part of the plugin hook facilities. While the extension
- *     manager singleton is responsible for the first circle
- *     of extensions, the job manager is responsible for the second.
- *     All we care about here is telling the job manager when to
- *     run what hook on it's extensions.
+ *  The extension instances contained in the persistent list are
+ *  the instances that will receive plugin hook calls.
+ *
+ *  For any uses other than calling plugin hooks, the extension
+ *  manager creates new instances of suitable extensions on request.
  */
 
 #include <QObject>
@@ -56,6 +55,8 @@
 #include "extensionmanager/definitiontable.h"
 #include "extensionmanager/extension/qtpluginextension.h"
 #include "extensionmanager/extension/javascriptextension.h"
+
+#include "jobmanager/jobmanager.h"
 
 #include "vhsxml/documentreader.h"
 
@@ -88,6 +89,8 @@ private:
     // These extensions are loaded at startup and kept for as long
     // as the ExtensionManager is around.
     QMultiMap<qint64,QPointer<Extension> > _persistentExtensions;
+
+    QPointer<JobManager> _jobManager;
 
     QPointer<Extension> _loadExtension(QPointer<ExtensionDefinition> definition);
 };

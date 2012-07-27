@@ -45,6 +45,7 @@ int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
 {
     int result = 0;
 
+    // Call plugin hook on all extensions in the persistent list.
     // values() returns in ascending order, so the iteration follows priority
     foreach(QPointer<Extension> extension, this->_persistentExtensions.values())
     {
@@ -61,21 +62,27 @@ int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
             result++;
         }
     }
+
+    // Persistent extension instances take priority over instances
+    // currently present in the JobManager. This is to ensure that
+    // any hookData modifications take place before the JobManager
+    // extension instances are called.
+    result += this->_jobManager->callHook(hook, hookData);
+
     return result;
 }
 
+// Convenience member, for calling hooks where the
+// QVariant &hookData parameter is not used.
 int ExtensionManager::callHook(const qint64 hook)
 {
-    QVariant temp;
-    return this->callHook(hook, temp);
+    QVariant discardedReturnValue;
+    return this->callHook(hook, discardedReturnValue);
 }
 
 void ExtensionManager::_initialise()
 {
-    /*
-     *  Populate the first plugin hook ring with extensions
-     */
-
+    //  Populate the first plugin hook ring with extensions
     QHash<QString,QPointer<Definition> > extensions = this->_definitions.getAll(Definition::ExtensionDefinitionType);
     QHash<QString,QPointer<Definition> >::const_iterator i = extensions.begin();
     while (i != extensions.end())
@@ -97,6 +104,9 @@ void ExtensionManager::_initialise()
         }
         i++;
     }
+
+    // Set up a JobManager
+    this->_jobManager = new JobManager(this);                                   // alloc: Has parent
 }
 
 // Load an extension and return a pointer to it (or NULL). Checking which
@@ -106,7 +116,7 @@ QPointer<Extension> ExtensionManager::_loadExtension(QPointer<ExtensionDefinitio
 {
     QtPluginExtension * qtplugin;
     if (definition->api() == ExtensionDefinition::QtPlugin)
-        qtplugin = new QtPluginExtension(definition, this);                      // alloc: Has parent
+        qtplugin = new QtPluginExtension(definition, this);                     // alloc: Has parent
     else
     {
         qDebug() << "Unimplemented extension api:" << definition->api() << "for extension" << definition->id();

@@ -23,7 +23,7 @@ JobManager::JobManager(QObject *parent) :
     QPointer<JobThread> dummy = new JobThread;
     this->_jobQueue.append(dummy);
 
-    QTimer::singleShot(2000, this, SLOT(pingRepeat()));
+    //QTimer::singleShot(2000, this, SLOT(pingRepeat()));
 }
 
 void JobManager::pingRepeat()

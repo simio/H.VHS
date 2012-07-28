@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef QTPLUGINWRAPPER_H
-#define QTPLUGINWRAPPER_H
+#ifndef EXTENSIONMANAGER_EXTENSION_QTPLUGINEXTENSION_H
+#define EXTENSIONMANAGER_EXTENSION_QTPLUGINEXTENSION_H
 
 #include <QObject>
 #include <QPointer>
@@ -28,7 +28,6 @@
 #include "main.h"
 
 #include "cassette.h"
-#include "extensionmanager/extensionmanager.h"
 #include "extensionmanager/definitions/extensiondefinition.h"
 #include "extensionmanager/extension/extension.h"
 
@@ -43,6 +42,7 @@ public:
     // HVHS_INTERFACE_HOOKS
     qint64 suggestedHookPriority() const;
     qint64 pluginHook(const qint64 hook, QVariant &hookData);
+    qint64 pluginHook(const qint64 hook);
 
     // HVHS_INTERFACE_STREAMS
     QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
@@ -56,4 +56,4 @@ private:
     QPluginLoader _loader;
 };
 
-#endif // QTPLUGINWRAPPER_H
+#endif // EXTENSIONMANAGER_EXTENSION_QTPLUGINEXTENSION_H

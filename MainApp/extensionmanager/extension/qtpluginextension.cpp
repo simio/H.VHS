@@ -35,8 +35,8 @@ QtPluginExtension::QtPluginExtension(QPointer<ExtensionDefinition> definition, Q
 
 QtPluginExtension::~QtPluginExtension()
 {
-    //XXX: This looks wrong: It should call this hook on only this extension, but doesn't?
-    ExtensionManager::p()->callHook(EXT_HOOK_BEFORE_KILL_EXT);
+    this->pluginHook( EXT_HOOK_BEFORE_KILL_EXT );
+
     this->_loader.unload();
 }
 
@@ -59,6 +59,13 @@ qint64 QtPluginExtension::pluginHook(const qint64 hook, QVariant &hookData)
         return EXT_INTERFACE_NOT_SUPPORTED;
     ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(this->_plugin);
     return exIf->pluginHook(hook, hookData);
+}
+
+// For convenience
+qint64 QtPluginExtension::pluginHook(const qint64 hook)
+{
+    QVariant discardedReturnValue;
+    return this->pluginHook(hook, discardedReturnValue);
 }
 
 QPointer<QIODevice> QtPluginExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)

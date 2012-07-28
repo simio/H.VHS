@@ -1,2 +1,5 @@
 all:
-	java -jar ../../trang-20081028/trang.jar vhsxml.rnc vhsxml.rng
+	java -jar trang.jar vhsxml.rnc vhsxml.rng
+
+validate:
+	java -jar jing.jar vhsxml.rng $(FILE)

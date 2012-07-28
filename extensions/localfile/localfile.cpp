@@ -16,6 +16,11 @@
 
 #include "localfile.h"
 
+LocalFileExtension::operator QObject *()
+{
+    return qobject_cast<QObject*>(this);
+}
+
 LocalFileExtension::LocalFileExtension(QObject *parent) :
     QObject(parent)
 {

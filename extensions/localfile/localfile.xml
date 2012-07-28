@@ -18,6 +18,7 @@
             <enabled>false</enabled>
             <condition>unstable</condition>
             <interfaces>
+                <interface>org.huggpunkt.VHS.Common/1.0</interface>
                 <interface>org.huggpunkt.VHS.Streams/1.0</interface>
             </interfaces>
             <source apiVersion="1.0" api="qtplugin" />

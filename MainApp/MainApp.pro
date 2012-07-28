@@ -106,12 +106,13 @@ HEADERS  += \
     extensionmanager/extension/javascriptextension.h \
     extensionmanager/extension/extension.h \
     extensionmanager/extension/qtpluginextension.h \
-    extensionmanager/interfaces/defines.h \
-    extensionmanager/interfaces/hooks.h \
-    extensionmanager/interfaces/streams.h \
     extensionmanager/jobmanager/job.h \
     extensionmanager/jobmanager/jobmanager.h \
-    extensionmanager/jobmanager/jobthread.h
+    extensionmanager/jobmanager/jobthread.h \
+    extensionmanager/interfaces/common_if.h \
+    extensionmanager/interfaces/hooks_if.h \
+    extensionmanager/interfaces/streams_if.h \
+    extensionmanager/interfaces/if_commondefines.h
 
 FORMS    += \
     webwindow.ui \

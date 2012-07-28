@@ -94,7 +94,7 @@ void ExtensionManager::_initialise()
             QPointer<Extension> extension = this->_loadExtension(definition);
             if (extension && extension->implementsInterface( HVHS_INTERFACE_HOOKS ))
             {
-                qDebug() << "Extension" << definition->name() << "loaded to persistent circle.";
+                qDebug() << "Extension" << definition->name() << "loaded to persistent extension list.";
                 qint64 priority = extension->suggestedHookPriority();
                 if (priority == EXT_NO_HOOK_PRIORITY_SUGGESTION)
                     priority = this->_defaultPluginHookPriority;

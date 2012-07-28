@@ -14,10 +14,11 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONINTERFACES_DEFINES_H
-#define EXTENSIONINTERFACES_DEFINES_H
+#ifndef EXTENSIONINTERFACES_IF_COMMON_H
+#define EXTENSIONINTERFACES_IF_COMMON_H
 
 #define EXT_INTERFACE_NOT_SUPPORTED            -1
+#define HVHS_INTERFACE_COMMON                   "org.huggpunkt.VHS.Common/1.0"
 #define HVHS_INTERFACE_HOOKS                    "org.huggpunkt.VHS.Hooks/1.0"
 #define HVHS_INTERFACE_STREAMS                  "org.huggpunkt.VHS.Streams/1.0"
 
@@ -28,10 +29,12 @@
 #define EXT_HOOK_INIT_EXTENSION_PERSISTENT      10
 #define EXT_HOOK_INIT_EXTENSION                 20
 #define EXT_HOOK_BEFORE_KILL_EXT                30
-#define EXT_HOOK_WEBVIEW_LOADSTARTED            40
-#define EXT_HOOK_WEBVIEW_LOADREQUESTED          41
-#define EXT_HOOK_WEBVIEW_LOADFINISHED           50
-#define EXT_HOOK_AFTER_WEBWINDOW_CONSTRUCTOR    60
+
+#define EXT_HOOK_AFTER_WEBWINDOW_CONSTRUCTOR    100
+
+#define EXT_HOOK_WEBVIEW_LOADSTARTED            400
+#define EXT_HOOK_WEBVIEW_LOADREQUESTED          410
+#define EXT_HOOK_WEBVIEW_LOADFINISHED           420
 
 // Extension::pluginHook() return values (is NOOP or any combination of the other)
 #define EXT_RETVAL_NOOP                         0
@@ -39,4 +42,4 @@
 #define EXT_RETVAL_BLOCK                        2
 #define EXT_RETVAL_DATA_MODIFIED                4
 
-#endif // EXTENSIONINTERFACES_DEFINES_H
+#endif // EXTENSIONINTERFACES_IF_COMMON_H

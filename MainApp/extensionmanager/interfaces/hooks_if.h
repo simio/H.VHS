@@ -22,7 +22,7 @@
 #include <QHash>
 #include <QString>
 
-#include "defines.h"
+#include "if_commondefines.h"
 
 /*  H.VHS QPlugin Extension Interface for plugin hooks, version 1.0
  *
@@ -72,7 +72,7 @@ public:
      * in no more extensions being called. The order in which extensions are
      * called is decided in the main application.
      *
-     * Hook names and possible return values are defined in extensionhooks.h
+     * Hook names and possible return values are defined in if_commondefines.h
      * Extensions are (for some hooks) allowed or required to modify hookData
      */
     virtual qint64 pluginHook(const qint64 hook, QVariant &hookData) = 0;

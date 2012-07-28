@@ -27,22 +27,23 @@
 #include <QString>
 #include <QVariant>
 
-#include "hooks.h"
+#include "common_if.h"
+#include "hooks_if.h"
 
-class DummyExtension : public QObject, ExtensionInterfaceHooks
+class DummyExtension :
+        public QObject,
+        public ExtensionInterfaceCommon,
+        public ExtensionInterfaceHooks
 {
     Q_OBJECT
-    Q_INTERFACES(ExtensionInterfaceHooks)
+    Q_INTERFACES(ExtensionInterfaceCommon ExtensionInterfaceHooks)
 
 public:
+    operator QObject*();
     explicit DummyExtension(QObject *parent = 0);
 
     qint64 suggestedHookPriority() const;
     qint64 pluginHook(const qint64 hook, QVariant &hookData);
-
-signals:
-
-public slots:
 
 private:
 

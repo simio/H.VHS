@@ -14,32 +14,28 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONINTERFACES_STREAMS_H
-#define EXTENSIONINTERFACES_STREAMS_H
+#ifndef EXTENSIONINTERFACES_COMMON_IF_H
+#define EXTENSIONINTERFACES_COMMON_IF_H
 
 #include <QPointer>
-#include <QIODevice>
+#include <QString>
 
-#include "defines.h"
+#include "if_commondefines.h"
 
-/*  H.VHS QPlugin Extension Interface for QIODevices, version 1.0
+/*  H.VHS QPlugin Extension Interface for all extensions, version 1.0
  *
- *  When the main application needs to call openStream(), it will create
- *  a new instance of the extension. This new instance will be put on a
- *  pluginHook() calling list, if the hooks interface is supported by this
- *  extension. This means more than one instance of every stream-creating
- *  extension might be called for each hook. Avoid conflicts!
+ *  All extensions must use this, as it enables input from and output to
+ *  the main application messaging system. This is essential for debugging.
  */
 
-class ExtensionInterfaceStreams
+class ExtensionInterfaceCommon
 {
 public:
-    virtual ~ExtensionInterfaceStreams() {}
-
-    virtual QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
+    virtual operator QObject*() = 0;            // Some stupid trick to allow signals/slots on QTPlugins.
+    virtual ~ExtensionInterfaceCommon() {}
 };
 
-Q_DECLARE_INTERFACE(ExtensionInterfaceStreams,
-                    HVHS_INTERFACE_STREAMS)
+Q_DECLARE_INTERFACE(ExtensionInterfaceCommon,
+                    HVHS_INTERFACE_COMMON)
 
-#endif // EXTENSIONINTERFACES_STREAMS_H
+#endif // EXTENSIONINTERFACES_COMMON_IF_H

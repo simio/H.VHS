@@ -25,16 +25,17 @@
 #include "main.h"
 
 #include "cassette.h"
-#include "extensionmanager/interfaces/defines.h"
-#include "extensionmanager/interfaces/hooks.h"
-#include "extensionmanager/interfaces/streams.h"
+#include "extensionmanager/interfaces/if_commondefines.h"
+#include "extensionmanager/interfaces/common_if.h"
+#include "extensionmanager/interfaces/hooks_if.h"
+#include "extensionmanager/interfaces/streams_if.h"
 
 class Extension : public QObject
 {
     Q_OBJECT
 public:
     virtual ~Extension()                                                        { }
-    virtual bool isValid()                                                      { return false; }
+    virtual bool isValid()                                                      { return this->implementsInterface( HVHS_INTERFACE_COMMON ); }
 
     // Return StringList of supported interfaces
     QString id()                                                                { return this->_extensionId; }
@@ -53,6 +54,7 @@ protected:
     explicit Extension(QObject *parent = 0) : QObject(parent)                   { }
     QString _extensionId;
     QStringList _interfaces;
+
 };
 
 #endif // EXTENSION_H

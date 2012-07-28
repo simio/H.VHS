@@ -35,13 +35,14 @@ QtPluginExtension::QtPluginExtension(QPointer<ExtensionDefinition> definition, Q
 
 QtPluginExtension::~QtPluginExtension()
 {
+    //XXX: This looks wrong: It should call this hook on only this extension, but doesn't?
     ExtensionManager::p()->callHook(EXT_HOOK_BEFORE_KILL_EXT);
     this->_loader.unload();
 }
 
 bool QtPluginExtension::isValid()
 {
-    return this->_loader.isLoaded();
+    return (Extension::isValid() && this->_loader.isLoaded());
 }
 
 qint64 QtPluginExtension::suggestedHookPriority() const

@@ -16,6 +16,11 @@
 
 #include "dummy.h"
 
+DummyExtension::operator QObject *()
+{
+    return qobject_cast<QObject*>(this);
+}
+
 DummyExtension::DummyExtension(QObject *parent) :
     QObject(parent)
 {
@@ -23,19 +28,19 @@ DummyExtension::DummyExtension(QObject *parent) :
 
 qint64 DummyExtension::suggestedHookPriority() const
 {
-    return 100;
+    return EXT_NO_HOOK_PRIORITY_SUGGESTION;
 }
 
 qint64 DummyExtension::pluginHook(const qint64 hook, QVariant &hookData)
 {
     if (hook == EXT_HOOK_INIT_EXTENSION_PERSISTENT)
     {
-        std::cout << "Dummy: Hello!\n";
+        qDebug() << "Dummy extension: EXT_HOOK_INIT_EXTENSION_PERSISTENT";
         return EXT_RETVAL_DONE;
     }
     else if (hook == EXT_HOOK_AFTER_WEBWINDOW_CONSTRUCTOR)
     {
-        std::cout << "Dummy: Finally!\n";
+        qDebug() << "Dummy extension: EXT_HOOK_AFTER_WEBWINDOW_CONSTRUCTOR";
         return EXT_RETVAL_DONE;
     }
 

@@ -25,7 +25,7 @@
 
 #include "main.h"
 
-#include "extensionmanager/interfaces/streams.h"
+#include "extensionmanager/interfaces/streams_if.h"
 
 class Job : public QObject
 {

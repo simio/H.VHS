@@ -14,40 +14,32 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LOCALFILE_H
-#define LOCALFILE_H
+#ifndef EXTENSIONINTERFACES_STREAMS_H
+#define EXTENSIONINTERFACES_STREAMS_H
 
-#define HVHS_EXTENSION
-
-#include <QtGui/QtGui>
-#include <QObject>
 #include <QPointer>
 #include <QIODevice>
-#include <QFileInfo>
 
-#include "common_if.h"
-#include "streams_if.h"
+#include "if_commondefines.h"
 
-class LocalFileExtension :
-        public QObject,
-        public ExtensionInterfaceCommon,
-        public ExtensionInterfaceStreams
+/*  H.VHS QPlugin Extension Interface for QIODevices, version 1.0
+ *
+ *  When the main application needs to call openStream(), it will create
+ *  a new instance of the extension. This new instance will be put on a
+ *  pluginHook() calling list, if the hooks interface is supported by this
+ *  extension. This means more than one instance of every stream-creating
+ *  extension might be called for each hook. Avoid conflicts!
+ */
+
+class ExtensionInterfaceStreams
 {
-    Q_OBJECT
-    Q_INTERFACES(ExtensionInterfaceCommon ExtensionInterfaceStreams)
-
 public:
-    operator QObject*();
-    explicit LocalFileExtension(QObject *parent = 0);
-    ~LocalFileExtension();
+    virtual ~ExtensionInterfaceStreams() {}
 
-    QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
-
-private:
-    QPointer<QFile> _file;
-
-    QPointer<QFile> _resolveHurl(QString hurl);
-
+    virtual QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
 };
 
-#endif // LOCALFILE_H
+Q_DECLARE_INTERFACE(ExtensionInterfaceStreams,
+                    HVHS_INTERFACE_STREAMS)
+
+#endif // EXTENSIONINTERFACES_STREAMS_H

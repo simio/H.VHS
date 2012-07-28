@@ -25,13 +25,15 @@
 // Extension::suggestHookPriority()
 #define EXT_NO_HOOK_PRIORITY_SUGGESTION        -1
 
-// Extension::pluginHook() hooks
+/* Extension::pluginHook() hooks
+ */
+// Extension control hooks. Cannot be overridden from extensions
 #define EXT_HOOK_INIT_EXTENSION_PERSISTENT      10
 #define EXT_HOOK_INIT_EXTENSION                 20
 #define EXT_HOOK_BEFORE_KILL_EXT                30
 
+// WebWindow hooks
 #define EXT_HOOK_AFTER_WEBWINDOW_CONSTRUCTOR    100
-
 #define EXT_HOOK_WEBVIEW_LOADSTARTED            400
 #define EXT_HOOK_WEBVIEW_LOADREQUESTED          410
 #define EXT_HOOK_WEBVIEW_LOADFINISHED           420

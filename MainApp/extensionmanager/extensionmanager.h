@@ -53,6 +53,7 @@
 #include "extensionmanager/definitions/transportdefinition.h"
 #include "extensionmanager/definitions/extensiondefinition.h"
 #include "extensionmanager/definitiontable.h"
+
 #include "extensionmanager/extension/qtpluginextension.h"
 #include "extensionmanager/extension/javascriptextension.h"
 

@@ -79,6 +79,7 @@ public:
     QStringList interfaces() const                                          { return this->_interfaces; }
     ApiInterface api() const                                                { return this->_api; }
     Version apiVersion() const                                              { return this->_apiVersion; }
+    QString source() const                                                  { return this->_source; }
 
     bool canWriteFormat(QString uid) const                                  { return this->_outputFormats.contains(uid); }
     bool canReadFormat(QString uid) const                                   { return this->_inputFormats.contains(uid); }

@@ -14,27 +14,45 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef JAVASCRIPTWRAPPER_H
-#define JAVASCRIPTWRAPPER_H
+#ifndef EXTENSIONMANAGER_EXTENSION_JAVASCRIPTEXTENSION_H
+#define EXTENSIONMANAGER_EXTENSION_JAVASCRIPTEXTENSION_H
 
 #include <QObject>
+#include <QtScript>
 
 #include "main.h"
 
+#include "cassette.h"
 #include "extensionmanager/definitions/extensiondefinition.h"
 #include "extensionmanager/extension/extension.h"
 
-/*
 class JavaScriptExtension : public Extension
 {
 public:
-    explicit JavaScriptExtension(ExtensionDefinition definition, QObject *parent = 0);
+    explicit JavaScriptExtension(QPointer<ExtensionDefinition> definition, QObject *parent = 0);
+
+    ~JavaScriptExtension();
+
+    bool isValid();
+
+    // HVHS_INTERFACE_HOOKS
+    qint64 suggestedHookPriority() const;
+    qint64 pluginHook(const qint64 hook, QVariant &hookData);
+    qint64 pluginHook(const qint64 hook);
+
+    // HVHS_INTERFACE_STREAMS
+    QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+
+private:
+    QPointer<QScriptEngine> _engine;
+
+    bool _initialise(QPointer<ExtensionDefinition> definition);
+    bool _initialised;
 
 signals:
 
 public slots:
 
 };
-*/
 
-#endif // JAVASCRIPTWRAPPER_H
+#endif // EXTENSIONMANAGER_EXTENSION_JAVASCRIPTEXTENSION_H

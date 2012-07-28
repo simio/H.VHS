@@ -94,7 +94,7 @@ void ExtensionManager::_initialise()
             QPointer<Extension> extension = this->_loadExtension(definition);
             if (extension && extension->implementsInterface( HVHS_INTERFACE_HOOKS ))
             {
-                qDebug() << "Extension" << definition->name() << "loaded to persistent extension list.";
+                qDebug() << "ExtensionManager: " << definition->name() << "loaded to persistent extension list.";
                 qint64 priority = extension->suggestedHookPriority();
                 if (priority == EXT_NO_HOOK_PRIORITY_SUGGESTION)
                     priority = this->_defaultPluginHookPriority;
@@ -114,24 +114,43 @@ void ExtensionManager::_initialise()
 // is not done here.
 QPointer<Extension> ExtensionManager::_loadExtension(QPointer<ExtensionDefinition> definition)
 {
-    QtPluginExtension * qtplugin;
-    if (definition->api() == ExtensionDefinition::QtPlugin)
+    //XXX: More type casting may simplify this greatly
+    switch (definition->api())
+    {
+    case ExtensionDefinition::QtPlugin:
+        QtPluginExtension * qtplugin;
         qtplugin = new QtPluginExtension(definition, this);                     // alloc: Has parent
-    else
-    {
-        qDebug() << "Unimplemented extension api:" << definition->api() << "for extension" << definition->id();
-        return NULL;
-    }
+        if (qtplugin->isValid())
+        {
+            QPointer<Extension> extension;
+            extension = (Extension*)(QtPluginExtension*)qtplugin;
+            return extension;
+        }
+        else
+        {
+            delete qtplugin;
+            return NULL;
+        }
+        /* NOTREACHED */
 
-    if (qtplugin->isValid())
-    {
-        QPointer<Extension> extension;
-        extension = (Extension*)(QtPluginExtension*)qtplugin;
-        return extension;
-    }
-    else
-    {
-        delete qtplugin;
+    case ExtensionDefinition::JavaScript:
+        JavaScriptExtension * jsplugin;
+        jsplugin = new JavaScriptExtension(definition, this);                   // alloc: Has parent
+        if (jsplugin->isValid())
+        {
+            QPointer<Extension> extension;
+            extension = (Extension*)(JavaScriptExtension*)jsplugin;
+            return extension;
+        }
+        else
+        {
+            delete jsplugin;
+            return NULL;
+        }
+        /* NOTREACHED */
+
+    default:
+        qWarning() << "ExtensionManager: Unimplemented extension api:" << definition->api() << "for extension" << definition->id();
         return NULL;
     }
 }

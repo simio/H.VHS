@@ -71,11 +71,20 @@ int DefinitionTable::count(Definition::DefinitionType type) const
 bool DefinitionTable::update(QPointer<Definition> def)
 {
     if (! this->contains(def))
+    {
         this->_set(def);            // Previously unknown definition.
+        qDebug() << "DefinitionTable: Type" << def->type() << "definition added:    " << def->name();
+    }
     else if (this->get(def) <= def)
+    {
         this->_set(def);            // Had an older version in table. Update.
+        qDebug() << "DefinitionTable: Type" << def->type() << "definition updated:  " << def->name();
+    }
     else
+    {
+        qDebug() << "DefinitionTable: Type" << def->type() << "definition discarded:" << def->name();
         return false;               // Has an equally new or newer definition. Do nothing and tell about it.
+    }
 
     // The table was changed.
     return true;

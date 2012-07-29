@@ -16,12 +16,24 @@
 
 #include "javascriptextension.h"
 
+/*  This object makes a copy of the supplied ExtensionDefinition upon construction.
+ *  The ExtensionDefinition will never change nor be swapped for another one.
+ *  Create another instance of JavaScriptExtension to use another definition.
+ */
 JavaScriptExtension::JavaScriptExtension(QPointer<ExtensionDefinition> definition, QObject *parent) :
     Extension(parent)
 {
-    this->_initialised = this->_initialise(definition);
+    // Make a copy of the definition and keep it for ourselves. This way,
+    // the plugin will continue to work even if the definition pointed to
+    // by the 'definition' parameter disappears.
+    this->_definition = new ExtensionDefinition(*definition);            // alloc: Has parent
+    this->_definition->setParent(this);
+
+    this->_initialised = this->_initialise();
     if (! this->_initialised)
-        qWarning() << "JavaScriptExtension object for definition" << definition->id() << "couldn't initialise";
+    {
+        qWarning() << "JavaScriptExtension object for definition" << definition->id() << "couldn't initialise.";
+    }
 }
 
 JavaScriptExtension::~JavaScriptExtension()
@@ -68,35 +80,44 @@ QPointer<QIODevice> JavaScriptExtension::openStream(QIODevice::OpenModeFlag open
     return NULL;
 }
 
-bool JavaScriptExtension::_initialise(QPointer<ExtensionDefinition> definition)
+/*  Try to initialise the script environment, and return true or false depending
+ *  on if the script extension is valid. (Validity holds true if this function and
+ *  Extension::isValid() returns true, see isValid() above.)
+ *
+ *  Currently, the script source code is only validated here, including if any source
+ *  code is present at all. This is probably bad. Checking if any source is present
+ *  should happen in checking the validity of the ExtensionDefinition, since the source
+ *  code should be considered part of the definition, rather than the actual plugin.
+ *
+ *  From the same reasoning follows that checking whether the script evaluates
+ *  properly also should happen on definition level. That might not work out too well
+ *  though, because of memory, speed etc. Also, new instances of extensions are created
+ *  on demand, making definition level script evaluation totally useless for any other
+ *  purpose than checking whether evaluation fails or not.
+ *
+ *  This function is also too long and should be broken up.
+ */
+bool JavaScriptExtension::_initialise()
 {
-    if (! this->_engine.isNull())
-    {
-        qDebug() << "JavaScriptExtension::_initialise(): Replacing existing QScriptEngine to reinitialise for" << definition->id();
-        this->_engine->deleteLater();
-    }
-
-    this->_engine = new QScriptEngine(this);                    // alloc: Has parent
-
-    QString source;
+    // Load source code from definition, or from file if definition->source() is empty.
+    QString source = QString();
     QString sourceFilename = QString();
-
-    // If definition->source() is not empty, we use it.
-    if (! definition->source().isEmpty())
+    if (! this->_definition->source().isEmpty())
     {
-        qDebug() << "JavaScriptExtension: Inline source for" << definition->id();
-        source = definition->source();
-        sourceFilename = definition->id() + ".xml";
+        qDebug() << "JavaScriptExtension: Inline source for" << this->_definition->id();
+        source = this->_definition->source();
+        //XXX: This is a hack. Doing it properly would include having the definition
+        //     provide its own source filename.
+        sourceFilename = this->_definition->id() + ".xml";
     }
     else
     {
-        QFile scriptFile(Configuration::p()->extensionRootFile(definition->id(),
-                                                               definition->apiVersion()).canonicalFilePath());
+        QFile scriptFile(Configuration::p()->extensionRootFile(this->_definition->id(),
+                                                               this->_definition->apiVersion()).canonicalFilePath());
         if (! scriptFile.open(QIODevice::ReadOnly))
         {
-            qWarning() << "JavaScriptExtension: Extension" << definition->id() << "has no inlined source, but"
+            qWarning() << "JavaScriptExtension: Extension" << this->_definition->id() << "has no inlined source, but"
                        << "a source file could not be found or opened for reading.";
-            this->_engine->deleteLater();
             return false;
         }
 
@@ -108,19 +129,45 @@ bool JavaScriptExtension::_initialise(QPointer<ExtensionDefinition> definition)
         sourceFilename = scriptFile.fileName();
     }
 
-    QScriptValue evalReturnValue = this->_engine->evaluate(source, sourceFilename);
-    qDebug() << "JavaScriptExtension " << definition->id() << "evaluated.";
-    if (this->_engine->hasUncaughtException())
+    // Delete the current script engine, if there is one, and create a new one.
+    if (! this->_engine.isNull())
     {
-        qWarning() << evalReturnValue.toString() << "in source for" << definition->id()
-                   << "line" << this->_engine->uncaughtExceptionLineNumber();
-        qWarning() << "  " << this->_engine->uncaughtException().toString();
-        qWarning() << "Trace follows:";
-        foreach(QString line, this->_engine->uncaughtExceptionBacktrace())
-            qWarning() << "  |" << line;
+        qDebug() << "JavaScriptExtension::_initialise(): Replacing existing QScriptEngine to reinitialise for"
+                 << this->_definition->id();
+        this->_engine->deleteLater();
+    }
+    this->_engine = new QScriptEngine(this);                    // alloc: Has parent
+
+    // Setup up an environment for the actual extension script
+    //this->_engine
+
+    // Evaluate source now
+    qDebug() << "JavaScriptExtension: Evaluating for " << this->_definition->id();
+
+    if (this->_hasError(this->_engine->evaluate(source, sourceFilename)))
+    {
         this->_engine->deleteLater();
         return false;
     }
+
+    return true;
+}
+
+/*  Check for uncaught exceptions. Return true and print stuff if there were any.
+ */
+bool JavaScriptExtension::_hasError(QScriptValue evalReturnValue)
+{
+    if (! this->_engine->hasUncaughtException())
+        return false;
+
+    QString retvalstr = (evalReturnValue.isNull() ? "In" : evalReturnValue.toString() + " in");
+
+    qWarning() << retvalstr << "source for" << this->_definition->id()
+               << "line" << this->_engine->uncaughtExceptionLineNumber();
+    qWarning() << "  " << this->_engine->uncaughtException().toString();
+    qWarning() << "Trace follows:";
+    foreach(QString line, this->_engine->uncaughtExceptionBacktrace())
+        qWarning() << "  |" << line;
 
     return true;
 }

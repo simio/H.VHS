@@ -45,9 +45,12 @@ public:
 
 private:
     QPointer<QScriptEngine> _engine;
+    QPointer<ExtensionDefinition> _definition;
 
-    bool _initialise(QPointer<ExtensionDefinition> definition);
+    bool _initialise();
     bool _initialised;
+
+    bool _hasError(QScriptValue evalReturnValue = QScriptValue());
 
 signals:
 

@@ -13,6 +13,14 @@ if [ X$PLATFORM = Xwin32 ]; then
     CAT="$CYGWIN_BIN/cat.exe"
     WC="$CYGWIN_BIN/wc.exe"
     DATE="$CYGWIN_BIN/date.exe"
+else if [ X$PLATFORM = Xposix ]; then
+        SED="$(which sed)"
+        DIRNAME="$(which dirname)"
+        GIT="$(which git)"
+        CAT="$(which cat)"
+        WC="$(which wc)"
+        DATE="$(which date)"
+    fi
 fi
 
 PRO_PWD=$($DIRNAME "$0")

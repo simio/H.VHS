@@ -1,7 +1,11 @@
-This repository contains what will become a full rewrite of H.VHS. The
-previous, unfortunately quite broken version is still hosted at Google
-Code.
+Huggpunkt VHS is currently undergoing a complete rewrite. The rewritten
+code, which will become version 0.4, is maintained in this repository.
 
-The H.VHS home page is currently only available in Swedish:
+The latest release is 0.3.5. It is only available in Swedish for the
+Windows platform. You can download it via the project bulletin board:
 
     http://planka.huggpunkt.org/h-vhs
+
+The 0.3 branch is no longer being developed, though minor bugfixes do
+happen. More information about the upcoming 0.4 version will follow
+later this year.

@@ -30,12 +30,17 @@ win32 {
     version_h.target = version.h
     version_h.depends = winrc
 
+    IF_COMMONDEFINES_QS = extensionmanager/interfaces/if_commondefines.qs
+    if_commondefines_qs.target = $$IF_COMMONDEFINES_QS
+    if_commondefines_qs.commands = $${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/mkqs_commondefines.sh'" $$CYGWIN_BIN win32
+    if_commondefines_qs.depends = FORCE
+
     PRE_TARGETDEPS += $$RC_FILE
     QMAKE_EXTRA_TARGETS += winrc
 }
 
-PRE_TARGETDEPS += version.h
-QMAKE_EXTRA_TARGETS += version_h
+PRE_TARGETDEPS += version.h $$IF_COMMONDEFINES_QS
+QMAKE_EXTRA_TARGETS += version_h if_commondefines_qs
 
 presets.files = presets
 presets.path = $$DEPLOY_DIST_DIR
@@ -123,7 +128,8 @@ OTHER_FILES += \
     presets/format.xml \
     presets/transport.xml \
     update_version.sh \
-    rc.template
+    rc.template \
+    mkqs_commondefines.sh
 
 RESOURCES += \
     vhs.qrc

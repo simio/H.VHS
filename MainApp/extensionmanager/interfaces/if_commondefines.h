@@ -14,8 +14,12 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONINTERFACES_IF_COMMON_H
-#define EXTENSIONINTERFACES_IF_COMMON_H
+// Cross-platform cleverness is not allowed here. Every value
+// must be defined on all or no platforms, at build time, due
+// to this file being parsed and recreated as a .qs file.
+
+#ifndef EXTENSIONINTERFACES_IF_COMMONDEFINES_H
+#define EXTENSIONINTERFACES_IF_COMMONDEFINES_H
 
 #define EXT_INTERFACE_NOT_SUPPORTED            -1
 #define HVHS_INTERFACE_COMMON                   "org.huggpunkt.VHS.Common/1.0"
@@ -25,8 +29,18 @@
 // Extension::suggestHookPriority()
 #define EXT_NO_HOOK_PRIORITY_SUGGESTION        -1
 
-/* Extension::pluginHook() hooks
+
+/*
+ *  Extension::pluginHook() definitions
  */
+
+// Extension::pluginHook() return values. Obviously, these
+// are flags, and not mutually exclusive.
+#define EXT_RETVAL_NOOP                         0
+#define EXT_RETVAL_DONE                         1
+#define EXT_RETVAL_BLOCK                        2
+#define EXT_RETVAL_DATA_MODIFIED                4
+
 // Extension control hooks. Cannot be overridden from extensions
 #define EXT_HOOK_INIT_EXTENSION_PERSISTENT      10
 #define EXT_HOOK_INIT_EXTENSION                 20
@@ -38,10 +52,5 @@
 #define EXT_HOOK_WEBVIEW_LOADREQUESTED          410
 #define EXT_HOOK_WEBVIEW_LOADFINISHED           420
 
-// Extension::pluginHook() return values (is NOOP or any combination of the other)
-#define EXT_RETVAL_NOOP                         0
-#define EXT_RETVAL_DONE                         1
-#define EXT_RETVAL_BLOCK                        2
-#define EXT_RETVAL_DATA_MODIFIED                4
 
-#endif // EXTENSIONINTERFACES_IF_COMMON_H
+#endif // EXTENSIONINTERFACES_IF_COMMONDEFINES_H

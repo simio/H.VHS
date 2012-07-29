@@ -1,0 +1,3 @@
+function pluginHook(hook, hookData) {
+
+}

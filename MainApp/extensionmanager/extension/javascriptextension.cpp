@@ -78,38 +78,49 @@ bool JavaScriptExtension::_initialise(QPointer<ExtensionDefinition> definition)
 
     this->_engine = new QScriptEngine(this);                    // alloc: Has parent
 
-    QScriptValue evalReturnValue;
+    QString source;
+    QString sourceFilename = QString();
 
-    // Even if this file does not exist (with inlined script code), it will be used for error reporting.
-    QFileInfo sourceFile = Configuration::p()->extensionRootFile(definition->id(), definition->apiVersion());
-
-    // If definition->source() is not empty, evaluate it;
+    // If definition->source() is not empty, we use it.
     if (! definition->source().isEmpty())
     {
-        evalReturnValue = this->_engine->evaluate(definition->source(), sourceFile.canonicalFilePath());
-        qDebug() << "JavaScriptExtension initialised with (inlined) source:";
-        qDebug() << definition->source();
+        qDebug() << "JavaScriptExtension: Inline source for" << definition->id();
+        source = definition->source();
+        sourceFilename = definition->id() + ".xml";
     }
     else
     {
-        if (sourceFile.exists() && sourceFile.isReadable())
+        QFile scriptFile(Configuration::p()->extensionRootFile(definition->id(),
+                                                               definition->apiVersion()).canonicalFilePath());
+        if (! scriptFile.open(QIODevice::ReadOnly))
         {
-            QFile scriptFile(sourceFile.canonicalFilePath());
-            if (! scriptFile.open(QIODevice::ReadOnly))
-            {
-                qWarning() << "JavaScriptExtension::_initialise() could not read file" << sourceFile.canonicalFilePath();
-                return false;
-            }
-            QTextStream stream(&scriptFile);
-            QString source = stream.readAll();
-            scriptFile.close();
-            evalReturnValue = this->_engine->evaluate(source, sourceFile.canonicalFilePath());
-            qDebug() << "JavaScriptExtension initialised with (standalone) source from file:";
-            qDebug() << source;
+            qWarning() << "JavaScriptExtension: Extension" << definition->id() << "has no inlined source, but"
+                       << "a source file could not be found or opened for reading.";
+            this->_engine->deleteLater();
+            return false;
         }
+
+        //XXX: AFAIK the following will fail to report input errors.
+        //     (http://qt-project.org/doc/qt-4.8/qiodevice.html#readAll)
+        QTextStream stream(&scriptFile);
+        source = stream.readAll();
+        scriptFile.close();
+        sourceFilename = scriptFile.fileName();
     }
 
-    qDebug() << "JavaScriptExtension evaluation return value was" << evalReturnValue.toString();
+    QScriptValue evalReturnValue = this->_engine->evaluate(source, sourceFilename);
+    qDebug() << "JavaScriptExtension " << definition->id() << "evaluated.";
+    if (this->_engine->hasUncaughtException())
+    {
+        qWarning() << evalReturnValue.toString() << "in source for" << definition->id()
+                   << "line" << this->_engine->uncaughtExceptionLineNumber();
+        qWarning() << "  " << this->_engine->uncaughtException().toString();
+        qWarning() << "Trace follows:";
+        foreach(QString line, this->_engine->uncaughtExceptionBacktrace())
+            qWarning() << "  |" << line;
+        this->_engine->deleteLater();
+        return false;
+    }
 
     return true;
 }

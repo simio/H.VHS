@@ -4,4 +4,5 @@ HVHS_EXTENSION_VERSION = 1
 include( ../hvhs_extension_script.pri )
 
 OTHER_FILES += \
-    dummyjs.xml
+    dummyjs.xml \
+    dummyjs1.qs

@@ -2,8 +2,8 @@
 <vhsxml version="1.1" xmlns="http://play.huggpunkt.org/vhsxml/1">
     <extensions>
         <extension>
-            <id releaseDate="2012-03-24T23:10:00">dummyjs</id>
-            <name xml:lang="en">Dummy javscript extension</name>
+            <id releaseDate="2012-07-28T16:28:00">dummyjs</id>
+            <name xml:lang="en">Dummy javascript extension</name>
             <name xml:lang="sv">Låtsastillägg i javascript</name>
             <description xml:lang="en">The javascript extension, it does nothing.</description>
             <authors>
@@ -20,11 +20,7 @@
                 <interface>org.huggpunkt.VHS.Common/1.0</interface>
                 <interface>org.huggpunkt.VHS.Hooks/1.0</interface>
             </interfaces>
-            <source apiVersion="1.0" api="javascript">
-                <![CDATA[
-                    var dummy = "some value";
-                ]]>
-            </source>
+            <source apiVersion="1.0" api="javascript" />
             <audits>
                 <audit username="jesper"
                        website="http://huggpunkt.org/"

@@ -22,6 +22,7 @@ MessageHandler *MessageHandler::s_instance = NULL;
 MessageHandler::MessageHandler(QObject *parent) :
     QObject(parent)
 {
+    this->message(QtDebugMsg, "READY.");
 }
 
 MessageHandler *MessageHandler::p()
@@ -41,10 +42,10 @@ void MessageHandler::message(QtMsgType type, const char *msg)
     switch (type)
     {
     case QtDebugMsg:        message += "";         break;
-    case QtWarningMsg:      message += tr("Warning:");       break;
-    case QtCriticalMsg:     message += tr("Critical:");      break;
-    case QtFatalMsg:        message += tr("Fatal:");         break;
-    default:                message += tr("Message:");
+    case QtWarningMsg:      message += "Warning:";       break;
+    case QtCriticalMsg:     message += "Critical:";      break;
+    case QtFatalMsg:        message += "Fatal:";         break;
+    default:                message += "Message:";
     }
 
     message += QString(" ") + QString(msg);

@@ -66,10 +66,10 @@ void WebWindow::_setupGui()
     if (! this->_actionBrowseReloadAndBypassCache.isNull())
     {
         this->_actionBrowseReloadAndBypassCache->setShortcuts(actionBrowseReloadAndBypassCacheShortcuts);
-        qDebug() << "ReloadAndBypassCache is enabled.";
+        qDebug() << "WebWindow::_setupGui(): ReloadAndBypassCache is enabled.";
     }
     else
-        qDebug() << "ReloadAndBypassCache is disabled.";
+        qDebug() << "WebWindow::_setupGui(): ReloadAndBypassCache is disabled.";
     this->_actionBrowseStop->setIcon(QIcon(":/icons/browseStop"));
     this->_actionBrowseStop->setShortcut(QKeySequence(Qt::Key_Escape));
     this->_actionBrowseHome->setIcon(QIcon(":/icons/browseHome"));

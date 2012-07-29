@@ -55,6 +55,46 @@ ExtensionDefinition::ExtensionDefinition(
     this->_audits = audits;
 }
 
+ExtensionDefinition::ExtensionDefinition(const ExtensionDefinition &original) :
+    Definition(original),
+    _enabled(original._enabled),
+    _authors(original._authors),
+    _licenseName(original._licenseName),
+    _licenseUrl(original._licenseUrl),
+    _condition(original._condition),
+    _basePath(original._basePath),
+    _interfaces(original._interfaces),
+    _apiVersion(original._apiVersion),
+    _api(original._api),
+    _source(original._source),
+    _audits(original._audits),
+    _inputTransports(original._inputTransports),
+    _inputFormats(original._inputFormats),
+    _outputTransports(original._outputTransports),
+    _outputFormats(original._outputFormats)
+{ }
+
+ExtensionDefinition &ExtensionDefinition::operator =(const ExtensionDefinition &original)
+{
+    Definition::operator=(original);
+    this->_authors = original._authors;
+    this->_licenseName = original._licenseName;
+    this->_licenseUrl = original._licenseUrl;
+    this->_enabled = original._enabled;
+    this->_condition = original._condition;
+    this->_basePath = original._basePath;
+    this->_interfaces = original._interfaces;
+    this->_apiVersion = original._apiVersion;
+    this->_api = original._api;
+    this->_source = original._source;
+    this->_inputTransports = original._inputTransports;
+    this->_inputFormats = original._inputFormats;
+    this->_outputTransports = original._outputTransports;
+    this->_outputFormats = original._outputFormats;
+    this->_audits = original._audits;
+    return *this;
+}
+
 bool ExtensionDefinition::isValid() const
 {
     return (Definition::isValid()

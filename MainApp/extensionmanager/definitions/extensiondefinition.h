@@ -73,6 +73,9 @@ public:
                         QList<Person> audits,
                         QObject *parent = 0);
 
+    ExtensionDefinition(const ExtensionDefinition &original);
+    virtual ExtensionDefinition &operator=(const ExtensionDefinition &original);
+
     bool isEnabled() const                                                  { return this->_enabled; }
     bool isValid() const;
     bool implementsInterface(QString interface) const                       { return this->_interfaces.contains(interface); }

@@ -47,6 +47,9 @@ public:
     virtual bool operator>(const Definition &original) const;
     virtual bool operator>=(const Definition &original) const;
 
+    Definition(const Definition &original);
+    virtual Definition &operator=(const Definition &original);
+
     virtual bool isValid() const;
 
     QString id() const                                  { return this->_id; }
@@ -60,7 +63,7 @@ signals:
 public slots:
 
 private:
-    explicit Definition();
+    Definition();
     QString _id;                    // Unique ID (generated from QUuid by default)
     QString _name;                  // Localised name
     QString _description;           // Localised description

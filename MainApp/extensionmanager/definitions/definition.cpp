@@ -40,7 +40,25 @@ bool Definition::operator <=(const Definition &other) const     { return this->_
                                                                     && this->_releaseDate <= other._releaseDate; }
 bool Definition::operator >(const Definition &other) const      { return this->_releaseDate > other._releaseDate; }
 bool Definition::operator >=(const Definition &other) const     { return this->_id == other._id
-                                                                    && this->_releaseDate >= other._releaseDate; }
+            && this->_releaseDate >= other._releaseDate; }
+
+Definition::Definition(const Definition &original) :
+    _id(original._id),
+    _name(original._name),
+    _description(original._description),
+    _releaseDate(original._releaseDate),
+    _type(original._type)
+{ }
+
+Definition &Definition::operator =(const Definition &original)
+{
+    this->_id = original._id;
+    this->_name = original._name;
+    this->_description = original._description;
+    this->_releaseDate = original._releaseDate;
+    this->_type = original._type;
+    return *this;
+}
 
 bool Definition::isValid() const
 {

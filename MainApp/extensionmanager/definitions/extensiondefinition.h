@@ -59,6 +59,7 @@ public:
                         QList<Person> authors,
                         QString licenseName,
                         QUrl licenseUrl,
+                        QList<Person> maintainers,
                         bool enabled,
                         Condition condition,
                         QString basePath,
@@ -105,6 +106,7 @@ private:
     QList<Person> _authors;                         // Author(s) of this extension. Years of the (c)-notice is stored as 'copyright' activity in Person.
     QString _licenseName;                           // License statement.
     QUrl _licenseUrl;                               // If relative, ./ is the location of the extension definition XML file.
+    QList<Person> _maintainers;
     Condition _condition;
     QString _basePath;
     QStringList _interfaces;

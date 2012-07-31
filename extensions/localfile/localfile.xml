@@ -15,6 +15,12 @@
                         >Jesper Räftegård</author>
             </authors>
             <license href="http://www.isc.org/software/license">ISC License</license>
+            <maintainers>
+                <maintainer email="jesper@huggpunkt.org"
+                            website="http://huggpunkt.org/"
+                            username="jesper"
+                            >Jesper</maintainer>
+            </maintainers>
             <enabled>false</enabled>
             <condition>unstable</condition>
             <interfaces>

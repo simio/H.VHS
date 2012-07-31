@@ -24,6 +24,7 @@ ExtensionDefinition::ExtensionDefinition(
         QList<Person> authors,
         QString licenseName,
         QUrl licenseUrl,
+        QList<Person> maintainers,
         bool enabled,
         ExtensionDefinition::Condition condition,
         QString basePath,
@@ -35,12 +36,14 @@ ExtensionDefinition::ExtensionDefinition(
         QList<QString> inputFormats,
         QList<QString> outputTransports,
         QList<QString> outputFormats,
-        QList<Person> audits, QObject *parent) :
+        QList<Person> audits,
+        QObject *parent) :
     Definition(id, name, description, releaseDate, Definition::ExtensionDefinitionType, parent)
 {
     this->_authors = authors;
     this->_licenseName = licenseName;
     this->_licenseUrl = licenseUrl;
+    this->_maintainers = maintainers;
     this->_enabled = enabled;
     this->_condition = condition;
     this->_basePath = basePath;
@@ -61,6 +64,7 @@ ExtensionDefinition::ExtensionDefinition(const ExtensionDefinition &original) :
     _authors(original._authors),
     _licenseName(original._licenseName),
     _licenseUrl(original._licenseUrl),
+    _maintainers(original._maintainers),
     _condition(original._condition),
     _basePath(original._basePath),
     _interfaces(original._interfaces),
@@ -80,6 +84,7 @@ ExtensionDefinition &ExtensionDefinition::operator =(const ExtensionDefinition &
     this->_authors = original._authors;
     this->_licenseName = original._licenseName;
     this->_licenseUrl = original._licenseUrl;
+    this->_maintainers = original._maintainers;
     this->_enabled = original._enabled;
     this->_condition = original._condition;
     this->_basePath = original._basePath;
@@ -99,6 +104,7 @@ bool ExtensionDefinition::isValid() const
 {
     return (Definition::isValid()
             &&  this->_authors.count() > 0
+            &&  this->_maintainers.count() > 0
             && !this->_licenseName.isEmpty()
             &&  this->_apiVersion > Version(0, 0)
             && (! (this->_inputTransports.count() || this->_inputFormats.count() || this->_outputTransports.count() || this->_outputFormats.count())

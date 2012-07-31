@@ -62,6 +62,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     QList<Person> authors;                          // A minimum of one; required
     QString licenseName;                            // Required
     QUrl licenseUrl;                                // Optional
+    QList<Person> maintainers;                      // A minimum of one; required
     bool enabled;                                   // Optional (set by application or extension repository)
     QString basePath;                               // Optional (set by application)
     ExtensionDefinition::Condition condition;       // Required
@@ -141,6 +142,24 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     {
         licenseUrl = QUrl(e.attribute("href", QString()));
         licenseName = ElementParser::token(e.text());
+        e = e.nextSiblingElement();
+    }
+    else
+        return NULL;
+
+    if (ElementParser::expect(e, "maintainers", ElementParser::Required))
+    {
+        QDomElement maintainer = e.firstChildElement();
+        while (ElementParser::expect(maintainer, "maintainer", ElementParser::Optional))
+        {
+            QString email = ElementParser::token(maintainer.attribute("email", QString()));
+            QUrl website = QUrl(maintainer.attribute("website", QString()));
+            QString username = ElementParser::nmtoken(maintainer.attribute("username", QString()));
+            QString name = ElementParser::nmtoken(maintainer.text());
+            Person person = Person(name, email, website, username);
+            maintainers << person;
+            maintainer = maintainer.nextSiblingElement();
+        }
         e = e.nextSiblingElement();
     }
     else
@@ -300,9 +319,10 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
 
     // alloc: Has parent
     QPointer<ExtensionDefinition> extension = new ExtensionDefinition(id, name, description, releaseDate, authors, licenseName,
-                                                                      licenseUrl, enabled, condition, basePath, interfaces, apiVersion,
-                                                                      apiInterfaceClass, source, inputTransports, inputFormats,
-                                                                      outputTransports, outputFormats, audits, extensionParent);
+                                                                      licenseUrl, maintainers, enabled, condition, basePath,
+                                                                      interfaces, apiVersion, apiInterfaceClass, source,
+                                                                      inputTransports, inputFormats, outputTransports,
+                                                                      outputFormats, audits, extensionParent);
     if (extension->isValid())
         return extension;
 

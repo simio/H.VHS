@@ -14,6 +14,12 @@
                         >Jesper</author>
             </authors>
             <license href="http://www.isc.org/software/license">ISC License</license>
+            <maintainers>
+                <maintainer email="jesper@huggpunkt.org"
+                            website="http://huggpunkt.org/"
+                            username="jesper"
+                            >Jesper</maintainer>
+            </maintainers>
             <enabled>true</enabled>
             <condition>stable</condition>
             <interfaces>

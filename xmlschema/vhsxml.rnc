@@ -56,6 +56,9 @@ grammar {
                 attribute href { xsd:anyURI }?,
                 xsd:token
             },
+            element maintainers {
+                maintainer+
+            },
             # <enabled> will be ignored if set by extension authors
             element enabled { "true" | "false" }?,
             # <basePath> will be ignored if set by extension authors
@@ -83,11 +86,12 @@ grammar {
     author =
         # Authors are recommended to provide at least one way of contacting them
         element author {
-            # "Copyright (c) COPYRIGHT Name O'Name"
+            # "Copyright (c) YEAR NAME"
             attribute copyright { xsd:token }?,
             attribute email { xsd:token }?,
             attribute website { xsd:anyURI }?,
             attribute username { xsd:token }?,
+            # Name of author
             xsd:token
         }
     auditor =
@@ -96,6 +100,15 @@ grammar {
             attribute website { xsd:anyURI }?,
             attribute date { xsd:dateTime }?,
             attribute username { xsd:token }?,
+            # Name of auditor
+            xsd:token
+        }
+    maintainer =
+        element maintainer {
+            attribute email { xsd:token }?,
+            attribute website { xsd:token }?,
+            attribute username { xsd:token }?,
+            # Name of maintainer
             xsd:token
         }
     source =

@@ -28,6 +28,11 @@ JobThread::JobThread(QObject *parent) :
     this->_thread->start();
 }
 
+JobThread::~JobThread()
+{
+    //XXX: Kill thread properly here
+}
+
 void JobThread::ping()
 {
     qDebug() << QThread::currentThread() << "JobThread pinging job in" << this->_thread;

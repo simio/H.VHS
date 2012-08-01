@@ -39,6 +39,7 @@ class JobThread : public QObject
     Q_OBJECT
 public:
     explicit JobThread(QObject *parent = 0);
+    ~JobThread();
 
     void ping();
 

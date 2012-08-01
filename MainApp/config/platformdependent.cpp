@@ -43,6 +43,18 @@ QDir PlatformDependent::extensionsDir(Scope scope)
         return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions");
         /* NOTREACHED */
     }
+#elif unix
+    switch (scope)
+    {
+    case System:
+        //XXX: This is a placeholder value, only used in testing
+        return QDir("/etc/hvhs/extensions");
+        /* NOTREACHED */
+    default:
+    case User:
+        return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions");
+        /* NOTREACHED */
+    }
 #endif
 }
 
@@ -59,6 +71,17 @@ QDir PlatformDependent::presetsDir(Scope scope)
         return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/presets");
         /* NOTREACHED */
     }
+#elif unix
+    switch (scope)
+    {
+    case System:
+        return QDir("/etc/hvhs/presets");
+        /* NOTREACHED */
+    default:
+    case User:
+        return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/presets");
+        /* NOTREACHED */
+    }
 #endif
 }
 
@@ -69,5 +92,9 @@ QPointer<QSettings> PlatformDependent::makeSettings(QObject * parent)
     // alloc: Has parent
     return new QSettings(QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/hvhs.ini"),
                          QSettings::IniFormat, parent);
+#elif unix
+    // alloc: Has parent
+    return new QSettings(QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/hvhs.conf"),
+                         QSettings::NativeFormat, parent);
 #endif
 }

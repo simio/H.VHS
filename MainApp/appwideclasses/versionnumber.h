@@ -23,19 +23,19 @@
 class VersionNumber
 {
 public:
-    VersionNumber()                                                   { this->_major = this->_minor = 0; }
-    VersionNumber(QString version);
-    VersionNumber(qint64 major, qint64 minor)                         { this->_major = major; this->_minor = minor; }
-    VersionNumber(const VersionNumber &original)                    : _major(original._major), _minor(original._minor) {}
-    virtual VersionNumber &operator=(const VersionNumber &original)   { this->_major = original._major; this->_minor = original._minor; return *this; }
+    VersionNumber()                                                 { this->_major = this->_minor = 0; }
+    VersionNumber(QString version)                                  { *this = VersionNumber::toVersion(version); }
+    VersionNumber(qint64 major, qint64 minor)                       { this->_major = major; this->_minor = minor; }
+    VersionNumber(const VersionNumber &original)                  : _major(original._major), _minor(original._minor) {}
+    virtual VersionNumber &operator=(const VersionNumber &original) { this->_major = original._major; this->_minor = original._minor; return *this; }
 
-    virtual bool operator==(const VersionNumber &other) const         { return (this->_major == other._major && this->_minor == other._minor); }
-    virtual bool operator!=(const VersionNumber &other) const         { return !(*this == other); }
-    virtual bool operator< (const VersionNumber &other) const         { return (this->_major < other._major)
-                                                                            || (this->_major == other._major && this->_minor < other._minor); }
-    virtual bool operator<=(const VersionNumber &other) const         { return (*this == other || *this < other); }
-    virtual bool operator> (const VersionNumber &other) const         { return !(*this <= other); }
-    virtual bool operator>=(const VersionNumber &other) const         { return !(*this < other); }
+    virtual bool operator==(const VersionNumber &other) const       { return (this->_major == other._major && this->_minor == other._minor); }
+    virtual bool operator!=(const VersionNumber &other) const       { return !(*this == other); }
+    virtual bool operator< (const VersionNumber &other) const       { return (this->_major < other._major)
+                                                                        || (this->_major == other._major && this->_minor < other._minor); }
+    virtual bool operator<=(const VersionNumber &other) const       { return (*this == other || *this < other); }
+    virtual bool operator> (const VersionNumber &other) const       { return !(*this <= other); }
+    virtual bool operator>=(const VersionNumber &other) const       { return !(*this < other); }
 
     VersionNumber toVersion(QString version);
 

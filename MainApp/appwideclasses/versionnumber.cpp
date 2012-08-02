@@ -16,11 +16,6 @@
 
 #include "appwideclasses/versionnumber.h"
 
-VersionNumber::VersionNumber(QString version)
-{
-    *this = VersionNumber::toVersion(version);
-}
-
 VersionNumber VersionNumber::toVersion(QString version)
 {
     qint64 major, minor;

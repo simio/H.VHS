@@ -30,10 +30,12 @@ class ConfigurationDefaults {
 protected:
     QString searchQuery;        // Prepended to search terms to get a (complete) web search url. Encode in UTF-8 w/o url encoding.
     bool hideDevelInfo;         // Applies when #ifndef HIDE_DEVEL_INFO
+    QUrl startPage;             // See issue #24
 
     ConfigurationDefaults() {
         this->searchQuery = QString("https://www.startpage.com/do/search?q=");
         this->hideDevelInfo = true;
+        this->startPage = QUrl("about:blank");
     }
 
     ~ConfigurationDefaults()

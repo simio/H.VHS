@@ -157,7 +157,10 @@ QMap<QString,QVariant> Configuration::getWebViewSettings()
 
 QUrl Configuration::getStartPage()
 {
-    return QUrl("about:blank");
+    // Putting code here is issue #24
+
+    // As a last resort, the hard coded default is used
+    return this->_defaults.startPage;
 }
 
 QUrl Configuration::makeSearchUrl(QString query)

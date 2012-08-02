@@ -24,6 +24,9 @@
 #include <QString>
 #include <QSettings>
 
+// This class should only ever be accessed from Configuration, and
+// should be private to Configuration. (See issue #50)
+
 class PlatformDependent
 {
 public:

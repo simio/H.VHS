@@ -19,6 +19,9 @@
 
 #include <QDialog>
 
+// This class is not allowed to include neither "main.h" nor
+// anything included below it in "main.h"
+
 namespace Ui {
 class ConsoleWindow;
 }

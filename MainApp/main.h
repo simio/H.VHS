@@ -17,7 +17,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "config/appwideclasses.h"
 #include "extensionmanager/interfaces/if_commondefines.h"
 
 #ifndef HVHS_EXTENSION
@@ -26,5 +25,7 @@
 #include "config/messagehandler.h"
 
 #endif // HVHS_EXTENSION
+
+#include "appwideclasses/appwideclasses.h"
 
 #endif // MAIN_H

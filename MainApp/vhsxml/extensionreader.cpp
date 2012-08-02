@@ -67,7 +67,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     QString basePath;                               // Optional (set by application)
     ExtensionDefinition::Condition condition;       // Required
     QStringList interfaces;                         // Required
-    Version apiVersion;                             // Required
+    VersionNumber apiVersion;                             // Required
     ExtensionDefinition::ApiInterface apiInterfaceClass;           // Required
     QString source;                                 // Source code for scripted extensions; optional
                                                     // (If source.isEmpty(), <basePath>/<id>.<apiInterface extension> will be used automatically.)
@@ -231,7 +231,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     // or   <source apiVersion="xsd:NMTOKEN" api="javascript">xsd:string</source>
     if (ElementParser::expect(e, "source", ElementParser::Required))
     {
-        apiVersion = Version(e.attribute("apiVersion", QString()));
+        apiVersion = VersionNumber(e.attribute("apiVersion", QString()));
         QString str = e.attribute("api").trimmed();
         if (str == "qtplugin")
             apiInterfaceClass = ExtensionDefinition::QtPlugin;

@@ -64,7 +64,7 @@ public:
                         Condition condition,
                         QString basePath,
                         QStringList interfaces,
-                        Version apiVersion,
+                        VersionNumber apiVersion,
                         ApiInterface api,
                         QString source,
                         QList<QString> inputTransports,
@@ -82,7 +82,7 @@ public:
     bool implementsInterface(QString interface) const                       { return this->_interfaces.contains(interface); }
     QStringList interfaces() const                                          { return this->_interfaces; }
     ApiInterface api() const                                                { return this->_api; }
-    Version apiVersion() const                                              { return this->_apiVersion; }
+    VersionNumber apiVersion() const                                              { return this->_apiVersion; }
     QString source() const                                                  { return this->_source; }
 
     bool canWriteFormat(QString uid) const                                  { return this->_outputFormats.contains(uid); }
@@ -110,7 +110,7 @@ private:
     Condition _condition;
     QString _basePath;
     QStringList _interfaces;
-    Version _apiVersion;
+    VersionNumber _apiVersion;
     ApiInterface _api;
     QString _source;
     QList<Person> _audits;

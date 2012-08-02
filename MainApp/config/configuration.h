@@ -29,10 +29,13 @@
 #include <QMap>
 #include <QStringList>
 
+// May include neither "main.h" nor any files included
+// in "main.h" below this file.
+
 #include "version.h"
 #include "config/platformdependent.h"
 #include "config/messagehandler.h"
-#include "config/appwideclasses.h"
+#include "appwideclasses/versionnumber.h"
 
 class Configuration : public QObject
 {
@@ -77,7 +80,7 @@ public:
 
     // Filesystem things
     QDir getStorageLocation(StorageLocation type);
-    QFileInfo extensionRootFile(QString id, Version apiVersion);
+    QFileInfo extensionRootFile(QString id, VersionNumber apiVersion);
 
 public slots:
 

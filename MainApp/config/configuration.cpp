@@ -210,7 +210,7 @@ QDir Configuration::getStorageLocation(StorageLocation type)
  *
  *  Returns QFileInfo() if no such file was found.
  */
-QFileInfo Configuration::extensionRootFile(QString id, Version apiVersion)
+QFileInfo Configuration::extensionRootFile(QString id, VersionNumber apiVersion)
 {
     QFileInfoList candidateFiles;
     QString pattern = id + QString::number(apiVersion.major()) + ".*";

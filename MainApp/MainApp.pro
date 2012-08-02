@@ -77,10 +77,6 @@ SOURCES += \
     extensionmanager/definitiontable.cpp \
     vhsxml/documentreader.cpp \
     vhsxml/elementparser.cpp \
-    config/appwideclasses.cpp \
-    cassette.cpp \
-    hurl.cpp \
-    cassettecontent.cpp \
     config/platformdependent.cpp \
     extensionmanager/extensionmanager.cpp \
     extensionmanager/definitions/definition.cpp \
@@ -91,7 +87,12 @@ SOURCES += \
     extensionmanager/extension/qtpluginextension.cpp \
     extensionmanager/jobmanager/job.cpp \
     extensionmanager/jobmanager/jobmanager.cpp \
-    extensionmanager/jobmanager/jobthread.cpp
+    extensionmanager/jobmanager/jobthread.cpp \
+    appwideclasses/person.cpp \
+    appwideclasses/versionnumber.cpp \
+    appwideclasses/hurl.cpp \
+    appwideclasses/cassette.cpp \
+    appwideclasses/cassettecontent.cpp
 
 HEADERS  += \
     webwindow.h \
@@ -108,10 +109,6 @@ HEADERS  += \
     extensionmanager/definitiontable.h \
     vhsxml/documentreader.h \
     vhsxml/elementparser.h \
-    config/appwideclasses.h \
-    cassette.h \
-    hurl.h \
-    cassettecontent.h \
     config/platformdependent.h \
     extensionmanager/extensionmanager.h \
     extensionmanager/definitions/definition.h \
@@ -127,7 +124,13 @@ HEADERS  += \
     extensionmanager/interfaces/common_if.h \
     extensionmanager/interfaces/hooks_if.h \
     extensionmanager/interfaces/streams_if.h \
-    extensionmanager/interfaces/if_commondefines.h
+    extensionmanager/interfaces/if_commondefines.h \
+    appwideclasses/appwideclasses.h \
+    appwideclasses/person.h \
+    appwideclasses/versionnumber.h \
+    appwideclasses/hurl.h \
+    appwideclasses/cassette.h \
+    appwideclasses/cassettecontent.h
 
 FORMS    += \
     webwindow.ui \

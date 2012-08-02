@@ -22,7 +22,6 @@
 
 #include "main.h"
 
-#include "cassette.h"
 #include "extensionmanager/definitions/extensiondefinition.h"
 #include "extensionmanager/extension/extension.h"
 

@@ -76,7 +76,7 @@ QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionT
 
 bool DocumentReader::_isCompatibleWith(QString foulString)
 {
-    Version version = Version(foulString);
+    VersionNumber version = VersionNumber(foulString);
 
     return (DocumentReader::oldestCompatibleVersion() <= version && DocumentReader::version() >= version);
 }

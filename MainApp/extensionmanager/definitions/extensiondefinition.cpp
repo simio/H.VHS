@@ -29,7 +29,7 @@ ExtensionDefinition::ExtensionDefinition(
         ExtensionDefinition::Condition condition,
         QString basePath,
         QStringList interfaces,
-        Version apiVersion,
+        VersionNumber apiVersion,
         ApiInterface api,
         QString source,
         QList<QString> inputTransports,
@@ -106,7 +106,7 @@ bool ExtensionDefinition::isValid() const
             &&  this->_authors.count() > 0
             &&  this->_maintainers.count() > 0
             && !this->_licenseName.isEmpty()
-            &&  this->_apiVersion > Version(0, 0)
+            &&  this->_apiVersion > VersionNumber(0, 0)
             && (! (this->_inputTransports.count() || this->_inputFormats.count() || this->_outputTransports.count() || this->_outputFormats.count())
                 || (this->_inputTransports.count() && this->_inputFormats.count() && this->_outputTransports.count() && this->_outputFormats.count())));
 }

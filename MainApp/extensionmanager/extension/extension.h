@@ -24,7 +24,6 @@
 
 #include "main.h"
 
-#include "cassette.h"
 #include "extensionmanager/interfaces/if_commondefines.h"
 #include "extensionmanager/interfaces/common_if.h"
 #include "extensionmanager/interfaces/hooks_if.h"

@@ -40,8 +40,8 @@ class DocumentReader : public QObject
 {
     Q_OBJECT
 public:
-    static Version version()                    { return Version(1, 1); }
-    static Version oldestCompatibleVersion()    { return Version(1, 1); }
+    static VersionNumber version()                    { return VersionNumber(1, 1); }
+    static VersionNumber oldestCompatibleVersion()    { return VersionNumber(1, 1); }
 
     explicit DocumentReader(QObject *parent = 0) : QObject(parent) { }
     DocumentReader(QFileInfo file, QObject *parent);

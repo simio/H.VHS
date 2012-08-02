@@ -48,6 +48,4 @@ private:
 
 };
 
-static const QString newl = "\n";
-
 #endif // SYSTEMDEPENDENT_H

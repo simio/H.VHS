@@ -30,7 +30,7 @@ Configuration::Configuration(QObject *parent) :
     PlatformDependent::p()->setQAppLibraryPaths();
 
 #ifdef HIDE_DEVEL_INFO
-    this->_hideDevelInfo = true;
+    this->_hideDevelInfo = this->_defaults.hideDevelInfo;
 #else
     this->_hideDevelInfo = false;
 #endif
@@ -162,9 +162,8 @@ QUrl Configuration::getStartPage()
 
 QUrl Configuration::makeSearchUrl(QString query)
 {
-    QString defaultQuery("https://www.startpage.com/do/search?q=");
     this->_settings->beginGroup("WebBrowser");
-    QUrl url = QUrl(this->_value("DefaultQuery", defaultQuery).toString() + query.replace(" ", "+"));
+    QUrl url = QUrl(this->_value("DefaultQuery", this->_defaults.searchQuery).toString() + query.replace(" ", "+"));
     this->_settings->endGroup();
     return url;
 }

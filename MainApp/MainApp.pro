@@ -131,7 +131,8 @@ HEADERS  += \
     appwideclasses/versionnumber.h \
     appwideclasses/hurl.h \
     appwideclasses/cassette.h \
-    appwideclasses/cassettecontent.h
+    appwideclasses/cassettecontent.h \
+    config/configurationdefaults.h
 
 FORMS    += \
     webwindow.ui \

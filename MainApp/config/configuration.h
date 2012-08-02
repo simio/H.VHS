@@ -37,6 +37,8 @@
 #include "config/messagehandler.h"
 #include "appwideclasses/versionnumber.h"
 
+#include "config/configurationdefaults.h"
+
 class Configuration : public QObject
 {
     Q_OBJECT
@@ -88,6 +90,8 @@ signals:
 
 private:
     static Configuration * s_instance;
+
+    ConfigurationDefaults _defaults;
 
     void _setValue(const QString &key, const QVariant &value);
     QVariant _value(const QString &key, const QVariant &defaultValue = QVariant()) const;

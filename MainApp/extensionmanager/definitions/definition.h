@@ -25,6 +25,7 @@ class Definition : public QObject
 {
     Q_OBJECT
 public:
+    // Adding a definition type includes updating prettyType()
     enum DefinitionType {
         NoDefinitionType,
         TransportDefinitionType,
@@ -57,6 +58,7 @@ public:
     QString description() const                         { return this->_description; }
     QDateTime releaseDate() const                       { return this->_releaseDate; }
     Definition::DefinitionType type() const             { return this->_type; }
+    QString prettyType() const;
 
 signals:
 

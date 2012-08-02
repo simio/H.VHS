@@ -67,3 +67,16 @@ bool Definition::isValid() const
             && this->_releaseDate.isValid()
             && this->_type != NoDefinitionType);
 }
+
+QString Definition::prettyType() const
+{
+    switch (this->_type)
+    {
+    case NoDefinitionType:                  return "none"; break;
+    case TransportDefinitionType:           return "transport"; break;
+    case FormatDefinitionType:              return "format"; break;
+    case ExtensionDefinitionType:           return "extension"; break;
+    case CassetteDefinitionType:            return "cassette"; break;
+    default:                                return QString::number(this->_type).prepend("#"); break;
+    }
+}

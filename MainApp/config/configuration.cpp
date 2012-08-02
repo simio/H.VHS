@@ -64,7 +64,7 @@ bool Configuration::clearStorage()
 
 QString Configuration::locale(bool full)
 {
-    //XXX: Fixing this is issue #7
+    //XXX: Fixing this is and actually detecting the proper locale is issue #7
     return ( full ? "sv" : "sv-se" );
 }
 

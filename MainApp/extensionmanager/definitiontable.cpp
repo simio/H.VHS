@@ -73,16 +73,30 @@ bool DefinitionTable::update(QPointer<Definition> def)
     if (! this->contains(def))
     {
         this->_set(def);            // Previously unknown definition.
-        qDebug() << "DefinitionTable: Type" << def->type() << "definition added:    " << def->name();
+        qDebug() << "DefinitionTable: Type" << def->type()
+                 << "definition added:    " << def->releaseDate() << def->name();
     }
+    // Check if both date and id is identical
+    else if (this->get(def) == def)
+    {
+        // Since definitions should be added in prioritised order (from system-wide to user-specific, etc),
+        // definitions with id:s and ages identical to a definition already in the table are ignored.
+        // This ensures system-wide definitions are not replaced by half-assed edits of user specific
+        // definitions, which would complicate bug reporting.
+        qDebug() << "DefinitionTable: Type" << def->type() << "definition ignored:  "
+                 << def->releaseDate() << def->name() << "(identical definition already in table)";
+    }
+    // Since == is already tested, this test is true only for (this->get(def) <= def && !(this->get(def) == def))
     else if (this->get(def) <= def)
     {
         this->_set(def);            // Had an older version in table. Update.
-        qDebug() << "DefinitionTable: Type" << def->type() << "definition updated:  " << def->name();
+        qDebug() << "DefinitionTable: Type" << def->type()
+                 << "definition updated:  " << def->releaseDate() << def->name();
     }
     else
     {
-        qDebug() << "DefinitionTable: Type" << def->type() << "definition discarded:" << def->name();
+        qDebug() << "DefinitionTable: Type" << def->type()
+                 << "definition discarded:" << def->releaseDate() << def->name();
         return false;               // Has an equally new or newer definition. Do nothing and tell about it.
     }
 

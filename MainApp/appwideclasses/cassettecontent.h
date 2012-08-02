@@ -29,15 +29,16 @@
 #include <QByteArray>
 #include <QList>
 #include <QHash>
+#include <QSharedData>
+#include <QSharedPointer>
 
 #include "main.h"
 
 class Cassette;
-class CassetteContent : public QObject
+class CassetteContent : public QSharedData
 {
-    Q_OBJECT
 public:
-    CassetteContent(QObject *parent = 0);
+    CassetteContent();
 
     enum ContentForm {
         Empty,
@@ -51,20 +52,20 @@ public:
 
     QString textContent() const;
     QByteArray binaryContent() const;
-    QPointer<Cassette> subCassette(QString id) const;
-    QHash<QString,QPointer<Cassette> > subCassettes() const;
+    QSharedDataPointer<Cassette> subCassette(QString id) const;
+    QHash<QString,QSharedDataPointer<Cassette> > subCassettes() const;
 
     void empty();
     void setContent(QString str);
     void setContent(QByteArray binaryData);
-    void setContent(QList<QPointer<Cassette> > cassettes);
+    void setContent(QList<QSharedDataPointer<Cassette> > cassettes);
 
 private:
     ContentForm _form;
 
     QString _textContent;
     QByteArray _binaryData;
-    QHash<QString,QPointer<Cassette> > _subCassettes;
+    QHash<QString,QSharedDataPointer<Cassette> > _subCassettes;
 
     void _empty();
 };

@@ -21,7 +21,7 @@
  *  in circular dependence. Inlining any members or adding
  *  CassetteContent typed members will break the build.
  *
- *  Instead, use QPointer<CassetteContent>.
+ *  Instead, use pointers to CassetteContent.
  */
 
 #include <QObject>
@@ -29,15 +29,15 @@
 #include <QDateTime>
 #include <QMap>
 #include <QHash>
+#include <QSharedPointer>
 
 #include "main.h"
 
 #include "appwideclasses/hurl.h"
 
 class CassetteContent;
-class Cassette : public QObject
+class Cassette : public QSharedData
 {
-    Q_OBJECT
 public:
     enum PresentationField {
         Title,
@@ -49,7 +49,7 @@ public:
         Publisher,
         Broadcaster
     };
-    explicit Cassette(QObject * parent);
+    explicit Cassette();
 
     QString id() const;
     HUrl uri() const;
@@ -58,7 +58,7 @@ private:
     QString _id;
     HUrl _uri;
 
-    QPointer<CassetteContent> _content;
+    QSharedDataPointer<CassetteContent> _content;
 
     QHash<QString,Cassette> _associatedCassettes;
 

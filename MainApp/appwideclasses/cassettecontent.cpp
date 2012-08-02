@@ -19,8 +19,7 @@
 #include "appwideclasses/cassettecontent.h"
 #include "appwideclasses/cassette.h"
 
-CassetteContent::CassetteContent(QObject *parent) :
-    QObject(parent)
+CassetteContent::CassetteContent()
 {
     this->_form = CassetteContent::Empty;
 }
@@ -59,19 +58,19 @@ QByteArray CassetteContent::binaryContent() const
     }
 }
 
-QPointer<Cassette> CassetteContent::subCassette(QString id) const
+QSharedDataPointer<Cassette> CassetteContent::subCassette(QString id) const
 {
     if (this->_form == CassetteContent::SubCassettes)
-        return this->_subCassettes.value(id, NULL);
+        return this->_subCassettes.value(id, QSharedDataPointer<Cassette>());
     else
     {
         qWarning() << "CassetteContent::subCassette(id) accessed on non-subCassette CassetteContent."
                    << "Form is type" << (int)this->_form;
-        return NULL;
+        return QSharedDataPointer<Cassette>();
     }
 }
 
-QHash<QString, QPointer<Cassette> > CassetteContent::subCassettes() const
+QHash<QString, QSharedDataPointer<Cassette> > CassetteContent::subCassettes() const
 {
     if (this->_form == CassetteContent::SubCassettes)
         return this->_subCassettes;
@@ -79,7 +78,7 @@ QHash<QString, QPointer<Cassette> > CassetteContent::subCassettes() const
     {
         qWarning() << "CassetteContent::subCassettes(id) accessed on non-subCassette CassetteContent."
                    << "Form is type" << (int)this->_form;
-        return QHash<QString,QPointer<Cassette> >();
+        return QHash<QString,QSharedDataPointer<Cassette> >();
     }
 }
 
@@ -102,14 +101,12 @@ void CassetteContent::setContent(QByteArray binaryData)
     this->_binaryData = binaryData;
 }
 
-void CassetteContent::setContent(QList<QPointer<Cassette> > cassettes)
+void CassetteContent::setContent(QList<QSharedDataPointer<Cassette> > cassettes)
 {
     this->_form = CassetteContent::SubCassettes;
     this->_empty();
-    foreach(QPointer<Cassette> cassette, cassettes)
+    foreach(QSharedDataPointer<Cassette> cassette, cassettes)
     {
-        // Grab responsibility
-        cassette->setParent(this);
         this->_subCassettes.insert(cassette->id(), cassette);
     }
 }
@@ -118,7 +115,7 @@ void CassetteContent::_empty()
 {
     if (this->_form == CassetteContent::SubCassettes)
     {
-        QHash<QString,QPointer<Cassette> >::iterator cassette = this->_subCassettes.begin();
+        QHash<QString,QSharedDataPointer<Cassette> >::iterator cassette = this->_subCassettes.begin();
         while (cassette != this->_subCassettes.end())
             delete cassette;
         this->_subCassettes.clear();

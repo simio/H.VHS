@@ -19,10 +19,9 @@
 #include "appwideclasses/cassette.h"
 #include "appwideclasses/cassettecontent.h"
 
-Cassette::Cassette(QObject *parent) :
-    QObject(parent)
+Cassette::Cassette()
 {
-    this->_content = new CassetteContent;
+    this->_content = new CassetteContent;       // alloc: QSharedDataPointer
 }
 
 QString Cassette::id() const

@@ -100,12 +100,11 @@ QDir PlatformDependent::presetsDir(Scope scope)
 
 QPointer<QSettings> PlatformDependent::makeSettings(QObject * parent)
 {
+    // alloc: Has parent assigned from parameter above
 #ifdef WIN32
-    // alloc: Has parent
     return new QSettings(QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/hvhs.ini"),
                          QSettings::IniFormat, parent);
 #elif unix
-    // alloc: Has parent
     return new QSettings(QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/hvhs.conf"),
                          QSettings::NativeFormat, parent);
 #endif

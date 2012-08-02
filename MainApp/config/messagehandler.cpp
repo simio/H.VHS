@@ -16,6 +16,13 @@
 
 #include "messagehandler.h"
 
+// OBS: Inte del av klass!
+// Anropas av Qt.
+void messageHandler(QtMsgType type, const char *msg)
+{
+    MessageHandler::p()->message(type, msg);
+}
+
 // Singleton (MessageHandler::p())
 MessageHandler *MessageHandler::s_instance = NULL;
 
@@ -41,10 +48,10 @@ void MessageHandler::message(QtMsgType type, const char *msg)
 
     switch (type)
     {
-    case QtDebugMsg:        message += "";         break;
-    case QtWarningMsg:      message += "Warning:";       break;
-    case QtCriticalMsg:     message += "Critical:";      break;
-    case QtFatalMsg:        message += "Fatal:";         break;
+    case QtDebugMsg:        message += "";              break;
+    case QtWarningMsg:      message += "Warning:";      break;
+    case QtCriticalMsg:     message += "Critical:";     break;
+    case QtFatalMsg:        message += "Fatal:";        break;
     default:                message += "Message:";
     }
 
@@ -86,10 +93,4 @@ QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
 void MessageHandler::notifyQObjectDestroyed(QObject *obj)
 {
     qDebug() << "MessageHandler: Received destroyed() event from" << obj;
-}
-
-// OBS: Inte del av klass
-void messageHandler(QtMsgType type, const char *msg)
-{
-    MessageHandler::p()->message(type, msg);
 }

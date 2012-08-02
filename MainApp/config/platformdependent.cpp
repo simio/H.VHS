@@ -29,7 +29,7 @@ PlatformDependent *PlatformDependent::p()
     return s_instance;
 }
 
-QDir PlatformDependent::setQAppLibraryPaths()
+void PlatformDependent::setQAppLibraryPaths()
 {
 #ifdef DEPLOY
 #   ifdef WIN32

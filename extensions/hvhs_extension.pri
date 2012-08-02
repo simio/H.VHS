@@ -23,5 +23,11 @@ contains(HVHS_ENABLED_EXTENSIONS, $${HVHS_EXTENSION_NAME}) {
     extension_definition.path = $$EXTENSION_DEPLOY_DIST_DIR
     extension_definition.files = $${HVHS_EXTENSION_NAME}.xml
 
-    INSTALLS += extension_definition
+    extension_script_files.path = $$EXTENSION_DEPLOY_DIST_DIR
+    extension_script_files.files = $${HVHS_EXTENSION_SCRIPT_FILES}
+
+    extension_extra_files.path = $$EXTENSION_DEPLOY_DIST_DIR
+    extension_extra_files.files = $${HVHS_EXTENSION_EXTRA_FILES}
+
+    INSTALLS += extension_definition extension_script_files extension_extra_files
 }

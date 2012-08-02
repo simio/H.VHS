@@ -38,6 +38,7 @@ public:
     QPointer<ConsoleWindow> createConsoleWindow();
 
 public slots:
+    void notifyQObjectDestroyed(QObject * obj);
 
 signals:
     void deliverMessage(QString message);

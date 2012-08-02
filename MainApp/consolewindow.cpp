@@ -17,16 +17,22 @@
 #include "consolewindow.h"
 #include "ui_consolewindow.h"
 
+// This class deletes itself after closing.
+
 ConsoleWindow::ConsoleWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConsoleWindow)                                   // alloc: Deleted in destructor
 {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 ConsoleWindow::~ConsoleWindow()
 {
     delete ui;
+
+    // Note: QWidget attribute Qt::WA_DeleteOnClose is set on this,
+    // which should result in deletion of this after closing the window.
 }
 
 void ConsoleWindow::printMessage(QString message)

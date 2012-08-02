@@ -64,11 +64,14 @@ void MessageHandler::message(QtMsgType type, const char *msg)
 
 QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
 {
-    if (this->_consoleWindow.isNull())
-        this->_consoleWindow = new ConsoleWindow(0);                            // alloc: Independent window; don't delete
+    if (! this->_consoleWindow.isNull())
+        return this->_consoleWindow;
+
+    this->_consoleWindow = new ConsoleWindow(0);                // alloc: ConsoleWindow deletes itself upon close()
 
     if (! QObject::connect(MessageHandler::p(), SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString))))
         qWarning() << "Could not connect console.";
+    QObject::connect(this->_consoleWindow.data(), SIGNAL(destroyed(QObject*)), this, SLOT(notifyQObjectDestroyed(QObject*)));
 
     this->_consoleWindow->show();
     this->_consoleWindow->raise();
@@ -78,6 +81,11 @@ QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
         emit deliverMessage(m);
 
     return this->_consoleWindow;
+}
+
+void MessageHandler::notifyQObjectDestroyed(QObject *obj)
+{
+    qDebug() << "MessageHandler: Received destroyed() event from" << obj;
 }
 
 // OBS: Inte del av klass

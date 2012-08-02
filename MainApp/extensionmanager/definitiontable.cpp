@@ -142,5 +142,7 @@ bool DefinitionTable::_set(QPointer<Definition> def)
     bool overwrite = this->contains(def);
     def->setParent(this);
     this->_definitions[def->type()].insert(def->id(), def);
+    //XXX: Not deleting the overwritten definitions here, which means they're
+    //     kept around until DefinitionTable dies, which is stupid.
     return overwrite;
 }

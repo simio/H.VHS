@@ -19,8 +19,7 @@
 DefinitionTable::DefinitionTable(QObject *parent) :
     QObject(parent)
 {
-    /*
-     *  Read all transport, format and extension definitions
+    /*  Read all transport, format and extension definitions
      *  and put them inte to the table.
      */
     QStringList locations;

@@ -27,11 +27,7 @@ Configuration::Configuration(QObject *parent) :
     qApp->setApplicationName( "H.VHS" );
     qApp->setApplicationVersion( APP_VER );
 
-#ifdef DEPLOY
-#   ifdef WIN32
-        qApp->setLibraryPaths(QStringList(qApp->applicationDirPath()));
-#   endif
-#endif
+    PlatformDependent::p()->setQAppLibraryPaths();
 
 #ifdef HIDE_DEVEL_INFO
     this->_hideDevelInfo = true;
@@ -59,6 +55,7 @@ bool Configuration::clearStorage()
 {
     this->_settings->clear();
 
+    // Remove the file
     if (this->_settings->format() == QSettings::IniFormat)
         QFile(this->_settings->fileName()).remove();
 
@@ -67,6 +64,7 @@ bool Configuration::clearStorage()
 
 QString Configuration::locale(bool full)
 {
+    //XXX: Fixing this is issue #7
     return ( full ? "sv" : "sv-se" );
 }
 

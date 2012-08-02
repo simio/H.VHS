@@ -20,14 +20,26 @@
 PlatformDependent *PlatformDependent::s_instance = NULL;
 
 PlatformDependent::PlatformDependent()
-{
-}
+{ }
 
 PlatformDependent *PlatformDependent::p()
 {
     if (s_instance == NULL)
         s_instance = new PlatformDependent;                               // alloc: Singleton object
     return s_instance;
+}
+
+QDir PlatformDependent::setQAppLibraryPaths()
+{
+#ifdef DEPLOY
+#   ifdef WIN32
+        // Ensure lib lookups happen ONLY in the applicationDirPath.
+        // Only needed in Windows. Perhaps not even there.
+        // According to the docs, the default list is only INSTALL/plugins,
+        // where INSTALL is the Qt installation dir.
+        qApp->setLibraryPaths(QStringList(qApp->applicationDirPath()));
+#   endif
+#endif
 }
 
 QDir PlatformDependent::extensionsDir(Scope scope)

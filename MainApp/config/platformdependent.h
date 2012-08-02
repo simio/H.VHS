@@ -35,6 +35,7 @@ public:
         System
     };
 
+    QDir setQAppLibraryPaths();
     QDir extensionsDir(Scope scope);
     QDir presetsDir(Scope scope);
     QPointer<QSettings> makeSettings(QObject *parent);

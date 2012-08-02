@@ -125,6 +125,7 @@ HEADERS  += \
     extensionmanager/interfaces/hooks_if.h \
     extensionmanager/interfaces/streams_if.h \
     extensionmanager/interfaces/if_commondefines.h \
+    hvhsexception.h \
     appwideclasses/appwideclasses.h \
     appwideclasses/person.h \
     appwideclasses/versionnumber.h \

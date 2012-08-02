@@ -26,6 +26,7 @@
 
 #endif // HVHS_EXTENSION
 
+#include "hvhsexception.h"
 #include "appwideclasses/appwideclasses.h"
 
 #endif // MAIN_H

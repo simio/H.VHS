@@ -14,9 +14,17 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-// Cross-platform cleverness is not allowed here. Every value
-// must be defined on all or no platforms, at build time, due
-// to this file being parsed and recreated as a .qs file.
+/*  Why the use of #define instead of, for example, enum?
+ *  Because these values must be consistently defined in
+ *  at least one other programming language. The least
+ *  error prone way of doing this is by generating definitions
+ *  for other languages automatically. The "#define NAME VALUE"
+ *  is simple to parse and good enough.
+ *
+ *  Cross-platform cleverness is not allowed here. Every value
+ *  must be defined on all or no platforms, at build time, due
+ *  to this file being parsed by the build process.
+ */
 
 #ifndef EXTENSIONINTERFACES_IF_COMMONDEFINES_H
 #define EXTENSIONINTERFACES_IF_COMMONDEFINES_H

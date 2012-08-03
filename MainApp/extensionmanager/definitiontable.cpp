@@ -19,8 +19,12 @@
 DefinitionTable::DefinitionTable(QObject *parent) :
     QObject(parent)
 {
-    /*  Read all transport, format and extension definitions
-     *  and put them inte to the table.
+    /*  Read all transport, format and extension definitions and put them inte to the table.
+     *
+     *  update() replaces definitions where the definition currently in the table has the same
+     *  id and an older releaseDate than the one evaluated. On the other hand, if also the
+     *  releaseDates are identical, no replacing occurs. Therefore, make sure directories are
+     *  loaded in the correct order.
      */
     QStringList locations;
     locations << Configuration::p()->getStorageLocation(Configuration::SystemPresetsLocation).canonicalPath()

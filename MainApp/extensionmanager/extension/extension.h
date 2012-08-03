@@ -47,7 +47,10 @@ public:
     virtual qint64 pluginHook(const qint64 hook)                                { QVariant temp; return this->pluginHook(hook, temp); }
 
     // HVHS_INTERFACE_STREAMS
-    virtual QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl)        { return NULL; }
+    virtual const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+    {
+        return QSharedPointer<QIODevice>();
+    }
 
 protected:
     explicit Extension(QObject *parent = 0) : QObject(parent)                   { }

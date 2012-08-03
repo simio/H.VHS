@@ -69,20 +69,21 @@ void MessageHandler::message(QtMsgType type, const char *msg)
         abort();
 }
 
-QPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
+QSharedPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
 {
     if (! this->_consoleWindow.isNull())
         return this->_consoleWindow;
 
-    this->_consoleWindow = new ConsoleWindow(0);                // alloc: ConsoleWindow deletes itself upon close()
+    // alloc: QSharedPointer here, plus it sets Qt::WA_DeleteOnClose in its constructor.
+    this->_consoleWindow = QSharedPointer<ConsoleWindow>(new ConsoleWindow(0), &QObject::deleteLater);
 
-    if (! QObject::connect(MessageHandler::p(), SIGNAL(deliverMessage(QString)), this->_consoleWindow, SLOT(printMessage(QString))))
+    if (! QObject::connect(MessageHandler::p(), SIGNAL(deliverMessage(QString)), this->_consoleWindow.data(), SLOT(printMessage(QString))))
         qWarning() << "Could not connect console.";
     QObject::connect(this->_consoleWindow.data(), SIGNAL(destroyed(QObject*)), this, SLOT(notifyQObjectDestroyed(QObject*)));
 
-    this->_consoleWindow->show();
-    this->_consoleWindow->raise();
-    this->_consoleWindow->activateWindow();
+    this->_consoleWindow.data()->show();
+    this->_consoleWindow.data()->raise();
+    this->_consoleWindow.data()->activateWindow();
 
     foreach(QString m, this->_buffer)
         emit deliverMessage(m);

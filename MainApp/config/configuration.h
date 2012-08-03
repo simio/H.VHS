@@ -105,7 +105,7 @@ private:
     QString _gitTag;
     QString _gitBranch;
 
-    QPointer<QSettings> _settings;
+    QWeakPointer<QSettings> _settings;
 };
 
 #endif // CONFIGURATION_H

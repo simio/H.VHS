@@ -21,7 +21,7 @@
 
 #include <QObject>
 #include <QDebug>
-#include <QPointer>
+#include <QWeakPointer>
 #include <QQueue>
 #include <QDateTime>
 
@@ -35,7 +35,7 @@ public:
     static MessageHandler *p();
 
     void message(QtMsgType type, const char *msg);
-    QPointer<ConsoleWindow> createConsoleWindow();
+    QSharedPointer<ConsoleWindow> createConsoleWindow();
 
 public slots:
     void notifyQObjectDestroyed(QObject * obj);
@@ -49,7 +49,7 @@ private:
     QQueue<QString> _buffer;
     static const qint64 _bufferLength = 10240;                 // Lines
 
-    QPointer<ConsoleWindow> _consoleWindow;
+    QSharedPointer<ConsoleWindow> _consoleWindow;
 };
 
 void messageHandler(QtMsgType type, const char *msg);

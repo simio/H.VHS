@@ -68,10 +68,10 @@ qint64 QtPluginExtension::pluginHook(const qint64 hook)
     return this->pluginHook(hook, discardedReturnValue);
 }
 
-QPointer<QIODevice> QtPluginExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+const QSharedPointer<QIODevice> QtPluginExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
 {
     if (! this->implementsInterface(HVHS_INTERFACE_STREAMS))
-        return NULL;
+        return QSharedPointer<QIODevice>();
     ExtensionInterfaceStreams *exIf = qobject_cast<ExtensionInterfaceStreams*>(this->_plugin);
-    return exIf->openStream(openMode, hurl);
+    return QSharedPointer<QIODevice>(exIf->openStream(openMode, hurl));
 }

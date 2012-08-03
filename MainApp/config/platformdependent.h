@@ -18,7 +18,7 @@
 #define CONFIGURATION_PLATFORMDEPENDENT_H
 
 #include <QApplication>
-#include <QPointer>
+#include <QWeakPointer>
 #include <QDesktopServices>
 #include <QDir>
 #include <QString>
@@ -41,7 +41,7 @@ public:
     void setQAppLibraryPaths();
     QDir extensionsDir(Scope scope);
     QDir presetsDir(Scope scope);
-    QPointer<QSettings> makeSettings(QObject *parent);
+    QWeakPointer<QSettings> newSettings(QObject *parent);
 
 private:
     static PlatformDependent *s_instance;

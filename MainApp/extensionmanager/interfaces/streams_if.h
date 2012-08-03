@@ -19,6 +19,7 @@
 
 #include <QPointer>
 #include <QIODevice>
+#include <QSharedPointer>
 
 #include "if_commondefines.h"
 
@@ -36,7 +37,7 @@ class ExtensionInterfaceStreams
 public:
     virtual ~ExtensionInterfaceStreams() {}
 
-    virtual QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
+    virtual const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceStreams,

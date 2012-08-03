@@ -41,12 +41,12 @@ public:
     explicit LocalFileExtension(QObject *parent = 0);
     ~LocalFileExtension();
 
-    QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 private:
-    QPointer<QFile> _file;
+    QSharedPointer<QFile> _file;
 
-    QPointer<QFile> _resolveHurl(QString hurl);
+    const QWeakPointer<QFile> _resolveHurl(QString hurl);
 
 };
 

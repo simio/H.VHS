@@ -40,7 +40,7 @@ public:
     qint64 pluginHook(const qint64 hook);
 
     // HVHS_INTERFACE_STREAMS
-    QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 private:
     QPointer<QScriptEngine> _engine;

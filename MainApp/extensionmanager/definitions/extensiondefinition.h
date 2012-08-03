@@ -30,8 +30,7 @@
 #include "transportdefinition.h"
 #include "formatdefinition.h"
 
-/*
- *  This class is expected to neither change nor expand much
+/*  This class is expected to neither change nor expand much
  *  over time, which (probably) means the code is more easily
  *  maintained if it uses hardcoded vars rather than a QMap.
  */

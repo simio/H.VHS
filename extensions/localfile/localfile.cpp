@@ -59,7 +59,7 @@ QPointer<QFile> LocalFileExtension::_resolveHurl(QString hurl)
     if (hurl.startsWith(prefix))
         hurl.remove(0, prefix.length());
 
-    qDebug() << "Trying to QFile(" << hurl;
+    qDebug() << "Trying to QFile(" << hurl << ")";
     return new QFile(hurl, this);                                       // alloc: Has parent
 }
 

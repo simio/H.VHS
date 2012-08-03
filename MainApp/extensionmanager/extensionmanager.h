@@ -93,7 +93,7 @@ private:
 
     QPointer<JobManager> _jobManager;
 
-    QPointer<Extension> _loadExtension(QPointer<ExtensionDefinition> definition);
+    QPointer<Extension> _loadExtension(QSharedPointer<ExtensionDefinition> definition);
 };
 
 #endif // EXTENSIONMANAGER_EXTENSIONMANAGER_H

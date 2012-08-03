@@ -33,7 +33,7 @@
 class QtPluginExtension : public Extension
 {
 public:
-    QtPluginExtension(QPointer<ExtensionDefinition> definition, QObject *parent = 0);
+    QtPluginExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent = 0);
     ~QtPluginExtension();
 
     bool isValid();

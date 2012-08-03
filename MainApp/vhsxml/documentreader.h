@@ -18,7 +18,7 @@
 #define VHSXML_READER_H
 
 #include <QObject>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QFile>
 #include <QDomDocument>
 #include <QXmlInputSource>
@@ -48,7 +48,7 @@ public:
     DocumentReader(QPointer<QIODevice> device, QObject *parent) : QObject(parent)   { this->_initialise(device); }
     DocumentReader(QXmlInputSource *source, QObject *parent) : QObject(parent)      { this->_initialise(source); }
 
-    QList<QPointer<Definition> > definitions(Definition::DefinitionType defType, QObject *definitionParent) const;
+    QList<QSharedPointer<Definition> > definitions(Definition::DefinitionType defType, QObject *definitionParent) const;
 
     bool isEmpty() const                                                    { return this->_xml.isNull(); }
 

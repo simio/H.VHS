@@ -16,10 +16,10 @@
 
 #include "qtpluginextension.h"
 
-QtPluginExtension::QtPluginExtension(QPointer<ExtensionDefinition> definition, QObject *parent) :
+QtPluginExtension::QtPluginExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent) :
     Extension(parent)
 {
-    QFileInfo pluginFile = Configuration::p()->extensionRootFile(definition->id(), definition->apiVersion());
+    QFileInfo pluginFile = Configuration::p()->extensionRootFile(definition.data()->id(), definition.data()->apiVersion());
     if (pluginFile.isReadable())
     {
         this->_loader.setFileName(pluginFile.canonicalFilePath());
@@ -27,8 +27,8 @@ QtPluginExtension::QtPluginExtension(QPointer<ExtensionDefinition> definition, Q
         this->_plugin = this->_loader.instance();
         if (this->_plugin)
         {
-            this->_interfaces = definition->interfaces();
-            this->_extensionId = definition->id();
+            this->_interfaces = definition.data()->interfaces();
+            this->_extensionId = definition.data()->id();
         }
     }
 }

@@ -18,7 +18,7 @@
 #define VHSXML_FORMATREADER_H
 
 #include <QList>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomNode>
@@ -32,12 +32,12 @@ namespace VhsXml {
 class FormatReader
 {
 public:
-    static QList<QPointer<FormatDefinition> > parse(const QDomDocument &document, QObject *definitionParent);
+    static QList<QSharedPointer<FormatDefinition> > parse(const QDomDocument &document, QObject *definitionParent);
 
 private:
     FormatReader();
 
-    static QPointer<FormatDefinition> _parseFormat(const QDomElement &formatNode, QObject *definitionParent);
+    static QSharedPointer<FormatDefinition> _parseFormat(const QDomElement &formatNode, QObject *definitionParent);
 };
 
 } // namespace VhsXml

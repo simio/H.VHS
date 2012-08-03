@@ -18,7 +18,7 @@
 #define VHSXMLTRANSPORTREADER_H
 
 #include <QList>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QDomDocument>
 
 #include "main.h"
@@ -30,12 +30,12 @@ namespace VhsXml {
 class TransportReader
 {
 public:
-    static QList<QPointer<TransportDefinition> > parse(const QDomDocument &document, QObject *definitionParent);
+    static QList<QSharedPointer<TransportDefinition> > parse(const QDomDocument &document, QObject *definitionParent);
 
 private:
     TransportReader();
 
-    static QPointer<TransportDefinition> _parseTransport(const QDomElement &transportNode, QObject *definitionParent);
+    static QSharedPointer<TransportDefinition> _parseTransport(const QDomElement &transportNode, QObject *definitionParent);
 };
 
 } // namespace VhsXml

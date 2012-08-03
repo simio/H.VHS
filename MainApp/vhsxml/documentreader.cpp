@@ -50,11 +50,11 @@ QList<Definition::DefinitionType> DocumentReader::contentList() const
 }
 
 // Dispatch request to appropriate reader(s).
-QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionType defType, QObject *definitionParent) const
+QList<QSharedPointer<Definition> > DocumentReader::definitions(Definition::DefinitionType defType, QObject *definitionParent) const
 {
-    QList<QPointer<FormatDefinition> > formats;
-    QList<QPointer<TransportDefinition> > transports;
-    QList<QPointer<ExtensionDefinition> > extensions;
+    QList<QSharedPointer<FormatDefinition> > formats;
+    QList<QSharedPointer<TransportDefinition> > transports;
+    QList<QSharedPointer<ExtensionDefinition> > extensions;
 
     if (defType == Definition::FormatDefinitionType || defType == Definition::NoDefinitionType)
         formats = FormatReader::parse(this->_xml, definitionParent);
@@ -63,13 +63,13 @@ QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionT
     if (defType == Definition::ExtensionDefinitionType || defType == Definition::NoDefinitionType)
         extensions = ExtensionReader::parse(this->_xml, definitionParent);
 
-    QList<QPointer<Definition> > result;
-    foreach(QPointer<FormatDefinition> format, formats)
-        result << qobject_cast<Definition*>(format);
-    foreach(QPointer<TransportDefinition> transport, transports)
-        result << qobject_cast<Definition*>(transport);
-    foreach(QPointer<ExtensionDefinition> extension, extensions)
-        result << qobject_cast<Definition*>(extension);
+    QList<QSharedPointer<Definition> > result;
+    foreach(QSharedPointer<FormatDefinition> format, formats)
+        result << qSharedPointerDynamicCast<Definition>(format);
+    foreach(QSharedPointer<TransportDefinition> transport, transports)
+        result << qSharedPointerDynamicCast<Definition>(transport);
+    foreach(QSharedPointer<ExtensionDefinition> extension, extensions)
+        result << qSharedPointerDynamicCast<Definition>(extension);
 
     return result;
 }

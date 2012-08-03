@@ -18,7 +18,7 @@
 #define VHSXML_EXTENSIONREADER_H
 
 #include <QList>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QDomDocument>
 #include <QStringList>
 
@@ -31,12 +31,12 @@ namespace VhsXml {
 class ExtensionReader
 {
 public:
-    static QList<QPointer<ExtensionDefinition> > parse(const QDomDocument &document, QObject *extensionParent);
+    static QList<QSharedPointer<ExtensionDefinition> > parse(const QDomDocument &document, QObject *extensionParent);
 
 private:
     ExtensionReader();
 
-    static QPointer<ExtensionDefinition> _parseExtension(const QDomElement &extensionNode, QObject *extensionParent);
+    static QSharedPointer<ExtensionDefinition> _parseExtension(const QDomElement &extensionNode, QObject *extensionParent);
 };
 
 } // namespace VhsXml

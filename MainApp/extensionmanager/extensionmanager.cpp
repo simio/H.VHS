@@ -34,9 +34,10 @@ ExtensionManager *ExtensionManager::p()
 
 QPointer<Extension> ExtensionManager::debugLoadExtension(QString id)
 {
-    QPointer<ExtensionDefinition> definition = (ExtensionDefinition*)(Definition*)this->_definitions.get(Definition::ExtensionDefinitionType, id);
+    QSharedPointer<ExtensionDefinition> definition
+            = qSharedPointerDynamicCast<ExtensionDefinition>(this->_definitions.get(Definition::ExtensionDefinitionType, id));
     if (definition.isNull())
-        return NULL;
+        return QPointer<Extension>();
 
     return this->_loadExtension(definition);
 }
@@ -83,11 +84,11 @@ int ExtensionManager::callHook(const qint64 hook)
 void ExtensionManager::_initialise()
 {
     //  Populate the first plugin hook ring with extensions
-    QHash<QString,QPointer<Definition> > extensions = this->_definitions.getAll(Definition::ExtensionDefinitionType);
-    QHash<QString,QPointer<Definition> >::const_iterator i = extensions.begin();
+    QHash<QString,QSharedPointer<Definition> > extensions = this->_definitions.getAll(Definition::ExtensionDefinitionType);
+    QHash<QString,QSharedPointer<Definition> >::const_iterator i = extensions.begin();
     while (i != extensions.end())
     {
-        QPointer<ExtensionDefinition> definition = (ExtensionDefinition*)(Definition*)i.value();
+        QSharedPointer<ExtensionDefinition> definition = qSharedPointerDynamicCast<ExtensionDefinition>(i.value());
         if (definition->implementsInterface( HVHS_INTERFACE_HOOKS )
                 && definition->isEnabled())
         {
@@ -112,10 +113,10 @@ void ExtensionManager::_initialise()
 // Load an extension and return a pointer to it (or NULL). Checking which
 // interfaces are supported, or if the extension is enabled,
 // is not done here.
-QPointer<Extension> ExtensionManager::_loadExtension(QPointer<ExtensionDefinition> definition)
+QPointer<Extension> ExtensionManager::_loadExtension(QSharedPointer<ExtensionDefinition> definition)
 {
     //XXX: More type casting may simplify this greatly
-    switch (definition->api())
+    switch (definition.data()->api())
     {
     case ExtensionDefinition::QtPlugin:
         QtPluginExtension * qtplugin;

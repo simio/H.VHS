@@ -20,13 +20,13 @@
  *  The ExtensionDefinition will never change nor be swapped for another one.
  *  Create another instance of JavaScriptExtension to use another definition.
  */
-JavaScriptExtension::JavaScriptExtension(QPointer<ExtensionDefinition> definition, QObject *parent) :
+JavaScriptExtension::JavaScriptExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent) :
     Extension(parent)
 {
     // Make a copy of the definition and keep it for ourselves. This way,
     // the plugin will continue to work even if the definition pointed to
     // by the 'definition' parameter disappears.
-    this->_definition = new ExtensionDefinition(*definition);            // alloc: Has parent
+    this->_definition = QSharedPointer<ExtensionDefinition>(new ExtensionDefinition(*(definition.data())));  // alloc: Has parent (next line)
     this->_definition->setParent(this);
 
     this->_initialised = this->_initialise();

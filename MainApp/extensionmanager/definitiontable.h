@@ -18,7 +18,7 @@
 #define DEFINITIONTABLE_H
 
 #include <QObject>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QString>
 #include <QHash>
 #include <QDir>
@@ -38,22 +38,22 @@ public:
     explicit DefinitionTable(QObject *parent = 0);
 
     int count(Definition::DefinitionType type = Definition::NoDefinitionType) const;
-    bool update(QPointer<Definition> def);                                      // returns true iff definition table changed
-    int update(QList<QPointer<Definition> > defs);                              // returns number of changes to definition table
+    bool update(QSharedPointer<Definition> def);                                // returns true iff definition table changed
+    int update(QList<QSharedPointer<Definition> > defs);                        // returns number of changes to definition table
     bool contains(Definition::DefinitionType type, QString id) const;
-    bool contains(QPointer<Definition> def) const;
-    QPointer<Definition> get(Definition::DefinitionType type, QString id) const;
-    QPointer<Definition> get(QPointer<Definition> def) const;
-    QHash<QString,QPointer<Definition> > getAll(Definition::DefinitionType type) const;
+    bool contains(QSharedPointer<Definition> def) const;
+    QSharedPointer<Definition> get(Definition::DefinitionType type, QString id) const;
+    QSharedPointer<Definition> get(QSharedPointer<Definition> def) const;
+    QHash<QString,QSharedPointer<Definition> > getAll(Definition::DefinitionType type) const;
 
 signals:
 
 public slots:
 
 private:
-    bool _set(QPointer<Definition> def);                                      // returns true if the total number of definitions changed
+    bool _set(QSharedPointer<Definition> def);                                  // returns true if the total number of definitions changed
 
-    QHash<Definition::DefinitionType, QHash<QString, QPointer<Definition> > > _definitions;
+    QHash<Definition::DefinitionType, QHash<QString, QSharedPointer<Definition> > > _definitions;
 
 };
 

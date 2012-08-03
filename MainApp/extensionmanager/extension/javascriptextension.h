@@ -28,7 +28,7 @@
 class JavaScriptExtension : public Extension
 {
 public:
-    explicit JavaScriptExtension(QPointer<ExtensionDefinition> definition, QObject *parent = 0);
+    explicit JavaScriptExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent = 0);
 
     ~JavaScriptExtension();
 
@@ -44,7 +44,7 @@ public:
 
 private:
     QPointer<QScriptEngine> _engine;
-    QPointer<ExtensionDefinition> _definition;
+    QSharedPointer<ExtensionDefinition> _definition;
 
     bool _initialise();
     bool _initialised;

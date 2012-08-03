@@ -18,9 +18,9 @@
 
 namespace VhsXml {
 
-QList<QPointer<ExtensionDefinition> > ExtensionReader::parse(const QDomDocument &document, QObject *extensionParent)
+QList<QSharedPointer<ExtensionDefinition> > ExtensionReader::parse(const QDomDocument &document, QObject *extensionParent)
 {
-    QList<QPointer<ExtensionDefinition> > result;
+    QList<QSharedPointer<ExtensionDefinition> > result;
 
     QDomNode node = document.documentElement().firstChild();
     while (! node.isNull())
@@ -32,7 +32,7 @@ QList<QPointer<ExtensionDefinition> > ExtensionReader::parse(const QDomDocument 
             {
                 if (extensionNode.toElement().tagName() == "extension")
                 {
-                    QPointer<ExtensionDefinition> extension = _parseExtension(extensionNode.toElement(), extensionParent);
+                    QSharedPointer<ExtensionDefinition> extension = _parseExtension(extensionNode.toElement(), extensionParent);
                     if (! extension.isNull())
                         result << extension;
                 }
@@ -53,7 +53,7 @@ QList<QPointer<ExtensionDefinition> > ExtensionReader::parse(const QDomDocument 
  *  the elements appear is defined in the RELAX NG Schema.
  */
 
-QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement &extensionNode, QObject *extensionParent)
+QSharedPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement &extensionNode, QObject *extensionParent)
 {
     QString id;                                     // Unique; required
     QDateTime releaseDate;                          // As attribute of id; required
@@ -67,7 +67,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
     QString basePath;                               // Optional (set by application)
     ExtensionDefinition::Condition condition;       // Required
     QStringList interfaces;                         // Required
-    VersionNumber apiVersion;                             // Required
+    VersionNumber apiVersion;                       // Required
     ExtensionDefinition::ApiInterface apiInterfaceClass;           // Required
     QString source;                                 // Source code for scripted extensions; optional
                                                     // (If source.isEmpty(), <basePath>/<id>.<apiInterface extension> will be used automatically.)
@@ -85,7 +85,8 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         id = ElementParser::nmtoken(e.text());
         e = e.nextSiblingElement();
     }
-    else return NULL;
+    else
+        return QSharedPointer<ExtensionDefinition>();
 
     // <name xml:lang="xsd:language">xsd:token</name>
     // (one or more, with unique xml:lang attributes)
@@ -95,7 +96,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     // <description xml:lang="xsd:language">xsd:token</description>
     // (zero or more, with unique xml:lang attributes)
@@ -105,7 +106,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         e = e.nextSiblingElement();
     }
     else if (e.isNull())
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     //  <authors>
     //  <author username="xsd:NMTOKEN" copyright="xsd:token"
@@ -134,7 +135,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     // <license href="xsd:anyURI">xsd:token</license>
     // href is optional
@@ -145,7 +146,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     if (ElementParser::expect(e, "maintainers", ElementParser::Required))
     {
@@ -163,7 +164,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     // <enabled> ( "true" | "false" ) </enabled>
     if (ElementParser::expect(e, "enabled", ElementParser::Optional))
@@ -172,7 +173,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         e = e.nextSiblingElement();
     }
     else if (e.isNull())
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
     else
         enabled = false;
 
@@ -183,7 +184,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         e = e.nextSiblingElement();
     }
     else if (e.isNull())
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     // <condition> ( "broken" | "unstable" | "stable" | "testing" ) </condition>
     if (ElementParser::expect(e, "condition", ElementParser::Required))
@@ -202,12 +203,12 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
             qDebug() << "ExtensionReader expected <condition> of broken, unstable, stable or testing, but got"
                      << str;
             qDebug() << "Discarding extension" << name;
-            return NULL;
+            return QSharedPointer<ExtensionDefinition>();
         }
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     // <interfaces>
     //     <interface>...</interface>
@@ -220,12 +221,12 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         {
             qDebug() << "ExtensionReader expected at least one interface, but got 0.";
             qDebug() << "Discarding extension" << name;
-            return NULL;
+            return QSharedPointer<ExtensionDefinition>();
         }
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     //      <source apiVersion="xsd:NMTOKEN" api=" ( "qtplugin" | "javascript" ) " />
     // or   <source apiVersion="xsd:NMTOKEN" api="javascript">xsd:string</source>
@@ -241,13 +242,13 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         {
             qDebug() << "ExtensionReader expected api qtplugin or javascript, but got" << str;
             qDebug() << "Discarding extension" << name;
-            return NULL;
+            return QSharedPointer<ExtensionDefinition>();
         }
         source = e.text().trimmed();
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     //  <convertsFrom>
     //      <transport>xsd:NMTOKEN</transport>
@@ -263,7 +264,7 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         {
             qDebug() << "ExtensionReader expected at least one input transport and format, but got 0.";
             qDebug() << "Discarding extension" << name;
-            return NULL;
+            return QSharedPointer<ExtensionDefinition>();
         }
         e = e.nextSiblingElement();
 
@@ -281,15 +282,15 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
             {
                 qDebug() << "ExtensionReader expected at least one output transport and format, but got 0.";
                 qDebug() << "Discarding extension" << name;
-                return NULL;
+                return QSharedPointer<ExtensionDefinition>();
             }
             e = e.nextSiblingElement();
         }
         else
-            return NULL;
+            return QSharedPointer<ExtensionDefinition>();
     }
     else if (e.isNull())
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
 
     //  <audits>
@@ -315,20 +316,19 @@ QPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<ExtensionDefinition>();
 
     // alloc: Has parent
-    QPointer<ExtensionDefinition> extension = new ExtensionDefinition(id, name, description, releaseDate, authors, licenseName,
-                                                                      licenseUrl, maintainers, enabled, condition, basePath,
-                                                                      interfaces, apiVersion, apiInterfaceClass, source,
-                                                                      inputTransports, inputFormats, outputTransports,
-                                                                      outputFormats, audits, extensionParent);
+    QSharedPointer<ExtensionDefinition> extension(new ExtensionDefinition(id, name, description, releaseDate, authors, licenseName,
+                                                                          licenseUrl, maintainers, enabled, condition, basePath,
+                                                                          interfaces, apiVersion, apiInterfaceClass, source,
+                                                                          inputTransports, inputFormats, outputTransports,
+                                                                          outputFormats, audits, extensionParent));
     if (extension->isValid())
         return extension;
 
     qDebug() << "ExtensionReader::parseExtension() discarded invalid extension definition.";
-    delete extension;
-    return NULL;
+    return QSharedPointer<ExtensionDefinition>();
 }
 
 

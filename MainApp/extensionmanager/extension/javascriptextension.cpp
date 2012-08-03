@@ -157,12 +157,18 @@ bool JavaScriptExtension::_initialise()
  */
 bool JavaScriptExtension::_hasError(QScriptValue evalReturnValue)
 {
+    if (this->_engine.isNull())
+    {
+        qCritical() << "JavaScriptExtension::_hasError(): Called without engine!";
+        return true;
+    }
     if (! this->_engine->hasUncaughtException())
         return false;
 
     QString retvalstr = (evalReturnValue.isNull() ? "In" : evalReturnValue.toString() + " in");
 
-    qWarning() << retvalstr << "source for" << this->_definition->id()
+    qWarning() << "JavaScriptExtension::_hasError():" << retvalstr
+               << "source for" << this->_definition->id()
                << "line" << this->_engine->uncaughtExceptionLineNumber();
     qWarning() << "  " << this->_engine->uncaughtException().toString();
     qWarning() << "Trace follows:";

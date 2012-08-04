@@ -35,7 +35,7 @@ JobThread::~JobThread()
 
 void JobThread::ping()
 {
-    qDebug() << QThread::currentThread() << "Ping:" << this->_thread.data();
+    qDebug() << "Ping:" << QThread::currentThread();
     emit pingJob();
 }
 

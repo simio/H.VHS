@@ -23,6 +23,6 @@ Job::Job(QObject *parent) :
 
 void Job::receivePing()
 {
-    qDebug() << QThread::currentThread() << "Worker: Got pinged. Emitting reply.";
-    emit ping("You lead, I'll follow.");
+    qDebug() << "Pong!" << QThread::currentThread();
+    emit ping("Pang!");
 }

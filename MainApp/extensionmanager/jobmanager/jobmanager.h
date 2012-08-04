@@ -29,6 +29,7 @@ class JobManager : public QObject
     Q_OBJECT
 public:
     explicit JobManager(QObject *parent = 0);
+    ~JobManager();
 
     /*  Run "hook" on all plugins with supplied hookData and return the number
      *  of non-NOOP responses. Since any job may contain several extension instances
@@ -40,7 +41,7 @@ public:
     int callHook(const qint64 hook, QVariant &hookData);
 
 private:
-    QLinkedList<QPointer<JobThread> > _jobQueue;
+    QLinkedList<QSharedPointer<JobThread> > _jobQueue;
 
 signals:
 

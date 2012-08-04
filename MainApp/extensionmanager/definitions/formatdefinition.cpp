@@ -43,13 +43,14 @@ FormatDefinition::Completeness FormatDefinition::completeness() const
     return this->_completeness;
 }
 
-bool FormatDefinition::isText() const
+bool FormatDefinition::isTextual() const
 {
     return this->_isText;
 }
 
 QString FormatDefinition::mimeType(int index) const
 {
+    //XXX: Trying to access indexes out of range should throw
     return (index >= 0 && index < this->_mimeTypes.size() ? this->_mimeTypes.at(index) : QString());
 }
 

@@ -40,7 +40,7 @@ public:
                      QString description,
                      QDateTime releaseDate,
                      QString completeness,
-                     bool isText,
+                     bool isTextual,
                      QStringList mimeTypes,
                      QObject *parent = 0);
 
@@ -52,7 +52,7 @@ public:
 
     Completeness completeness() const;
 
-    bool isText() const;
+    bool isTextual() const;
 
 public slots:
 

@@ -43,13 +43,13 @@ public:
     const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 private:
-    QPointer<QScriptEngine> _engine;
+    QScopedPointer<QScriptEngine> _engine;
     QSharedPointer<ExtensionDefinition> _definition;
 
     bool _initialise();
     bool _initialised;
 
-    bool _hasError(QScriptValue evalReturnValue = QScriptValue());
+    bool _hasError(QScriptValue evalReturnValue = QScriptValue()) const;
 
 signals:
 

@@ -18,7 +18,8 @@
 #define EXTENSIONMANAGER_EXTENSION_QTPLUGINEXTENSION_H
 
 #include <QObject>
-#include <QPointer>
+#include <QWeakPointer>
+#include <QSharedPointer>
 #include <QStringList>
 #include <QIODevice>
 #include <QVariant>
@@ -51,7 +52,7 @@ signals:
 public slots:
 
 private:
-    QPointer<QObject> _plugin;
+    QScopedPointer<QObject> _qtplugin;
     QPluginLoader _loader;
 };
 

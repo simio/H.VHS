@@ -24,9 +24,10 @@
 
 #include "definition.h"
 
-// Since this class inherits Definition, which is implicitly shared through using a d pointer to QSharedData,
-// none of the following may be defined inline: ctor, dtor, copy constructor, assignment operator.
-// Also, ctor and dtor must be defined.
+/*  Since this class inherits Definition, which is implicitly shared through using a d pointer to QSharedData,
+ *  none of the following may be defined inline: ctor, dtor, copy constructor, assignment operator.
+ *  Also, ctor and dtor must be defined.
+ */
 
 class FormatDefinition : public Definition
 {
@@ -66,9 +67,8 @@ signals:
 private:
     FormatDefinition();
 
-    Completeness _completeness;
-    bool _isText;
-    QStringList _mimeTypes;
+    FormatDefinition::Completeness _setCompleteness(QString str);
+
 };
 
 #endif // EXTENSIONMANAGER_DEFINITIONS_FORMATDEFINITION_H

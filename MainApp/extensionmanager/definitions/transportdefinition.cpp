@@ -26,7 +26,7 @@ TransportDefinition::TransportDefinition(QString id,
                  name,
                  description,
                  releaseDate,
-                 Definition::TransportDefinitionType,           // Set definition type
+                 Definition::TransportDefinitionType,               // Set definition type
                  parent)
 { }
 

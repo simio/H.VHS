@@ -17,6 +17,7 @@
 #ifndef APPWIDECLASSES_VERSIONNUMBER_H
 #define APPWIDECLASSES_VERSIONNUMBER_H
 
+#include <QMetaType>
 #include <QString>
 #include <QStringList>
 
@@ -47,5 +48,7 @@ private:
     qint64 _major;
     qint64 _minor;
 };
+
+Q_DECLARE_METATYPE(VersionNumber)
 
 #endif // APPWIDECLASSES_VERSIONNUMBER_H

@@ -17,6 +17,7 @@
 #ifndef EXTENSIONMANAGER_DEFINITIONS_DEFINITION_H
 #define EXTENSIONMANAGER_DEFINITIONS_DEFINITION_H
 
+#include <QMetaObject>
 #include <QObject>
 #include <QSharedDataPointer>
 #include <QDate>
@@ -24,8 +25,10 @@
 
 class DefinitionData;
 
-// Since this class is implicitly shared, using a d pointer to QSharedData,
-// none of the following may be defined inline: ctor, dtor, copy constructor, assignment operator.
+/*  Since this class inherits Definition, which is implicitly shared through using a d pointer to QSharedData,
+ *  none of the following may be defined inline: ctor, dtor, copy constructor, assignment operator.
+ *  Also, ctor and dtor must be defined.
+ */
 
 class Definition : public QObject
 {

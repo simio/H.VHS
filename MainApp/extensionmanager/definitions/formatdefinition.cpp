@@ -29,12 +29,12 @@ FormatDefinition::FormatDefinition(QString id,
                name,
                description,
                releaseDate,
-               Definition::FormatDefinitionType,            // Set definition type
+               Definition::FormatDefinitionType,                // Set definition type
                parent)
 {
-    Definition::_d.data()->set(DefinitionData::Completeness, QVariant(completeness));
-    Definition::_d.data()->set(DefinitionData::IsTextual, QVariant(isText));
-    Definition::_d.data()->set(DefinitionData::MimeTypes, QVariant(mimeTypes));
+    Definition::_d.data()->set(DefinitionData::FormatCompleteness, QVariant(completeness));
+    Definition::_d.data()->set(DefinitionData::FormatIsTextual, QVariant(isText));
+    Definition::_d.data()->set(DefinitionData::FormatMimeTypes, QVariant(mimeTypes));
 }
 
 FormatDefinition::~FormatDefinition()
@@ -44,23 +44,23 @@ bool FormatDefinition::isValid() const
 {
     return (Definition::isValid()
             && this->completeness() != Invalid
-            && Definition::_d.data()->has(DefinitionData::IsTextual)
+            && Definition::_d.data()->has(DefinitionData::FormatIsTextual)
             && this->mimeTypes().count() > 0);
 }
 
 FormatDefinition::Completeness FormatDefinition::completeness() const
 {
-    return (FormatDefinition::Completeness)Definition::_d.constData()->get(DefinitionData::Completeness).toLongLong();
+    return (FormatDefinition::Completeness)Definition::_d.constData()->get(DefinitionData::FormatCompleteness).toLongLong();
 }
 
 bool FormatDefinition::isTextual() const
 {
-    return Definition::_d.constData()->get(DefinitionData::IsTextual).toBool();
+    return Definition::_d.constData()->get(DefinitionData::FormatIsTextual).toBool();
 }
 
 QStringList FormatDefinition::mimeTypes() const
 {
-    return Definition::_d.constData()->get(DefinitionData::MimeTypes).toStringList();
+    return Definition::_d.constData()->get(DefinitionData::FormatMimeTypes).toStringList();
 }
 
 QString FormatDefinition::mimeType(int index) const
@@ -77,3 +77,22 @@ QString FormatDefinition::mimeType(int index) const
     return this->mimeTypes().at(index);
 }
 
+FormatDefinition::Completeness FormatDefinition::_setCompleteness(QString str)
+{
+    Completeness c;
+    QString normalised = str.toLower().trimmed();
+
+    if (normalised == "notempty")
+        c = NotEmpty;
+    else if (normalised == "metaonly")
+        c = MetaOnly;
+    else if (normalised == "dataonly")
+        c = DataOnly;
+    else if (normalised == "complete")
+        c = Complete;
+    else
+        qWarning() << "Could not set FormatDefinition completeness to" << normalised;
+
+    Definition::_d.data()->set(DefinitionData::FormatCompleteness, (qint64)c);
+    return c;
+}

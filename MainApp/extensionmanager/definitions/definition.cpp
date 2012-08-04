@@ -26,11 +26,11 @@ Definition::Definition(QString id,
     : QObject(parent)
 {
     this->_d = QSharedDataPointer<DefinitionData>(new DefinitionData);
-    this->_d.data()->add(DefinitionData::Id, QVariant(id));
-    this->_d.data()->add(DefinitionData::Name, QVariant(name));
-    this->_d.data()->add(DefinitionData::Description, QVariant(description));
-    this->_d.data()->add(DefinitionData::ReleaseDate, QVariant(releaseDate));
-    this->_d.data()->add(DefinitionData::Type, QVariant(type));
+    this->_d.data()->add(DefinitionData::DefinitionId, QVariant(id));
+    this->_d.data()->add(DefinitionData::DefinitionName, QVariant(name));
+    this->_d.data()->add(DefinitionData::DefinitionDescription, QVariant(description));
+    this->_d.data()->add(DefinitionData::DefinitionReleaseDate, QVariant(releaseDate));
+    this->_d.data()->add(DefinitionData::DefinitionType, QVariant((qint64)type));
 }
 
 Definition::~Definition()
@@ -91,27 +91,27 @@ bool Definition::isValid() const
 
 QString Definition::id() const
 {
-    return this->_d.constData()->get(DefinitionData::Id).toString();
+    return this->_d.constData()->get(DefinitionData::DefinitionId).toString();
 }
 
 QString Definition::name() const
 {
-    return this->_d.constData()->get(DefinitionData::Name).toString();
+    return this->_d.constData()->get(DefinitionData::DefinitionName).toString();
 }
 
 QString Definition::description() const
 {
-    return this->_d.constData()->get(DefinitionData::Description).toString();
+    return this->_d.constData()->get(DefinitionData::DefinitionDescription).toString();
 }
 
 QDateTime Definition::releaseDate() const
 {
-    return this->_d.constData()->get(DefinitionData::ReleaseDate).toDateTime();
+    return this->_d.constData()->get(DefinitionData::DefinitionReleaseDate).toDateTime();
 }
 
 Definition::DefinitionType Definition::type() const
 {
-    return (Definition::DefinitionType)this->_d.constData()->get(DefinitionData::Type).toLongLong();
+    return (Definition::DefinitionType)this->_d.constData()->get(DefinitionData::DefinitionType).toLongLong();
 }
 
 QString Definition::prettyType() const

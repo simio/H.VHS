@@ -15,6 +15,11 @@
  */
 
 #include "extensiondefinition.h"
+#include "definitiondata.h"
+
+/*  The below QVariant type juggling suggests accessing DefinitionData
+ *  could be done in a better way.
+ */
 
 ExtensionDefinition::ExtensionDefinition(
         QString id,
@@ -38,75 +43,142 @@ ExtensionDefinition::ExtensionDefinition(
         QList<QString> outputFormats,
         QList<Person> audits,
         QObject *parent) :
-    Definition(id, name, description, releaseDate, Definition::ExtensionDefinitionType, parent)
+    Definition(id,
+               name,
+               description,
+               releaseDate,
+               Definition::ExtensionDefinitionType,     // Set definition type
+               parent)
 {
-    this->_authors = authors;
-    this->_licenseName = licenseName;
-    this->_licenseUrl = licenseUrl;
-    this->_maintainers = maintainers;
-    this->_enabled = enabled;
-    this->_condition = condition;
-    this->_basePath = basePath;
-    this->_interfaces = interfaces;
-    this->_apiVersion = apiVersion;
-    this->_api = api;
-    this->_source = source;
-    this->_inputTransports = inputTransports;
-    this->_inputFormats = inputFormats;
-    this->_outputTransports = outputTransports;
-    this->_outputFormats = outputFormats;
-    this->_audits = audits;
+    Definition::_d.data()->set(DefinitionData::ExtensionLicenseName,        QVariant(licenseName));
+    Definition::_d.data()->set(DefinitionData::ExtensionLicenseUrl,         QVariant(licenseUrl));
+    Definition::_d.data()->set(DefinitionData::ExtensionEnabled,            QVariant(enabled));
+    Definition::_d.data()->set(DefinitionData::ExtensionCondition,          QVariant(condition));
+    Definition::_d.data()->set(DefinitionData::ExtensionBasePath,           QVariant(basePath));
+    Definition::_d.data()->set(DefinitionData::ExtensionInterfaces,         QVariant(interfaces));
+    Definition::_d.data()->set(DefinitionData::ExtensionApi,                QVariant(api));
+    Definition::_d.data()->set(DefinitionData::ExtensionSource,             QVariant(source));
+    Definition::_d.data()->set(DefinitionData::ExtensionInputTransports,    QVariant(inputTransports));
+    Definition::_d.data()->set(DefinitionData::ExtensionInputFormats,       QVariant(inputFormats));
+    Definition::_d.data()->set(DefinitionData::ExtensionOutputTransports,   QVariant(outputTransports));
+    Definition::_d.data()->set(DefinitionData::ExtensionOutputFormats,      QVariant(outputFormats));
+
+    // Use QVariant::fromValue where no QVariant constructor is available.
+    // (These are registered with the QMetaType-system.)
+    Definition::_d.data()->set(DefinitionData::ExtensionAuthors,            QVariant::fromValue(authors));
+    Definition::_d.data()->set(DefinitionData::ExtensionAudits,             QVariant::fromValue(audits));
+    Definition::_d.data()->set(DefinitionData::ExtensionApiVersion,         QVariant::fromValue(apiVersion));
+    Definition::_d.data()->set(DefinitionData::ExtensionMaintainers,        QVariant::fromValue(maintainers));
 }
 
-ExtensionDefinition::ExtensionDefinition(const ExtensionDefinition &original) :
-    Definition(original),
-    _enabled(original._enabled),
-    _authors(original._authors),
-    _licenseName(original._licenseName),
-    _licenseUrl(original._licenseUrl),
-    _maintainers(original._maintainers),
-    _condition(original._condition),
-    _basePath(original._basePath),
-    _interfaces(original._interfaces),
-    _apiVersion(original._apiVersion),
-    _api(original._api),
-    _source(original._source),
-    _audits(original._audits),
-    _inputTransports(original._inputTransports),
-    _inputFormats(original._inputFormats),
-    _outputTransports(original._outputTransports),
-    _outputFormats(original._outputFormats)
+ExtensionDefinition::~ExtensionDefinition()
 { }
 
-ExtensionDefinition &ExtensionDefinition::operator =(const ExtensionDefinition &original)
+bool ExtensionDefinition::isEnabled() const
 {
-    Definition::operator=(original);
-    this->_authors = original._authors;
-    this->_licenseName = original._licenseName;
-    this->_licenseUrl = original._licenseUrl;
-    this->_maintainers = original._maintainers;
-    this->_enabled = original._enabled;
-    this->_condition = original._condition;
-    this->_basePath = original._basePath;
-    this->_interfaces = original._interfaces;
-    this->_apiVersion = original._apiVersion;
-    this->_api = original._api;
-    this->_source = original._source;
-    this->_inputTransports = original._inputTransports;
-    this->_inputFormats = original._inputFormats;
-    this->_outputTransports = original._outputTransports;
-    this->_outputFormats = original._outputFormats;
-    this->_audits = original._audits;
-    return *this;
+    return Definition::_d.constData()->get(DefinitionData::ExtensionEnabled).toBool();
 }
+
+QStringList ExtensionDefinition::interfaces() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionInterfaces).toStringList();
+}
+
+bool ExtensionDefinition::implementsInterface(QString interface) const
+{
+    return this->interfaces().contains(interface);
+}
+
+ExtensionDefinition::ApiInterface ExtensionDefinition::api() const
+{
+    return (ExtensionDefinition::ApiInterface)Definition::_d.constData()->get(DefinitionData::ExtensionApi).toLongLong();
+}
+
+VersionNumber ExtensionDefinition::apiVersion() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionApiVersion).value<VersionNumber>();
+}
+
+QString ExtensionDefinition::licenseName() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionLicenseName).toString();
+}
+
+QString ExtensionDefinition::source() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionSource).toString();
+}
+
+QList<Person> ExtensionDefinition::authors() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionAuthors).value<QList<Person> >();
+}
+
+QList<Person> ExtensionDefinition::maintainers() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionMaintainers).value<QList<Person> >();
+}
+
+QList<Person> ExtensionDefinition::audits() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionAudits).value<QList<Person> >();
+}
+
+bool ExtensionDefinition::canWriteFormat(QString uid) const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionOutputFormats).toStringList().contains(uid);
+}
+
+bool ExtensionDefinition::canReadFormat(QString uid) const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionInputFormats).toStringList().contains(uid);
+}
+
+bool ExtensionDefinition::canWriteTransport(QString uid) const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionOutputTransports).toStringList().contains(uid);
+}
+
+bool ExtensionDefinition::canReadTransport(QString uid) const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionInputTransports).toStringList().contains(uid);
+}
+
+QList<QString> ExtensionDefinition::inputTransports() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionInputTransports).toStringList();
+}
+
+QList<QString> ExtensionDefinition::inputFormats() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionInputFormats).toStringList();
+}
+
+QList<QString> ExtensionDefinition::outputTransports() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionOutputTransports).toStringList();
+}
+
+QList<QString> ExtensionDefinition::outputFormats() const
+{
+    return Definition::_d.constData()->get(DefinitionData::ExtensionOutputFormats).toStringList();
+}
+
 
 bool ExtensionDefinition::isValid() const
 {
+    // Somewhat delispious, though still not complete validity check.
     return (Definition::isValid()
-            &&  this->_authors.count() > 0
-            &&  this->_maintainers.count() > 0
-            && !this->_licenseName.isEmpty()
-            &&  this->_apiVersion > VersionNumber(0, 0)
-            && (! (this->_inputTransports.count() || this->_inputFormats.count() || this->_outputTransports.count() || this->_outputFormats.count())
-                || (this->_inputTransports.count() && this->_inputFormats.count() && this->_outputTransports.count() && this->_outputFormats.count())));
+            &&  this->maintainers().count() > 0                 // Extensions without a maintainer are invalid
+            && !this->licenseName().isEmpty()                   // Unlicensed extensions are invalid
+            &&  this->authors().count() > 0                     // Licensing is mostly useless without an author
+            &&  this->apiVersion() > VersionNumber(0, 0))
+            && (! (this->inputTransports().count()              // Extensions without streams must not use these lists
+                   || this->inputFormats().count()
+                   || this->outputTransports().count()
+                   || this->outputFormats().count())
+                || (this->inputTransports().count()             // Extensions with streams must use all of them
+                    && this->inputFormats().count()
+                    && this->outputTransports().count()
+                    && this->outputFormats().count()));
 }

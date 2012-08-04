@@ -34,16 +34,34 @@ public:
      */
     enum Key {
         // DefinitionData
-        Id,
-        Name,
-        Description,
-        ReleaseDate,
-        Type,
+        DefinitionId,
+        DefinitionName,
+        DefinitionDescription,
+        DefinitionReleaseDate,
+        DefinitionType,
 
         // FormatDefinition
-        Completeness,
-        IsTextual,
-        MimeTypes
+        FormatCompleteness,
+        FormatIsTextual,
+        FormatMimeTypes,
+
+        // ExtensionDefinition
+        ExtensionEnabled,
+        ExtensionAuthors,
+        ExtensionLicenseName,
+        ExtensionLicenseUrl,
+        ExtensionMaintainers,
+        ExtensionCondition,
+        ExtensionBasePath,
+        ExtensionInterfaces,
+        ExtensionApi,
+        ExtensionApiVersion,
+        ExtensionSource,
+        ExtensionAudits,
+        ExtensionInputTransports,
+        ExtensionInputFormats,
+        ExtensionOutputTransports,
+        ExtensionOutputFormats
     };
 
     DefinitionData()

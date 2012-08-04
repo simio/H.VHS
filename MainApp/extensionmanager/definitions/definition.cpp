@@ -15,68 +15,114 @@
  */
 
 #include "definition.h"
+#include "definitiondata.h"
 
 Definition::Definition(QString id,
                        QString name,
                        QString description,
                        QDateTime releaseDate,
                        DefinitionType type,
-                       QObject *parent) :
-    QObject(parent)
+                       QObject * parent)
+    : QObject(parent)
 {
-    this->_id = id;
-    this->_name = name;
-    this->_description = description;
-    this->_releaseDate = releaseDate;
-    this->_type = type;
+    this->_d = QSharedDataPointer<DefinitionData>(new DefinitionData);
+    this->_d.data()->add(DefinitionData::Id, QVariant(id));
+    this->_d.data()->add(DefinitionData::Name, QVariant(name));
+    this->_d.data()->add(DefinitionData::Description, QVariant(description));
+    this->_d.data()->add(DefinitionData::ReleaseDate, QVariant(releaseDate));
+    this->_d.data()->add(DefinitionData::Type, QVariant(type));
 }
 
-// ==, !=, <= and >= compares both id and release dates, while < and > compare only dates.
-bool Definition::operator ==(const Definition &other) const     { return this->_id == other._id
-                                                                    && this->_releaseDate == other._releaseDate; }
-bool Definition::operator !=(const Definition &other) const     { return !(*this == other); }
-bool Definition::operator <(const Definition &other) const      { return this->_releaseDate < other._releaseDate; }
-bool Definition::operator <=(const Definition &other) const     { return this->_id == other._id
-                                                                    && this->_releaseDate <= other._releaseDate; }
-bool Definition::operator >(const Definition &other) const      { return this->_releaseDate > other._releaseDate; }
-bool Definition::operator >=(const Definition &other) const     { return this->_id == other._id
-            && this->_releaseDate >= other._releaseDate; }
+Definition::~Definition()
+{ }
 
-Definition::Definition(const Definition &original) :
-    _id(original._id),
-    _name(original._name),
-    _description(original._description),
-    _releaseDate(original._releaseDate),
-    _type(original._type)
+Definition::Definition(const Definition &original)
+    : _d(original._d)
 { }
 
 Definition &Definition::operator =(const Definition &original)
 {
-    this->_id = original._id;
-    this->_name = original._name;
-    this->_description = original._description;
-    this->_releaseDate = original._releaseDate;
-    this->_type = original._type;
+    this->_d = original._d;
     return *this;
+}
+
+// ==, !=, <= and >= compares both id and release dates, while < and > compare only dates.
+bool Definition::operator ==(const Definition &other) const
+{
+    return this->id() == other.id()
+            && this->releaseDate() == other.releaseDate();
+}
+
+bool Definition::operator !=(const Definition &other) const
+{
+    // Invert operator ==
+    return ! (*this == other);
+}
+
+bool Definition::operator <(const Definition &other) const
+{
+    return this->releaseDate() < other.releaseDate();
+}
+
+bool Definition::operator <=(const Definition &other) const
+{
+    return this->id() == other.id()
+            && this->releaseDate() <= other.releaseDate();
+}
+
+bool Definition::operator >(const Definition &other) const
+{
+    return this->releaseDate() > other.releaseDate();
+}
+
+bool Definition::operator >=(const Definition &other) const
+{
+    return this->id() == other.id()
+            && this->releaseDate() >= other.releaseDate();
 }
 
 bool Definition::isValid() const
 {
-    return (!this->_id.isEmpty()
-            && !this->_name.isEmpty()
-            && this->_releaseDate.isValid()
-            && this->_type != NoDefinitionType);
+    return (! this->id().isEmpty()
+            && ! this->name().isEmpty()
+            && this->releaseDate().isValid()
+            && this->type() != Definition::NoDefinitionType);
+}
+
+QString Definition::id() const
+{
+    return this->_d.constData()->get(DefinitionData::Id).toString();
+}
+
+QString Definition::name() const
+{
+    return this->_d.constData()->get(DefinitionData::Name).toString();
+}
+
+QString Definition::description() const
+{
+    return this->_d.constData()->get(DefinitionData::Description).toString();
+}
+
+QDateTime Definition::releaseDate() const
+{
+    return this->_d.constData()->get(DefinitionData::ReleaseDate).toDateTime();
+}
+
+Definition::DefinitionType Definition::type() const
+{
+    return (Definition::DefinitionType)this->_d.constData()->get(DefinitionData::Type).toLongLong();
 }
 
 QString Definition::prettyType() const
 {
-    switch (this->_type)
+    switch (this->type())
     {
-    case NoDefinitionType:                  return "none"; break;
-    case TransportDefinitionType:           return "transport"; break;
-    case FormatDefinitionType:              return "format"; break;
-    case ExtensionDefinitionType:           return "extension"; break;
-    case CassetteDefinitionType:            return "cassette"; break;
-    default:                                return QString::number(this->_type).prepend("#"); break;
+    case Definition::NoDefinitionType:                  return "none (invalid)"; break;
+    case Definition::TransportDefinitionType:           return "transport"; break;
+    case Definition::FormatDefinitionType:              return "format"; break;
+    case Definition::ExtensionDefinitionType:           return "extension"; break;
+    case Definition::CassetteDefinitionType:            return "cassette"; break;
+    default:                                            return QString::number(this->type()).prepend("#"); break;
     }
 }

@@ -15,6 +15,7 @@
  */
 
 #include "formatdefinition.h"
+#include "definitiondata.h"
 
 FormatDefinition::FormatDefinition(QString id,
                                    QString name,
@@ -24,63 +25,55 @@ FormatDefinition::FormatDefinition(QString id,
                                    bool isText,
                                    QStringList mimeTypes,
                                    QObject *parent) :
-    Definition(id, name, description, releaseDate, Definition::FormatDefinitionType, parent)
+    Definition(id,
+               name,
+               description,
+               releaseDate,
+               Definition::FormatDefinitionType,            // Set definition type
+               parent)
 {
-    this->_setCompleteness(completeness);
-    this->_isText = isText;
-    this->_mimeTypes = mimeTypes;
+    Definition::_d.data()->set(DefinitionData::Completeness, QVariant(completeness));
+    Definition::_d.data()->set(DefinitionData::IsTextual, QVariant(isText));
+    Definition::_d.data()->set(DefinitionData::MimeTypes, QVariant(mimeTypes));
 }
+
+FormatDefinition::~FormatDefinition()
+{ }
 
 bool FormatDefinition::isValid() const
 {
     return (Definition::isValid()
-            && this->_completeness != Invalid
-            && this->_mimeTypes.count() > 0);
+            && this->completeness() != Invalid
+            && Definition::_d.data()->has(DefinitionData::IsTextual)
+            && this->mimeTypes().count() > 0);
 }
 
 FormatDefinition::Completeness FormatDefinition::completeness() const
 {
-    return this->_completeness;
+    return (FormatDefinition::Completeness)Definition::_d.constData()->get(DefinitionData::Completeness).toLongLong();
 }
 
-bool FormatDefinition::isText() const
+bool FormatDefinition::isTextual() const
 {
-    return this->_isText;
-}
-
-QString FormatDefinition::mimeType(int index) const
-{
-    return (index >= 0 && index < this->_mimeTypes.size() ? this->_mimeTypes.at(index) : QString());
+    return Definition::_d.constData()->get(DefinitionData::IsTextual).toBool();
 }
 
 QStringList FormatDefinition::mimeTypes() const
 {
-    return this->_mimeTypes;
+    return Definition::_d.constData()->get(DefinitionData::MimeTypes).toStringList();
 }
 
-void FormatDefinition::_setCompleteness(FormatDefinition::Completeness c)
+QString FormatDefinition::mimeType(int index) const
 {
-    this->_completeness = c;
+    // Negative indexes do not exist. This will throw later on.
+    if (index < 0)
+        qFatal("FormatDefinition::mimeType(): Called with negative index.");
+
+    // Same for indexes above range. (So don't you go off-by-one even once.)
+    if (index >= this->mimeTypes().count())
+        qFatal("FormatDefinition::mimeType(): Called with index above range.");
+
+    // Index is within range
+    return this->mimeTypes().at(index);
 }
 
-FormatDefinition::Completeness FormatDefinition::_setCompleteness(QString str)
-{
-    QString normalised = str.toLower().trimmed();
-
-    if (normalised == "notempty")
-        this->_setCompleteness(NotEmpty);
-    else if (normalised == "metaonly")
-        this->_setCompleteness(MetaOnly);
-    else if (normalised == "dataonly")
-        this->_setCompleteness(DataOnly);
-    else if (normalised == "complete")
-        this->_setCompleteness(Complete);
-    else
-        qWarning() << "Could not set FormatDefinition completeness to" << normalised;
-
-    return this->_completeness;
-}
-
-void FormatDefinition::_insertMimeType(int index, QString mimeType) {
-    this->_mimeTypes.insert(index, mimeType);
-}

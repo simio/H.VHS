@@ -132,7 +132,7 @@ QSharedPointer<Definition> DefinitionTable::get(Definition::DefinitionType type,
 
 QSharedPointer<Definition> DefinitionTable::get(QSharedPointer<Definition> def) const
 {
-    return this->get(def->type(), def->id());
+    return this->get(def.data()->type(), def.data()->id());
 }
 
 QHash<QString, QSharedPointer<Definition> > DefinitionTable::getAll(Definition::DefinitionType type) const
@@ -146,6 +146,6 @@ bool DefinitionTable::_set(QSharedPointer<Definition> def)
     def->setParent(this);
     this->_definitions[def.data()->type()].insert(def.data()->id(), def);
     // Since the (possibly) overwritten definition is managed by QSharedPointer,
-    // it isn't deleted here.
+    // it isn't deleted here (or anywhere).
     return overwrite;
 }

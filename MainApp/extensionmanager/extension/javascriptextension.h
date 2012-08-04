@@ -18,6 +18,8 @@
 #define EXTENSIONMANAGER_EXTENSION_JAVASCRIPTEXTENSION_H
 
 #include <QObject>
+#include <QScopedPointer>
+#include <QSharedPointer>
 #include <QtScript>
 
 #include "main.h"

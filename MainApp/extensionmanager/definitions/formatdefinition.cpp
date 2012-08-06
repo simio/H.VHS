@@ -32,9 +32,11 @@ FormatDefinition::FormatDefinition(QString id,
                Definition::FormatDefinitionType,                // Set definition type
                parent)
 {
-    Definition::_d.data()->set(DefinitionData::FormatCompleteness, QVariant(completeness));
     Definition::_d.data()->set(DefinitionData::FormatIsTextual, QVariant(isText));
     Definition::_d.data()->set(DefinitionData::FormatMimeTypes, QVariant(mimeTypes));
+
+    // Cast to qint64 when storing enums
+    Definition::_d.data()->set(DefinitionData::FormatCompleteness, QVariant((qint64)this->_strToCompleteness(completeness)));
 }
 
 FormatDefinition::~FormatDefinition()
@@ -50,7 +52,7 @@ bool FormatDefinition::isValid() const
 
 FormatDefinition::Completeness FormatDefinition::completeness() const
 {
-    return (FormatDefinition::Completeness)Definition::_d.constData()->get(DefinitionData::FormatCompleteness).toLongLong();
+    return (FormatDefinition::Completeness)(Definition::_d.constData()->get(DefinitionData::FormatCompleteness).toLongLong());
 }
 
 bool FormatDefinition::isTextual() const
@@ -77,7 +79,7 @@ QString FormatDefinition::mimeType(int index) const
     return this->mimeTypes().at(index);
 }
 
-FormatDefinition::Completeness FormatDefinition::_setCompleteness(QString str)
+FormatDefinition::Completeness FormatDefinition::_strToCompleteness(QString str)
 {
     Completeness c;
     QString normalised = str.toLower().trimmed();
@@ -93,6 +95,5 @@ FormatDefinition::Completeness FormatDefinition::_setCompleteness(QString str)
     else
         qWarning() << "Could not set FormatDefinition completeness to" << normalised;
 
-    Definition::_d.data()->set(DefinitionData::FormatCompleteness, (qint64)c);
     return c;
 }

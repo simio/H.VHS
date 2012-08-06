@@ -35,7 +35,7 @@ ExtensionDefinition::ExtensionDefinition(
         QString basePath,
         QStringList interfaces,
         VersionNumber apiVersion,
-        ApiInterface api,
+        ExtensionDefinition::ApiInterface apiInterface,
         QString source,
         QList<QString> inputTransports,
         QList<QString> inputFormats,
@@ -53,15 +53,17 @@ ExtensionDefinition::ExtensionDefinition(
     Definition::_d.data()->set(DefinitionData::ExtensionLicenseName,        QVariant(licenseName));
     Definition::_d.data()->set(DefinitionData::ExtensionLicenseUrl,         QVariant(licenseUrl));
     Definition::_d.data()->set(DefinitionData::ExtensionEnabled,            QVariant(enabled));
-    Definition::_d.data()->set(DefinitionData::ExtensionCondition,          QVariant(condition));
     Definition::_d.data()->set(DefinitionData::ExtensionBasePath,           QVariant(basePath));
     Definition::_d.data()->set(DefinitionData::ExtensionInterfaces,         QVariant(interfaces));
-    Definition::_d.data()->set(DefinitionData::ExtensionApi,                QVariant(api));
     Definition::_d.data()->set(DefinitionData::ExtensionSource,             QVariant(source));
     Definition::_d.data()->set(DefinitionData::ExtensionInputTransports,    QVariant(inputTransports));
     Definition::_d.data()->set(DefinitionData::ExtensionInputFormats,       QVariant(inputFormats));
     Definition::_d.data()->set(DefinitionData::ExtensionOutputTransports,   QVariant(outputTransports));
     Definition::_d.data()->set(DefinitionData::ExtensionOutputFormats,      QVariant(outputFormats));
+
+    // Cast to qint64 when storing enums
+    Definition::_d.data()->set(DefinitionData::ExtensionApi,                QVariant((qint64)apiInterface));
+    Definition::_d.data()->set(DefinitionData::ExtensionCondition,          QVariant((qint64)condition));
 
     // Use QVariant::fromValue where no QVariant constructor is available.
     // (These are registered with the QMetaType-system.)

@@ -38,6 +38,9 @@ WebWindow::WebWindow(QWidget *parent) :
 WebWindow::~WebWindow()
 {
     delete ui;
+
+    // Note: QWidget attribute Qt::WA_DeleteOnClose is set on this,
+    // which should result in deletion of this after closing the window.
 }
 
 void WebWindow::_loadPage(const QUrl &url)

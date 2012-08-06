@@ -66,7 +66,7 @@ public:
                         QString basePath,
                         QStringList interfaces,
                         VersionNumber apiVersion,
-                        ApiInterface api,
+                        ApiInterface apiInterface,
                         QString source,
                         QList<QString> inputTransports,
                         QList<QString> inputFormats,

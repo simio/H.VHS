@@ -93,7 +93,7 @@ private:
     // as the ExtensionManager is around.
     QMultiMap<qint64,QSharedPointer<Extension> > _persistentExtensions;
 
-    QScopedPointer<JobManager> _jobManager;
+    QWeakPointer<JobManager> _jobManager;       // QWeakPointer: Will get parent
 
     QSharedPointer<Extension> _loadExtension(QSharedPointer<ExtensionDefinition> definition);
 };

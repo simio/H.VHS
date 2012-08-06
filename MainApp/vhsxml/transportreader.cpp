@@ -18,7 +18,7 @@
 
 namespace VhsXml {
 
-QList<QSharedPointer<TransportDefinition> > TransportReader::parse(const QDomDocument &document, QObject *definitionParent)
+QList<QSharedPointer<TransportDefinition> > TransportReader::parse(const QDomDocument &document)
 {
     QList<QSharedPointer<TransportDefinition> > result;
 
@@ -32,7 +32,7 @@ QList<QSharedPointer<TransportDefinition> > TransportReader::parse(const QDomDoc
             {
                 if (transportNode.toElement().tagName() == "transportDefinition")
                 {
-                    QSharedPointer<TransportDefinition> transport = _parseTransport(transportNode.toElement(), definitionParent);
+                    QSharedPointer<TransportDefinition> transport = _parseTransport(transportNode.toElement());
                     if (! transport.isNull())
                         result << transport;
                 }
@@ -53,7 +53,7 @@ QList<QSharedPointer<TransportDefinition> > TransportReader::parse(const QDomDoc
  *  the elements appear is defined in the RELAX NG Schema.
  */
 
-QSharedPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement &transportNode, QObject *definitionParent)
+QSharedPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement &transportNode)
 {
     QString id;                                     // Unique; required
     QDateTime releaseDate;                          // As attribute of id; required
@@ -90,8 +90,8 @@ QSharedPointer<TransportDefinition> TransportReader::_parseTransport(const QDomE
     else if (e.isNull())
         return QSharedPointer<TransportDefinition>();
 
-    // alloc: Has parent
-    QSharedPointer<TransportDefinition> transport(new TransportDefinition(id, name, description, releaseDate, definitionParent));
+    // alloc: QSharedPointer
+    QSharedPointer<TransportDefinition> transport(new TransportDefinition(id, name, description, releaseDate, 0));
     if (transport->isValid())
         return transport;
 

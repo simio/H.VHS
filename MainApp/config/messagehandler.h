@@ -35,7 +35,7 @@ public:
     static MessageHandler *p();
 
     void message(QtMsgType type, const char *msg);
-    QSharedPointer<ConsoleWindow> createConsoleWindow();
+    QWeakPointer<ConsoleWindow> createConsoleWindow();
 
 public slots:
     void notifyQObjectDestroyed(QObject * obj);
@@ -47,9 +47,9 @@ private:
     static MessageHandler *s_instance;
 
     QQueue<QString> _buffer;
-    static const qint64 _bufferLength = 10240;                 // Lines
+    static const qint64 _bufferLength = 10240;                  // Lines
 
-    QSharedPointer<ConsoleWindow> _consoleWindow;
+    QWeakPointer<ConsoleWindow> _consoleWindow;                 // Independent Window; won't get parent
 };
 
 void messageHandler(QtMsgType type, const char *msg);

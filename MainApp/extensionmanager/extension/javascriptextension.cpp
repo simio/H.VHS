@@ -27,9 +27,7 @@ JavaScriptExtension::JavaScriptExtension(QSharedPointer<ExtensionDefinition> def
     /*  Copying the object rather than the pointer ensures updates to the
      *  definition won't affect any already running extensions.
      */
-    // alloc: Has parent (next line) and is QSharedPointer
-    this->_definition = QSharedPointer<ExtensionDefinition>(new ExtensionDefinition(*(definition.data())));
-    this->_definition->setParent(this);
+    this->_definition = QSharedPointer<ExtensionDefinition>(new ExtensionDefinition(*(definition.data())));     // alloc: QSharedPointer
 
     this->_initialised = this->_initialise();
     if (! this->_initialised)
@@ -42,8 +40,8 @@ JavaScriptExtension::~JavaScriptExtension()
 {
     this->pluginHook( EXT_HOOK_BEFORE_KILL_EXT );
 
-    // this->_engine is QScopedPointer
-    // this->_definition is QSharedPointer
+    // nodelete: this->_engine is QScopedPointer
+    // nodelete: this->_definition is QSharedPointer
 }
 
 bool JavaScriptExtension::isValid()
@@ -138,16 +136,18 @@ bool JavaScriptExtension::_initialise()
         qDebug() << "JavaScriptExtension::_initialise(): Replacing existing QScriptEngine to reinitialise for"
                  << this->_definition->id();
     }
-    this->_engine.reset(new QScriptEngine(this));                   // alloc: Has parent and has QScopedPointer
+    this->_engine.reset(new QScriptEngine(0));                  // alloc: QScopedPointer
 
     // Setup up an environment for the actual extension script here
 
     // Evaluate source now
     qDebug() << "JavaScriptExtension: Evaluating source for " << this->_definition->id();
 
-    if (this->_hasError(this->_engine->evaluate(source, sourceFilename)))
+    if (this->_hasError(this->_engine.data()->evaluate(source, sourceFilename)))
     {
-        this->_engine->deleteLater();
+        // Since we don't know what the user of this instance does if initialisation
+        // fails and this->isValid() returns false, the allocated engine is deleted here.
+        this->_engine.take()->deleteLater();
         return false;
     }
 
@@ -163,17 +163,17 @@ bool JavaScriptExtension::_hasError(QScriptValue evalReturnValue) const
         qCritical() << "JavaScriptExtension::_hasError(): Called without engine!";
         return true;
     }
-    if (! this->_engine->hasUncaughtException())
+    if (! this->_engine.data()->hasUncaughtException())
         return false;
 
     QString retvalstr = (evalReturnValue.isNull() ? "In" : evalReturnValue.toString() + " in");
 
     qWarning() << "JavaScriptExtension::_hasError():" << retvalstr
                << "source for" << this->_definition->id()
-               << "line" << this->_engine->uncaughtExceptionLineNumber();
-    qWarning() << "  " << this->_engine->uncaughtException().toString();
+               << "line" << this->_engine.data()->uncaughtExceptionLineNumber();
+    qWarning() << "  " << this->_engine.data()->uncaughtException().toString();
     qWarning() << "Trace follows:";
-    foreach(QString line, this->_engine->uncaughtExceptionBacktrace())
+    foreach(QString line, this->_engine.data()->uncaughtExceptionBacktrace())
         qWarning() << "  |" << line;
 
     return true;

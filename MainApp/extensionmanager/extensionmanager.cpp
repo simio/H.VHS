@@ -69,7 +69,7 @@ int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
     // currently present in the JobManager. This is to ensure that
     // any hookData modifications take place before the JobManager
     // extension instances are called.
-    result += this->_jobManager->callHook(hook, hookData);
+    result += this->_jobManager.data()->callHook(hook, hookData);
 
     return result;
 }
@@ -112,7 +112,7 @@ void ExtensionManager::_initialise()
     }
 
     // Set up a JobManager
-    this->_jobManager.reset(new JobManager(this));                                   // alloc: Has parent & QScopedPointer
+    this->_jobManager = QWeakPointer<JobManager>(new JobManager(this));                             // alloc: QWeakPointer with parent
 }
 
 // Load an extension and return a pointer to it (or NULL). Checking which
@@ -125,10 +125,10 @@ QSharedPointer<Extension> ExtensionManager::_loadExtension(QSharedPointer<Extens
     {
     case ExtensionDefinition::QtPlugin:
     {
-        QScopedPointer<QtPluginExtension> qtplugin(new QtPluginExtension(definition, this));      // alloc: Has parent & is scoped
+        QScopedPointer<QtPluginExtension> qtplugin(new QtPluginExtension(definition, 0));           // alloc: QScopedPointer -> noparent
         if (qtplugin.data()->isValid())
         {
-            // Cast back to Extension and take ownership
+            // Cast back to Extension and take ownership for QSharedPointer refcounting
             QSharedPointer<Extension> extension(qSharedPointerCast<Extension>(QSharedPointer<QtPluginExtension>(qtplugin.take())));
             return extension;
         }
@@ -141,10 +141,10 @@ QSharedPointer<Extension> ExtensionManager::_loadExtension(QSharedPointer<Extens
 
     case ExtensionDefinition::JavaScript:
     {
-        QScopedPointer<JavaScriptExtension> jsplugin(new JavaScriptExtension(definition, this));  // alloc: Has parent & is scoped
+        QScopedPointer<JavaScriptExtension> jsplugin(new JavaScriptExtension(definition, 0));       // alloc: QScopedPointer -> noparent
         if (jsplugin.data()->isValid())
         {
-            // Cast back to Extension and take ownership
+            // Cast back to Extension and take ownership for QSharedPointer refcounting
             QSharedPointer<Extension> extension(qSharedPointerCast<Extension>(QSharedPointer<JavaScriptExtension>(jsplugin.take())));
             return extension;
         }

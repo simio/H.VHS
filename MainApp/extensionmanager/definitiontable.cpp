@@ -44,9 +44,8 @@ DefinitionTable::DefinitionTable(QObject *parent) :
 
     foreach (QFileInfo file, files)
     {
-        // alloc: QScopedPointer
-        QScopedPointer<VhsXml::DocumentReader> xml(new VhsXml::DocumentReader(file, 0));
-        this->update(xml->definitions(Definition::NoDefinitionType, this));
+        QScopedPointer<VhsXml::DocumentReader> xml(new VhsXml::DocumentReader(file, 0));    // alloc: QScopedPointer
+        this->update(xml->definitions(Definition::NoDefinitionType));                       // implicit alloc: QSharedPointers
     }
 
     qDebug() << "DefinitionTable constructed with" << this->_definitions.size() << "definition types";
@@ -143,7 +142,6 @@ QHash<QString, QSharedPointer<Definition> > DefinitionTable::getAll(Definition::
 bool DefinitionTable::_set(QSharedPointer<Definition> def)
 {
     bool overwrite = this->contains(def);
-    def->setParent(this);
     this->_definitions[def.data()->type()].insert(def.data()->id(), def);
     // Since the (possibly) overwritten definition is managed by QSharedPointer,
     // it isn't deleted here (or anywhere).

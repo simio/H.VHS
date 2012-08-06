@@ -67,7 +67,7 @@ signals:
 private:
     FormatDefinition();
 
-    FormatDefinition::Completeness _setCompleteness(QString str);
+    FormatDefinition::Completeness _strToCompleteness(QString str);
 
 };
 

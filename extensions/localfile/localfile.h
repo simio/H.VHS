@@ -28,6 +28,14 @@
 #include "common_if.h"
 #include "streams_if.h"
 
+/*  This extension will currently only allow one file per instance,
+ *  and should be rewritten to either forget about opened files as
+ *  soon as they've been returned (as QWeakPointer) to the caller,
+ *  or keep them in a QList<QSharedPointer<QFile> >. Keeping a table
+ *  would allow the extension to run some kind of maintenance, but is
+ *  that really needed?
+ */
+
 class LocalFileExtension :
         public QObject,
         public ExtensionInterfaceCommon,
@@ -46,7 +54,7 @@ public:
 private:
     QSharedPointer<QFile> _file;
 
-    const QWeakPointer<QFile> _resolveHurl(QString hurl);
+    const QSharedPointer<QFile> _resolveHurl(QString hurl);
 
 };
 

@@ -31,12 +31,12 @@ namespace VhsXml {
 class ExtensionReader
 {
 public:
-    static QList<QSharedPointer<ExtensionDefinition> > parse(const QDomDocument &document, QObject *extensionParent);
+    static QList<QSharedPointer<ExtensionDefinition> > parse(const QDomDocument &document);
 
 private:
     ExtensionReader();
 
-    static QSharedPointer<ExtensionDefinition> _parseExtension(const QDomElement &extensionNode, QObject *extensionParent);
+    static QSharedPointer<ExtensionDefinition> _parseExtension(const QDomElement &extensionNode);
 };
 
 } // namespace VhsXml

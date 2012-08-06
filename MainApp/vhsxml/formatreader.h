@@ -32,12 +32,12 @@ namespace VhsXml {
 class FormatReader
 {
 public:
-    static QList<QSharedPointer<FormatDefinition> > parse(const QDomDocument &document, QObject *definitionParent);
+    static QList<QSharedPointer<FormatDefinition> > parse(const QDomDocument &document);
 
 private:
     FormatReader();
 
-    static QSharedPointer<FormatDefinition> _parseFormat(const QDomElement &formatNode, QObject *definitionParent);
+    static QSharedPointer<FormatDefinition> _parseFormat(const QDomElement &formatNode);
 };
 
 } // namespace VhsXml

@@ -18,7 +18,7 @@
 
 namespace VhsXml {
 
-QList<QSharedPointer<ExtensionDefinition> > ExtensionReader::parse(const QDomDocument &document, QObject *extensionParent)
+QList<QSharedPointer<ExtensionDefinition> > ExtensionReader::parse(const QDomDocument &document)
 {
     QList<QSharedPointer<ExtensionDefinition> > result;
 
@@ -32,7 +32,7 @@ QList<QSharedPointer<ExtensionDefinition> > ExtensionReader::parse(const QDomDoc
             {
                 if (extensionNode.toElement().tagName() == "extension")
                 {
-                    QSharedPointer<ExtensionDefinition> extension = _parseExtension(extensionNode.toElement(), extensionParent);
+                    QSharedPointer<ExtensionDefinition> extension = _parseExtension(extensionNode.toElement());
                     if (! extension.isNull())
                         result << extension;
                 }
@@ -53,7 +53,7 @@ QList<QSharedPointer<ExtensionDefinition> > ExtensionReader::parse(const QDomDoc
  *  the elements appear is defined in the RELAX NG Schema.
  */
 
-QSharedPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement &extensionNode, QObject *extensionParent)
+QSharedPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomElement &extensionNode)
 {
     QString id;                                     // Unique; required
     QDateTime releaseDate;                          // As attribute of id; required
@@ -318,12 +318,12 @@ QSharedPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomE
     else
         return QSharedPointer<ExtensionDefinition>();
 
-    // alloc: Has parent
+    // alloc: QSharedPointer
     QSharedPointer<ExtensionDefinition> extension(new ExtensionDefinition(id, name, description, releaseDate, authors, licenseName,
                                                                           licenseUrl, maintainers, enabled, condition, basePath,
                                                                           interfaces, apiVersion, apiInterfaceClass, source,
                                                                           inputTransports, inputFormats, outputTransports,
-                                                                          outputFormats, audits, extensionParent));
+                                                                          outputFormats, audits, 0));
     if (extension->isValid())
         return extension;
 

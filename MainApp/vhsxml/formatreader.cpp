@@ -18,7 +18,7 @@
 
 namespace VhsXml {
 
-QList<QSharedPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &document, QObject *definitionParent)
+QList<QSharedPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &document)
 {
     QList<QSharedPointer<FormatDefinition> > result;
 
@@ -32,7 +32,7 @@ QList<QSharedPointer<FormatDefinition> > FormatReader::parse(const QDomDocument 
             {
                 if (formatNode.toElement().tagName() == "formatDefinition")
                 {
-                    QSharedPointer<FormatDefinition> format = _parseFormat(formatNode.toElement(), definitionParent);
+                    QSharedPointer<FormatDefinition> format = _parseFormat(formatNode.toElement());
                     if (! format.isNull())
                         result << format;
                 }
@@ -53,7 +53,7 @@ QList<QSharedPointer<FormatDefinition> > FormatReader::parse(const QDomDocument 
  *  the elements appear is defined in the RELAX NG Schema.
  */
 
-QSharedPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatNode, QObject *definitionParent)
+QSharedPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatNode)
 {
     QString id;                                     // Unique; required
     QDateTime releaseDate;                          // As attribute of id; required
@@ -120,9 +120,9 @@ QSharedPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &f
         mimeTypes = ElementParser::tokenList(e, "mimeType");
     e = e.nextSiblingElement();
 
-    // alloc: Has parent
+    // alloc: QSharedPointer
     QSharedPointer<FormatDefinition> format(new FormatDefinition(id, name, description, releaseDate, completeness,
-                                                                 isText, mimeTypes, definitionParent));
+                                                                 isText, mimeTypes, 0));
     if (format->isValid())
         return format;
 

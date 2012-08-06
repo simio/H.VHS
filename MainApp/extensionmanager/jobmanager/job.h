@@ -36,7 +36,7 @@ public:
 private:
     QPointer<ExtensionInterfaceStreams> _source;
     QPointer<ExtensionInterfaceStreams> _target;
-    QLinkedList<QPointer<ExtensionInterfaceStreams> > _converters;
+    QLinkedList<QPointer<ExtensionInterfaceStreams> > _filters;
 
 signals:
     void ping(const QString &message);

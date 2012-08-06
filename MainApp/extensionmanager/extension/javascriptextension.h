@@ -18,6 +18,8 @@
 #define EXTENSIONMANAGER_EXTENSION_JAVASCRIPTEXTENSION_H
 
 #include <QObject>
+#include <QScopedPointer>
+#include <QSharedPointer>
 #include <QtScript>
 
 #include "main.h"
@@ -28,7 +30,7 @@
 class JavaScriptExtension : public Extension
 {
 public:
-    explicit JavaScriptExtension(QPointer<ExtensionDefinition> definition, QObject *parent = 0);
+    explicit JavaScriptExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent = 0);
 
     ~JavaScriptExtension();
 
@@ -40,16 +42,16 @@ public:
     qint64 pluginHook(const qint64 hook);
 
     // HVHS_INTERFACE_STREAMS
-    QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 private:
-    QPointer<QScriptEngine> _engine;
-    QPointer<ExtensionDefinition> _definition;
+    QScopedPointer<QScriptEngine> _engine;
+    QSharedPointer<ExtensionDefinition> _definition;
 
     bool _initialise();
     bool _initialised;
 
-    bool _hasError(QScriptValue evalReturnValue = QScriptValue());
+    bool _hasError(QScriptValue evalReturnValue = QScriptValue()) const;
 
 signals:
 

@@ -18,7 +18,8 @@
 #define EXTENSIONMANAGER_JOBMANAGER_JOB_H
 
 #include <QObject>
-#include <QPointer>
+#include <QScopedPointer>
+#include <QSharedPointer>
 #include <QLinkedList>
 #include <QBuffer>
 #include <QThread>
@@ -34,9 +35,9 @@ public:
     explicit Job(QObject *parent = 0);
 
 private:
-    QPointer<ExtensionInterfaceStreams> _source;
-    QPointer<ExtensionInterfaceStreams> _target;
-    QLinkedList<QPointer<ExtensionInterfaceStreams> > _filters;
+    QScopedPointer<ExtensionInterfaceStreams> _source;
+    QScopedPointer<ExtensionInterfaceStreams> _target;
+    QLinkedList<QSharedPointer<ExtensionInterfaceStreams> > _filters;
 
 signals:
     void ping(const QString &message);

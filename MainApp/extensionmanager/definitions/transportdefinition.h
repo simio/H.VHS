@@ -23,10 +23,21 @@
 #include "main.h"
 #include "definition.h"
 
+/*  Since this class inherits Definition, which is implicitly shared through using a d pointer to QSharedData,
+ *  none of the following may be defined inline: ctor, dtor, copy constructor, assignment operator.
+ *  Also, ctor and dtor must be defined.
+ */
+
 class TransportDefinition : public Definition
 {
 public:
-    TransportDefinition(QString id, QString name, QString description, QDateTime releaseDate, QObject *parent = 0);
+    TransportDefinition(QString id,
+                        QString name,
+                        QString description,
+                        QDateTime releaseDate,
+                        QObject *parent = 0);
+
+    ~TransportDefinition();
 
 signals:
 
@@ -34,6 +45,7 @@ public slots:
 
 private:
     TransportDefinition();
+
 };
 
 #endif // EXTENSIONMANAGER_DEFINITIONS_TRANSPORTDEFINITION_H

@@ -18,7 +18,7 @@
 #define VHSXML_READER_H
 
 #include <QObject>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QFile>
 #include <QDomDocument>
 #include <QXmlInputSource>
@@ -43,12 +43,10 @@ public:
     static VersionNumber version()                    { return VersionNumber(1, 1); }
     static VersionNumber oldestCompatibleVersion()    { return VersionNumber(1, 1); }
 
-    explicit DocumentReader(QObject *parent = 0) : QObject(parent) { }
     DocumentReader(QFileInfo file, QObject *parent);
-    DocumentReader(QPointer<QIODevice> device, QObject *parent) : QObject(parent)   { this->_initialise(device); }
-    DocumentReader(QXmlInputSource *source, QObject *parent) : QObject(parent)      { this->_initialise(source); }
+    DocumentReader(QSharedPointer<QXmlInputSource> source, QObject *parent) : QObject(parent)   { this->_initialise(source); }
 
-    QList<QPointer<Definition> > definitions(Definition::DefinitionType defType, QObject *definitionParent) const;
+    QList<QSharedPointer<Definition> > definitions(Definition::DefinitionType defType) const;
 
     bool isEmpty() const                                                    { return this->_xml.isNull(); }
 
@@ -62,9 +60,9 @@ public slots:
 private:
     static bool _isCompatibleWith(QString foulString);
 
-    bool _initialise(QPointer<QFile> file);
-    bool _initialise(QPointer<QIODevice> device);
-    bool _initialise(QXmlInputSource *source);
+    bool _initialise(QWeakPointer<QFile> file);
+    bool _initialise(QWeakPointer<QIODevice> device);
+    bool _initialise(QSharedPointer<QXmlInputSource> source);
 
     QDomDocument _xml;
 

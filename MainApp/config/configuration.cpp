@@ -37,8 +37,8 @@ Configuration::Configuration(QObject *parent) :
 
     this->_writeBlock = false;
 
-    this->_settings = PlatformDependent::p()->makeSettings(this);
-    this->_settings->setIniCodec("UTF-8");
+    this->_settings = PlatformDependent::p()->newSettings(this);
+    this->_settings.data()->setIniCodec("UTF-8");
 
     this->_publicAppTag = QString( PUBLIC_APP_TAG );
     this->_gitHash = QString( GIT_HASH );
@@ -53,11 +53,11 @@ void Configuration::setWriteBlock(bool blocked)
 
 bool Configuration::clearStorage()
 {
-    this->_settings->clear();
+    this->_settings.data()->clear();
 
     // Remove the file
-    if (this->_settings->format() == QSettings::IniFormat)
-        QFile(this->_settings->fileName()).remove();
+    if (this->_settings.data()->format() == QSettings::IniFormat)
+        QFile(this->_settings.data()->fileName()).remove();
 
     return true;
 }
@@ -106,51 +106,51 @@ QString Configuration::appVersion()
 
 void Configuration::saveWindow(Window window, QByteArray state, QByteArray geometry)
 {
-    this->_settings->beginGroup("Layout");
+    this->_settings.data()->beginGroup("Layout");
     this->_setValue(QString("WindowState") + QString::number((int)window), state);
     this->_setValue(QString("WindowGeometry") + QString::number((int)window), geometry);
-    this->_settings->endGroup();
+    this->_settings.data()->endGroup();
 }
 
 QByteArray Configuration::getWindowState(Window window)
 {
-    this->_settings->beginGroup("Layout");
+    this->_settings.data()->beginGroup("Layout");
     QByteArray retVal = this->_value(QString("WindowState") + QString::number((int)window), "").toByteArray();
-    this->_settings->endGroup();
+    this->_settings.data()->endGroup();
     return retVal;
 }
 
 QByteArray Configuration::getWindowGeometry(Window window)
 {
-    this->_settings->beginGroup("Layout");
+    this->_settings.data()->beginGroup("Layout");
     QByteArray retVal = this->_value(QString("WindowGeometry") + QString::number((int)window), "").toByteArray();
-    this->_settings->endGroup();
+    this->_settings.data()->endGroup();
     return retVal;
 }
 
 void Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
 {
     QMap<QString,QVariant>::iterator webViewSetting;
-    this->_settings->beginGroup("WebView");
+    this->_settings.data()->beginGroup("WebView");
     for (webViewSetting = webViewSettings.begin(); webViewSetting != webViewSettings.end(); webViewSetting++)
     {
         this->_setValue(webViewSetting.key(), webViewSetting.value());
     }
-    this->_settings->endGroup();
+    this->_settings.data()->endGroup();
 }
 
 QMap<QString,QVariant> Configuration::getWebViewSettings()
 {
     QMap<QString,QVariant> result;
 
-    this->_settings->beginGroup("WebView");
-    QStringList keys = this->_settings->childKeys();
+    this->_settings.data()->beginGroup("WebView");
+    QStringList keys = this->_settings.data()->childKeys();
     QStringList::iterator iterator;
     for (iterator = keys.begin(); iterator != keys.end(); iterator++)
     {
         result.insert(*iterator, this->_value(*iterator));
     }
-    this->_settings->endGroup();
+    this->_settings.data()->endGroup();
 
     return result;
 }
@@ -165,9 +165,9 @@ QUrl Configuration::getStartPage()
 
 QUrl Configuration::makeSearchUrl(QString query)
 {
-    this->_settings->beginGroup("WebBrowser");
+    this->_settings.data()->beginGroup("WebBrowser");
     QUrl url = QUrl(this->_value("DefaultQuery", this->_defaults.searchQuery).toString() + query.replace(" ", "+"));
-    this->_settings->endGroup();
+    this->_settings.data()->endGroup();
     return url;
 }
 
@@ -238,11 +238,11 @@ void Configuration::_setValue(const QString &key, const QVariant &value)
 {
     if (! this->_writeBlock)
     {
-        this->_settings->setValue(key, value);
+        this->_settings.data()->setValue(key, value);
     }
 }
 
 QVariant Configuration::_value(const QString &key, const QVariant &defaultValue) const
 {
-    return this->_settings->value(key, defaultValue);
+    return this->_settings.data()->value(key, defaultValue);
 }

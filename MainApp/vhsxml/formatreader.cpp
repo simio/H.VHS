@@ -18,9 +18,9 @@
 
 namespace VhsXml {
 
-QList<QPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &document, QObject *definitionParent)
+QList<QSharedPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &document)
 {
-    QList<QPointer<FormatDefinition> > result;
+    QList<QSharedPointer<FormatDefinition> > result;
 
     QDomNode node = document.documentElement().firstChild();
     while (! node.isNull())
@@ -32,7 +32,7 @@ QList<QPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &docum
             {
                 if (formatNode.toElement().tagName() == "formatDefinition")
                 {
-                    QPointer<FormatDefinition> format = _parseFormat(formatNode.toElement(), definitionParent);
+                    QSharedPointer<FormatDefinition> format = _parseFormat(formatNode.toElement());
                     if (! format.isNull())
                         result << format;
                 }
@@ -53,7 +53,7 @@ QList<QPointer<FormatDefinition> > FormatReader::parse(const QDomDocument &docum
  *  the elements appear is defined in the RELAX NG Schema.
  */
 
-QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatNode, QObject *definitionParent)
+QSharedPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatNode)
 {
     QString id;                                     // Unique; required
     QDateTime releaseDate;                          // As attribute of id; required
@@ -71,7 +71,8 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
         id = ElementParser::nmtoken(e.text());
         e = e.nextSiblingElement();
     }
-    else return NULL;
+    else
+        return QSharedPointer<FormatDefinition>();
 
     // <name xml:lang="xsd:language">xsd:token</name>
     // (one or more, with unique xml:lang attributes)
@@ -81,7 +82,7 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<FormatDefinition>();
 
     // <description xml:lang="xsd:language">xsd:token</description>
     // (zero or more, with unique xml:lang attributes)
@@ -91,7 +92,7 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
         e = e.nextSiblingElement();
     }
     else if (e.isNull())
-        return NULL;
+        return QSharedPointer<FormatDefinition>();
 
     // <completeness> ( notEmpty | metaOnly | dataOnly | complete ) </completeness>
     if (ElementParser::expect(e, "completeness", ElementParser::Required))
@@ -100,7 +101,7 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<FormatDefinition>();
 
     // <isText> ( true | false ) </isText>
     if (ElementParser::expect(e, "isText", ElementParser::Required))
@@ -109,7 +110,7 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<FormatDefinition>();
 
     // <mimeTypes>
     //     <mimeType>xxx/yyy</mimeType>
@@ -119,14 +120,14 @@ QPointer<FormatDefinition> FormatReader::_parseFormat(const QDomElement &formatN
         mimeTypes = ElementParser::tokenList(e, "mimeType");
     e = e.nextSiblingElement();
 
-    // alloc: Has parent
-    QPointer<FormatDefinition> format = new FormatDefinition(id, name, description, releaseDate, completeness, isText, mimeTypes, definitionParent);
+    // alloc: QSharedPointer
+    QSharedPointer<FormatDefinition> format(new FormatDefinition(id, name, description, releaseDate, completeness,
+                                                                 isText, mimeTypes, 0));
     if (format->isValid())
         return format;
 
     qDebug() << "FormatReader::parseFormat() discarded invalid format definition.";
-    delete format;
-    return NULL;
+    return QSharedPointer<FormatDefinition>();
 }
 
 

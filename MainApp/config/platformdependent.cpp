@@ -98,7 +98,7 @@ QDir PlatformDependent::presetsDir(Scope scope)
 }
 
 
-QPointer<QSettings> PlatformDependent::makeSettings(QObject * parent)
+QWeakPointer<QSettings> PlatformDependent::newSettings(QObject * parent)
 {
     // alloc: Has parent assigned from parameter above
 #ifdef WIN32

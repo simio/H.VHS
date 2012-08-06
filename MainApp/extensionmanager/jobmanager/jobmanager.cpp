@@ -20,17 +20,20 @@ JobManager::JobManager(QObject *parent) :
     QObject(parent)
 {
     //XXX: Dummy jobthread, remove code later
-    QPointer<JobThread> dummy = new JobThread;
+    QSharedPointer<JobThread> dummy(new JobThread);
     this->_jobQueue.append(dummy);
 
-    //QTimer::singleShot(2000, this, SLOT(pingRepeat()));
+    this->pingRepeat();
 }
+
+JobManager::~JobManager()
+{ }
 
 void JobManager::pingRepeat()
 {
-    QTimer::singleShot(2000, this, SLOT(pingRepeat()));
-    foreach(QPointer<JobThread> jt, this->_jobQueue)
-        jt->ping();
+    QTimer::singleShot(10000, this, SLOT(pingRepeat()));
+    foreach(QSharedPointer<JobThread> jt, this->_jobQueue)
+        jt.data()->ping();
 }
 
 // Just a placeholder for now

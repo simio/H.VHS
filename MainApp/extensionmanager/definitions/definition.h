@@ -17,28 +17,44 @@
 #ifndef EXTENSIONMANAGER_DEFINITIONS_DEFINITION_H
 #define EXTENSIONMANAGER_DEFINITIONS_DEFINITION_H
 
+#include <QMetaObject>
 #include <QObject>
+#include <QSharedDataPointer>
 #include <QDate>
 #include <QUuid>
+
+class DefinitionData;
+
+/*  Since this class inherits Definition, which is implicitly shared through using a d pointer to QSharedData,
+ *  none of the following may be defined inline: ctor, dtor, copy constructor, assignment operator.
+ *  Also, ctor and dtor must be defined.
+ */
 
 class Definition : public QObject
 {
     Q_OBJECT
 public:
-    // Adding a definition type includes updating prettyType()
+    // Adding a new definition type here includes updating prettyType()
     enum DefinitionType {
-        NoDefinitionType,
-        TransportDefinitionType,
-        FormatDefinitionType,
-        ExtensionDefinitionType,
-        CassetteDefinitionType
+        NoDefinitionType,                   // Use to forcibly make definition invalid
+        BaseDefinitionType,                 // For instances of Definition (non-polymorphic)
+        TransportDefinitionType,            // For instances of TransportDefinition
+        FormatDefinitionType,               // For instances of FormatDefinition
+        ExtensionDefinitionType,            // For instances of ExtensionDefinition
+        CassetteDefinitionType              // For instances of CassetteDefinition
     };
+
     Definition(QString id,
                QString name,
                QString description,
                QDateTime releaseDate,
                DefinitionType type,
                QObject *parent = 0);
+
+    ~Definition();
+
+    Definition(const Definition &original);
+    virtual Definition &operator =(const Definition &original);
 
     // ==, !=, <= and >= compares both id and release dates, while < and > compare only dates.
     virtual bool operator==(const Definition &original) const;
@@ -48,29 +64,24 @@ public:
     virtual bool operator>(const Definition &original) const;
     virtual bool operator>=(const Definition &original) const;
 
-    Definition(const Definition &original);
-    virtual Definition &operator=(const Definition &original);
-
     virtual bool isValid() const;
 
-    QString id() const                                  { return this->_id; }
-    QString name() const                                { return this->_name; }
-    QString description() const                         { return this->_description; }
-    QDateTime releaseDate() const                       { return this->_releaseDate; }
-    Definition::DefinitionType type() const             { return this->_type; }
+    QString id() const;
+    QString name() const;
+    QString description() const;
+    QDateTime releaseDate() const;
+    Definition::DefinitionType type() const;
     QString prettyType() const;
 
 signals:
 
 public slots:
 
+protected:
+    QSharedDataPointer<DefinitionData> _d;
+
 private:
     Definition();
-    QString _id;                    // Unique ID (generated from QUuid by default)
-    QString _name;                  // Localised name
-    QString _description;           // Localised description
-    QDateTime _releaseDate;
-    DefinitionType _type;
 };
 
 #endif // EXTENSIONMANAGER_DEFINITIONS_DEFINITION_H

@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QThread>
-#include <QPointer>
+#include <QScopedPointer>
 
 #include "main.h"
 
@@ -44,8 +44,8 @@ public:
     void ping();
 
 private:
-    QPointer<QThread> _thread;
-    QPointer<Job> _job;
+    QScopedPointer<QThread> _thread;
+    QScopedPointer<Job> _job;
 
 signals:
     void pingJob();

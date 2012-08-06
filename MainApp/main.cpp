@@ -16,6 +16,8 @@
 
 #include <QtGui/QApplication>
 #include <QTranslator>
+#include <QList>
+#include <QMetaType>
 
 #include "main.h"
 
@@ -31,6 +33,10 @@ int main(int argc, char *argv[])
     translator.load("qt_sv");
     translator.load("hvhs_sv");
     a.installTranslator(&translator);
+
+    qRegisterMetaType<Person>();
+    qRegisterMetaType<QList<Person> >();
+    qRegisterMetaType<VersionNumber>();
 
     WebWindow w;
     w.show();

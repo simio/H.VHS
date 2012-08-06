@@ -24,6 +24,11 @@
 
 #include "definition.h"
 
+/*  Since this class inherits Definition, which is implicitly shared through using a d pointer to QSharedData,
+ *  none of the following may be defined inline: ctor, dtor, copy constructor, assignment operator.
+ *  Also, ctor and dtor must be defined.
+ */
+
 class FormatDefinition : public Definition
 {
 public:
@@ -44,15 +49,16 @@ public:
                      QStringList mimeTypes,
                      QObject *parent = 0);
 
+    ~FormatDefinition();
+
     bool isValid() const;
 
-    // The MIME type list is prioritised. The first type is preferred for output.
-    QString mimeType(int index = 0) const;
-    QStringList mimeTypes() const;
-
     Completeness completeness() const;
-
     bool isTextual() const;
+
+    // The MIME type list is prioritised. The first type is preferred for output.
+    QStringList mimeTypes() const;
+    QString mimeType(int index = 0) const;
 
 public slots:
 
@@ -61,13 +67,8 @@ signals:
 private:
     FormatDefinition();
 
-    void _insertMimeType(int index, QString mimeType);
-    void _setCompleteness(Completeness c);
-    Completeness _setCompleteness(QString contentType);
+    FormatDefinition::Completeness _strToCompleteness(QString str);
 
-    Completeness _completeness;
-    bool _isText;
-    QStringList _mimeTypes;
 };
 
 #endif // EXTENSIONMANAGER_DEFINITIONS_FORMATDEFINITION_H

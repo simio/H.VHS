@@ -31,36 +31,36 @@ LocalFileExtension::~LocalFileExtension()
     qDebug() << "LocalFileExtension() destructing.";
 }
 
-QPointer<QIODevice> LocalFileExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+const QSharedPointer<QIODevice> LocalFileExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
 {
-    if (this->_file != NULL)
+    if (this->_file.isNull())
     {
         qWarning() << "LocalFileExtension::openStream(): Bad. I was asked to open a stream when I already had one.";
-        return NULL;
+        return QSharedPointer<QIODevice>();
     }
 
-    this->_file = this->_resolveHurl(hurl);
+    this->_file = QSharedPointer<QFile>(this->_resolveHurl(hurl));
     if (! this->_file.isNull())
         if (this->_file->open(openMode))
         {
             qDebug() << "openStream for" << this->_file->fileName();
-            return (QIODevice*)this->_file;
+            return QSharedPointer<QIODevice>(this->_file);
         }
 
-    return NULL;
+    return QSharedPointer<QIODevice>();
 }
 
 // We support fileuri and localfile transports, which means
 // the hurl might be either a local filepath or a local filepath
 // prepended by "file://".
-QPointer<QFile> LocalFileExtension::_resolveHurl(QString hurl)
+const QSharedPointer<QFile> LocalFileExtension::_resolveHurl(QString hurl)
 {
     QString prefix = "file://";
     if (hurl.startsWith(prefix))
         hurl.remove(0, prefix.length());
 
     qDebug() << "Trying to QFile(" << hurl << ")";
-    return new QFile(hurl, this);                                       // alloc: Has parent
+    return QSharedPointer<QFile>(new QFile(hurl, this));                        // alloc: QSharedPointer
 }
 
 Q_EXPORT_PLUGIN2(localfileextension, LocalFileExtension)

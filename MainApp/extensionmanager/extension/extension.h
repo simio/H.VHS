@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QVariant>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QIODevice>
 
 #include "main.h"
@@ -33,24 +33,27 @@ class Extension : public QObject
 {
     Q_OBJECT
 public:
-    virtual ~Extension()                                                        { }
-    virtual bool isValid()                                                      { return this->implementsInterface( HVHS_INTERFACE_COMMON ); }
+    virtual ~Extension()                                                { }
+    virtual bool isValid()                                              { return this->implementsInterface( HVHS_INTERFACE_COMMON ); }
 
     // Return StringList of supported interfaces
-    QString id()                                                                { return this->_extensionId; }
-    QStringList interfaces() const                                              { return this->_interfaces; }
-    bool implementsInterface(QString interface) const                           { return this->_interfaces.contains(QString(interface)); }
+    QString id()                                                        { return this->_extensionId; }
+    QStringList interfaces() const                                      { return this->_interfaces; }
+    bool implementsInterface(QString interface) const                   { return this->_interfaces.contains(QString(interface)); }
 
     // HVHS_INTERFACE_HOOKS
-    virtual qint64 suggestedHookPriority() const                                { return EXT_NO_HOOK_PRIORITY_SUGGESTION; }
-    virtual qint64 pluginHook(const qint64 hook, QVariant &hookData)            { return EXT_RETVAL_NOOP; }
-    virtual qint64 pluginHook(const qint64 hook)                                { QVariant temp; return this->pluginHook(hook, temp); }
+    virtual qint64 suggestedHookPriority() const                        { return EXT_NO_HOOK_PRIORITY_SUGGESTION; }
+    virtual qint64 pluginHook(const qint64 hook, QVariant &hookData)    { return EXT_RETVAL_NOOP; }
+    virtual qint64 pluginHook(const qint64 hook)                        { QVariant temp; return this->pluginHook(hook, temp); }
 
     // HVHS_INTERFACE_STREAMS
-    virtual QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl)        { return NULL; }
+    virtual const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+    {
+        return QSharedPointer<QIODevice>();
+    }
 
 protected:
-    explicit Extension(QObject *parent = 0) : QObject(parent)                   { }
+    explicit Extension(QObject *parent = 0) : QObject(parent)           { }
     QString _extensionId;
     QStringList _interfaces;
 

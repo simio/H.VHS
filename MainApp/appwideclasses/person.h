@@ -17,8 +17,10 @@
 #ifndef APPWIDECLASSES_PERSON_H
 #define APPWIDECLASSES_PERSON_H
 
+#include <QMetaType>
 #include <QString>
 #include <QUrl>
+#include <QList>
 #include <QMultiMap>
 #include <QVariant>
 #include <QDateTime>
@@ -26,6 +28,7 @@
 class Person
 {
 public:
+    Person(){}          // Required by QMetaType system
     Person(QString name, QString email, QUrl website, QString username);
     Person(const Person &original);
     virtual Person &operator=(const Person &original);
@@ -50,5 +53,8 @@ private:
     QMultiMap<QDateTime,QString> _activities;
     QMultiMap<QString,QVariant> _info;
 };
+
+Q_DECLARE_METATYPE(Person)
+Q_DECLARE_METATYPE(QList<Person>)
 
 #endif // APPWIDECLASSES_PERSON_H

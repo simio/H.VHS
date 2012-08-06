@@ -16,19 +16,19 @@
 
 #include "qtpluginextension.h"
 
-QtPluginExtension::QtPluginExtension(QPointer<ExtensionDefinition> definition, QObject *parent) :
+QtPluginExtension::QtPluginExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent) :
     Extension(parent)
 {
-    QFileInfo pluginFile = Configuration::p()->extensionRootFile(definition->id(), definition->apiVersion());
+    QFileInfo pluginFile = Configuration::p()->extensionRootFile(definition.data()->id(), definition.data()->apiVersion());
     if (pluginFile.isReadable())
     {
         this->_loader.setFileName(pluginFile.canonicalFilePath());
         this->_loader.load();
-        this->_plugin = this->_loader.instance();
-        if (this->_plugin)
+        this->_qtplugin.reset(this->_loader.instance());
+        if (! this->_qtplugin.isNull())
         {
-            this->_interfaces = definition->interfaces();
-            this->_extensionId = definition->id();
+            this->_interfaces = definition.data()->interfaces();
+            this->_extensionId = definition.data()->id();
         }
     }
 }
@@ -36,28 +36,27 @@ QtPluginExtension::QtPluginExtension(QPointer<ExtensionDefinition> definition, Q
 QtPluginExtension::~QtPluginExtension()
 {
     this->pluginHook( EXT_HOOK_BEFORE_KILL_EXT );
-
     this->_loader.unload();
 }
 
 bool QtPluginExtension::isValid()
 {
-    return (Extension::isValid() && this->_loader.isLoaded());
+    return (Extension::isValid() && this->_loader.isLoaded() && ! this->_qtplugin.isNull());
 }
 
 qint64 QtPluginExtension::suggestedHookPriority() const
 {
-    if (! this->implementsInterface(HVHS_INTERFACE_HOOKS))
+    if (! this->implementsInterface( HVHS_INTERFACE_HOOKS ))
         return EXT_INTERFACE_NOT_SUPPORTED;
-    ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(this->_plugin);
+    ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(this->_qtplugin.data());
     return exIf->suggestedHookPriority();
 }
 
 qint64 QtPluginExtension::pluginHook(const qint64 hook, QVariant &hookData)
 {
-    if (! this->implementsInterface(HVHS_INTERFACE_HOOKS))
+    if (! this->implementsInterface( HVHS_INTERFACE_HOOKS ))
         return EXT_INTERFACE_NOT_SUPPORTED;
-    ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(this->_plugin);
+    ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(this->_qtplugin.data());
     return exIf->pluginHook(hook, hookData);
 }
 
@@ -68,10 +67,10 @@ qint64 QtPluginExtension::pluginHook(const qint64 hook)
     return this->pluginHook(hook, discardedReturnValue);
 }
 
-QPointer<QIODevice> QtPluginExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+const QSharedPointer<QIODevice> QtPluginExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
 {
-    if (! this->implementsInterface(HVHS_INTERFACE_STREAMS))
-        return NULL;
-    ExtensionInterfaceStreams *exIf = qobject_cast<ExtensionInterfaceStreams*>(this->_plugin);
-    return exIf->openStream(openMode, hurl);
+    if (! this->implementsInterface( HVHS_INTERFACE_STREAMS ))
+        return QSharedPointer<QIODevice>();
+    ExtensionInterfaceStreams *exIf = qobject_cast<ExtensionInterfaceStreams*>(this->_qtplugin.data());
+    return QSharedPointer<QIODevice>(exIf->openStream(openMode, hurl));
 }

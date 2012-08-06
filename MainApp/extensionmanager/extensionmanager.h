@@ -37,7 +37,8 @@
  */
 
 #include <QObject>
-#include <QPointer>
+#include <QScopedPointer>
+#include <QSharedPointer>
 #include <QList>
 #include <QMultiMap>
 #include <QDirIterator>
@@ -68,7 +69,7 @@ public:
     explicit ExtensionManager(QObject *parent = 0);
     static ExtensionManager *p();
 
-    QPointer<Extension> debugLoadExtension(QString id);
+    QSharedPointer<Extension> debugLoadExtension(QString id);
 
     // Run "hook" on all plugins with supplied hookData and return the number of non-NOOP responses.
     int callHook(const qint64 hook, QVariant &hookData);
@@ -82,6 +83,7 @@ private:
     static ExtensionManager *s_instance;
 
     void _initialise();
+    bool _initialised;
 
     DefinitionTable _definitions;
 
@@ -89,11 +91,11 @@ private:
 
     // These extensions are loaded at startup and kept for as long
     // as the ExtensionManager is around.
-    QMultiMap<qint64,QPointer<Extension> > _persistentExtensions;
+    QMultiMap<qint64,QSharedPointer<Extension> > _persistentExtensions;
 
-    QPointer<JobManager> _jobManager;
+    QWeakPointer<JobManager> _jobManager;       // QWeakPointer: Will get parent
 
-    QPointer<Extension> _loadExtension(QPointer<ExtensionDefinition> definition);
+    QSharedPointer<Extension> _loadExtension(QSharedPointer<ExtensionDefinition> definition);
 };
 
 #endif // EXTENSIONMANAGER_EXTENSIONMANAGER_H

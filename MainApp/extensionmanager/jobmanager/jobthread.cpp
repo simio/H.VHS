@@ -20,12 +20,12 @@ JobThread::JobThread(QObject *parent) :
     QObject(parent)
 {
     //XXX: Create dummy job
-    this->_job = new Job;
-    this->_thread = new QThread;
-    connect(this->_job, SIGNAL(ping(QString)), this, SLOT(receivePingFromJob(QString)));
-    connect(this, SIGNAL(pingJob()), this->_job, SLOT(receivePing()));
-    this->_job->moveToThread(this->_thread);
-    this->_thread->start();
+    this->_job.reset(new Job);
+    this->_thread.reset(new QThread);
+    connect(this->_job.data(), SIGNAL(ping(QString)), this, SLOT(receivePingFromJob(QString)));
+    connect(this, SIGNAL(pingJob()), this->_job.data(), SLOT(receivePing()));
+    this->_job.data()->moveToThread(this->_thread.data());
+    this->_thread.data()->start();
 }
 
 JobThread::~JobThread()
@@ -35,11 +35,11 @@ JobThread::~JobThread()
 
 void JobThread::ping()
 {
-    qDebug() << QThread::currentThread() << "JobThread pinging job in" << this->_thread;
+    qDebug() << "Ping:" << QThread::currentThread();
     emit pingJob();
 }
 
 void JobThread::receivePingFromJob(const QString &message)
 {
-    qDebug() << QThread::currentThread() << "JobThread got ping from job:" << message;
+    qDebug() << QThread::currentThread() << "Pang:" << message;
 }

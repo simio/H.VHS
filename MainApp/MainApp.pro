@@ -132,7 +132,8 @@ HEADERS  += \
     appwideclasses/hurl.h \
     appwideclasses/cassette.h \
     appwideclasses/cassettecontent.h \
-    config/configurationdefaults.h
+    config/configurationdefaults.h \
+    extensionmanager/definitions/definitiondata.h
 
 FORMS    += \
     webwindow.ui \

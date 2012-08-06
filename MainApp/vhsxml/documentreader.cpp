@@ -20,7 +20,10 @@ namespace VhsXml {
 
 DocumentReader::DocumentReader(QFileInfo file, QObject *parent) : QObject(parent)
 {
-    QPointer<QFile> p = new QFile(file.canonicalFilePath(), this);             // alloc: Has parent
+    // Use a weak pointer and set this as file parent. The file will be used
+    // to construct a QXmlInputSource instance, which might (or might not)
+    // read from it at any time until this DocumentReader instance is destructed.
+    QWeakPointer<QFile> p(new QFile(file.canonicalFilePath(), this));               // alloc: QWeakPointer with parent
     this->_initialise(p);
 }
 
@@ -50,26 +53,26 @@ QList<Definition::DefinitionType> DocumentReader::contentList() const
 }
 
 // Dispatch request to appropriate reader(s).
-QList<QPointer<Definition> > DocumentReader::definitions(Definition::DefinitionType defType, QObject *definitionParent) const
+QList<QSharedPointer<Definition> > DocumentReader::definitions(Definition::DefinitionType defType) const
 {
-    QList<QPointer<FormatDefinition> > formats;
-    QList<QPointer<TransportDefinition> > transports;
-    QList<QPointer<ExtensionDefinition> > extensions;
+    QList<QSharedPointer<FormatDefinition> > formats;
+    QList<QSharedPointer<TransportDefinition> > transports;
+    QList<QSharedPointer<ExtensionDefinition> > extensions;
 
     if (defType == Definition::FormatDefinitionType || defType == Definition::NoDefinitionType)
-        formats = FormatReader::parse(this->_xml, definitionParent);
+        formats = FormatReader::parse(this->_xml);
     if (defType == Definition::TransportDefinitionType || defType == Definition::NoDefinitionType)
-        transports = TransportReader::parse(this->_xml, definitionParent);
+        transports = TransportReader::parse(this->_xml);
     if (defType == Definition::ExtensionDefinitionType || defType == Definition::NoDefinitionType)
-        extensions = ExtensionReader::parse(this->_xml, definitionParent);
+        extensions = ExtensionReader::parse(this->_xml);
 
-    QList<QPointer<Definition> > result;
-    foreach(QPointer<FormatDefinition> format, formats)
-        result << qobject_cast<Definition*>(format);
-    foreach(QPointer<TransportDefinition> transport, transports)
-        result << qobject_cast<Definition*>(transport);
-    foreach(QPointer<ExtensionDefinition> extension, extensions)
-        result << qobject_cast<Definition*>(extension);
+    QList<QSharedPointer<Definition> > result;
+    foreach(QSharedPointer<FormatDefinition> format, formats)
+        result << qSharedPointerDynamicCast<Definition>(format);
+    foreach(QSharedPointer<TransportDefinition> transport, transports)
+        result << qSharedPointerDynamicCast<Definition>(transport);
+    foreach(QSharedPointer<ExtensionDefinition> extension, extensions)
+        result << qSharedPointerDynamicCast<Definition>(extension);
 
     return result;
 }
@@ -81,16 +84,15 @@ bool DocumentReader::_isCompatibleWith(QString foulString)
     return (DocumentReader::oldestCompatibleVersion() <= version && DocumentReader::version() >= version);
 }
 
-// Cannot use QPointer for source
-bool DocumentReader::_initialise(QXmlInputSource *source)
+bool DocumentReader::_initialise(QSharedPointer<QXmlInputSource> source)
 {
-    QString *error = new QString;                       // alloc: Deleted here
-    int *errorLine = new int;                           // alloc: Deleted here
-    int *errorColumn = new int;                         // alloc: Deleted here
-
     bool success = false;
     this->_xml = QDomDocument("VhsXml");
-    if (this->_xml.setContent(source, true, error, errorLine, errorColumn))
+
+    QScopedPointer<QString> error(new QString);         // alloc: QScopedPointer
+    QScopedPointer<int> errorLine(new int);             // alloc: QScopedPointer
+    QScopedPointer<int> errorColumn(new int);           // alloc: QScopedPointer
+    if (this->_xml.setContent(source.data(), true, error.data(), errorLine.data(), errorColumn.data()))
     {
         if (this->_xml.documentElement().tagName() == "vhsxml")
         {
@@ -104,12 +106,8 @@ bool DocumentReader::_initialise(QXmlInputSource *source)
         }
     }
     else
-        qWarning() << "XML Parser error:" << *error << endl
-                   << "Line " << *errorLine << "column" << *errorColumn;
-
-    delete error;
-    delete errorLine;
-    delete errorColumn;
+        qWarning() << "XML Parser error:" << error.data() << endl
+                   << "Line " << errorLine.data() << "column" << errorColumn.data();
 
     if (!success)
         this->_xml.clear();
@@ -117,25 +115,22 @@ bool DocumentReader::_initialise(QXmlInputSource *source)
     return success;
 }
 
-bool DocumentReader::_initialise(QPointer<QIODevice> device)
+bool DocumentReader::_initialise(QWeakPointer<QIODevice> device)
 {
-    // Cannot use QPointer for source
-    QXmlInputSource *source = new QXmlInputSource(device);              // alloc: Deleted here
+    QSharedPointer<QXmlInputSource> source(new QXmlInputSource(device.data()));         // alloc: QSharedPointer
     bool retVal = this->_initialise(source);
-    delete source;
     return retVal;
 }
 
-bool DocumentReader::_initialise(QPointer<QFile> file)
+bool DocumentReader::_initialise(QWeakPointer<QFile> file)
 {
-    if (file->exists())
+    if (file.data()->exists())
     {
-        QXmlInputSource *source = new QXmlInputSource(file);            // alloc: Deleted here
+        QSharedPointer<QXmlInputSource> source(new QXmlInputSource(file.data()));       // alloc: QSharedPointer
         bool retVal = this->_initialise(source);
-        delete source;
         return retVal;
     }
-    qDebug() << "DocumentReader failed to initialise on" << file->fileName();
+    qDebug() << "DocumentReader failed to initialise on" << file.data()->fileName();
     return false;
 }
 

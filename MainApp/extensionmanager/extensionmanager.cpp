@@ -21,6 +21,7 @@ ExtensionManager *ExtensionManager::s_instance = NULL;
 ExtensionManager::ExtensionManager(QObject *parent) :
     QObject(parent)
 {
+    this->_initialised = false;
     this->_initialise();
 }
 
@@ -32,11 +33,12 @@ ExtensionManager *ExtensionManager::p()
     return s_instance;
 }
 
-QPointer<Extension> ExtensionManager::debugLoadExtension(QString id)
+QSharedPointer<Extension> ExtensionManager::debugLoadExtension(QString id)
 {
-    QPointer<ExtensionDefinition> definition = (ExtensionDefinition*)(Definition*)this->_definitions.get(Definition::ExtensionDefinitionType, id);
+    QSharedPointer<ExtensionDefinition> definition
+            = qSharedPointerDynamicCast<ExtensionDefinition>(this->_definitions.get(Definition::ExtensionDefinitionType, id));
     if (definition.isNull())
-        return NULL;
+        return QSharedPointer<Extension>();
 
     return this->_loadExtension(definition);
 }
@@ -47,7 +49,7 @@ int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
 
     // Call plugin hook on all extensions in the persistent list.
     // values() returns in ascending order, so the iteration follows priority
-    foreach(QPointer<Extension> extension, this->_persistentExtensions.values())
+    foreach(QSharedPointer<Extension> extension, this->_persistentExtensions.values())
     {
         switch (extension->pluginHook(hook, hookData))
         {
@@ -67,7 +69,7 @@ int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
     // currently present in the JobManager. This is to ensure that
     // any hookData modifications take place before the JobManager
     // extension instances are called.
-    result += this->_jobManager->callHook(hook, hookData);
+    result += this->_jobManager.data()->callHook(hook, hookData);
 
     return result;
 }
@@ -82,16 +84,20 @@ int ExtensionManager::callHook(const qint64 hook)
 
 void ExtensionManager::_initialise()
 {
+    if (this->_initialised)
+        qFatal("ExtensionManager::_initialise() called twice!");
+    this->_initialised = true;
+
     //  Populate the first plugin hook ring with extensions
-    QHash<QString,QPointer<Definition> > extensions = this->_definitions.getAll(Definition::ExtensionDefinitionType);
-    QHash<QString,QPointer<Definition> >::const_iterator i = extensions.begin();
+    QHash<QString,QSharedPointer<Definition> > extensions = this->_definitions.getAll(Definition::ExtensionDefinitionType);
+    QHash<QString,QSharedPointer<Definition> >::const_iterator i = extensions.begin();
     while (i != extensions.end())
     {
-        QPointer<ExtensionDefinition> definition = (ExtensionDefinition*)(Definition*)i.value();
+        QSharedPointer<ExtensionDefinition> definition = qSharedPointerDynamicCast<ExtensionDefinition>(i.value());
         if (definition->implementsInterface( HVHS_INTERFACE_HOOKS )
                 && definition->isEnabled())
         {
-            QPointer<Extension> extension = this->_loadExtension(definition);
+            QSharedPointer<Extension> extension = this->_loadExtension(definition);
             if (extension && extension->implementsInterface( HVHS_INTERFACE_HOOKS ))
             {
                 qDebug() << "ExtensionManager: " << definition->name() << "loaded to persistent extension list.";
@@ -106,51 +112,50 @@ void ExtensionManager::_initialise()
     }
 
     // Set up a JobManager
-    this->_jobManager = new JobManager(this);                                   // alloc: Has parent
+    this->_jobManager = QWeakPointer<JobManager>(new JobManager(this));                             // alloc: QWeakPointer with parent
 }
 
 // Load an extension and return a pointer to it (or NULL). Checking which
 // interfaces are supported, or if the extension is enabled,
 // is not done here.
-QPointer<Extension> ExtensionManager::_loadExtension(QPointer<ExtensionDefinition> definition)
+QSharedPointer<Extension> ExtensionManager::_loadExtension(QSharedPointer<ExtensionDefinition> definition)
 {
-    //XXX: More type casting may simplify this greatly
+    //XXX: More type casting might simplify this code greatly
     switch (definition->api())
     {
     case ExtensionDefinition::QtPlugin:
-        QtPluginExtension * qtplugin;
-        qtplugin = new QtPluginExtension(definition, this);                     // alloc: Has parent
-        if (qtplugin->isValid())
+    {
+        QScopedPointer<QtPluginExtension> qtplugin(new QtPluginExtension(definition, 0));           // alloc: QScopedPointer -> noparent
+        if (qtplugin.data()->isValid())
         {
-            QPointer<Extension> extension;
-            extension = (Extension*)(QtPluginExtension*)qtplugin;
+            // Cast back to Extension and take ownership for QSharedPointer refcounting
+            QSharedPointer<Extension> extension(qSharedPointerCast<Extension>(QSharedPointer<QtPluginExtension>(qtplugin.take())));
             return extension;
         }
         else
         {
-            delete qtplugin;
-            return NULL;
+            return QSharedPointer<Extension>();
         }
         /* NOTREACHED */
+    }
 
     case ExtensionDefinition::JavaScript:
-        JavaScriptExtension * jsplugin;
-        jsplugin = new JavaScriptExtension(definition, this);                   // alloc: Has parent
-        if (jsplugin->isValid())
+    {
+        QScopedPointer<JavaScriptExtension> jsplugin(new JavaScriptExtension(definition, 0));       // alloc: QScopedPointer -> noparent
+        if (jsplugin.data()->isValid())
         {
-            QPointer<Extension> extension;
-            extension = (Extension*)(JavaScriptExtension*)jsplugin;
+            // Cast back to Extension and take ownership for QSharedPointer refcounting
+            QSharedPointer<Extension> extension(qSharedPointerCast<Extension>(QSharedPointer<JavaScriptExtension>(jsplugin.take())));
             return extension;
         }
         else
         {
-            delete jsplugin;
-            return NULL;
+            return QSharedPointer<Extension>();
         }
         /* NOTREACHED */
-
+    }
     default:
         qWarning() << "ExtensionManager: Unimplemented extension api:" << definition->api() << "for extension" << definition->id();
-        return NULL;
+        return QSharedPointer<Extension>();
     }
 }

@@ -16,18 +16,18 @@
 
 #include "javascriptextension.h"
 
-/*  This object makes a copy of the supplied ExtensionDefinition upon construction.
+/*  This object makes a copy of the supplied ExtensionDefinition on construction.
  *  The ExtensionDefinition will never change nor be swapped for another one.
  *  Create another instance of JavaScriptExtension to use another definition.
  */
-JavaScriptExtension::JavaScriptExtension(QPointer<ExtensionDefinition> definition, QObject *parent) :
+
+JavaScriptExtension::JavaScriptExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent) :
     Extension(parent)
 {
-    // Make a copy of the definition and keep it for ourselves. This way,
-    // the plugin will continue to work even if the definition pointed to
-    // by the 'definition' parameter disappears.
-    this->_definition = new ExtensionDefinition(*definition);            // alloc: Has parent
-    this->_definition->setParent(this);
+    /*  Copying the object rather than the pointer ensures updates to the
+     *  definition won't affect any already running extensions.
+     */
+    this->_definition = QSharedPointer<ExtensionDefinition>(new ExtensionDefinition(*(definition.data())));     // alloc: QSharedPointer
 
     this->_initialised = this->_initialise();
     if (! this->_initialised)
@@ -40,7 +40,8 @@ JavaScriptExtension::~JavaScriptExtension()
 {
     this->pluginHook( EXT_HOOK_BEFORE_KILL_EXT );
 
-    //XXX: Delete qtscript environment etc
+    // nodelete: this->_engine is QScopedPointer
+    // nodelete: this->_definition is QSharedPointer
 }
 
 bool JavaScriptExtension::isValid()
@@ -54,7 +55,7 @@ qint64 JavaScriptExtension::suggestedHookPriority() const
     if (! this->implementsInterface(HVHS_INTERFACE_HOOKS))
         return EXT_INTERFACE_NOT_SUPPORTED;
 
-    // XXX: Fake it
+    //XXX: Fake it
     return -1;
 }
 
@@ -63,7 +64,7 @@ qint64 JavaScriptExtension::pluginHook(const qint64 hook, QVariant &hookData)
     if (! this->implementsInterface(HVHS_INTERFACE_HOOKS))
         return EXT_INTERFACE_NOT_SUPPORTED;
 
-    // XXX: Fake it
+    //XXX: Fake it
     return 0;
 }
 
@@ -74,10 +75,10 @@ qint64 JavaScriptExtension::pluginHook(const qint64 hook)
     return this->pluginHook(hook, discardedReturnValue);
 }
 
-QPointer<QIODevice> JavaScriptExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+const QSharedPointer<QIODevice> JavaScriptExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
 {
     // Javascript extensions cannot use this interface
-    return NULL;
+    return QSharedPointer<QIODevice>();
 }
 
 /*  Try to initialise the script environment, and return true or false depending
@@ -129,24 +130,24 @@ bool JavaScriptExtension::_initialise()
         sourceFilename = scriptFile.fileName();
     }
 
-    // Delete the current script engine, if there is one, and create a new one.
+    // Delete the current script engine, if there is one, and create a new.
     if (! this->_engine.isNull())
     {
         qDebug() << "JavaScriptExtension::_initialise(): Replacing existing QScriptEngine to reinitialise for"
                  << this->_definition->id();
-        this->_engine->deleteLater();
     }
-    this->_engine = new QScriptEngine(this);                    // alloc: Has parent
+    this->_engine.reset(new QScriptEngine(0));                  // alloc: QScopedPointer
 
-    // Setup up an environment for the actual extension script
-    //this->_engine
+    // Setup up an environment for the actual extension script here
 
     // Evaluate source now
-    qDebug() << "JavaScriptExtension: Evaluating for " << this->_definition->id();
+    qDebug() << "JavaScriptExtension: Evaluating source for " << this->_definition->id();
 
-    if (this->_hasError(this->_engine->evaluate(source, sourceFilename)))
+    if (this->_hasError(this->_engine.data()->evaluate(source, sourceFilename)))
     {
-        this->_engine->deleteLater();
+        // Since we don't know what the user of this instance does if initialisation
+        // fails and this->isValid() returns false, the allocated engine is deleted here.
+        this->_engine.take()->deleteLater();
         return false;
     }
 
@@ -155,24 +156,24 @@ bool JavaScriptExtension::_initialise()
 
 /*  Check for uncaught exceptions. Return true and print stuff if there were any.
  */
-bool JavaScriptExtension::_hasError(QScriptValue evalReturnValue)
+bool JavaScriptExtension::_hasError(QScriptValue evalReturnValue) const
 {
     if (this->_engine.isNull())
     {
         qCritical() << "JavaScriptExtension::_hasError(): Called without engine!";
         return true;
     }
-    if (! this->_engine->hasUncaughtException())
+    if (! this->_engine.data()->hasUncaughtException())
         return false;
 
     QString retvalstr = (evalReturnValue.isNull() ? "In" : evalReturnValue.toString() + " in");
 
     qWarning() << "JavaScriptExtension::_hasError():" << retvalstr
                << "source for" << this->_definition->id()
-               << "line" << this->_engine->uncaughtExceptionLineNumber();
-    qWarning() << "  " << this->_engine->uncaughtException().toString();
+               << "line" << this->_engine.data()->uncaughtExceptionLineNumber();
+    qWarning() << "  " << this->_engine.data()->uncaughtException().toString();
     qWarning() << "Trace follows:";
-    foreach(QString line, this->_engine->uncaughtExceptionBacktrace())
+    foreach(QString line, this->_engine.data()->uncaughtExceptionBacktrace())
         qWarning() << "  |" << line;
 
     return true;

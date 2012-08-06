@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QtGui/QApplication>
-#include <QPointer>
+#include <QWeakPointer>
 #include <QSettings>
 #include <QDebug>
 #include <QRegExp>
@@ -105,7 +105,7 @@ private:
     QString _gitTag;
     QString _gitBranch;
 
-    QPointer<QSettings> _settings;
+    QWeakPointer<QSettings> _settings;
 };
 
 #endif // CONFIGURATION_H

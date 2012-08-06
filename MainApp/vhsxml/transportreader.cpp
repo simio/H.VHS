@@ -18,9 +18,9 @@
 
 namespace VhsXml {
 
-QList<QPointer<TransportDefinition> > TransportReader::parse(const QDomDocument &document, QObject *definitionParent)
+QList<QSharedPointer<TransportDefinition> > TransportReader::parse(const QDomDocument &document)
 {
-    QList<QPointer<TransportDefinition> > result;
+    QList<QSharedPointer<TransportDefinition> > result;
 
     QDomNode node = document.documentElement().firstChild();
     while (! node.isNull())
@@ -32,7 +32,7 @@ QList<QPointer<TransportDefinition> > TransportReader::parse(const QDomDocument 
             {
                 if (transportNode.toElement().tagName() == "transportDefinition")
                 {
-                    QPointer<TransportDefinition> transport = _parseTransport(transportNode.toElement(), definitionParent);
+                    QSharedPointer<TransportDefinition> transport = _parseTransport(transportNode.toElement());
                     if (! transport.isNull())
                         result << transport;
                 }
@@ -53,7 +53,7 @@ QList<QPointer<TransportDefinition> > TransportReader::parse(const QDomDocument 
  *  the elements appear is defined in the RELAX NG Schema.
  */
 
-QPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement &transportNode, QObject *definitionParent)
+QSharedPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement &transportNode)
 {
     QString id;                                     // Unique; required
     QDateTime releaseDate;                          // As attribute of id; required
@@ -67,7 +67,8 @@ QPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement
         id = ElementParser::nmtoken(e.text());
         e = e.nextSiblingElement();
     }
-    else return NULL;
+    else
+        return QSharedPointer<TransportDefinition>();
 
     // <name xml:lang="xsd:language">xsd:token</name>
     // (one or more, with unique xml:lang attributes)
@@ -77,7 +78,7 @@ QPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement
         e = e.nextSiblingElement();
     }
     else
-        return NULL;
+        return QSharedPointer<TransportDefinition>();
 
     // <description xml:lang="xsd:language">xsd:token</description>
     // (zero or more, with unique xml:lang attributes)
@@ -87,16 +88,15 @@ QPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement
         e = e.nextSiblingElement();
     }
     else if (e.isNull())
-        return NULL;
+        return QSharedPointer<TransportDefinition>();
 
-    // alloc: Has parent
-    QPointer<TransportDefinition> transport = new TransportDefinition(id, name, description, releaseDate, definitionParent);
+    // alloc: QSharedPointer
+    QSharedPointer<TransportDefinition> transport(new TransportDefinition(id, name, description, releaseDate, 0));
     if (transport->isValid())
         return transport;
 
     qDebug() << "TransportReader::parseTransport() discarded invalid transport definition.";
-    delete transport;
-    return NULL;
+    return QSharedPointer<TransportDefinition>();
 }
 
 

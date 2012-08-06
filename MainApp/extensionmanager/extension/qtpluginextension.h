@@ -18,7 +18,8 @@
 #define EXTENSIONMANAGER_EXTENSION_QTPLUGINEXTENSION_H
 
 #include <QObject>
-#include <QPointer>
+#include <QWeakPointer>
+#include <QSharedPointer>
 #include <QStringList>
 #include <QIODevice>
 #include <QVariant>
@@ -33,7 +34,7 @@
 class QtPluginExtension : public Extension
 {
 public:
-    QtPluginExtension(QPointer<ExtensionDefinition> definition, QObject *parent = 0);
+    QtPluginExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent = 0);
     ~QtPluginExtension();
 
     bool isValid();
@@ -44,14 +45,14 @@ public:
     qint64 pluginHook(const qint64 hook);
 
     // HVHS_INTERFACE_STREAMS
-    QPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 signals:
 
 public slots:
 
 private:
-    QPointer<QObject> _plugin;
+    QScopedPointer<QObject> _qtplugin;
     QPluginLoader _loader;
 };
 

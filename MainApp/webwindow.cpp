@@ -47,8 +47,8 @@ void WebWindow::_loadPage(const QUrl &url)
 {
     QVariant vUrl = QVariant(url);
     ExtensionManager::p()->callHook(EXT_HOOK_WEBVIEW_LOADREQUESTED, vUrl);
-    this->_webView->load(url);
-    this->_webView->setFocus();
+    this->_webView.data()->load(url);
+    this->_webView.data()->setFocus();
 }
 
 void WebWindow::_loadPage(const QString &dirtyUrl)
@@ -77,22 +77,22 @@ void WebWindow::_whenWebViewLoadFinished(bool ok)
     QVariant vOk = QVariant(ok);
     ExtensionManager::p()->callHook(EXT_HOOK_WEBVIEW_LOADFINISHED, vOk);
     this->_browserStatus = Idle;
-    this->_browserProgressBar->setEnabled(false);
-    this->_browserProgressBar->setValue(0);
+    this->_browserProgressBar.data()->setEnabled(false);
+    this->_browserProgressBar.data()->setValue(0);
 }
 
 void WebWindow::_whenWebViewLoadStarted()
 {
     ExtensionManager::p()->callHook(EXT_HOOK_WEBVIEW_LOADSTARTED);
     this->_browserStatus = Busy;
-    this->_browserProgressBar->setEnabled(true);
+    this->_browserProgressBar.data()->setEnabled(true);
 }
 
 void WebWindow::_whenWebViewUrlChanged(const QUrl &url)
 {
-    this->_comboBoxAddressBar->addUrl(this->_webView->icon(), url);
-    this->_comboBoxAddressBar->clearEditText();
-    this->_comboBoxAddressBar->setCurrentIndex(0);
+    this->_comboBoxAddressBar.data()->addUrl(this->_webView.data()->icon(), url);
+    this->_comboBoxAddressBar.data()->clearEditText();
+    this->_comboBoxAddressBar.data()->setCurrentIndex(0);
 }
 
 void WebWindow::_whenWebViewIconChanged()
@@ -107,7 +107,7 @@ void WebWindow::_whenWebViewTitleChanged(const QString &title)
 
 void WebWindow::_whenSearchBoxReturnPressed()
 {
-    this->_loadPage(Configuration::p()->makeSearchUrl(this->_lineEditSearch->text()));
+    this->_loadPage(Configuration::p()->makeSearchUrl(this->_lineEditSearch.data()->text()));
 }
 
 void WebWindow::_receiveStatusBarMessage(const QString &text)
@@ -117,17 +117,17 @@ void WebWindow::_receiveStatusBarMessage(const QString &text)
 
 void WebWindow::_receiveBrowserProgress(int progress)
 {
-    this->_browserProgressBar->setValue(progress);
+    this->_browserProgressBar.data()->setValue(progress);
 }
 
 void WebWindow::_setFocusOnAddressBar()
 {
-    this->_comboBoxAddressBar->setFocus();
+    this->_comboBoxAddressBar.data()->setFocus();
 }
 
 void WebWindow::_setFocusOnSearchBox()
 {
-    this->_lineEditSearch->setFocus();
+    this->_lineEditSearch.data()->setFocus();
 }
 
 void WebWindow::_launchConsoleWindow()
@@ -135,10 +135,12 @@ void WebWindow::_launchConsoleWindow()
     MessageHandler::p()->createConsoleWindow();
 }
 
-void WebWindow::_updateBrowserIcon(int index, bool force)
+void WebWindow::_updateBrowserIcon(const int &index, const bool &force)
 {
-    if (force || this->_comboBoxAddressBar->itemIcon(index).isNull())
-        this->_comboBoxAddressBar->setItemIcon(index, this->_webView->settings()->iconForUrl(QUrl(this->_comboBoxAddressBar->itemText(index))));
+    if (force || this->_comboBoxAddressBar.data()->itemIcon(index).isNull())
+        this->_comboBoxAddressBar.data()->setItemIcon(index,
+                                                      this->_webView.data()->settings()->iconForUrl(
+                                                          QUrl(this->_comboBoxAddressBar.data()->itemText(index))));
 }
 
 void WebWindow::closeEvent(QCloseEvent *event)

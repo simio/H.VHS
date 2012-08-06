@@ -18,7 +18,7 @@
 #define VHSXML_CASSETTEREADER_H
 
 #include <QList>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QDomDocument>
 
 #include "main.h"
@@ -29,7 +29,7 @@ namespace VhsXml {
 class CassetteReader
 {
 public:
-    //static QList<QPointer<Cassette> > parse(const QDomDocument &document);
+    //static QList<QSharedPointer<Cassette> > parse(const QDomDocument &document);
 
 private:
     CassetteReader();

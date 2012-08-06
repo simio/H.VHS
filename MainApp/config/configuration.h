@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QtGui/QApplication>
-#include <QPointer>
+#include <QWeakPointer>
 #include <QSettings>
 #include <QDebug>
 #include <QRegExp>

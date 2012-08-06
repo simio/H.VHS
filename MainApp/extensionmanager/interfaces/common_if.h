@@ -17,7 +17,6 @@
 #ifndef EXTENSIONINTERFACES_COMMON_IF_H
 #define EXTENSIONINTERFACES_COMMON_IF_H
 
-#include <QPointer>
 #include <QString>
 
 #include "if_commondefines.h"

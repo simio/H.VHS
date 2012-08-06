@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QThread>
-#include <QPointer>
+#include <QScopedPointer>
 
 #include "main.h"
 

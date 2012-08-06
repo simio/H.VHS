@@ -84,7 +84,6 @@ bool DocumentReader::_isCompatibleWith(QString foulString)
     return (DocumentReader::oldestCompatibleVersion() <= version && DocumentReader::version() >= version);
 }
 
-// Cannot use QPointer for source
 bool DocumentReader::_initialise(QSharedPointer<QXmlInputSource> source)
 {
     bool success = false;
@@ -118,7 +117,6 @@ bool DocumentReader::_initialise(QSharedPointer<QXmlInputSource> source)
 
 bool DocumentReader::_initialise(QWeakPointer<QIODevice> device)
 {
-    // Cannot use QPointer for source
     QSharedPointer<QXmlInputSource> source(new QXmlInputSource(device.data()));         // alloc: QSharedPointer
     bool retVal = this->_initialise(source);
     return retVal;

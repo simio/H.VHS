@@ -18,7 +18,8 @@
 #define EXTENSIONMANAGER_JOBMANAGER_JOB_H
 
 #include <QObject>
-#include <QPointer>
+#include <QScopedPointer>
+#include <QSharedPointer>
 #include <QLinkedList>
 #include <QBuffer>
 #include <QThread>

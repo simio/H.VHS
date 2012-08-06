@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QVariant>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QIODevice>
 
 #include "main.h"

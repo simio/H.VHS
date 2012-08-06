@@ -17,7 +17,6 @@
 #ifndef EXTENSIONINTERFACES_STREAMS_H
 #define EXTENSIONINTERFACES_STREAMS_H
 
-#include <QPointer>
 #include <QIODevice>
 #include <QSharedPointer>
 

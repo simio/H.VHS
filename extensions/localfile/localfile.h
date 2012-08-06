@@ -21,7 +21,7 @@
 
 #include <QtGui/QtGui>
 #include <QObject>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QIODevice>
 #include <QFileInfo>
 

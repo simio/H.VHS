@@ -17,7 +17,6 @@
 #ifndef EXTENSIONINTERFACES_HOOKS_H
 #define EXTENSIONINTERFACES_HOOKS_H
 
-#include <QPointer>
 #include <QVariant>
 #include <QHash>
 #include <QString>

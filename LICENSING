@@ -1,6 +1,5 @@
-The source code is ISC licensed. The simple and useful ISC license is
-registered with and approved by the Open Source Initiative. Here's what
-it might look like:
+The source code is ISC licensed. The ISC license is registered with and
+approved by the Open Source Initiative. Here's what it might look like:
 
     * Copyright (c) 2012 Some person <s.person@example.org>
     * Copyright (c) 2012 Another person <a.person@example.org>
@@ -12,27 +11,9 @@ it might look like:
 There are many reasons why this license is used here, with these being the
 foremost:
 
-    1. It is simple and understandable, which is always good.
-    2. It is essentially free from political purposes.
-    3. It allows code reuse under more circumstances.
-       No commercial and/or closed source alternatives to this
-       software exists today, but would be welcome.
-    4. The possibility of this project being in any way misunderstood
-       as inflammatory or deliberately provoking must be kept at a
-       minimum.
-
-Perhaps (4) could use some clarification. The purpose of this software 
-is to make it easier to download content from video streaming sites of
-(not exclusively) commercial and public service broadcasting companies.
-This is indeed legal in many (or most?) countries, including Sweden
-where this project is based, and this software is designed with this
-use only in mind. There is no political purpose to this project
-whatsoever, except perhaps against the appearent lack of accessibility
-in other, similar software.
-
-The purpose of this software IS NOT to facilitate copyright 
-infringement, and any contributions aimed at adapting the software 
-specifically to such a purpose will not be included.
+    1. It is simple.
+    2. It is essentially non-political.
+    3. It encourages code reuse.
 
 
 THE ISC LICENSE AND CODE REUSE
@@ -42,11 +23,11 @@ are not allowed to remove or modify these notices in any derivative
 works, though you should add your name to the list of copyright holders, 
 if you choose to use the same license. 
 
-When reusing ISC licensed code in code distributed under some other 
-license, these notices must still be present in the resulting code, 
-documentation and binaries where applicable. When copying or reusing 
-parts of the code rather than copying whole files, you are required to
-also copy these notices.
+When reusing ISC licensed code, in code distributed under some other 
+license, these notices must be present in the resulting code, documentation
+and binaries. When copying or reusing parts of the code, rather than copying
+whole files, you are required to also copy these notices. You may not
+relicense the code.
 
 
 MIXING WITH OTHER LICENSES
@@ -56,25 +37,16 @@ with code licensed under any other license known, as long as the copyright
 and permission notices are neither modified nor removed.
 
 If you reuse this code under a copyleft license like the GPL, please 
-appreciate the fact that your GPL licensed improvements to this code, 
-though they are indeed open source, cannot be reused in this project 
-without it being relicensed. As a copyleft license, the GPL is more
-restrictive than the ISC license, and more to the point, it demands
-that all source code compiled with GPL licensed code itself is licensed
-under the the GPL. Due to the nature of this project, as stated above,
-relicensing in such a way would be a bad thing.
+appreciate that your GPL licensed improvements to this code, cannot go
+back into this project, as it would require relicensing the whole project
+under your copyleft license. Please consider dual licensing your changes,
+whether you use the GPL or any other closed or open source license.
 
-We do however like code reuse, and very much so, so please consider dual 
-licensing your modifications, whether you use the GPL or any other 
-closed or open source license. You can allow this by including a notice 
-either in your own source tree, if publicly available, or by sending an 
-email to <h-vhs@huggpunkt.org>, allowing the reuse under the ISC license 
-of those parts of your code which are based on this project.
-
-If you do grant this project such a permission, also emailing the dual 
-licensed code in question would be most helpful, as it would rid us of
-any doubts as to which parts of your code you allow use and distribution
-under the ISC license of.
+You can allow us to use your code under the ISC (or equivalent) license
+by including a notice either in your source tree, if it is publicly
+available, or by sending an email to <h-vhs@huggpunkt.org> allowing
+us to use those parts of your code which are based on this project under
+the ISC license.
 
 This project will always be licensed under the ISC or any functionally
-equivalent license, like the "Simplified BSD License".
+equivalent license.

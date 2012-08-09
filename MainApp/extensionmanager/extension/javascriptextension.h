@@ -30,6 +30,11 @@
 class JavaScriptExtension : public Extension
 {
 public:
+    // This JavaScriptExtension class is compatible with api="javascript" extensions
+    // conforming to the following api versions.
+    static VersionNumber currentApiVersion()             { return VersionNumber(1, 0); }
+    static VersionNumber oldestCompatibleApiVersion()    { return VersionNumber(1, 0); }
+
     explicit JavaScriptExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent = 0);
 
     ~JavaScriptExtension();

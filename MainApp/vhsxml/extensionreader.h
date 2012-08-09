@@ -26,6 +26,10 @@
 #include "vhsxml/elementparser.h"
 #include "extensionmanager/definitions/extensiondefinition.h"
 
+// Used to check for api compatibility
+#include "extensionmanager/extension/javascriptextension.h"
+#include "extensionmanager/extension/qtpluginextension.h"
+
 namespace VhsXml {
 
 class ExtensionReader

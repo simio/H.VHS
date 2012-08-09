@@ -42,11 +42,13 @@ public:
     virtual bool operator> (const VersionNumber &other) const       { return !(*this <= other); }
     virtual bool operator>=(const VersionNumber &other) const       { return !(*this < other); }
 
-    VersionNumber toVersion(QString version);
+    VersionNumber toVersion(QString toString);
 
-    QString version() const                                     { return QString::number(this->_major) + "." + QString::number(this->_minor); }
+    QString toString() const                                     { return QString::number(this->_major) + "." + QString::number(this->_minor); }
     qint64 major() const                                        { return this->_major; }
     qint64 minor() const                                        { return this->_minor; }
+
+    bool isCompatible(VersionNumber high, VersionNumber low) const  { return ((*this) >= low && (*this) <= high); }
 
 private:
     qint64 _major;

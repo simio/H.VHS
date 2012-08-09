@@ -34,6 +34,11 @@
 class QtPluginExtension : public Extension
 {
 public:
+    // This QtPluginExtension class is compatible with api="qtplugin" extensions
+    // conforming to the following api versions.
+    static VersionNumber currentApiVersion()             { return VersionNumber(1, 0); }
+    static VersionNumber oldestCompatibleApiVersion()    { return VersionNumber(1, 0); }
+
     QtPluginExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent = 0);
     ~QtPluginExtension();
 

@@ -235,9 +235,29 @@ QSharedPointer<ExtensionDefinition> ExtensionReader::_parseExtension(const QDomE
         apiVersion = VersionNumber(e.attribute("apiVersion", QString()));
         QString str = e.attribute("api").trimmed();
         if (str == "qtplugin")
+        {
             apiInterfaceClass = ExtensionDefinition::QtPlugin;
+            if (! apiVersion.isCompatible(QtPluginExtension::currentApiVersion(),
+                                          QtPluginExtension::oldestCompatibleApiVersion()))
+            {
+                qDebug() << "ExtensionReader discarding qtplugin" << name << "at apiVersion" << apiVersion.toString()
+                         << "(compatibility span is" << QtPluginExtension::currentApiVersion().toString()
+                         << "to" << QtPluginExtension::oldestCompatibleApiVersion().toString() << ")";
+                return QSharedPointer<ExtensionDefinition>();
+            }
+        }
         else if (str == "javascript")
+        {
             apiInterfaceClass = ExtensionDefinition::JavaScript;
+            if (! apiVersion.isCompatible(JavaScriptExtension::currentApiVersion(),
+                                          JavaScriptExtension::oldestCompatibleApiVersion()))
+            {
+                qDebug() << "ExtensionReader discarding javascript" << name << " at apiVersion" << apiVersion.toString()
+                         << "(compatibility span is" << JavaScriptExtension::currentApiVersion().toString()
+                         << "to" << JavaScriptExtension::oldestCompatibleApiVersion().toString() << ")";
+                return QSharedPointer<ExtensionDefinition>();
+            }
+        }
         else
         {
             qDebug() << "ExtensionReader expected api qtplugin or javascript, but got" << str;

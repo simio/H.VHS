@@ -40,6 +40,8 @@ class DocumentReader : public QObject
 {
     Q_OBJECT
 public:
+    // This DocumentReader class is capable of parsing XML conforming to
+    // the following schema versions.
     static VersionNumber version()                    { return VersionNumber(1, 1); }
     static VersionNumber oldestCompatibleVersion()    { return VersionNumber(1, 1); }
 

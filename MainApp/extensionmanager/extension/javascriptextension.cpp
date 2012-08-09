@@ -75,11 +75,6 @@ qint64 JavaScriptExtension::pluginHook(const qint64 hook)
     return this->pluginHook(hook, discardedReturnValue);
 }
 
-const QSharedPointer<QIODevice> JavaScriptExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
-{
-    // Javascript extensions cannot use this interface
-    return QSharedPointer<QIODevice>();
-}
 
 /*  Try to initialise the script environment, and return true or false depending
  *  on if the script extension is valid. (Validity holds true if this function and

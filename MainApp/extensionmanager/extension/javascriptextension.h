@@ -46,8 +46,11 @@ public:
     qint64 pluginHook(const qint64 hook, QVariant &hookData);
     qint64 pluginHook(const qint64 hook);
 
-    // HVHS_INTERFACE_STREAMS
-    const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    /*  List of unimplemented interfaces follows. The member functionss of these interfaces
+     *  are not declared, as the dummy implementation in the base class should be used.
+     *
+     *  HVHS_INTERFACE_STREAMS
+     */
 
 private:
     QScopedPointer<QScriptEngine> _engine;

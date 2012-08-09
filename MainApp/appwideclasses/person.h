@@ -28,10 +28,14 @@
 class Person
 {
 public:
-    Person(){}          // Required by QMetaType system
+    /*  This class is registered with the QMetaType system.
+     *  Therefore, a default public constructor, public copy constructor and
+     *  public assignment operator are required.
+     */
+    Person(){}  // See above
     Person(QString name, QString email, QUrl website, QString username);
-    Person(const Person &original);
-    virtual Person &operator=(const Person &original);
+    // Using compiler generated public copy constructor
+    // Using compiler generated public assignment operator
 
     QString name() const                                                        { return this->_name; }
     QString email() const                                                       { return this->_email; }

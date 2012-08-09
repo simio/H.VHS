@@ -24,24 +24,6 @@ Person::Person(QString name, QString email, QUrl website, QString username)
     this->_username = username;
 }
 
-Person::Person(const Person &original) :
-    _name(original._name),
-    _email(original._email),
-    _website(original._website),
-    _username(original._username),
-    _activities(original._activities)
-{ }
-
-Person &Person::operator =(const Person &original)
-{
-    this->_name = original._name;
-    this->_email = original._email;
-    this->_website = original._website;
-    this->_username = original._username;
-    this->_activities = original._activities;
-    return *this;
-}
-
 QMultiMap<QDateTime, QString> Person::activities(QDateTime earliest, QDateTime latest) const
 {
     QMultiMap<QDateTime, QString> result;

@@ -26,13 +26,14 @@
  *  to this file being parsed by the build process.
  */
 
-#ifndef EXTENSIONINTERFACES_IF_COMMONDEFINES_H
-#define EXTENSIONINTERFACES_IF_COMMONDEFINES_H
+#ifndef EXTENSIONMANAGER_INTERFACES_IF_COMMONDEFINES_H
+#define EXTENSIONMANAGER_INTERFACES_IF_COMMONDEFINES_H
 
 #define EXT_INTERFACE_NOT_SUPPORTED            -1
 #define HVHS_INTERFACE_COMMON                   "org.huggpunkt.VHS.Common/1.0"
 #define HVHS_INTERFACE_HOOKS                    "org.huggpunkt.VHS.Hooks/1.0"
 #define HVHS_INTERFACE_STREAMS                  "org.huggpunkt.VHS.Streams/1.0"
+#define HVHS_INTERFACE_FILTERS                  "org.huggpunkt.VHS.Filters/1.0"
 
 // Extension::suggestHookPriority()
 #define EXT_NO_HOOK_PRIORITY_SUGGESTION        -1
@@ -61,4 +62,4 @@
 #define EXT_HOOK_WEBVIEW_LOADFINISHED           420
 
 
-#endif // EXTENSIONINTERFACES_IF_COMMONDEFINES_H
+#endif // EXTENSIONMANAGER_INTERFACES_IF_COMMONDEFINES_H

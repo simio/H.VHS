@@ -28,6 +28,10 @@
 #include "extensionmanager/interfaces/common_if.h"
 #include "extensionmanager/interfaces/hooks_if.h"
 #include "extensionmanager/interfaces/streams_if.h"
+#include "extensionmanager/interfaces/filters_if.h"
+
+/*  Base class for all extensions. Must provide dummy implementations of all interfaces.
+ */
 
 class Extension : public QObject
 {
@@ -52,11 +56,16 @@ public:
         return QSharedPointer<QIODevice>();
     }
 
+    // HVHS_INTERFACE_FILTERS
+    virtual const bool setupFilter(QHash<QString,QVariant> setupData)   { return false; }
+    virtual const bool filterIsReady() const                            { return false; }
+    virtual const QSharedPointer<QIODevice> consumer()                  { return QSharedPointer<QIODevice>(); }
+    virtual const QSharedPointer<QIODevice> producer()                  { return QSharedPointer<QIODevice>(); }
+
 protected:
     explicit Extension(QObject *parent = 0) : QObject(parent)           { }
     QString _extensionId;
     QStringList _interfaces;
-
 };
 
 #endif // EXTENSIONMANAGER_EXTENSION_EXTENSION_H

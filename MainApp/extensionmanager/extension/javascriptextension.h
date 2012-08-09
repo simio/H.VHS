@@ -50,6 +50,7 @@ public:
      *  are not declared, as the dummy implementation in the base class should be used.
      *
      *  HVHS_INTERFACE_STREAMS
+     *  HVHS_INTERFACE_FILTERS
      */
 
 private:

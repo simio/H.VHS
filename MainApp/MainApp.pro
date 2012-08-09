@@ -133,7 +133,8 @@ HEADERS  += \
     appwideclasses/cassette.h \
     appwideclasses/cassettecontent.h \
     config/configurationdefaults.h \
-    extensionmanager/definitions/definitiondata.h
+    extensionmanager/definitions/definitiondata.h \
+    extensionmanager/interfaces/filters_if.h
 
 FORMS    += \
     webwindow.ui \

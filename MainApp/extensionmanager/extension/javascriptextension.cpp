@@ -75,7 +75,6 @@ qint64 JavaScriptExtension::pluginHook(const qint64 hook)
     return this->pluginHook(hook, discardedReturnValue);
 }
 
-
 /*  Try to initialise the script environment, and return true or false depending
  *  on if the script extension is valid. (Validity holds true if this function and
  *  Extension::isValid() returns true, see isValid() above.)

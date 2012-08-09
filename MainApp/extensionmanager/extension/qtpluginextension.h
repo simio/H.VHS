@@ -52,6 +52,12 @@ public:
     // HVHS_INTERFACE_STREAMS
     const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
+    // HVHS_INTERFACE_FILTERS
+    virtual const bool setupFilter(QHash<QString,QVariant> setupData);
+    virtual const bool filterIsReady() const;
+    virtual const QSharedPointer<QIODevice> consumer();
+    virtual const QSharedPointer<QIODevice> producer();
+
 signals:
 
 public slots:

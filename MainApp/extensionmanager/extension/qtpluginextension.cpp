@@ -74,3 +74,35 @@ const QSharedPointer<QIODevice> QtPluginExtension::openStream(QIODevice::OpenMod
     ExtensionInterfaceStreams *exIf = qobject_cast<ExtensionInterfaceStreams*>(this->_qtplugin.data());
     return QSharedPointer<QIODevice>(exIf->openStream(openMode, hurl));
 }
+
+const bool QtPluginExtension::setupFilter(QHash<QString, QVariant> setupData)
+{
+    if (! this->implementsInterface( HVHS_INTERFACE_FILTERS ))
+        return false;
+    ExtensionInterfaceFilters *exIf = qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
+    return exIf->setupFilter(setupData);
+}
+
+const bool QtPluginExtension::filterIsReady() const
+{
+    if (! this->implementsInterface( HVHS_INTERFACE_FILTERS ))
+        return false;
+    ExtensionInterfaceFilters *exIf = qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
+    return exIf->filterIsReady();
+}
+
+const QSharedPointer<QIODevice> QtPluginExtension::consumer()
+{
+    if (! this->implementsInterface( HVHS_INTERFACE_FILTERS ))
+        return QSharedPointer<QIODevice>();
+    ExtensionInterfaceFilters *exIf = qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
+    return QSharedPointer<QIODevice>(exIf->consumer());
+}
+
+const QSharedPointer<QIODevice> QtPluginExtension::producer()
+{
+    if (! this->implementsInterface( HVHS_INTERFACE_FILTERS ))
+        return QSharedPointer<QIODevice>();
+    ExtensionInterfaceFilters *exIf = qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
+    return QSharedPointer<QIODevice>(exIf->producer());
+}

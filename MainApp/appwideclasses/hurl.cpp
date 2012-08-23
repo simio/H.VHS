@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "appwideclasses/hurl.h"
+#include "hurl.h"
 
 HUrl::HUrl()                                                { this->_set(QString(), QDateTime()); } // Null QDateTime is not valid()
 HUrl::HUrl(QString uri, QDateTime timestamp )               { this->_set(uri, timestamp); }

@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "appwideclasses/person.h"
+#include "person.h"
 
 Person::Person(QString name, QString email, QUrl website, QString username)
 {

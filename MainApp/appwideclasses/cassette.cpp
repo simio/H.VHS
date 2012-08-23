@@ -16,8 +16,8 @@
 
 // May not include main.h
 
-#include "appwideclasses/cassette.h"
-#include "appwideclasses/cassettecontent.h"
+#include "cassette.h"
+#include "cassettecontent.h"
 
 Cassette::Cassette()
 {

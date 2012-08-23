@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "appwideclasses/versionnumber.h"
+#include "versionnumber.h"
 
 VersionNumber VersionNumber::toVersion(QString version)
 {

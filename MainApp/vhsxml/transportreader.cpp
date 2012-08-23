@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "vhsxml/transportreader.h"
+#include "transportreader.h"
 
 namespace VhsXml {
 

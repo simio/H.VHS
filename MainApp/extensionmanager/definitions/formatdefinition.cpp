@@ -81,7 +81,7 @@ QString FormatDefinition::mimeType(int index) const
 
 FormatDefinition::Completeness FormatDefinition::_strToCompleteness(QString str)
 {
-    Completeness c;
+    Completeness c = Invalid;
     QString normalised = str.toLower().trimmed();
 
     if (normalised == "notempty")

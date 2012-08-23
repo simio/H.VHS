@@ -32,19 +32,19 @@ PlatformDependent *PlatformDependent::p()
 void PlatformDependent::setQAppLibraryPaths()
 {
 #ifdef DEPLOY
-#   ifdef WIN32
+#   ifdef _WIN32
         // Ensure lib lookups happen ONLY in the applicationDirPath.
         // Only needed in Windows. Perhaps not even there.
         // According to the docs, the default list is only INSTALL/plugins,
         // where INSTALL is the Qt installation dir.
         qApp->setLibraryPaths(QStringList(qApp->applicationDirPath()));
-#   endif
-#endif
+#   endif // _WIN32
+#endif // DEPLOY
 }
 
 QDir PlatformDependent::extensionsDir(Scope scope)
 {
-#ifdef WIN32
+#ifdef _WIN32
     switch (scope)
     {
     case System:
@@ -55,7 +55,8 @@ QDir PlatformDependent::extensionsDir(Scope scope)
         return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions");
         /* NOTREACHED */
     }
-#elif unix
+#endif // _WIN32
+#ifdef __unix__
     switch (scope)
     {
     case System:
@@ -67,12 +68,12 @@ QDir PlatformDependent::extensionsDir(Scope scope)
         return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/extensions");
         /* NOTREACHED */
     }
-#endif
+#endif // __unix__
 }
 
 QDir PlatformDependent::presetsDir(Scope scope)
 {
-#ifdef WIN32
+#ifdef _WIN32
     switch (scope)
     {
     case System:
@@ -83,7 +84,8 @@ QDir PlatformDependent::presetsDir(Scope scope)
         return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/presets");
         /* NOTREACHED */
     }
-#elif unix
+#endif // _WIN32
+#ifdef __unix__
     switch (scope)
     {
     case System:
@@ -94,18 +96,19 @@ QDir PlatformDependent::presetsDir(Scope scope)
         return QDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/presets");
         /* NOTREACHED */
     }
-#endif
+#endif // __unix__
 }
 
 
 QWeakPointer<QSettings> PlatformDependent::newSettings(QObject * parent)
 {
     // alloc: Has parent assigned from parameter above
-#ifdef WIN32
+#ifdef _WIN32
     return new QSettings(QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/hvhs.ini"),
                          QSettings::IniFormat, parent);
-#elif unix
+#endif // _WIN32
+#ifdef __unix__
     return new QSettings(QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/hvhs.conf"),
                          QSettings::NativeFormat, parent);
-#endif
+#endif // __unix__
 }

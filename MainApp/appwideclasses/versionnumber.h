@@ -28,31 +28,31 @@ public:
      *  Therefore, a default public constructor, public copy constructor and
      *  public assignment operator are required.
      */
-    VersionNumber()                                                 { this->_major = this->_minor = 0; }
+    VersionNumber()                                                 { this->_majorVersion = this->_minorVersion = 0; }
     VersionNumber(QString version)                                  { *this = VersionNumber::toVersion(version); }
-    VersionNumber(qint64 major, qint64 minor)                       { this->_major = major; this->_minor = minor; }
+    VersionNumber(qint64 majorVersion, qint64 minorVersion)         { this->_majorVersion = majorVersion; this->_minorVersion = minorVersion; }
     // Using compiler generated public copy constructor
     // Using compiler generated public assignment operator
 
-    virtual bool operator==(const VersionNumber &other) const       { return (this->_major == other._major && this->_minor == other._minor); }
+    virtual bool operator==(const VersionNumber &other) const       { return (this->_majorVersion == other._majorVersion && this->_minorVersion == other._minorVersion); }
     virtual bool operator!=(const VersionNumber &other) const       { return !(*this == other); }
-    virtual bool operator< (const VersionNumber &other) const       { return (this->_major < other._major)
-                                                                        || (this->_major == other._major && this->_minor < other._minor); }
+    virtual bool operator< (const VersionNumber &other) const       { return (this->_majorVersion < other._majorVersion)
+                                                                        || (this->_majorVersion == other._majorVersion && this->_minorVersion < other._minorVersion); }
     virtual bool operator<=(const VersionNumber &other) const       { return (*this == other || *this < other); }
     virtual bool operator> (const VersionNumber &other) const       { return !(*this <= other); }
     virtual bool operator>=(const VersionNumber &other) const       { return !(*this < other); }
 
     VersionNumber toVersion(QString toString);
 
-    QString toString() const                                     { return QString::number(this->_major) + "." + QString::number(this->_minor); }
-    qint64 major() const                                        { return this->_major; }
-    qint64 minor() const                                        { return this->_minor; }
+    QString toString() const                                        { return QString::number(this->_majorVersion) + "." + QString::number(this->_minorVersion); }
+    qint64 majorVersion() const                                     { return this->_majorVersion; }
+    qint64 minorVersion() const                                     { return this->_minorVersion; }
 
     bool isCompatible(VersionNumber high, VersionNumber low) const  { return ((*this) >= low && (*this) <= high); }
 
 private:
-    qint64 _major;
-    qint64 _minor;
+    qint64 _majorVersion;
+    qint64 _minorVersion;
 };
 
 Q_DECLARE_METATYPE(VersionNumber)

@@ -213,7 +213,7 @@ QDir Configuration::getStorageLocation(StorageLocation type)
 QFileInfo Configuration::extensionRootFile(QString id, VersionNumber apiVersion)
 {
     QFileInfoList candidateFiles;
-    QString pattern = id + QString::number(apiVersion.major()) + ".*";
+    QString pattern = id + QString::number(apiVersion.majorVersion()) + ".*";
 
     // Check the user extension repository first.
     QDir base = PlatformDependent::p()->extensionsDir(PlatformDependent::User);

@@ -18,19 +18,19 @@
 
 VersionNumber VersionNumber::toVersion(QString version)
 {
-    qint64 major, minor;
+    qint64 majorVersion, minorVersion;
     QStringList numbers = version.trimmed().split(".", QString::SkipEmptyParts);
     if (numbers.isEmpty())
-        minor = major = 0;
+        minorVersion = majorVersion = 0;
     else if (numbers.count() == 1)
     {
-        major = numbers.first().toInt(); // Returns 0 if conversion fails
-        minor = 0;
+        majorVersion = numbers.first().toInt(); // Returns 0 if conversion fails
+        minorVersion = 0;
     }
     else
     {
-        major = numbers.first().toInt(); // Returns 0 if conversion fails
-        minor = numbers.at(1).toInt();   // as above
+        majorVersion = numbers.first().toInt(); // Returns 0 if conversion fails
+        minorVersion = numbers.at(1).toInt();   // as above
     }
-    return VersionNumber(major, minor);
+    return VersionNumber(majorVersion, minorVersion);
 }

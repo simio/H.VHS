@@ -70,7 +70,7 @@ QString ElementParser::nmtoken(const QString &str)
 {
     QString result;
     QChar const* ch = str.constData();              // Qt guarantees null termination.
-    while (*ch != NULL)
+    while (! ch->isNull())
     {
         if (ch->isLetterOrNumber()
                 || ch->category() == QChar::Punctuation_Connector

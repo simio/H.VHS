@@ -1,4 +1,4 @@
-HVHS_EXTENSION_TEMPLATE = lib
+HVHS_EXTENSION_TEMPLATE = 
 HVHS_EXTENSION_QT =
 
 include('hvhs_extension.pri')

@@ -21,10 +21,14 @@ include( ../deploy.pri )
 target.path = $$DEPLOY_DIST_DIR
 
 win32 {
+    exists( "version.h" ) {
+        system ( "del version.h" )
+    }
+
     RC_FILE = vhs.rc
     CYGWIN_PRO_FILE_PWD = $$replace(_PRO_FILE_PWD_, "C:", "/cygdrive/c")
     winrc.target = $$RC_FILE
-    winrc.depends = FORCE
+    winrc.depends =
     winrc.commands = \
 	$${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/update_version.sh'" \
         	$$CYGWIN_BIN win32 $$VERSION $$RC_FILE $$PUBLIC_APP_TAG
@@ -44,8 +48,12 @@ win32 {
     QMAKE_EXTRA_TARGETS += winrc
 }
 unix {
+    exists( "version.h" ) {
+        system ( "rm version.h" )
+    }
+
     version_h.target = version.h
-    version_h.depends = FORCE
+    version_h.depends =
     version_h.commands = \
 	sh $${_PRO_FILE_PWD_}/update_version.sh unused unix $$VERSION \
 		unused $$PUBLIC_APP_TAG

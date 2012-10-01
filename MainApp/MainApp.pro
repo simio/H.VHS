@@ -24,37 +24,37 @@ win32 {
     RC_FILE = vhs.rc
     CYGWIN_PRO_FILE_PWD = $$replace(_PRO_FILE_PWD_, "C:", "/cygdrive/c")
     winrc.target = $$RC_FILE
+    winrc.depends = FORCE
     winrc.commands = \
 	$${CYGWIN_BIN}/bash.exe "'$${CYGWIN_PRO_FILE_PWD}/update_version.sh'" \
         	$$CYGWIN_BIN win32 $$VERSION $$RC_FILE $$PUBLIC_APP_TAG
-    winrc.depends = FORCE
 
     version_h.target = version.h
     version_h.depends = winrc
 
     IF_COMMONDEFINES_QS = extensionmanager/interfaces/if_commondefines.qs
     if_commondefines_qs.target = $$IF_COMMONDEFINES_QS
+    if_commondefines_qs.depends = FORCE
     if_commondefines_qs.commands = \
 	$${CYGWIN_BIN}/bash.exe \
 		"'$${CYGWIN_PRO_FILE_PWD}/mkqs_commondefines.sh'" \
 		$$CYGWIN_BIN win32
-    if_commondefines_qs.depends = FORCE
 
     PRE_TARGETDEPS += $$RC_FILE
     QMAKE_EXTRA_TARGETS += winrc
 }
 unix {
     version_h.target = version.h
+    version_h.depends = FORCE
     version_h.commands = \
 	sh $${_PRO_FILE_PWD_}/update_version.sh unused unix $$VERSION \
 		unused $$PUBLIC_APP_TAG
-    version_h.depends = FORCE
 
     IF_COMMONDEFINES_QS = extensionmanager/interfaces/if_commondefines.qs
     if_commondefines_qs.target = $$IF_COMMONDEFINES_QS
+    if_commondefines_qs.depends = FORCE
     if_commondefines_qs.commands = \
 	sh $${_PRO_FILE_PWD_}/mkqs_commondefines.sh nonsense unix
-    if_commondefines_qs.depends = FORCE
 }
 
 PRE_TARGETDEPS += version.h $$IF_COMMONDEFINES_QS

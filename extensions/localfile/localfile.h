@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -37,24 +37,30 @@
  */
 
 class LocalFileExtension :
-        public QObject,
-        public ExtensionInterfaceCommon,
-        public ExtensionInterfaceStreams
+    public QObject,
+    public ExtensionInterfaceCommon,
+    public ExtensionInterfaceStreams
 {
     Q_OBJECT
     Q_INTERFACES(ExtensionInterfaceCommon ExtensionInterfaceStreams)
 
-public:
-    operator QObject*();
-    explicit LocalFileExtension(QObject *parent = 0);
+    public:
+    operator QObject
+    *();
+
+    explicit
+    LocalFileExtension(QObject *parent = 0);
+
     ~LocalFileExtension();
 
-    const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    const QSharedPointer<QIODevice>
+    openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
 private:
     QSharedPointer<QFile> _file;
 
-    const QSharedPointer<QFile> _resolveHurl(QString hurl);
+    const QSharedPointer<QFile>
+    _resolveHurl(QString hurl);
 
 };
 

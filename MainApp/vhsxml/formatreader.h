@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -28,18 +28,18 @@
 #include "extensionmanager/definitions/formatdefinition.h"
 
 namespace VhsXml {
+    class FormatReader
+    {
+    public:
+        static QList<QSharedPointer<FormatDefinition> >
+        parse(const QDomDocument &document);
 
-class FormatReader
-{
-public:
-    static QList<QSharedPointer<FormatDefinition> > parse(const QDomDocument &document);
+    private:
+        FormatReader();
 
-private:
-    FormatReader();
-
-    static QSharedPointer<FormatDefinition> _parseFormat(const QDomElement &formatNode);
-};
-
+        static QSharedPointer<FormatDefinition>
+        _parseFormat(const QDomElement &formatNode);
+    };
 } // namespace VhsXml
 
 #endif // VHSXML_FORMATREADER_H

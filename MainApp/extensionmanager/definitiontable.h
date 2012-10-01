@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef DEFINITIONTABLE_H
-#define DEFINITIONTABLE_H
+#ifndef EXTENSIONMANAGER_DEFINITIONTABLE_H
+#define EXTENSIONMANAGER_DEFINITIONTABLE_H
 
 #include <QObject>
 #include <QSharedPointer>
@@ -37,24 +37,42 @@ class DefinitionTable : public QObject
 public:
     explicit DefinitionTable(QObject *parent = 0);
 
-    int count(Definition::DefinitionType type = Definition::NoDefinitionType) const;
-    bool update(QSharedPointer<Definition> def);                                // returns true iff definition table changed
-    int update(QList<QSharedPointer<Definition> > defs);                        // returns number of changes to definition table
-    bool contains(Definition::DefinitionType type, QString id) const;
-    bool contains(QSharedPointer<Definition> def) const;
-    QSharedPointer<Definition> get(Definition::DefinitionType type, QString id) const;
-    QSharedPointer<Definition> get(QSharedPointer<Definition> def) const;
-    QHash<QString,QSharedPointer<Definition> > getAll(Definition::DefinitionType type) const;
+    int
+    count(Definition::DefinitionType type = Definition::NoDefinitionType) const;
+
+    // returns true iff definition table changed
+    bool
+    update(QSharedPointer<Definition> def);
+
+    // returns number of changes to definition table
+    int
+    update(QList<QSharedPointer<Definition> > defs);
+
+    bool
+    contains(Definition::DefinitionType type, QString id) const;
+
+    bool
+    contains(QSharedPointer<Definition> def) const;
+
+    QSharedPointer<Definition>
+    get(Definition::DefinitionType type, QString id) const;
+
+    QSharedPointer<Definition>
+    get(QSharedPointer<Definition> def) const;
+
+    QHash<QString,QSharedPointer<Definition> >
+    getAll(Definition::DefinitionType type) const;
 
 signals:
 
 public slots:
 
 private:
-    bool _set(QSharedPointer<Definition> def);                                  // returns true if the total number of definitions changed
+    // returns true if the total number of definitions changed
+    bool _set(QSharedPointer<Definition> def);
 
-    QHash<Definition::DefinitionType, QHash<QString, QSharedPointer<Definition> > > _definitions;
-
+    QHash<Definition::DefinitionType,
+          QHash<QString, QSharedPointer<Definition> > > _definitions;
 };
 
-#endif // DEFINITIONTABLE_H
+#endif // EXTENSIONMANAGER_DEFINITIONTABLE_H

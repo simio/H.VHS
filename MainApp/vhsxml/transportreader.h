@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef VHSXMLTRANSPORTREADER_H
-#define VHSXMLTRANSPORTREADER_H
+#ifndef VHSXML_TRANSPORTREADER_H
+#define VHSXML_TRANSPORTREADER_H
 
 #include <QList>
 #include <QSharedPointer>
@@ -26,18 +26,18 @@
 #include "extensionmanager/definitions/transportdefinition.h"
 
 namespace VhsXml {
+    class TransportReader
+    {
+    public:
+        static QList<QSharedPointer<TransportDefinition> >
+        parse(const QDomDocument &document);
 
-class TransportReader
-{
-public:
-    static QList<QSharedPointer<TransportDefinition> > parse(const QDomDocument &document);
+    private:
+        TransportReader();
 
-private:
-    TransportReader();
-
-    static QSharedPointer<TransportDefinition> _parseTransport(const QDomElement &transportNode);
-};
-
+        static QSharedPointer<TransportDefinition>
+        _parseTransport(const QDomElement &transportNode);
+    };
 } // namespace VhsXml
 
-#endif // VHSXMLTRANSPORTREADER_H
+#endif // VHSXML_TRANSPORTREADER_H

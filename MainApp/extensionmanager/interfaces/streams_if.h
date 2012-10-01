@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -22,21 +22,26 @@
 
 #include "if_commondefines.h"
 
-/*  H.VHS QPlugin Extension Interface for QIODevices, version 1.0
+/* H.VHS QPlugin Extension Interface for QIODevices, version 1.0
  *
- *  When the main application needs to call openStream(), it will create
- *  a new instance of the extension. This new instance will be put on a
- *  pluginHook() calling list, if the hooks interface is supported by this
- *  extension. This means more than one instance of every stream-creating
- *  extension might be called for each hook. Avoid conflicts!
+ * When the main application needs to call openStream(), it will
+ * create a new instance of the extension. This new instance will be
+ * put on a pluginHook() calling list, if the hooks interface is
+ * supported by this extension. This means more than one instance of
+ * every stream-creating extension might be called for each
+ * hook. Avoid conflicts!
  */
 
 class ExtensionInterfaceStreams
 {
 public:
-    virtual ~ExtensionInterfaceStreams() {}
+    virtual
+    ~ExtensionInterfaceStreams()
+    { }
 
-    virtual const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl) = 0;
+    virtual const QSharedPointer<QIODevice>
+    openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+    = 0;
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceStreams,

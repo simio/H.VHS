@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -73,19 +73,22 @@ public:
     { }
 
     // Return true iff this value is set.
-    bool has(const Key &key) const
+    bool
+    has(const Key &key) const
     {
         return this->_map.contains(key);
     }
 
     // Return value or QVariant() if it isn't set.
-    QVariant get(const Key &key) const
+    QVariant
+    get(const Key &key) const
     {
         return this->_map.value(key, QVariant());
     }
 
     // Add or update value. Return false if no change.
-    bool set(const Key &key, const QVariant &value)
+    bool
+    set(const Key &key, const QVariant &value)
     {
         if (this->_map.contains(key) && this->_map.value(key) == value)
             return false;
@@ -94,8 +97,10 @@ public:
         return true;
     }
 
-    // Add new value, but don't replace existing values. Return true iff success.
-    bool add(const Key &key, const QVariant &value)
+    // Add new value, but don't replace existing values. Return true
+    // iff success.
+    bool
+    add(const Key &key, const QVariant &value)
     {
         if (this->_map.contains(key))
             return false;
@@ -104,7 +109,8 @@ public:
     }
 
     // Replace (only an) existing value. Return true iff success.
-    bool replace(const Key &key, const QVariant &value)
+    bool
+    replace(const Key &key, const QVariant &value)
     {
         if (! this->_map.contains(key))
             return false;
@@ -113,7 +119,8 @@ public:
     }
 
     // Remove existing value. Return true iff success.
-    bool remove(const Key &key)
+    bool
+    remove(const Key &key)
     {
         if (! this->_map.contains(key))
             return false;

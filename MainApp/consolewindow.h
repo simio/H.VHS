@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -23,7 +23,7 @@
 // anything included below it in "main.h"
 
 namespace Ui {
-class ConsoleWindow;
+    class ConsoleWindow;
 }
 
 class ConsoleWindow : public QDialog

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,16 +25,15 @@
 #include "elementparser.h"
 
 namespace VhsXml {
+    class CassetteReader
+    {
+    public:
+        //static QList<QSharedPointer<Cassette> >
+	//parse(const QDomDocument &document);
 
-class CassetteReader
-{
-public:
-    //static QList<QSharedPointer<Cassette> > parse(const QDomDocument &document);
-
-private:
-    CassetteReader();
-};
-
+    private:
+        CassetteReader();
+    };
 } // namespace VhsXml
 
 #endif // VHSXML_CASSETTEREADER_H

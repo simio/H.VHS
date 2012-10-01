@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -26,11 +26,16 @@ Definition::Definition(QString id,
     : QObject(parent)
 {
     this->_d = QSharedDataPointer<DefinitionData>(new DefinitionData);
-    this->_d.data()->add(DefinitionData::DefinitionId, QVariant(id));
-    this->_d.data()->add(DefinitionData::DefinitionName, QVariant(name));
-    this->_d.data()->add(DefinitionData::DefinitionDescription, QVariant(description));
-    this->_d.data()->add(DefinitionData::DefinitionReleaseDate, QVariant(releaseDate));
-    this->_d.data()->add(DefinitionData::DefinitionType, QVariant((qint64)type));
+    this->_d.data()->add(
+        DefinitionData::DefinitionId, QVariant(id));
+    this->_d.data()->add(
+        DefinitionData::DefinitionName, QVariant(name));
+    this->_d.data()->add(
+        DefinitionData::DefinitionDescription, QVariant(description));
+    this->_d.data()->add(
+        DefinitionData::DefinitionReleaseDate, QVariant(releaseDate));
+    this->_d.data()->add(
+        DefinitionData::DefinitionType, QVariant((qint64)type));
 }
 
 Definition::~Definition()
@@ -40,89 +45,115 @@ Definition::Definition(const Definition &original)
     : _d(original._d)
 { }
 
-Definition &Definition::operator =(const Definition &original)
+Definition
+&Definition::operator =(const Definition &original)
 {
     this->_d = original._d;
     return *this;
 }
 
-// ==, !=, <= and >= compares both id and release dates, while < and > compare only dates.
-bool Definition::operator ==(const Definition &other) const
+// ==, !=, <= and >= compares both id and release dates, while < and >
+// compare only dates.
+bool Definition::operator
+==(const Definition &other) const
 {
-    return this->id() == other.id()
-            && this->releaseDate() == other.releaseDate();
+    return this->id() == other.id() &&
+        this->releaseDate() == other.releaseDate();
 }
 
-bool Definition::operator !=(const Definition &other) const
+bool Definition::operator
+!=(const Definition &other) const
 {
     // Invert operator ==
     return ! (*this == other);
 }
 
-bool Definition::operator <(const Definition &other) const
+bool Definition::operator
+<(const Definition &other) const
 {
     return this->releaseDate() < other.releaseDate();
 }
 
-bool Definition::operator <=(const Definition &other) const
+bool Definition::operator
+<=(const Definition &other) const
 {
-    return this->id() == other.id()
-            && this->releaseDate() <= other.releaseDate();
+    return this->id() == other.id() &&
+        this->releaseDate() <= other.releaseDate();
 }
 
-bool Definition::operator >(const Definition &other) const
+bool Definition::operator
+>(const Definition &other) const
 {
     return this->releaseDate() > other.releaseDate();
 }
 
-bool Definition::operator >=(const Definition &other) const
+bool Definition::operator
+>=(const Definition &other) const
 {
-    return this->id() == other.id()
-            && this->releaseDate() >= other.releaseDate();
+    return this->id() == other.id() &&
+        this->releaseDate() >= other.releaseDate();
 }
 
-bool Definition::isValid() const
+bool
+Definition::isValid() const
 {
-    return (! this->id().isEmpty()
-            && ! this->name().isEmpty()
-            && this->releaseDate().isValid()
-            && this->type() != Definition::NoDefinitionType);
+    return (! this->id().isEmpty() &&
+            ! this->name().isEmpty() &&
+            this->releaseDate().isValid() &&
+            this->type() != Definition::NoDefinitionType);
 }
 
-QString Definition::id() const
+QString
+Definition::id() const
 {
-    return this->_d.constData()->get(DefinitionData::DefinitionId).toString();
+    return this->_d.constData()->get(
+        DefinitionData::DefinitionId).toString();
 }
 
-QString Definition::name() const
+QString
+Definition::name() const
 {
-    return this->_d.constData()->get(DefinitionData::DefinitionName).toString();
+    return this->_d.constData()->get(
+        DefinitionData::DefinitionName).toString();
 }
 
-QString Definition::description() const
+QString
+Definition::description() const
 {
-    return this->_d.constData()->get(DefinitionData::DefinitionDescription).toString();
+    return this->_d.constData()->get(
+        DefinitionData::DefinitionDescription).toString();
 }
 
-QDateTime Definition::releaseDate() const
+QDateTime
+Definition::releaseDate() const
 {
-    return this->_d.constData()->get(DefinitionData::DefinitionReleaseDate).toDateTime();
+    return this->_d.constData()->get(
+        DefinitionData::DefinitionReleaseDate).toDateTime();
 }
 
-Definition::DefinitionType Definition::type() const
+Definition::DefinitionType
+Definition::type() const
 {
-    return (Definition::DefinitionType)this->_d.constData()->get(DefinitionData::DefinitionType).toLongLong();
+    return (Definition::DefinitionType)this->_d.constData()->get(
+        DefinitionData::DefinitionType).toLongLong();
 }
 
-QString Definition::prettyType() const
+QString
+Definition::prettyType() const
 {
     switch (this->type())
     {
-    case Definition::NoDefinitionType:                  return "none (invalid)"; break;
-    case Definition::TransportDefinitionType:           return "transport"; break;
-    case Definition::FormatDefinitionType:              return "format"; break;
-    case Definition::ExtensionDefinitionType:           return "extension"; break;
-    case Definition::CassetteDefinitionType:            return "cassette"; break;
-    default:                                            return QString::number(this->type()).prepend("#"); break;
+    case Definition::NoDefinitionType:
+        return "none (invalid)"; break;
+    case Definition::TransportDefinitionType:
+        return "transport"; break;
+    case Definition::FormatDefinitionType:
+        return "format"; break;
+    case Definition::ExtensionDefinitionType:
+        return "extension"; break;
+    case Definition::CassetteDefinitionType:
+        return "cassette"; break;
+    default:
+        return QString::number(this->type()).prepend("#"); break;
     }
 }

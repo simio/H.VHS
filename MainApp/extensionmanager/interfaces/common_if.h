@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -23,15 +23,18 @@
 
 /*  H.VHS QPlugin Extension Interface for all extensions, version 1.0
  *
- *  All extensions must use this, as it enables input from and output to
- *  the main application messaging system. This is essential for debugging.
+ *  All extensions must use this, as it enables input from and output
+ *  to the main application messaging system. This is essential for
+ *  debugging.
  */
 
 class ExtensionInterfaceCommon
 {
 public:
-    virtual operator QObject*() = 0;            // Some stupid trick to allow signals/slots on QTPlugins.
-    virtual ~ExtensionInterfaceCommon() {}
+    // Some stupid trick to allow signals/slots on QTPlugins.
+    virtual operator QObject*() = 0;
+    virtual ~ExtensionInterfaceCommon()
+    { }
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceCommon,

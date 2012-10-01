@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,31 +25,37 @@ ExtensionManager::ExtensionManager(QObject *parent) :
     this->_initialise();
 }
 
-ExtensionManager *ExtensionManager::p()
+ExtensionManager
+*ExtensionManager::p()
 {
     if (s_instance == NULL)
-        s_instance = new ExtensionManager;                              // alloc: Singleton object
+        s_instance = new ExtensionManager;            // alloc: Singleton object
 
     return s_instance;
 }
 
-QSharedPointer<Extension> ExtensionManager::debugLoadExtension(QString id)
+QSharedPointer<Extension>
+ExtensionManager::debugLoadExtension(QString id)
 {
     QSharedPointer<ExtensionDefinition> definition
-            = qSharedPointerDynamicCast<ExtensionDefinition>(this->_definitions.get(Definition::ExtensionDefinitionType, id));
+        = qSharedPointerDynamicCast<ExtensionDefinition>(
+            this->_definitions.get(Definition::ExtensionDefinitionType,
+                                   id));
     if (definition.isNull())
         return QSharedPointer<Extension>();
 
     return this->_loadExtension(definition);
 }
 
-int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
+int
+ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
 {
     int result = 0;
 
     // Call plugin hook on all extensions in the persistent list.
     // values() returns in ascending order, so the iteration follows priority
-    foreach(QSharedPointer<Extension> extension, this->_persistentExtensions.values())
+    foreach(QSharedPointer<Extension> extension,
+            this->_persistentExtensions.values())
     {
         switch (extension->pluginHook(hook, hookData))
         {
@@ -76,31 +82,39 @@ int ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
 
 // Convenience member, for calling hooks where the
 // QVariant &hookData parameter is not used.
-int ExtensionManager::callHook(const qint64 hook)
+int
+ExtensionManager::callHook(const qint64 hook)
 {
     QVariant discardedReturnValue;
     return this->callHook(hook, discardedReturnValue);
 }
 
-void ExtensionManager::_initialise()
+void
+ExtensionManager::_initialise()
 {
     if (this->_initialised)
         qFatal("ExtensionManager::_initialise() called twice!");
     this->_initialised = true;
 
     //  Populate the first plugin hook ring with extensions
-    QHash<QString,QSharedPointer<Definition> > extensions = this->_definitions.getAll(Definition::ExtensionDefinitionType);
-    QHash<QString,QSharedPointer<Definition> >::const_iterator i = extensions.begin();
+    QHash<QString,QSharedPointer<Definition> > extensions =
+        this->_definitions.getAll(Definition::ExtensionDefinitionType);
+    QHash<QString,QSharedPointer<Definition> >::const_iterator i =
+        extensions.begin();
     while (i != extensions.end())
     {
-        QSharedPointer<ExtensionDefinition> definition = qSharedPointerDynamicCast<ExtensionDefinition>(i.value());
+        QSharedPointer<ExtensionDefinition> definition =
+            qSharedPointerDynamicCast<ExtensionDefinition>(i.value());
         if (definition->implementsInterface( HVHS_INTERFACE_HOOKS )
-                && definition->isEnabled())
+            && definition->isEnabled())
         {
-            QSharedPointer<Extension> extension = this->_loadExtension(definition);
-            if (extension && extension->implementsInterface( HVHS_INTERFACE_HOOKS ))
+            QSharedPointer<Extension> extension =
+                this->_loadExtension(definition);
+            if (extension &&
+                extension->implementsInterface( HVHS_INTERFACE_HOOKS ))
             {
-                qDebug() << "ExtensionManager: " << definition->name() << "loaded to persistent extension list.";
+                qDebug() << "ExtensionManager: " << definition->name()
+                         << "loaded to persistent extension list.";
                 qint64 priority = extension->suggestedHookPriority();
                 if (priority == EXT_NO_HOOK_PRIORITY_SUGGESTION)
                     priority = this->_defaultPluginHookPriority;
@@ -112,24 +126,31 @@ void ExtensionManager::_initialise()
     }
 
     // Set up a JobManager
-    this->_jobManager = QWeakPointer<JobManager>(new JobManager(this));                             // alloc: QWeakPointer with parent
+    // alloc: QWeakPointer with parent
+    this->_jobManager = QWeakPointer<JobManager>(new JobManager(this));
 }
 
-// Load an extension and return a pointer to it (or NULL). Checking which
-// interfaces are supported, or if the extension is enabled,
-// is not done here.
-QSharedPointer<Extension> ExtensionManager::_loadExtension(QSharedPointer<ExtensionDefinition> definition)
+// Load an extension and return a pointer to it (or NULL). Checking
+// which interfaces are supported, or if the extension is enabled, is
+// not done here.
+QSharedPointer<Extension>
+ExtensionManager::_loadExtension(QSharedPointer<ExtensionDefinition> definition)
 {
     //XXX: More type casting might simplify this code greatly
     switch (definition->api())
     {
     case ExtensionDefinition::QtPlugin:
     {
-        QScopedPointer<QtPluginExtension> qtplugin(new QtPluginExtension(definition, 0));           // alloc: QScopedPointer -> noparent
+        // alloc: QScopedPointer -> noparent
+        QScopedPointer<QtPluginExtension> qtplugin(
+            new QtPluginExtension(definition, 0));
         if (qtplugin.data()->isValid())
         {
-            // Cast back to Extension and take ownership for QSharedPointer refcounting
-            QSharedPointer<Extension> extension(qSharedPointerCast<Extension>(QSharedPointer<QtPluginExtension>(qtplugin.take())));
+            // Cast back to Extension and take ownership for
+            // QSharedPointer refcounting
+            QSharedPointer<Extension> extension(
+                qSharedPointerCast<Extension>(
+                    QSharedPointer<QtPluginExtension>(qtplugin.take())));
             return extension;
         }
         else
@@ -141,11 +162,16 @@ QSharedPointer<Extension> ExtensionManager::_loadExtension(QSharedPointer<Extens
 
     case ExtensionDefinition::JavaScript:
     {
-        QScopedPointer<JavaScriptExtension> jsplugin(new JavaScriptExtension(definition, 0));       // alloc: QScopedPointer -> noparent
+        // alloc: QScopedPointer -> noparent
+        QScopedPointer<JavaScriptExtension> jsplugin(
+            new JavaScriptExtension(definition, 0));
         if (jsplugin.data()->isValid())
         {
-            // Cast back to Extension and take ownership for QSharedPointer refcounting
-            QSharedPointer<Extension> extension(qSharedPointerCast<Extension>(QSharedPointer<JavaScriptExtension>(jsplugin.take())));
+            // Cast back to Extension and take ownership for
+            // QSharedPointer refcounting
+            QSharedPointer<Extension> extension(
+                qSharedPointerCast<Extension>(
+                    QSharedPointer<JavaScriptExtension>(jsplugin.take())));
             return extension;
         }
         else
@@ -155,7 +181,8 @@ QSharedPointer<Extension> ExtensionManager::_loadExtension(QSharedPointer<Extens
         /* NOTREACHED */
     }
     default:
-        qWarning() << "ExtensionManager: Unimplemented extension api:" << definition->api() << "for extension" << definition->id();
+        qWarning() << "ExtensionManager: Unimplemented extension api:"
+                   << definition->api() << "for extension" << definition->id();
         return QSharedPointer<Extension>();
     }
 }

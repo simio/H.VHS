@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -18,6 +18,7 @@
 #define EXTENSIONMANAGER_JOBMANAGER_JOBMANAGER_H
 
 #include <QObject>
+#include <QLinkedList>
 #include <QTimer>
 
 #include "main.h"
@@ -31,14 +32,16 @@ public:
     explicit JobManager(QObject *parent = 0);
     ~JobManager();
 
-    /*  Run "hook" on all plugins with supplied hookData and return the number
-     *  of non-NOOP responses. Since any job may contain several extension instances
-     *  giving non-NOOP responses, the return value may be greater than the number
-     *  of jobs currently present.
+    /* Run "hook" on all plugins with supplied hookData and return
+     * the number of non-NOOP responses. Since any job may contain
+     * several extension instances giving non-NOOP responses, the
+     * return value may be greater than the number of jobs currently
+     * present.
      *
-     *  Only the ExtensionManager will call these.
+     * Only the ExtensionManager will call these.
      */
-    int callHook(const qint64 hook, QVariant &hookData);
+    int
+    callHook(const qint64 hook, QVariant &hookData);
 
 private:
     QLinkedList<QSharedPointer<JobThread> > _jobQueue;
@@ -46,7 +49,8 @@ private:
 signals:
 
 public slots:
-    void pingRepeat();
+    void
+    pingRepeat();
 };
 
 #endif // EXTENSIONMANAGER_JOBMANAGER_JOBMANAGER_H

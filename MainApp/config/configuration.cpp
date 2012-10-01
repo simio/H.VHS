@@ -71,7 +71,7 @@ QString Configuration::locale(bool full)
 Configuration *Configuration::p()
 {
     if (s_instance == NULL)
-        s_instance = new Configuration;                                             // alloc: Singleton object
+        s_instance = new Configuration;        // alloc: Singleton object
     return s_instance;
 }
 
@@ -85,15 +85,20 @@ QString Configuration::appName(bool full)
 
 QString Configuration::_wrapPublicAppTag(QString prepend, QString append)
 {
-    return (this->_publicAppTag.isEmpty() ? "" : prepend + this->_publicAppTag + append);
+    return (this->_publicAppTag.isEmpty()
+	    ? ""
+	    : prepend + this->_publicAppTag + append);
 }
 
 QString Configuration::_wrapGitInfo(QString prepend, QString append)
 {
     QString info = (this->_gitTag.isEmpty() ? "" : ":" + this->_gitTag)
-            + " ("
-            + (this->_gitBranch.isEmpty() ? "" : this->_gitBranch + "/") + this->_gitHash
-            + ")";
+      + " ("
+      + (this->_gitBranch.isEmpty()
+	 ? ""
+	 : this->_gitBranch + "/")
+      + this->_gitHash
+      + ")";
     return (info.isEmpty() ? "" : prepend + info + append);
 }
 
@@ -104,18 +109,24 @@ QString Configuration::appVersion()
             : qApp->applicationVersion());
 }
 
-void Configuration::saveWindow(Window window, QByteArray state, QByteArray geometry)
+void Configuration::saveWindow(Window window,
+			       QByteArray state,
+			       QByteArray geometry)
 {
     this->_settings.data()->beginGroup("Layout");
-    this->_setValue(QString("WindowState") + QString::number((int)window), state);
-    this->_setValue(QString("WindowGeometry") + QString::number((int)window), geometry);
+    this->_setValue(QString("WindowState")
+		    + QString::number((int)window), state);
+    this->_setValue(QString("WindowGeometry")
+		    + QString::number((int)window), geometry);
     this->_settings.data()->endGroup();
 }
 
 QByteArray Configuration::getWindowState(Window window)
 {
     this->_settings.data()->beginGroup("Layout");
-    QByteArray retVal = this->_value(QString("WindowState") + QString::number((int)window), "").toByteArray();
+    QByteArray retVal =
+      this->_value(QString("WindowState")
+		   + QString::number((int)window), "").toByteArray();
     this->_settings.data()->endGroup();
     return retVal;
 }
@@ -123,7 +134,9 @@ QByteArray Configuration::getWindowState(Window window)
 QByteArray Configuration::getWindowGeometry(Window window)
 {
     this->_settings.data()->beginGroup("Layout");
-    QByteArray retVal = this->_value(QString("WindowGeometry") + QString::number((int)window), "").toByteArray();
+    QByteArray retVal =
+      this->_value(QString("WindowGeometry")
+		   + QString::number((int)window), "").toByteArray();
     this->_settings.data()->endGroup();
     return retVal;
 }
@@ -132,7 +145,9 @@ void Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
 {
     QMap<QString,QVariant>::iterator webViewSetting;
     this->_settings.data()->beginGroup("WebView");
-    for (webViewSetting = webViewSettings.begin(); webViewSetting != webViewSettings.end(); webViewSetting++)
+    for (webViewSetting = webViewSettings.begin();
+	 webViewSetting != webViewSettings.end();
+	 webViewSetting++)
     {
         this->_setValue(webViewSetting.key(), webViewSetting.value());
     }
@@ -166,7 +181,9 @@ QUrl Configuration::getStartPage()
 QUrl Configuration::makeSearchUrl(QString query)
 {
     this->_settings.data()->beginGroup("WebBrowser");
-    QUrl url = QUrl(this->_value("DefaultQuery", this->_defaults.searchQuery).toString() + query.replace(" ", "+"));
+    QUrl url = QUrl(this->_value("DefaultQuery",
+				 this->_defaults.searchQuery).toString()
+		    + query.replace(" ", "+"));
     this->_settings.data()->endGroup();
     return url;
 }
@@ -201,12 +218,14 @@ QDir Configuration::getStorageLocation(StorageLocation type)
     return location;
 }
 
-/*  Return the first file matching the pattern "extensions/<id>/<id><extension-apiversion-mejor>.*".
- *  For the "dummy" extension using API version 1.2, this means "extensions/dummy/dummy1.*".
- *  In other words: Extensions must provide exactly one file matching this pattern, and
- *  that file must contain root class/function of the extension.
+/*  Return the first file matching the pattern
+ *  "extensions/<id>/<id><extension-apiversion-mejor>.*". For the "dummy"
+ *  extension using API version 1.2, this means "extensions/dummy/dummy1.*".
+ *  In other words: Extensions must provide exactly one file matching this
+ *  pattern, and that file must contain root class/function of the extension.
  *
- *  Scripted extensions with the root class inlined in the XML file are not affected by this restriction.
+ *  Scripted extensions with the root class inlined in the XML file are not
+ *  affected by this restriction.
  *
  *  Returns QFileInfo() if no such file was found.
  */
@@ -218,14 +237,17 @@ QFileInfo Configuration::extensionRootFile(QString id, VersionNumber apiVersion)
     // Check the user extension repository first.
     QDir base = PlatformDependent::p()->extensionsDir(PlatformDependent::User);
     base.cd(id);
-    candidateFiles = base.entryInfoList(QStringList(pattern), QDir::Files | QDir::Readable);
+    candidateFiles = base.entryInfoList(QStringList(pattern),
+					QDir::Files | QDir::Readable);
 
-    // If there were no such files in the user extension repository, check the system repository.
+    // If there were no such files in the user extension repository,
+    // check the system repository.
     if (candidateFiles.isEmpty())
     {
         base = PlatformDependent::p()->extensionsDir(PlatformDependent::System);
         base.cd(id);
-        candidateFiles = base.entryInfoList(QStringList(pattern), QDir::Files | QDir::Readable);
+        candidateFiles = base.entryInfoList(QStringList(pattern),
+					    QDir::Files | QDir::Readable);
     }
 
     if (candidateFiles.isEmpty())
@@ -242,7 +264,8 @@ void Configuration::_setValue(const QString &key, const QVariant &value)
     }
 }
 
-QVariant Configuration::_value(const QString &key, const QVariant &defaultValue) const
+QVariant Configuration::_value(const QString &key,
+			       const QVariant &defaultValue) const
 {
     return this->_settings.data()->value(key, defaultValue);
 }

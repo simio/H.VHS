@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -32,9 +32,21 @@ public:
         Fatal
     };
 
-    HvhsException(QString humaneMessage, Severity severity)     { this->_humaneMessage = humaneMessage; this->_severity = severity; }
-    QString humaneMessage()                                     { return this->_humaneMessage; }
-    Severity severity()                                         { return this->_severity; }
+    HvhsException(QString humaneMessage, Severity severity)
+    {
+        this->_humaneMessage = humaneMessage; this->_severity = severity;
+    }
+
+    QString humaneMessage()
+    {
+        return this->_humaneMessage;
+    }
+
+    Severity severity()
+    {
+        return this->_severity;
+    }
+
     void report()
     {
         switch (this->_severity)
@@ -46,7 +58,8 @@ public:
             qCritical() << "Unrecoverable exception:" << this->_humaneMessage;
             break;
         case Fatal:
-            qFatal(QString("Fatal exception:" + this->_humaneMessage).toAscii().constData());
+            qFatal(QString("Fatal exception:"
+                           + this->_humaneMessage).toAscii().constData());
             break;
         default:
             qCritical() << "Unclassified exception" << this->_humaneMessage;

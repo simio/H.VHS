@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,23 +17,23 @@
 #ifndef EXTENSIONMANAGER_EXTENSIONMANAGER_H
 #define EXTENSIONMANAGER_EXTENSIONMANAGER_H
 
-/*  All extensions are accessed through the ExtensionManager.
- *  This singleton's work is centered around two lists.
+/* All extensions are accessed through the ExtensionManager.  This
+ * singleton's work is centered around two lists.
  *
- *   - The definition list, kept in a DefinitionTable, which is a
- *     list of all definitions of Formats, Transports and Extensions.
+ *  - The definition list, kept in a DefinitionTable, which is a list
+ *    of all definitions of Formats, Transports and Extensions.
  *
- *   - The persistent list of extensions, i.e. a list containing
- *     one instance of each extension implementing the
- *     ExtensionInterfaceHooks interface. These are kept until
- *     the singleton is destructed. They are only ever accessed
- *     through the ExtensionInterfaceHooks interface.
+ *  - The persistent list of extensions, i.e. a list containing one
+ *    instance of each extension implementing the
+ *    ExtensionInterfaceHooks interface. These are kept until the
+ *    singleton is destructed. They are only ever accessed through the
+ *    ExtensionInterfaceHooks interface.
  *
- *  The extension instances contained in the persistent list are
- *  the instances that will receive plugin hook calls.
+ * The extension instances contained in the persistent list are the
+ * instances that will receive plugin hook calls.
  *
- *  For any uses other than calling plugin hooks, the extension
- *  manager creates new instances of suitable extensions on request.
+ * For any uses other than calling plugin hooks, the extension manager
+ * creates new instances of suitable extensions on request.
  */
 
 #include <QObject>
@@ -66,14 +66,21 @@ class ExtensionManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ExtensionManager(QObject *parent = 0);
-    static ExtensionManager *p();
+    explicit
+    ExtensionManager(QObject *parent = 0);
 
-    QSharedPointer<Extension> debugLoadExtension(QString id);
+    static
+    ExtensionManager *p();
 
-    // Run "hook" on all plugins with supplied hookData and return the number of non-NOOP responses.
-    int callHook(const qint64 hook, QVariant &hookData);
-    int callHook(const qint64 hook);
+    QSharedPointer<Extension>
+    debugLoadExtension(QString id);
+
+    // Run "hook" on all plugins with supplied hookData and return the
+    // number of non-NOOP responses.
+    int
+    callHook(const qint64 hook, QVariant &hookData);
+    int
+    callHook(const qint64 hook);
 
 signals:
 
@@ -82,7 +89,9 @@ public slots:
 private:
     static ExtensionManager *s_instance;
 
-    void _initialise();
+    void
+    _initialise();
+
     bool _initialised;
 
     DefinitionTable _definitions;
@@ -93,9 +102,11 @@ private:
     // as the ExtensionManager is around.
     QMultiMap<qint64,QSharedPointer<Extension> > _persistentExtensions;
 
-    QWeakPointer<JobManager> _jobManager;       // QWeakPointer: Will get parent
+    // QWeakPointer: Gets parent at allocation in initialise()
+    QWeakPointer<JobManager> _jobManager;
 
-    QSharedPointer<Extension> _loadExtension(QSharedPointer<ExtensionDefinition> definition);
+    QSharedPointer<Extension>
+    _loadExtension(QSharedPointer<ExtensionDefinition> definition);
 };
 
 #endif // EXTENSIONMANAGER_EXTENSIONMANAGER_H

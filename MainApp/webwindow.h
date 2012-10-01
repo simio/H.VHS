@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -34,7 +34,7 @@
 #include "extensionmanager/extensionmanager.h"
 
 namespace Ui {
-class WebWindow;
+    class WebWindow;
 }
 
 class WebWindow : public QMainWindow
@@ -73,7 +73,7 @@ private slots:
 private:
     Ui::WebWindow *ui;
 
-    void _setupGui();                                           // Located in webwindowguisetup.cpp
+    void _setupGui();                        // Located in webwindowguisetup.cpp
     void _setupWebView();
     void _updateBrowserIcon(const int &index, const bool &force = false);
 

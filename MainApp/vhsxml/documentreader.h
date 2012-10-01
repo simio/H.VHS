@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef VHSXML_READER_H
-#define VHSXML_READER_H
+#ifndef VHSXML_DOCUMENTREADER_H
+#define VHSXML_DOCUMENTREADER_H
 
 #include <QObject>
 #include <QSharedPointer>
@@ -35,41 +35,57 @@
 #include "vhsxml/cassettereader.h"
 
 namespace VhsXml {
+    class DocumentReader : public QObject
+    {
+        Q_OBJECT
+    public:
+        // This DocumentReader class is capable of parsing XML conforming to
+        // the following schema versions.
+        static VersionNumber version()
+        {
+            return VersionNumber(1, 1);
+        }
+        static VersionNumber oldestCompatibleVersion()
+        {
+            return VersionNumber(1, 1);
+        }
 
-class DocumentReader : public QObject
-{
-    Q_OBJECT
-public:
-    // This DocumentReader class is capable of parsing XML conforming to
-    // the following schema versions.
-    static VersionNumber version()                    { return VersionNumber(1, 1); }
-    static VersionNumber oldestCompatibleVersion()    { return VersionNumber(1, 1); }
+        DocumentReader(QFileInfo file, QObject *parent);
 
-    DocumentReader(QFileInfo file, QObject *parent);
-    DocumentReader(QSharedPointer<QXmlInputSource> source, QObject *parent) : QObject(parent)   { this->_initialise(source); }
+        DocumentReader(QSharedPointer<QXmlInputSource> source,
+                       QObject *parent) :
+            QObject(parent)
+        {
+            this->_initialise(source);
+        }
 
-    QList<QSharedPointer<Definition> > definitions(Definition::DefinitionType defType) const;
+        QList<QSharedPointer<Definition> >
+        definitions(Definition::DefinitionType defType) const;
 
-    bool isEmpty() const                                                    { return this->_xml.isNull(); }
+        bool isEmpty() const
+        {
+            return this->_xml.isNull();
+        }
 
-    QList<Definition::DefinitionType> contentList() const;
-    bool contains(Definition::DefinitionType contents) const                { return this->contentList().contains(contents); }
+        QList<Definition::DefinitionType> contentList() const;
+        bool contains(Definition::DefinitionType contents) const
+        {
+            return this->contentList().contains(contents);
+        }
 
-signals:
+    signals:
 
-public slots:
+    public slots:
 
-private:
-    static bool _isCompatibleWith(QString foulString);
+    private:
+        static bool _isCompatibleWith(QString foulString);
 
-    bool _initialise(QWeakPointer<QFile> file);
-    bool _initialise(QWeakPointer<QIODevice> device);
-    bool _initialise(QSharedPointer<QXmlInputSource> source);
+        bool _initialise(QWeakPointer<QFile> file);
+        bool _initialise(QWeakPointer<QIODevice> device);
+        bool _initialise(QSharedPointer<QXmlInputSource> source);
 
-    QDomDocument _xml;
-
-};
-
+        QDomDocument _xml;
+    };
 } // namespace VhsXml
 
-#endif // VHSXML_READER_H
+#endif // VHSXML_DOCUMENTREADER_H

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,10 +16,14 @@
 
 #include "qtpluginextension.h"
 
-QtPluginExtension::QtPluginExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent) :
+QtPluginExtension::QtPluginExtension(
+    QSharedPointer<ExtensionDefinition> definition,
+    QObject *parent) :
     Extension(parent)
 {
-    QFileInfo pluginFile = Configuration::p()->extensionRootFile(definition.data()->id(), definition.data()->apiVersion());
+    QFileInfo pluginFile =
+        Configuration::p()->extensionRootFile(definition.data()->id(),
+                                              definition.data()->apiVersion());
     if (pluginFile.isReadable())
     {
         this->_loader.setFileName(pluginFile.canonicalFilePath());
@@ -39,70 +43,89 @@ QtPluginExtension::~QtPluginExtension()
     this->_loader.unload();
 }
 
-bool QtPluginExtension::isValid()
+bool
+QtPluginExtension::isValid()
 {
-    return (Extension::isValid() && this->_loader.isLoaded() && ! this->_qtplugin.isNull());
+    return (Extension::isValid() &&
+            this->_loader.isLoaded() &&
+            ! this->_qtplugin.isNull());
 }
 
-qint64 QtPluginExtension::suggestedHookPriority() const
+qint64
+QtPluginExtension::suggestedHookPriority() const
 {
     if (! this->implementsInterface( HVHS_INTERFACE_HOOKS ))
         return EXT_INTERFACE_NOT_SUPPORTED;
-    ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(this->_qtplugin.data());
+    ExtensionInterfaceHooks *exIf =
+        qobject_cast<ExtensionInterfaceHooks*>(this->_qtplugin.data());
     return exIf->suggestedHookPriority();
 }
 
-qint64 QtPluginExtension::pluginHook(const qint64 hook, QVariant &hookData)
+qint64
+QtPluginExtension::pluginHook(const qint64 hook, QVariant &hookData)
 {
     if (! this->implementsInterface( HVHS_INTERFACE_HOOKS ))
         return EXT_INTERFACE_NOT_SUPPORTED;
-    ExtensionInterfaceHooks *exIf = qobject_cast<ExtensionInterfaceHooks*>(this->_qtplugin.data());
+    ExtensionInterfaceHooks *exIf =
+        qobject_cast<ExtensionInterfaceHooks*>(this->_qtplugin.data());
     return exIf->pluginHook(hook, hookData);
 }
 
 // For convenience
-qint64 QtPluginExtension::pluginHook(const qint64 hook)
+qint64
+QtPluginExtension::pluginHook(const qint64 hook)
 {
     QVariant discardedReturnValue;
     return this->pluginHook(hook, discardedReturnValue);
 }
 
-const QSharedPointer<QIODevice> QtPluginExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+const QSharedPointer<QIODevice>
+QtPluginExtension::openStream(QIODevice::OpenModeFlag openMode,
+                              const QString hurl)
 {
     if (! this->implementsInterface( HVHS_INTERFACE_STREAMS ))
         return QSharedPointer<QIODevice>();
-    ExtensionInterfaceStreams *exIf = qobject_cast<ExtensionInterfaceStreams*>(this->_qtplugin.data());
+    ExtensionInterfaceStreams *exIf =
+        qobject_cast<ExtensionInterfaceStreams*>(this->_qtplugin.data());
     return QSharedPointer<QIODevice>(exIf->openStream(openMode, hurl));
 }
 
-const bool QtPluginExtension::setupFilter(QHash<QString, QVariant> setupData)
+const bool
+QtPluginExtension::setupFilter(QHash<QString, QVariant> setupData)
 {
     if (! this->implementsInterface( HVHS_INTERFACE_FILTERS ))
         return false;
-    ExtensionInterfaceFilters *exIf = qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
+    ExtensionInterfaceFilters *exIf =
+        qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
     return exIf->setupFilter(setupData);
 }
 
-const bool QtPluginExtension::filterIsReady() const
+const bool
+QtPluginExtension::filterIsReady() const
 {
     if (! this->implementsInterface( HVHS_INTERFACE_FILTERS ))
         return false;
-    ExtensionInterfaceFilters *exIf = qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
+    ExtensionInterfaceFilters *exIf =
+        qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
     return exIf->filterIsReady();
 }
 
-const QSharedPointer<QIODevice> QtPluginExtension::consumer()
+const QSharedPointer<QIODevice>
+QtPluginExtension::consumer()
 {
     if (! this->implementsInterface( HVHS_INTERFACE_FILTERS ))
         return QSharedPointer<QIODevice>();
-    ExtensionInterfaceFilters *exIf = qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
+    ExtensionInterfaceFilters *exIf =
+        qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
     return QSharedPointer<QIODevice>(exIf->consumer());
 }
 
-const QSharedPointer<QIODevice> QtPluginExtension::producer()
+const QSharedPointer<QIODevice>
+QtPluginExtension::producer()
 {
     if (! this->implementsInterface( HVHS_INTERFACE_FILTERS ))
         return QSharedPointer<QIODevice>();
-    ExtensionInterfaceFilters *exIf = qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
+    ExtensionInterfaceFilters *exIf =
+        qobject_cast<ExtensionInterfaceFilters*>(this->_qtplugin.data());
     return QSharedPointer<QIODevice>(exIf->producer());
 }

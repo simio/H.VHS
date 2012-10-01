@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,9 +25,10 @@
 
 class DefinitionData;
 
-/*  Since this class inherits Definition, which is implicitly shared through using a d pointer to QSharedData,
- *  none of the following may be defined inline: ctor, dtor, copy constructor, assignment operator.
- *  Also, ctor and dtor must be defined.
+/*  Since this class inherits Definition, which is implicitly shared
+ *  through using a d pointer to QSharedData, none of the following
+ *  may be defined inline: ctor, dtor, copy constructor, assignment
+ *  operator.  Also, ctor and dtor must be defined.
  */
 
 class Definition : public QObject
@@ -36,12 +37,18 @@ class Definition : public QObject
 public:
     // Adding a new definition type here includes updating prettyType()
     enum DefinitionType {
-        NoDefinitionType,                   // Use to forcibly make definition invalid
-        BaseDefinitionType,                 // For instances of Definition (non-polymorphic)
-        TransportDefinitionType,            // For instances of TransportDefinition
-        FormatDefinitionType,               // For instances of FormatDefinition
-        ExtensionDefinitionType,            // For instances of ExtensionDefinition
-        CassetteDefinitionType              // For instances of CassetteDefinition
+        // Use to forcibly make definition invalid
+        NoDefinitionType,
+        // For instances of Definition (non-polymorphic)
+        BaseDefinitionType,
+        // For instances of TransportDefinition
+        TransportDefinitionType,
+        // For instances of FormatDefinition
+        FormatDefinitionType,
+        // For instances of ExtensionDefinition
+        ExtensionDefinitionType,
+        // For instances of CassetteDefinition
+        CassetteDefinitionType
     };
 
     Definition(QString id,
@@ -54,24 +61,50 @@ public:
     ~Definition();
 
     Definition(const Definition &original);
-    virtual Definition &operator =(const Definition &original);
 
-    // ==, !=, <= and >= compares both id and release dates, while < and > compare only dates.
-    virtual bool operator==(const Definition &original) const;
-    virtual bool operator!=(const Definition &original) const;
-    virtual bool operator<(const Definition &original) const;
-    virtual bool operator<=(const Definition &original) const;
-    virtual bool operator>(const Definition &original) const;
-    virtual bool operator>=(const Definition &original) const;
+    virtual Definition &operator
+    =(const Definition &original);
 
-    virtual bool isValid() const;
+    // ==, !=, <= and >= compares both id and release dates, while <
+    // and > compare only dates.
+    virtual bool operator
+    ==(const Definition &original) const;
 
-    QString id() const;
-    QString name() const;
-    QString description() const;
-    QDateTime releaseDate() const;
-    Definition::DefinitionType type() const;
-    QString prettyType() const;
+    virtual bool operator
+    !=(const Definition &original) const;
+
+    virtual bool operator
+    <(const Definition &original) const;
+
+    virtual bool operator
+    <=(const Definition &original) const;
+
+    virtual bool operator
+    >(const Definition &original) const;
+
+    virtual bool operator
+    >=(const Definition &original) const;
+
+    virtual bool
+    isValid() const;
+
+    QString
+    id() const;
+
+    QString
+    name() const;
+
+    QString
+    description() const;
+
+    QDateTime
+    releaseDate() const;
+
+    Definition::DefinitionType
+    type() const;
+
+    QString
+    prettyType() const;
 
 signals:
 

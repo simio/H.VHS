@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,34 +25,37 @@
 
 #include "extensionmanager/jobmanager/job.h"
 
-/*  JobThread objects contain a job and a thread.
- *  It is responsible for:
+/* JobThread objects contain a job and a thread.
+ * It is responsible for:
  *
- *   - Moving the job into the thread
- *   - Managing the thread
- *   - Keeping a job/thread state var (for reporting to JobManager)
- *   - Interfacing between the JobManager and the job.
+ *  - Moving the job into the thread
+ *  - Managing the thread
+ *  - Keeping a job/thread state var (for reporting to JobManager)
+ *  - Interfacing between the JobManager and the job.
  */
 
 class JobThread : public QObject
 {
     Q_OBJECT
 public:
-    explicit JobThread(QObject *parent = 0);
+    explicit
+    JobThread(QObject *parent = 0);
     ~JobThread();
 
-    void ping();
+    void
+    ping();
 
 private:
     QScopedPointer<QThread> _thread;
     QScopedPointer<Job> _job;
 
 signals:
-    void pingJob();
+    void
+    pingJob();
 
 public slots:
-    void receivePingFromJob(const QString &message);
-
+    void
+    receivePingFromJob(const QString &message);
 };
 
 #endif // EXTENSIONMANAGER_JOBMANAGER_JOBTHREAD_H

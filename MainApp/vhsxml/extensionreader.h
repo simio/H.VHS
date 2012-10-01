@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -31,18 +31,18 @@
 #include "extensionmanager/extension/qtpluginextension.h"
 
 namespace VhsXml {
+    class ExtensionReader
+    {
+    public:
+        static QList<QSharedPointer<ExtensionDefinition> >
+        parse(const QDomDocument &document);
 
-class ExtensionReader
-{
-public:
-    static QList<QSharedPointer<ExtensionDefinition> > parse(const QDomDocument &document);
+    private:
+        ExtensionReader();
 
-private:
-    ExtensionReader();
-
-    static QSharedPointer<ExtensionDefinition> _parseExtension(const QDomElement &extensionNode);
-};
-
+        static QSharedPointer<ExtensionDefinition>
+        _parseExtension(const QDomElement &extensionNode);
+    };
 } // namespace VhsXml
 
 #endif // VHSXML_EXTENSIONREADER_H

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -29,20 +29,25 @@ FormatDefinition::FormatDefinition(QString id,
                name,
                description,
                releaseDate,
-               Definition::FormatDefinitionType,                // Set definition type
+               Definition::FormatDefinitionType,          // Set definition type
                parent)
 {
-    Definition::_d.data()->set(DefinitionData::FormatIsTextual, QVariant(isText));
-    Definition::_d.data()->set(DefinitionData::FormatMimeTypes, QVariant(mimeTypes));
+    Definition::_d.data()->set(DefinitionData::FormatIsTextual,
+                               QVariant(isText));
+    Definition::_d.data()->set(DefinitionData::FormatMimeTypes,
+                               QVariant(mimeTypes));
 
     // Cast to qint64 when storing enums
-    Definition::_d.data()->set(DefinitionData::FormatCompleteness, QVariant((qint64)this->_strToCompleteness(completeness)));
+    Definition::_d.data()->set(
+        DefinitionData::FormatCompleteness,
+        QVariant((qint64)this->_strToCompleteness(completeness)));
 }
 
 FormatDefinition::~FormatDefinition()
 { }
 
-bool FormatDefinition::isValid() const
+bool
+FormatDefinition::isValid() const
 {
     return (Definition::isValid()
             && this->completeness() != Invalid
@@ -50,22 +55,30 @@ bool FormatDefinition::isValid() const
             && this->mimeTypes().count() > 0);
 }
 
-FormatDefinition::Completeness FormatDefinition::completeness() const
+FormatDefinition::Completeness
+FormatDefinition::completeness() const
 {
-    return (FormatDefinition::Completeness)(Definition::_d.constData()->get(DefinitionData::FormatCompleteness).toLongLong());
+    return (FormatDefinition::Completeness)
+        (Definition::_d.constData()->get(
+            DefinitionData::FormatCompleteness).toLongLong());
 }
 
-bool FormatDefinition::isTextual() const
+bool
+FormatDefinition::isTextual() const
 {
-    return Definition::_d.constData()->get(DefinitionData::FormatIsTextual).toBool();
+    return Definition::_d.constData()->get(
+        DefinitionData::FormatIsTextual).toBool();
 }
 
-QStringList FormatDefinition::mimeTypes() const
+QStringList
+FormatDefinition::mimeTypes() const
 {
-    return Definition::_d.constData()->get(DefinitionData::FormatMimeTypes).toStringList();
+    return Definition::_d.constData()->get(
+        DefinitionData::FormatMimeTypes).toStringList();
 }
 
-QString FormatDefinition::mimeType(int index) const
+QString
+FormatDefinition::mimeType(int index) const
 {
     // Negative indexes do not exist. This will throw later on.
     if (index < 0)
@@ -79,7 +92,8 @@ QString FormatDefinition::mimeType(int index) const
     return this->mimeTypes().at(index);
 }
 
-FormatDefinition::Completeness FormatDefinition::_strToCompleteness(QString str)
+FormatDefinition::Completeness
+FormatDefinition::_strToCompleteness(QString str)
 {
     Completeness c = Invalid;
     QString normalised = str.toLower().trimmed();
@@ -93,7 +107,8 @@ FormatDefinition::Completeness FormatDefinition::_strToCompleteness(QString str)
     else if (normalised == "complete")
         c = Complete;
     else
-        qWarning() << "Could not set FormatDefinition completeness to" << normalised;
+        qWarning() << "Could not set FormatDefinition completeness to"
+                   << normalised;
 
     return c;
 }

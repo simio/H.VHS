@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -34,29 +34,53 @@
 class QtPluginExtension : public Extension
 {
 public:
-    // This QtPluginExtension class is compatible with api="qtplugin" extensions
-    // conforming to the following api versions.
-    static VersionNumber currentApiVersion()             { return VersionNumber(1, 0); }
-    static VersionNumber oldestCompatibleApiVersion()    { return VersionNumber(1, 0); }
+    // This QtPluginExtension class is compatible with api="qtplugin"
+    // extensions conforming to the following api versions.
+    static VersionNumber
+    currentApiVersion()
+    {
+        return VersionNumber(1, 0);
+    }
 
-    QtPluginExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent = 0);
+    static VersionNumber
+    oldestCompatibleApiVersion()
+    {
+        return VersionNumber(1, 0);
+    }
+
+    QtPluginExtension(QSharedPointer<ExtensionDefinition> definition,
+                      QObject *parent = 0);
     ~QtPluginExtension();
 
-    bool isValid();
+    bool
+    isValid();
 
     // HVHS_INTERFACE_HOOKS
-    qint64 suggestedHookPriority() const;
-    qint64 pluginHook(const qint64 hook, QVariant &hookData);
-    qint64 pluginHook(const qint64 hook);
+    qint64
+    suggestedHookPriority() const;
+
+    qint64
+    pluginHook(const qint64 hook, QVariant &hookData);
+
+    qint64
+    pluginHook(const qint64 hook);
 
     // HVHS_INTERFACE_STREAMS
-    const QSharedPointer<QIODevice> openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
+    const QSharedPointer<QIODevice>
+    openStream(QIODevice::OpenModeFlag openMode, const QString hurl);
 
     // HVHS_INTERFACE_FILTERS
-    virtual const bool setupFilter(QHash<QString,QVariant> setupData);
-    virtual const bool filterIsReady() const;
-    virtual const QSharedPointer<QIODevice> consumer();
-    virtual const QSharedPointer<QIODevice> producer();
+    virtual const bool
+    setupFilter(QHash<QString,QVariant> setupData);
+
+    virtual const bool
+    filterIsReady() const;
+
+    virtual const QSharedPointer<QIODevice>
+    consumer();
+
+    virtual const QSharedPointer<QIODevice>
+    producer();
 
 signals:
 

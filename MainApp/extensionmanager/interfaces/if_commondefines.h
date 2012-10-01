@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,16 +14,12 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/*  Why the use of #define instead of, for example, enum?
- *  Because these values must be consistently defined in
- *  at least one other programming language. The least
- *  error prone way of doing this is by generating definitions
- *  for other languages automatically. The "#define NAME VALUE"
- *  is simple to parse and good enough.
+/* These values are #defined instead of put into enums. This makes parsing
+ * the statements in other languages (like QScript and Scheme) easier.
  *
- *  Cross-platform cleverness is not allowed here. Every value
- *  must be defined on all or no platforms, at build time, due
- *  to this file being parsed by the build process.
+ * Cross-platform cleverness is not allowed in this file. Every value must
+ * must be defined at build time, on all platforms. Parsing it for/from other
+ * languages might otherwise break.
  */
 
 #ifndef EXTENSIONMANAGER_INTERFACES_IF_COMMONDEFINES_H
@@ -60,6 +56,5 @@
 #define EXT_HOOK_WEBVIEW_LOADSTARTED            400
 #define EXT_HOOK_WEBVIEW_LOADREQUESTED          410
 #define EXT_HOOK_WEBVIEW_LOADFINISHED           420
-
 
 #endif // EXTENSIONMANAGER_INTERFACES_IF_COMMONDEFINES_H

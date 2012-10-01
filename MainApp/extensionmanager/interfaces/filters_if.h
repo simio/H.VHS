@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXTENSIONMANAGER_INTERFACES_FILTERS_H
-#define EXTENSIONMANAGER_INTERFACES_FILTERS_H
+#ifndef EXTENSIONMANAGER_INTERFACES_FILTERS_IF_H
+#define EXTENSIONMANAGER_INTERFACES_FILTERS_IF_H
 
 #include <QIODevice>
 #include <QHash>
@@ -40,13 +40,20 @@ class ExtensionInterfaceFilters
 public:
     virtual ~ExtensionInterfaceFilters() {}
 
-    virtual const bool setupFilter(QHash<QString,QVariant> setupData) = 0;
-    virtual const bool filterIsReady() const = 0;
-    virtual const QSharedPointer<QIODevice> consumer() = 0;
-    virtual const QSharedPointer<QIODevice> producer() = 0;
+    virtual const bool
+    setupFilter(QHash<QString,QVariant> setupData) = 0;
+
+    virtual const bool
+    filterIsReady() const = 0;
+
+    virtual const QSharedPointer<QIODevice>
+    consumer() = 0;
+
+    virtual const QSharedPointer<QIODevice>
+    producer() = 0;
 };
 
 Q_DECLARE_INTERFACE(ExtensionInterfaceFilters,
                     HVHS_INTERFACE_FILTERS)
 
-#endif // EXTENSIONMANAGER_INTERFACES_FILTERS_H
+#endif // EXTENSIONMANAGER_INTERFACES_FILTERS_IF_H

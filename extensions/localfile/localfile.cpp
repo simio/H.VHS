@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,26 +16,29 @@
 
 #include "localfile.h"
 
-LocalFileExtension::operator QObject *()
+LocalFileExtension::operator QObject
+*()
 {
     return qobject_cast<QObject*>(this);
 }
 
 LocalFileExtension::LocalFileExtension(QObject *parent) :
     QObject(parent)
-{
-}
+{ }
 
 LocalFileExtension::~LocalFileExtension()
 {
     qDebug() << "LocalFileExtension() destructing.";
 }
 
-const QSharedPointer<QIODevice> LocalFileExtension::openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
+const QSharedPointer<QIODevice>
+LocalFileExtension::openStream(QIODevice::OpenModeFlag openMode,
+                               const QString hurl)
 {
     if (this->_file.isNull())
     {
-        qWarning() << "LocalFileExtension::openStream(): Bad. I was asked to open a stream when I already had one.";
+        qWarning() << "LocalFileExtension::openStream(): Bad."
+                   << " I was asked to open a stream when I already had one.";
         return QSharedPointer<QIODevice>();
     }
 
@@ -50,17 +53,19 @@ const QSharedPointer<QIODevice> LocalFileExtension::openStream(QIODevice::OpenMo
     return QSharedPointer<QIODevice>();
 }
 
-// We support fileuri and localfile transports, which means
-// the hurl might be either a local filepath or a local filepath
-// prepended by "file://".
-const QSharedPointer<QFile> LocalFileExtension::_resolveHurl(QString hurl)
+// We support fileuri and localfile transports, which means the hurl
+// might be either a local filepath or a local filepath prepended by
+// "file://".
+const QSharedPointer<QFile>
+LocalFileExtension::_resolveHurl(QString hurl)
 {
     QString prefix = "file://";
     if (hurl.startsWith(prefix))
         hurl.remove(0, prefix.length());
 
     qDebug() << "Trying to QFile(" << hurl << ")";
-    return QSharedPointer<QFile>(new QFile(hurl, this));                        // alloc: QSharedPointer
+    // alloc: QSharedPointer
+    return QSharedPointer<QFile>(new QFile(hurl, this));
 }
 
 Q_EXPORT_PLUGIN2(localfileextension, LocalFileExtension)

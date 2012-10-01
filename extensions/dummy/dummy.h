@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -31,19 +31,24 @@
 #include "hooks_if.h"
 
 class DummyExtension :
-        public QObject,
-        public ExtensionInterfaceCommon,
-        public ExtensionInterfaceHooks
+    public QObject,
+    public ExtensionInterfaceCommon,
+    public ExtensionInterfaceHooks
 {
     Q_OBJECT
     Q_INTERFACES(ExtensionInterfaceCommon ExtensionInterfaceHooks)
 
-public:
-    operator QObject*();
-    explicit DummyExtension(QObject *parent = 0);
+    public:
+    operator QObject
+    *();
 
-    qint64 suggestedHookPriority() const;
-    qint64 pluginHook(const qint64 hook, QVariant &hookData);
+    explicit
+    DummyExtension(QObject *parent = 0);
+
+    qint64
+    suggestedHookPriority() const;
+    qint64
+    pluginHook(const qint64 hook, QVariant &hookData);
 
 private:
 

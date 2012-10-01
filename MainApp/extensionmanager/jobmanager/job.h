@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -32,7 +32,8 @@ class Job : public QObject
 {
     Q_OBJECT
 public:
-    explicit Job(QObject *parent = 0);
+    explicit
+    Job(QObject *parent = 0);
 
 private:
     QScopedPointer<ExtensionInterfaceStreams> _source;
@@ -40,10 +41,12 @@ private:
     QLinkedList<QSharedPointer<ExtensionInterfaceStreams> > _filters;
 
 signals:
-    void ping(const QString &message);
+    void
+    ping(const QString &message);
 
 public slots:
-    void receivePing();
+    void
+    receivePing();
 
 };
 

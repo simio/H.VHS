@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -21,7 +21,7 @@
 
 ConsoleWindow::ConsoleWindow(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ConsoleWindow)                                   // alloc: Deleted in destructor
+    ui(new Ui::ConsoleWindow)                    // alloc: Deleted in destructor
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);

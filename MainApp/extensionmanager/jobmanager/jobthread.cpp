@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -22,8 +22,10 @@ JobThread::JobThread(QObject *parent) :
     //XXX: Create dummy job
     this->_job.reset(new Job);
     this->_thread.reset(new QThread);
-    connect(this->_job.data(), SIGNAL(ping(QString)), this, SLOT(receivePingFromJob(QString)));
-    connect(this, SIGNAL(pingJob()), this->_job.data(), SLOT(receivePing()));
+    connect(this->_job.data(), SIGNAL(ping(QString)),
+            this, SLOT(receivePingFromJob(QString)));
+    connect(this, SIGNAL(pingJob()),
+            this->_job.data(), SLOT(receivePing()));
     this->_job.data()->moveToThread(this->_thread.data());
     this->_thread.data()->start();
 }
@@ -33,13 +35,15 @@ JobThread::~JobThread()
     //XXX: Kill thread properly here
 }
 
-void JobThread::ping()
+void
+JobThread::ping()
 {
     qDebug() << "Ping:" << QThread::currentThread();
     emit pingJob();
 }
 
-void JobThread::receivePingFromJob(const QString &message)
+void
+JobThread::receivePingFromJob(const QString &message)
 {
     qDebug() << QThread::currentThread() << "Pang:" << message;
 }

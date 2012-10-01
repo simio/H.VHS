@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -30,24 +30,40 @@
 class JavaScriptExtension : public Extension
 {
 public:
-    // This JavaScriptExtension class is compatible with api="javascript" extensions
-    // conforming to the following api versions.
-    static VersionNumber currentApiVersion()             { return VersionNumber(1, 0); }
-    static VersionNumber oldestCompatibleApiVersion()    { return VersionNumber(1, 0); }
+    // This JavaScriptExtension class is compatible with
+    // api="javascript" extensions conforming to the following api
+    // versions.
+    static VersionNumber
+    currentApiVersion()
+    {
+        return VersionNumber(1, 0);
+    }
+    static VersionNumber
+    oldestCompatibleApiVersion()
+    {
+        return VersionNumber(1, 0);
+    }
 
-    explicit JavaScriptExtension(QSharedPointer<ExtensionDefinition> definition, QObject *parent = 0);
+    explicit JavaScriptExtension(QSharedPointer<ExtensionDefinition> definition,
+                                 QObject *parent = 0);
 
     ~JavaScriptExtension();
 
     bool isValid();
 
     // HVHS_INTERFACE_HOOKS
-    qint64 suggestedHookPriority() const;
-    qint64 pluginHook(const qint64 hook, QVariant &hookData);
-    qint64 pluginHook(const qint64 hook);
+    qint64
+    suggestedHookPriority() const;
 
-    /*  List of unimplemented interfaces follows. The member functionss of these interfaces
-     *  are not declared, as the dummy implementation in the base class should be used.
+    qint64
+    pluginHook(const qint64 hook, QVariant &hookData);
+
+    qint64
+    pluginHook(const qint64 hook);
+
+    /* List of unimplemented interfaces follows. The member functions
+     * of these interfaces are not declared, as the dummy
+     * implementation in the base class should be used.
      *
      *  HVHS_INTERFACE_STREAMS
      *  HVHS_INTERFACE_FILTERS
@@ -57,10 +73,12 @@ private:
     QScopedPointer<QScriptEngine> _engine;
     QSharedPointer<ExtensionDefinition> _definition;
 
-    bool _initialise();
+    bool
+    _initialise();
     bool _initialised;
 
-    bool _hasError(QScriptValue evalReturnValue = QScriptValue()) const;
+    bool
+    _hasError(QScriptValue evalReturnValue = QScriptValue()) const;
 
 signals:
 

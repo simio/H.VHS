@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -32,9 +32,10 @@
 #include "transportdefinition.h"
 #include "formatdefinition.h"
 
-/*  Since this class inherits Definition, which is implicitly shared through using a d pointer to QSharedData,
- *  none of the following may be defined inline: ctor, dtor, copy constructor, assignment operator.
- *  Also, ctor and dtor must be defined.
+/* Since this class inherits Definition, which is implicitly shared
+ * through using a d pointer to QSharedData, none of the following may
+ * be defined inline: ctor, dtor, copy constructor, assignment
+ * operator.  Also, ctor and dtor must be defined.
  */
 
 class ExtensionDefinition : public Definition
@@ -77,32 +78,62 @@ public:
 
     ~ExtensionDefinition();
 
-    bool isEnabled() const;
+    bool
+    isEnabled() const;
 
-    QStringList interfaces() const;
-    bool implementsInterface(QString interface) const;
+    QStringList
+    interfaces() const;
 
-    ApiInterface api() const;
-    VersionNumber apiVersion() const;
+    bool
+    implementsInterface(QString interface) const;
 
-    QString licenseName() const;
-    QString source() const;
+    ApiInterface
+    api() const;
 
-    QList<Person> authors() const;
-    QList<Person> maintainers() const;
-    QList<Person> audits() const;
+    VersionNumber
+    apiVersion() const;
 
-    bool canWriteFormat(QString uid) const;
-    bool canReadFormat(QString uid) const;
-    bool canWriteTransport(QString uid) const;
-    bool canReadTransport(QString uid) const;
+    QString
+    licenseName() const;
 
-    QList<QString> inputTransports() const;
-    QList<QString> inputFormats() const;
-    QList<QString> outputTransports() const;
-    QList<QString> outputFormats() const;
+    QString
+    source() const;
 
-    bool isValid() const;
+    QList<Person>
+    authors() const;
+
+    QList<Person>
+    maintainers() const;
+
+    QList<Person>
+    audits() const;
+
+    bool
+    canWriteFormat(QString uid) const;
+
+    bool
+    canReadFormat(QString uid) const;
+
+    bool
+    canWriteTransport(QString uid) const;
+
+    bool
+    canReadTransport(QString uid) const;
+
+    QList<QString>
+    inputTransports() const;
+
+    QList<QString>
+    inputFormats() const;
+
+    QList<QString>
+    outputTransports() const;
+
+    QList<QString>
+    outputFormats() const;
+
+    bool
+    isValid() const;
 
 signals:
 

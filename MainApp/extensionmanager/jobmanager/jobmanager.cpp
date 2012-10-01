@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -27,9 +27,11 @@ JobManager::JobManager(QObject *parent) :
 }
 
 JobManager::~JobManager()
-{ }
+{
+}
 
-void JobManager::pingRepeat()
+void
+JobManager::pingRepeat()
 {
     QTimer::singleShot(10000, this, SLOT(pingRepeat()));
     foreach(QSharedPointer<JobThread> jt, this->_jobQueue)
@@ -37,7 +39,8 @@ void JobManager::pingRepeat()
 }
 
 // Just a placeholder for now
-int JobManager::callHook(const qint64 hook, QVariant &hookData)
+int
+JobManager::callHook(const qint64 hook, QVariant &hookData)
 {
     return 0;
 }

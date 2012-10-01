@@ -1,11 +1,15 @@
 Huggpunkt VHS is currently undergoing a complete rewrite. The rewritten
-code, which will become version 0.4, is maintained in this repository.
+code, which will be released as version 0.4.0 once the basic
+functionality is completed, is maintained in this repository.
 
 The latest release is 0.3.5. It is only available in Swedish for the
 Windows platform. You can download it via the project bulletin board:
 
     http://planka.huggpunkt.org/h-vhs
 
-The 0.3 branch is no longer being developed, though minor bugfixes do
-happen. More information about the upcoming 0.4 version will follow
-later this year.
+The next release is 0.3.7, which will be based on the new, though
+uncompleted code.
+
+For build instructions, please refer to the following url:
+
+    https://github.com/simio/H.VHS/wiki/Build-environment

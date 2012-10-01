@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -19,10 +19,14 @@
 WebBrowserLineEdit::WebBrowserLineEdit(QWidget *parent) :
     QLineEdit(parent)
 {
-    connect(this, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
+    connect(this,
+            SIGNAL(textChanged(QString)),
+            this,
+            SLOT(onTextChanged(QString)));
 }
 
-void WebBrowserLineEdit::focusInEvent(QFocusEvent *e)
+void
+WebBrowserLineEdit::focusInEvent(QFocusEvent *e)
 {
     QLineEdit::focusInEvent(e);
 
@@ -30,7 +34,8 @@ void WebBrowserLineEdit::focusInEvent(QFocusEvent *e)
         this->selectAll();
 }
 
-void WebBrowserLineEdit::focusOutEvent(QFocusEvent *e)
+void
+WebBrowserLineEdit::focusOutEvent(QFocusEvent *e)
 {
     QLineEdit::focusOutEvent(e);
 
@@ -40,12 +45,14 @@ void WebBrowserLineEdit::focusOutEvent(QFocusEvent *e)
     this->setCursorPosition(0);
 }
 
-void WebBrowserLineEdit::mouseDoubleClickEvent(QMouseEvent *e)
+void
+WebBrowserLineEdit::mouseDoubleClickEvent(QMouseEvent *e)
 {
     this->selectAll();
 }
 
-void WebBrowserLineEdit::keyPressEvent(QKeyEvent *e)
+void
+WebBrowserLineEdit::keyPressEvent(QKeyEvent *e)
 {
     QLineEdit::keyPressEvent(e);
 
@@ -59,20 +66,25 @@ void WebBrowserLineEdit::keyPressEvent(QKeyEvent *e)
 WebBrowserComboBox::WebBrowserComboBox(QWidget *parent) :
     QComboBox(parent)
 {
-    this->setLineEdit(new WebBrowserLineEdit(this));        // alloc: Has owner
+    this->setLineEdit(new WebBrowserLineEdit(this));         // alloc: Has owner
     this->setInsertPolicy(QComboBox::NoInsert);
-    connect(this->lineEdit(), SIGNAL(completedInput(const QString &)), this, SLOT(whenCompletedInput(const QString &)));
+    connect(this->lineEdit(),
+            SIGNAL(completedInput(const QString &)),
+            this,
+            SLOT(whenCompletedInput(const QString &)));
 }
 
-void WebBrowserComboBox::whenCompletedInput(const QString &text)
+void
+WebBrowserComboBox::whenCompletedInput(const QString &text)
 {
     emit activated(text);
 }
 
-bool WebBrowserComboBox::addUrl(const QIcon &icon, const QUrl &url)
+bool
+WebBrowserComboBox::addUrl(const QIcon &icon, const QUrl &url)
 {
-    // If there are items, and the top item has an identical host, it is updated.
-    // Otherwise, we add a new item at the top.
+    // If there are items, and the top item has an identical host, it
+    // is updated.  Otherwise, we add a new item at the top.
     if (url.host() == this->itemData(0).toUrl().host() && this->count() > 0)
     {
         this->setItemText(0, url.toString());
@@ -88,7 +100,8 @@ bool WebBrowserComboBox::addUrl(const QIcon &icon, const QUrl &url)
     return true;
 }
 
-void WebBrowserLineEdit::onTextChanged(const QString &text)
+void
+WebBrowserLineEdit::onTextChanged(const QString &text)
 {
     if (! this->hasFocus())
         this->setCursorPosition(0);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef WEBBROWSERCOMBOBOX_H
-#define WEBBROWSERCOMBOBOX_H
+#ifndef BROWSER_WEBBROWSERCOMBOBOX_H
+#define BROWSER_WEBBROWSERCOMBOBOX_H
 
 #include <QLineEdit>
 #include <QComboBox>
@@ -32,16 +32,25 @@ public:
     explicit WebBrowserLineEdit(QWidget *parent = 0);
 
 protected:
-    void focusInEvent(QFocusEvent *e);
-    void focusOutEvent(QFocusEvent *e);
-    void keyPressEvent(QKeyEvent *e);
-    void mouseDoubleClickEvent(QMouseEvent *e);
+    void
+    focusInEvent(QFocusEvent *e);
+
+    void
+    focusOutEvent(QFocusEvent *e);
+
+    void
+    keyPressEvent(QKeyEvent *e);
+
+    void
+    mouseDoubleClickEvent(QMouseEvent *e);
 
 signals:
-    void completedInput(const QString &text);
+    void
+    completedInput(const QString &text);
 
 private slots:
-    void onTextChanged(const QString &text);
+    void
+    onTextChanged(const QString &text);
 
 public slots:
 };
@@ -50,17 +59,18 @@ class WebBrowserComboBox : public QComboBox
 {
     Q_OBJECT
 public:
-    explicit WebBrowserComboBox(QWidget *parent = 0);
+    explicit
+    WebBrowserComboBox(QWidget *parent = 0);
 
-    bool addUrl(const QIcon &icon, const QUrl &url);
+    bool
+    addUrl(const QIcon &icon, const QUrl &url);
 
 protected:
 
 signals:
 
 public slots:
-    void whenCompletedInput(const QString &text);
-
+    void
+    whenCompletedInput(const QString &text);
 };
-
-#endif // WEBBROWSERCOMBOBOX_H
+#endif // BROWSER_WEBBROWSERCOMBOBOX_H

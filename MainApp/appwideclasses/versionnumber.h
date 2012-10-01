@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -24,31 +24,96 @@
 class VersionNumber
 {
 public:
-    /*  This class is registered with the QMetaType system.
-     *  Therefore, a default public constructor, public copy constructor and
-     *  public assignment operator are required.
+    /* This class is registered with the QMetaType system.  Therefore,
+     * a default public constructor, public copy constructor and
+     * public assignment operator are required.
      */
-    VersionNumber()                                                 { this->_majorVersion = this->_minorVersion = 0; }
-    VersionNumber(QString version)                                  { *this = VersionNumber::toVersion(version); }
-    VersionNumber(qint64 majorVersion, qint64 minorVersion)         { this->_majorVersion = majorVersion; this->_minorVersion = minorVersion; }
+    VersionNumber()
+    {
+        this->_majorVersion = this->_minorVersion = 0;
+    }
+
+    VersionNumber(QString version)
+    {
+        *this = VersionNumber::toVersion(version);
+    }
+
+    VersionNumber(qint64 majorVersion, qint64 minorVersion)
+    {
+        this->_majorVersion = majorVersion;
+        this->_minorVersion = minorVersion;
+    }
+
     // Using compiler generated public copy constructor
     // Using compiler generated public assignment operator
 
-    virtual bool operator==(const VersionNumber &other) const       { return (this->_majorVersion == other._majorVersion && this->_minorVersion == other._minorVersion); }
-    virtual bool operator!=(const VersionNumber &other) const       { return !(*this == other); }
-    virtual bool operator< (const VersionNumber &other) const       { return (this->_majorVersion < other._majorVersion)
-                                                                        || (this->_majorVersion == other._majorVersion && this->_minorVersion < other._minorVersion); }
-    virtual bool operator<=(const VersionNumber &other) const       { return (*this == other || *this < other); }
-    virtual bool operator> (const VersionNumber &other) const       { return !(*this <= other); }
-    virtual bool operator>=(const VersionNumber &other) const       { return !(*this < other); }
+    virtual bool operator
+    ==(const VersionNumber &other) const
+    {
+        return (this->_majorVersion == other._majorVersion &&
+                this->_minorVersion == other._minorVersion);
+    }
 
-    VersionNumber toVersion(QString toString);
+    virtual bool operator
+    !=(const VersionNumber &other) const
+    {
+        return !(*this == other);
+    }
 
-    QString toString() const                                        { return QString::number(this->_majorVersion) + "." + QString::number(this->_minorVersion); }
-    qint64 majorVersion() const                                     { return this->_majorVersion; }
-    qint64 minorVersion() const                                     { return this->_minorVersion; }
+    virtual bool operator
+    <(const VersionNumber &other) const
+    {
+        return (this->_majorVersion < other._majorVersion) ||
+            (this->_majorVersion == other._majorVersion &&
+             this->_minorVersion < other._minorVersion);
+    }
 
-    bool isCompatible(VersionNumber high, VersionNumber low) const  { return ((*this) >= low && (*this) <= high); }
+    virtual bool operator
+    <=(const VersionNumber &other) const
+    {
+        return (*this == other || *this < other);
+    }
+
+    virtual bool operator
+    >(const VersionNumber &other) const
+    {
+        return !(*this <= other);
+    }
+
+    virtual bool operator
+    >=(const VersionNumber &other) const
+    {
+        return !(*this < other);
+    }
+
+    VersionNumber
+    toVersion(QString toString);
+
+    QString
+    toString() const
+    {
+        return QString::number(this->_majorVersion)
+            + "."
+            + QString::number(this->_minorVersion);
+    }
+
+    qint64
+    majorVersion() const
+    {
+        return this->_majorVersion;
+    }
+
+    qint64
+    minorVersion() const
+    {
+        return this->_minorVersion;
+    }
+
+    bool
+    isCompatible(VersionNumber high, VersionNumber low) const
+    {
+        return ((*this) >= low && (*this) <= high);
+    }
 
 private:
     qint64 _majorVersion;

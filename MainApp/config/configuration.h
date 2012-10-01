@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
+#ifndef CONFIG_CONFIGURATION_H
+#define CONFIG_CONFIGURATION_H
 
 #include <QObject>
 #include <QtGui/QApplication>
@@ -29,8 +29,8 @@
 #include <QMap>
 #include <QStringList>
 
-// May include neither "main.h" nor any files included
-// in "main.h" below this file.
+// May include neither "main.h" nor any files included in "main.h"
+// below this file.
 
 #include "version.h"
 #include "config/platformdependent.h"
@@ -43,11 +43,16 @@ class Configuration : public QObject
 {
     Q_OBJECT
 public:
-    explicit Configuration(QObject *parent = 0);
-    static Configuration *p();
+    explicit
+    Configuration(QObject *parent = 0);
+    static Configuration *
+    p();
 
-    void setWriteBlock(bool blocked);
-    bool clearStorage();
+    void
+    setWriteBlock(bool blocked);
+
+    bool
+    clearStorage();
 
     enum Window {
         WebWindow,
@@ -62,27 +67,48 @@ public:
         UserExtensionsLocation
     };
 
-    QString locale(bool full = false);
+    QString
+    locale(bool full = false);
 
     // App and version info
-    QString appName(bool full = false);
-    QString appVersion();
-    QString fullAppName(bool fullVersion = false);
+    QString
+    appName(bool full = false);
+
+    QString
+    appVersion();
+
+    QString
+    fullAppName(bool fullVersion = false);
 
     // GUI states
-    void saveWindow(Window window, QByteArray state, QByteArray geometry);
-    QByteArray getWindowState(Window window);
-    QByteArray getWindowGeometry(Window window);
-    void saveWebViewSettings(QMap<QString,QVariant> settings);
-    QMap<QString,QVariant> getWebViewSettings();
+    void
+    saveWindow(Window window, QByteArray state, QByteArray geometry);
+
+    QByteArray
+    getWindowState(Window window);
+
+    QByteArray
+    getWindowGeometry(Window window);
+
+    void
+    saveWebViewSettings(QMap<QString,QVariant> settings);
+
+    QMap<QString,QVariant>
+    getWebViewSettings();
 
     // Browser stuff
-    QUrl getStartPage();
-    QUrl makeSearchUrl(QString query);
+    QUrl
+    getStartPage();
+
+    QUrl
+    makeSearchUrl(QString query);
 
     // Filesystem things
-    QDir getStorageLocation(StorageLocation type);
-    QFileInfo extensionRootFile(QString id, VersionNumber apiVersion);
+    QDir
+    getStorageLocation(StorageLocation type);
+
+    QFileInfo
+    extensionRootFile(QString id, VersionNumber apiVersion);
 
 public slots:
 
@@ -93,10 +119,17 @@ private:
 
     ConfigurationDefaults _defaults;
 
-    void _setValue(const QString &key, const QVariant &value);
-    QVariant _value(const QString &key, const QVariant &defaultValue = QVariant()) const;
-    QString _wrapPublicAppTag(QString prepend = QString(), QString append = QString());
-    QString _wrapGitInfo(QString prepend = QString(), QString append = QString());
+    void
+    _setValue(const QString &key, const QVariant &value);
+    QVariant
+    _value(const QString &key,
+           const QVariant &defaultValue = QVariant()) const;
+    QString
+    _wrapPublicAppTag(QString prepend = QString(),
+                      QString append = QString());
+    QString
+    _wrapGitInfo(QString prepend = QString(),
+                 QString append = QString());
 
     bool _writeBlock;
     bool _hideDevelInfo;
@@ -108,4 +141,4 @@ private:
     QWeakPointer<QSettings> _settings;
 };
 
-#endif // CONFIGURATION_H
+#endif // CONFIG_CONFIGURATION_H

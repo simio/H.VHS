@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,9 +16,21 @@
 
 #include "hurl.h"
 
-HUrl::HUrl()                                                { this->_set(QString(), QDateTime()); } // Null QDateTime is not valid()
-HUrl::HUrl(QString uri, QDateTime timestamp )               { this->_set(uri, timestamp); }
-HUrl::HUrl(QUrl url, QDateTime timestamp)                   { this->_set(url.toString(), timestamp); }
+HUrl::HUrl()
+{
+    this->_set(QString(), QDateTime());         // Null QDateTime is not valid()
+}
+
+HUrl::HUrl(QString uri, QDateTime timestamp )
+{
+    this->_set(uri, timestamp);
+}
+
+HUrl::HUrl(QUrl url, QDateTime timestamp)
+{
+    this->_set(url.toString(), timestamp);
+}
+
 HUrl::HUrl(QFileInfo file, QDateTime timestamp)
 {
     if (! timestamp.isValid())
@@ -26,10 +38,20 @@ HUrl::HUrl(QFileInfo file, QDateTime timestamp)
     this->_set("file://" + file.canonicalFilePath(), timestamp);
 }
 
-QUrl HUrl::toUrl() const                                    { return QUrl(this->_uri); }
-QString HUrl::toString() const                              { return this->_uri; }
+QUrl
+HUrl::toUrl() const
+{
+    return QUrl(this->_uri);
+}
 
-QFileInfo HUrl::toFileInfo() const
+QString
+HUrl::toString() const
+{
+    return this->_uri;
+}
+
+QFileInfo
+HUrl::toFileInfo() const
 {
     QString filename = this->_uri;
     if (! filename.startsWith("file://"))
@@ -39,15 +61,21 @@ QFileInfo HUrl::toFileInfo() const
     return QFileInfo(filename);
 }
 
-QDateTime HUrl::dateTime() const                            { return this->_timestamp; }
+QDateTime
+HUrl::dateTime() const
+{
+    return this->_timestamp;
+}
 
-bool HUrl::isValid() const
+bool
+HUrl::isValid() const
 {
     // Just a basic check for now
     return (! this->_uri.isEmpty() && this->_timestamp.isValid());
 }
 
-void HUrl::_set(QString uri, QDateTime timestamp)
+void
+HUrl::_set(QString uri, QDateTime timestamp)
 {
     this->_uri = uri;
     if (timestamp.isNull() || ! timestamp.isValid())

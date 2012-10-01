@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -28,27 +28,61 @@ WebView::~WebView()
     this->_writeConfiguration();
 }
 
-bool WebView::javaEnabled()                         { return ! this->_setting("JavaDisabled").toBool(); }
-void WebView::setJavaEnabled(bool enabled)          { this->_setSetting("JavaDisabled", ! enabled); }
-bool WebView::pluginsEnabled()                      { return ! this->_setting("PluginsDisabled").toBool(); }
-void WebView::setPluginsEnabled(bool enabled)       { this->_setSetting("PluginsDisabled", ! enabled); }
+bool
+WebView::javaEnabled()
+{
+    return ! this->_setting("JavaDisabled").toBool();
+}
 
-QVariant WebView::_setting(QString key)             { return this->_configuration.value(key, QVariant()); }
-void WebView::_setSetting(QString key, QVariant value)
+void
+WebView::setJavaEnabled(bool enabled)
+{
+    this->_setSetting("JavaDisabled", ! enabled);
+}
+
+bool
+WebView::pluginsEnabled()
+{
+    return ! this->_setting("PluginsDisabled").toBool();
+}
+void WebView::setPluginsEnabled(bool enabled)
+{
+    this->_setSetting("PluginsDisabled", ! enabled);
+}
+
+QVariant
+WebView::_setting(QString key)
+{
+    return this->_configuration.value(key, QVariant());
+}
+
+void
+WebView::_setSetting(QString key, QVariant value)
 {
     this->_configuration.insert(key, value);
     this->_writeConfiguration();
     this->_readConfiguration();
 }
 
-void WebView::_writeConfiguration()                 { Configuration::p()->saveWebViewSettings(this->_configuration); }
-void WebView::_readConfiguration()
+void
+WebView::_writeConfiguration()
 {
-    this->settings()->setAttribute(QWebSettings::JavaEnabled, ! this->_setting("JavaDisabled").toBool());
-    this->settings()->setAttribute(QWebSettings::PluginsEnabled, ! this->_setting("PluginsDisabled").toBool());
+    Configuration::p()->saveWebViewSettings(this->_configuration);
 }
 
-QIcon WebView::icon() const
+void
+WebView::_readConfiguration()
+{
+    this->settings()->setAttribute(
+        QWebSettings::JavaEnabled,
+        ! this->_setting("JavaDisabled").toBool());
+    this->settings()->setAttribute(
+        QWebSettings::PluginsEnabled,
+        ! this->_setting("PluginsDisabled").toBool());
+}
+
+QIcon
+WebView::icon() const
 {
     QIcon icon = this->settings()->iconForUrl(this->url());
 

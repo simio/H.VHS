@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,8 +25,9 @@
 #include "config/configuration.h"
 #include "config/messagehandler.h"
 
-/* Url class to hold anything. File paths and names should be interpretable by
- * QFileInfo. While being stored in the _url QString, they are prepended with file://
+/* Url class to hold anything. File paths and names should be
+ * interpretable by QFileInfo. While being stored in the _url QString,
+ * they are prepended with file://
  */
 
 class HUrl
@@ -37,18 +38,28 @@ public:
     HUrl(QUrl url, QDateTime timestamp = QDateTime());
     HUrl(QFileInfo file, QDateTime timestamp = QDateTime());
 
-    inline bool isValid() const;
-    inline QUrl toUrl() const;
-    inline QString toString() const;
-    inline QFileInfo toFileInfo() const;
-    inline QDateTime dateTime() const;
+    inline bool
+    isValid() const;
+
+    inline QUrl
+    toUrl() const;
+
+    inline QString
+    toString() const;
+
+    inline QFileInfo
+    toFileInfo() const;
+
+    inline QDateTime
+    dateTime() const;
 
 
 private:
     QString _uri;
     QDateTime _timestamp;
 
-    void _set(QString uri, QDateTime timestamp);
+    void
+    _set(QString uri, QDateTime timestamp);
 };
 
 #endif // APPWIDECLASSES_HURL_H

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -24,10 +24,12 @@ Person::Person(QString name, QString email, QUrl website, QString username)
     this->_username = username;
 }
 
-QMultiMap<QDateTime, QString> Person::activities(QDateTime earliest, QDateTime latest) const
+QMultiMap<QDateTime, QString>
+Person::activities(QDateTime earliest, QDateTime latest) const
 {
     QMultiMap<QDateTime, QString> result;
-    QMultiMap<QDateTime, QString>::const_iterator pair = this->_activities.constBegin();
+    QMultiMap<QDateTime, QString>::const_iterator pair =
+        this->_activities.constBegin();
     while (pair != this->_activities.constEnd())
     {
         // QMultiMap iterates over all pairs in ascending sorting order

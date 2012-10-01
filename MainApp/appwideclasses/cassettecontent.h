@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,14 +14,14 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef CASSETTECONTENT_H
-#define CASSETTECONTENT_H
+#ifndef APPWIDECLASSES_CASSETTECONTENT_H
+#define APPWIDECLASSES_CASSETTECONTENT_H
 
-/*  NOTICE: This class and the Cassette class are in
- *  circular dependence. Inlining any members or adding
- *  Cassette typed members will break the build.
+/* NOTICE: This class and the Cassette class are in circular
+ * dependence. Inlining any members or adding Cassette typed members
+ * will break the build.
  *
- *  Instead, allocate any Cassette members on the heap.
+ * Instead, allocate any Cassette members on the heap.
  */
 
 #include <QObject>
@@ -47,18 +47,35 @@ public:
         SubCassettes
     };
 
-    bool isEmpty() const;
-    ContentForm form() const;
+    bool
+    isEmpty() const;
 
-    QString textContent() const;
-    QByteArray binaryContent() const;
-    QSharedDataPointer<Cassette> subCassette(QString id) const;
-    QHash<QString,QSharedDataPointer<Cassette> > subCassettes() const;
+    ContentForm
+    form() const;
 
-    void empty();
-    void setContent(QString str);
-    void setContent(QByteArray binaryData);
-    void setContent(QList<QSharedDataPointer<Cassette> > cassettes);
+    QString
+    textContent() const;
+
+    QByteArray
+    binaryContent() const;
+
+    QSharedDataPointer<Cassette>
+    subCassette(QString id) const;
+
+    QHash<QString,QSharedDataPointer<Cassette> >
+    subCassettes() const;
+
+    void
+    empty();
+
+    void
+    setContent(QString str);
+
+    void
+    setContent(QByteArray binaryData);
+
+    void
+    setContent(QList<QSharedDataPointer<Cassette> > cassettes);
 
 private:
     ContentForm _form;
@@ -67,7 +84,8 @@ private:
     QByteArray _binaryData;
     QHash<QString,QSharedDataPointer<Cassette> > _subCassettes;
 
-    void _empty();
+    void
+    _empty();
 };
 
-#endif // CASSETTECONTENT_H
+#endif // APPWIDECLASSES_CASSETTECONTENT_H

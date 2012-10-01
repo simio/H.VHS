@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,87 +17,90 @@
 #include "transportreader.h"
 
 namespace VhsXml {
-
-QList<QSharedPointer<TransportDefinition> > TransportReader::parse(const QDomDocument &document)
-{
-    QList<QSharedPointer<TransportDefinition> > result;
-
-    QDomNode node = document.documentElement().firstChild();
-    while (! node.isNull())
+    QList<QSharedPointer<TransportDefinition> >
+    TransportReader::parse(const QDomDocument &document)
     {
-        if (node.toElement().tagName() == "transportDefinitions")
+        QList<QSharedPointer<TransportDefinition> > result;
+
+        QDomNode node = document.documentElement().firstChild();
+        while (! node.isNull())
         {
-            QDomNode transportNode = node.toElement().firstChild();
-            while(!transportNode.isNull())
+            if (node.toElement().tagName() == "transportDefinitions")
             {
-                if (transportNode.toElement().tagName() == "transportDefinition")
+                QDomNode transportNode = node.toElement().firstChild();
+                while(!transportNode.isNull())
                 {
-                    QSharedPointer<TransportDefinition> transport = _parseTransport(transportNode.toElement());
-                    if (! transport.isNull())
-                        result << transport;
+                    if (transportNode.toElement().tagName()
+                        == "transportDefinition")
+                    {
+                        QSharedPointer<TransportDefinition> transport =
+                            _parseTransport(transportNode.toElement());
+                        if (! transport.isNull())
+                            result << transport;
+                    }
+
+                    transportNode = transportNode.nextSiblingElement();
                 }
-
-                transportNode = transportNode.nextSiblingElement();
             }
+
+            node = node.nextSiblingElement();
         }
-
-        node = node.nextSiblingElement();
+        return result;
     }
-    return result;
-}
 
 
-/*
- *  While this way of parsing is not optimal (as in being nice and readable),
- *  the enforcing of xml element ordering is intentional. The order in which
- *  the elements appear is defined in the RELAX NG Schema.
- */
+    /* While this way of parsing is not optimal (as in being nice and
+     * readable), the enforcing of xml element ordering is
+     * intentional. The order in which the elements appear is defined
+     * in the RELAX NG Schema.
+     */
 
-QSharedPointer<TransportDefinition> TransportReader::_parseTransport(const QDomElement &transportNode)
-{
-    QString id;                                     // Unique; required
-    QDateTime releaseDate;                          // As attribute of id; required
-    QString name;                                   // Localised; required
-    QString description;                            // Localised; optional
-
-    QDomElement e = transportNode.firstChildElement();
-    if (ElementParser::expect(e, "id", ElementParser::Required))
+    QSharedPointer<TransportDefinition>
+    TransportReader::_parseTransport(const QDomElement &transportNode)
     {
-        releaseDate = ElementParser::dateTime(e.attribute("releaseDate"));
-        id = ElementParser::nmtoken(e.text());
-        e = e.nextSiblingElement();
-    }
-    else
+        QString id;                             // Unique; required
+        QDateTime releaseDate;                  // As attribute of id; required
+        QString name;                           // Localised; required
+        QString description;                    // Localised; optional
+
+        QDomElement e = transportNode.firstChildElement();
+        if (ElementParser::expect(e, "id", ElementParser::Required))
+        {
+            releaseDate = ElementParser::dateTime(e.attribute("releaseDate"));
+            id = ElementParser::nmtoken(e.text());
+            e = e.nextSiblingElement();
+        }
+        else
+            return QSharedPointer<TransportDefinition>();
+
+        // <name xml:lang="xsd:language">xsd:token</name>
+        // (one or more, with unique xml:lang attributes)
+        if (ElementParser::expect(e, "name", ElementParser::Required))
+        {
+            name = ElementParser::localisedString(e);
+            e = e.nextSiblingElement();
+        }
+        else
+            return QSharedPointer<TransportDefinition>();
+
+        // <description xml:lang="xsd:language">xsd:token</description>
+        // (zero or more, with unique xml:lang attributes)
+        if (ElementParser::expect(e, "description", ElementParser::Optional))
+        {
+            description = ElementParser::localisedString(e);
+            e = e.nextSiblingElement();
+        }
+        else if (e.isNull())
+            return QSharedPointer<TransportDefinition>();
+
+        // alloc: QSharedPointer
+        QSharedPointer<TransportDefinition> transport(
+            new TransportDefinition(id, name, description, releaseDate, 0));
+        if (transport->isValid())
+            return transport;
+
+        qDebug() << "TransportReader::parseTransport() discarded invalid"
+                 << " transport definition.";
         return QSharedPointer<TransportDefinition>();
-
-    // <name xml:lang="xsd:language">xsd:token</name>
-    // (one or more, with unique xml:lang attributes)
-    if (ElementParser::expect(e, "name", ElementParser::Required))
-    {
-        name = ElementParser::localisedString(e);
-        e = e.nextSiblingElement();
     }
-    else
-        return QSharedPointer<TransportDefinition>();
-
-    // <description xml:lang="xsd:language">xsd:token</description>
-    // (zero or more, with unique xml:lang attributes)
-    if (ElementParser::expect(e, "description", ElementParser::Optional))
-    {
-        description = ElementParser::localisedString(e);
-        e = e.nextSiblingElement();
-    }
-    else if (e.isNull())
-        return QSharedPointer<TransportDefinition>();
-
-    // alloc: QSharedPointer
-    QSharedPointer<TransportDefinition> transport(new TransportDefinition(id, name, description, releaseDate, 0));
-    if (transport->isValid())
-        return transport;
-
-    qDebug() << "TransportReader::parseTransport() discarded invalid transport definition.";
-    return QSharedPointer<TransportDefinition>();
-}
-
-
 } // namespace VhsXml

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef MESSAGEHANDLER_H
-#define MESSAGEHANDLER_H
+#ifndef CONFIG_MESSAGEHANDLER_H
+#define CONFIG_MESSAGEHANDLER_H
 
 #include <iostream>
 
@@ -32,26 +32,33 @@ class MessageHandler : public QObject
     Q_OBJECT
 public:
     explicit MessageHandler(QObject *parent = 0);
-    static MessageHandler *p();
+    static MessageHandler *
+    p();
 
-    void message(QtMsgType type, const char *msg);
-    QWeakPointer<ConsoleWindow> createConsoleWindow();
+    void
+    message(QtMsgType type, const char *msg);
+    QWeakPointer<ConsoleWindow>
+    createConsoleWindow();
 
 public slots:
-    void notifyQObjectDestroyed(QObject * obj);
+    void
+    notifyQObjectDestroyed(QObject * obj);
 
 signals:
-    void deliverMessage(QString message);
+    void
+    deliverMessage(QString message);
 
 private:
     static MessageHandler *s_instance;
 
     QQueue<QString> _buffer;
-    static const qint64 _bufferLength = 10240;                  // Lines
+    static const qint64 _bufferLength = 10240;      // Lines
 
-    QWeakPointer<ConsoleWindow> _consoleWindow;                 // Independent Window; won't get parent
+    // Independent Window; won't get parent
+    QWeakPointer<ConsoleWindow> _consoleWindow;
 };
 
-void messageHandler(QtMsgType type, const char *msg);
+void
+messageHandler(QtMsgType type, const char *msg);
 
-#endif // MESSAGEHANDLER_H
+#endif // CONFIG_MESSAGEHANDLER_H

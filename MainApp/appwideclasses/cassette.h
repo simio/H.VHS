@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,11 +17,11 @@
 #ifndef CASSETTE_H
 #define CASSETTE_H
 
-/*  NOTICE: This class and the CassetteContent class are
- *  in circular dependence. Inlining any members or adding
- *  CassetteContent typed members will break the build.
+/* NOTICE: This class and the CassetteContent class are in circular
+ * dependence. Inlining any members or adding CassetteContent typed
+ * members will break the build.
  *
- *  Instead, use pointers to CassetteContent.
+ * Instead, use pointers to CassetteContent.
  */
 
 #include <QObject>
@@ -49,10 +49,15 @@ public:
         Publisher,
         Broadcaster
     };
-    explicit Cassette();
 
-    QString id() const;
-    HUrl uri() const;
+    explicit
+    Cassette();
+
+    QString
+    id() const;
+
+    HUrl
+    uri() const;
 
 private:
     QString _id;
@@ -63,7 +68,6 @@ private:
     QHash<QString,Cassette> _associatedCassettes;
 
     QMap<PresentationField,QString> _presentation;
-
 };
 
 #endif // CASSETTE_H

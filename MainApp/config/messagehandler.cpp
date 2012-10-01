@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -18,7 +18,8 @@
 
 // OBS: Inte del av klass!
 // Anropas av Qt.
-void messageHandler(QtMsgType type, const char *msg)
+void
+messageHandler(QtMsgType type, const char *msg)
 {
     MessageHandler::p()->message(type, msg);
 }
@@ -32,15 +33,17 @@ MessageHandler::MessageHandler(QObject *parent) :
     this->message(QtDebugMsg, "READY.");
 }
 
-MessageHandler *MessageHandler::p()
+MessageHandler *
+MessageHandler::p()
 {
     if (s_instance == NULL)
-        s_instance = new MessageHandler;                                // alloc: Singleton object
+        s_instance = new MessageHandler;              // alloc: Singleton object
 
     return s_instance;
 }
 
-void MessageHandler::message(QtMsgType type, const char *msg)
+void
+MessageHandler::message(QtMsgType type, const char *msg)
 {
     QString message;
 
@@ -69,17 +72,25 @@ void MessageHandler::message(QtMsgType type, const char *msg)
         abort();
 }
 
-QWeakPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
+QWeakPointer<ConsoleWindow>
+MessageHandler::createConsoleWindow()
 {
     if (! this->_consoleWindow.isNull())
         return this->_consoleWindow;
 
-    // alloc: QSharedPointer here, plus it sets Qt::WA_DeleteOnClose in its constructor.
+    // alloc: QSharedPointer here, plus it sets Qt::WA_DeleteOnClose
+    // in its constructor.
     this->_consoleWindow = QWeakPointer<ConsoleWindow>(new ConsoleWindow(0));
 
-    if (! QObject::connect(MessageHandler::p(), SIGNAL(deliverMessage(QString)), this->_consoleWindow.data(), SLOT(printMessage(QString))))
+    if (! QObject::connect(MessageHandler::p(),
+                           SIGNAL(deliverMessage(QString)),
+                           this->_consoleWindow.data(),
+                           SLOT(printMessage(QString))))
         qWarning() << "Could not connect console.";
-    QObject::connect(this->_consoleWindow.data(), SIGNAL(destroyed(QObject*)), this, SLOT(notifyQObjectDestroyed(QObject*)));
+    QObject::connect(this->_consoleWindow.data(),
+                     SIGNAL(destroyed(QObject*)),
+                     this,
+                     SLOT(notifyQObjectDestroyed(QObject*)));
 
     this->_consoleWindow.data()->show();
     this->_consoleWindow.data()->raise();
@@ -91,7 +102,8 @@ QWeakPointer<ConsoleWindow> MessageHandler::createConsoleWindow()
     return this->_consoleWindow;
 }
 
-void MessageHandler::notifyQObjectDestroyed(QObject *obj)
+void
+MessageHandler::notifyQObjectDestroyed(QObject *obj)
 {
     qDebug() << "MessageHandler: Received destroyed() event from" << obj;
 }

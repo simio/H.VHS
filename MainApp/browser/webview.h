@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef WEBVIEW_H
-#define WEBVIEW_H
+#ifndef BROWSER_WEBVIEW_H
+#define BROWSER_WEBVIEW_H
 
 #include <QWebView>
 
@@ -25,29 +25,44 @@ class WebView : public QWebView
 {
     Q_OBJECT
 public:
-    explicit WebView(QWidget *parent = 0);
+    explicit
+    WebView(QWidget *parent = 0);
+
     ~WebView();
 
-    QIcon icon() const;
+    QIcon
+    icon() const;
 
-    bool pluginsEnabled();
-    bool javaEnabled();
+    bool
+    pluginsEnabled();
+
+    bool
+    javaEnabled();
 
 signals:
 
 public slots:
-    void setPluginsEnabled(bool enabled);
-    void setJavaEnabled(bool enabled);
+    void
+    setPluginsEnabled(bool enabled);
+
+    void
+    setJavaEnabled(bool enabled);
 
 private:
-    void _readConfiguration();
-    void _writeConfiguration();
+    void
+    _readConfiguration();
 
-    QVariant _setting(QString key);
-    void _setSetting(QString key, QVariant value);
+    void
+    _writeConfiguration();
+
+    QVariant
+    _setting(QString key);
+
+    void
+    _setSetting(QString key, QVariant value);
 
     QMap<QString,QVariant> _configuration;
 
 };
 
-#endif // WEBVIEW_H
+#endif // BROWSER_WEBVIEW_H

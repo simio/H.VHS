@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,121 +17,147 @@
 #include "documentreader.h"
 
 namespace VhsXml {
-
-DocumentReader::DocumentReader(QFileInfo file, QObject *parent) : QObject(parent)
-{
-    // Use a weak pointer and set this as file parent. The file will be used
-    // to construct a QXmlInputSource instance, which might (or might not)
-    // read from it at any time until this DocumentReader instance is destructed.
-    QWeakPointer<QFile> p(new QFile(file.canonicalFilePath(), this));               // alloc: QWeakPointer with parent
-    this->_initialise(p);
-}
-
-QList<Definition::DefinitionType> DocumentReader::contentList() const
-{
-    if (this->isEmpty())
-        return QList<Definition::DefinitionType>();
-
-    QHash<Definition::DefinitionType,bool> isPresent;
-    QDomElement doc = this->_xml.documentElement();
-    QDomNode node = doc.firstChild();
-    while (! node.isNull())
+    DocumentReader::DocumentReader(QFileInfo file,
+                                   QObject *parent) :
+        QObject(parent)
     {
-        QString name =  node.toElement().tagName();
-        // <transportDefinitions> without at least one <transportDefinition> are invalid,
-        // so there's no need to look deeper into the tree.
-        if (name == "formatDefinitions")
-            isPresent.insert(Definition::FormatDefinitionType, true);
-        else if (name == "transportDefinitions")
-            isPresent.insert(Definition::TransportDefinitionType, true);
-        else if (name == "extensions")
-            isPresent.insert(Definition::ExtensionDefinitionType, true);
-        else if (name == "cassettes")
-            isPresent.insert(Definition::CassetteDefinitionType, true);
+        // Use a weak pointer and set this as file parent. The file
+        // will be used to construct a QXmlInputSource instance, which
+        // might (or might not) read from it at any time until this
+        // DocumentReader instance is destructed.
+        // alloc: QWeakPointer with parent
+        QWeakPointer<QFile> p(new QFile(file.canonicalFilePath(), this));
+        this->_initialise(p);
     }
-    return isPresent.keys();
-}
+
+    QList<Definition::DefinitionType> DocumentReader::contentList() const
+    {
+        if (this->isEmpty())
+            return QList<Definition::DefinitionType>();
+
+        QHash<Definition::DefinitionType,bool> isPresent;
+        QDomElement doc = this->_xml.documentElement();
+        QDomNode node = doc.firstChild();
+        while (! node.isNull())
+        {
+            QString name =  node.toElement().tagName();
+            // <transportDefinitions> without at least one
+            // <transportDefinition> are invalid, so there's no need
+            // to look deeper into the tree.
+            if (name == "formatDefinitions")
+                isPresent.insert(Definition::FormatDefinitionType, true);
+            else if (name == "transportDefinitions")
+                isPresent.insert(Definition::TransportDefinitionType, true);
+            else if (name == "extensions")
+                isPresent.insert(Definition::ExtensionDefinitionType, true);
+            else if (name == "cassettes")
+                isPresent.insert(Definition::CassetteDefinitionType, true);
+        }
+        return isPresent.keys();
+    }
 
 // Dispatch request to appropriate reader(s).
-QList<QSharedPointer<Definition> > DocumentReader::definitions(Definition::DefinitionType defType) const
-{
-    QList<QSharedPointer<FormatDefinition> > formats;
-    QList<QSharedPointer<TransportDefinition> > transports;
-    QList<QSharedPointer<ExtensionDefinition> > extensions;
-
-    if (defType == Definition::FormatDefinitionType || defType == Definition::NoDefinitionType)
-        formats = FormatReader::parse(this->_xml);
-    if (defType == Definition::TransportDefinitionType || defType == Definition::NoDefinitionType)
-        transports = TransportReader::parse(this->_xml);
-    if (defType == Definition::ExtensionDefinitionType || defType == Definition::NoDefinitionType)
-        extensions = ExtensionReader::parse(this->_xml);
-
-    QList<QSharedPointer<Definition> > result;
-    foreach(QSharedPointer<FormatDefinition> format, formats)
-        result << qSharedPointerDynamicCast<Definition>(format);
-    foreach(QSharedPointer<TransportDefinition> transport, transports)
-        result << qSharedPointerDynamicCast<Definition>(transport);
-    foreach(QSharedPointer<ExtensionDefinition> extension, extensions)
-        result << qSharedPointerDynamicCast<Definition>(extension);
-
-    return result;
-}
-
-bool DocumentReader::_isCompatibleWith(QString foulString)
-{
-    VersionNumber version = VersionNumber(foulString);
-
-    return (DocumentReader::oldestCompatibleVersion() <= version && DocumentReader::version() >= version);
-}
-
-bool DocumentReader::_initialise(QSharedPointer<QXmlInputSource> source)
-{
-    bool success = false;
-    this->_xml = QDomDocument("VhsXml");
-
-    QScopedPointer<QString> error(new QString);         // alloc: QScopedPointer
-    QScopedPointer<int> errorLine(new int);             // alloc: QScopedPointer
-    QScopedPointer<int> errorColumn(new int);           // alloc: QScopedPointer
-    if (this->_xml.setContent(source.data(), true, error.data(), errorLine.data(), errorColumn.data()))
+    QList<QSharedPointer<Definition> >
+    DocumentReader::definitions(Definition::DefinitionType defType) const
     {
-        if (this->_xml.documentElement().tagName() == "vhsxml")
-        {
-            QString docVersion = this->_xml.documentElement().attribute("version");
-            if (this->_isCompatibleWith(docVersion))
-                success = true;
-            else
-                qWarning() << "XML Parser error:"
-                           << "Document contains VhsXml version" << docVersion
-                           << "which is incompatible with this version of H.VHS.";
-        }
+        QList<QSharedPointer<FormatDefinition> > formats;
+        QList<QSharedPointer<TransportDefinition> > transports;
+        QList<QSharedPointer<ExtensionDefinition> > extensions;
+
+        if (defType == Definition::FormatDefinitionType ||
+            defType == Definition::NoDefinitionType)
+            formats = FormatReader::parse(this->_xml);
+        if (defType == Definition::TransportDefinitionType ||
+            defType == Definition::NoDefinitionType)
+            transports = TransportReader::parse(this->_xml);
+        if (defType == Definition::ExtensionDefinitionType ||
+            defType == Definition::NoDefinitionType)
+            extensions = ExtensionReader::parse(this->_xml);
+
+        QList<QSharedPointer<Definition> > result;
+        foreach(QSharedPointer<FormatDefinition> format, formats)
+            result << qSharedPointerDynamicCast<Definition>(format);
+        foreach(QSharedPointer<TransportDefinition> transport, transports)
+            result << qSharedPointerDynamicCast<Definition>(transport);
+        foreach(QSharedPointer<ExtensionDefinition> extension, extensions)
+            result << qSharedPointerDynamicCast<Definition>(extension);
+
+        return result;
     }
-    else
-        qWarning() << "XML Parser error:" << error.data() << endl
-                   << "Line " << errorLine.data() << "column" << errorColumn.data();
 
-    if (!success)
-        this->_xml.clear();
-
-    return success;
-}
-
-bool DocumentReader::_initialise(QWeakPointer<QIODevice> device)
-{
-    QSharedPointer<QXmlInputSource> source(new QXmlInputSource(device.data()));         // alloc: QSharedPointer
-    bool retVal = this->_initialise(source);
-    return retVal;
-}
-
-bool DocumentReader::_initialise(QWeakPointer<QFile> file)
-{
-    if (file.data()->exists())
+    bool
+    DocumentReader::_isCompatibleWith(QString foulString)
     {
-        QSharedPointer<QXmlInputSource> source(new QXmlInputSource(file.data()));       // alloc: QSharedPointer
+        VersionNumber version = VersionNumber(foulString);
+
+        return (DocumentReader::oldestCompatibleVersion() <= version &&
+                DocumentReader::version() >= version);
+    }
+
+    bool
+    DocumentReader::_initialise(QSharedPointer<QXmlInputSource> source)
+    {
+        bool success = false;
+        this->_xml = QDomDocument("VhsXml");
+
+        // alloc: QScopedPointer
+        QScopedPointer<QString> error(new QString);
+        // alloc: QScopedPointer
+        QScopedPointer<int> errorLine(new int);
+        // alloc: QScopedPointer
+        QScopedPointer<int> errorColumn(new int);
+        if (this->_xml.setContent(source.data(),
+                                  true,
+                                  error.data(),
+                                  errorLine.data(),
+                                  errorColumn.data()))
+        {
+            if (this->_xml.documentElement().tagName() == "vhsxml")
+            {
+                QString docVersion =
+                    this->_xml.documentElement().attribute("version");
+                if (this->_isCompatibleWith(docVersion))
+                    success = true;
+                else
+                    qWarning() << "XML Parser error:"
+                               << "Document contains VhsXml version"
+                               << docVersion << "which is incompatible"
+                               << " with this version of H.VHS.";
+            }
+        }
+        else
+            qWarning() << "XML Parser error:" << error.data() << endl
+                       << "Line " << errorLine.data() << "column"
+                       << errorColumn.data();
+
+        if (!success)
+            this->_xml.clear();
+
+        return success;
+    }
+
+    bool
+    DocumentReader::_initialise(QWeakPointer<QIODevice> device)
+    {
+        // alloc: QSharedPointer
+        QSharedPointer<QXmlInputSource> source(
+            new QXmlInputSource(device.data()));
         bool retVal = this->_initialise(source);
         return retVal;
     }
-    qDebug() << "DocumentReader failed to initialise on" << file.data()->fileName();
-    return false;
-}
 
+    bool DocumentReader::_initialise(QWeakPointer<QFile> file)
+    {
+        if (file.data()->exists())
+        {
+            // alloc: QSharedPointer
+            QSharedPointer<QXmlInputSource> source(
+                new QXmlInputSource(file.data()));
+            bool retVal = this->_initialise(source);
+            return retVal;
+        }
+        qDebug() << "DocumentReader failed to initialise on"
+                 << file.data()->fileName();
+        return false;
+    }
 } // namespace VhsXml

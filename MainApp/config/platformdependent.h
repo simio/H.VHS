@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef CONFIGURATION_PLATFORMDEPENDENT_H
-#define CONFIGURATION_PLATFORMDEPENDENT_H
+#ifndef CONFIG_PLATFORMDEPENDENT_H
+#define CONFIG_PLATFORMDEPENDENT_H
 
 #include <QApplication>
 #include <QWeakPointer>
@@ -31,21 +31,30 @@ class PlatformDependent
 {
 public:
     PlatformDependent();
-    static PlatformDependent *p();
+
+    static PlatformDependent
+    *p();
 
     enum Scope {
         User,
         System
     };
 
-    void setQAppLibraryPaths();
-    QDir extensionsDir(Scope scope);
-    QDir presetsDir(Scope scope);
-    QWeakPointer<QSettings> newSettings(QObject *parent);
+    void
+    setQAppLibraryPaths();
+
+    QDir
+    extensionsDir(Scope scope);
+
+    QDir
+    presetsDir(Scope scope);
+
+    QWeakPointer<QSettings>
+    newSettings(QObject *parent);
 
 private:
     static PlatformDependent *s_instance;
 
 };
 
-#endif // CONFIGURATION_PLATFORMDEPENDENT_H
+#endif // CONFIG_PLATFORMDEPENDENT_H

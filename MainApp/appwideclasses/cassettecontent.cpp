@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -24,84 +24,98 @@ CassetteContent::CassetteContent()
     this->_form = CassetteContent::Empty;
 }
 
-bool CassetteContent::isEmpty() const
+bool
+CassetteContent::isEmpty() const
 {
     return (this->_form == CassetteContent::Empty);
 }
 
-CassetteContent::ContentForm CassetteContent::form() const
+CassetteContent::ContentForm
+CassetteContent::form() const
 {
     return this->_form;
 }
 
-QString CassetteContent::textContent() const
+QString
+CassetteContent::textContent() const
 {
     if (this->_form == CassetteContent::Text)
         return this->_textContent;
     else
     {
-        qWarning() << "CassetteContent::textContent() accessed on non-text CassetteContent."
+        qWarning() << "CassetteContent::textContent() accessed on"
+                   << " non-text CassetteContent."
                    << "Form is type" << (int)this->_form;
         return QString();
     }
 }
 
-QByteArray CassetteContent::binaryContent() const
+QByteArray
+CassetteContent::binaryContent() const
 {
     if (this->_form == CassetteContent::Binary)
         return this->_binaryData;
     else
     {
-        qWarning() << "CassetteContent::binaryContent() accessed on non-binary CassetteContent."
+        qWarning() << "CassetteContent::binaryContent() accessed on"
+                   << " non-binary CassetteContent."
                    << "Form is type" << (int)this->_form;
         return QByteArray();
     }
 }
 
-QSharedDataPointer<Cassette> CassetteContent::subCassette(QString id) const
+QSharedDataPointer<Cassette>
+CassetteContent::subCassette(QString id) const
 {
     if (this->_form == CassetteContent::SubCassettes)
         return this->_subCassettes.value(id, QSharedDataPointer<Cassette>());
     else
     {
-        qWarning() << "CassetteContent::subCassette(id) accessed on non-subCassette CassetteContent."
+        qWarning() << "CassetteContent::subCassette(id) accessed on"
+                   << " non-subCassette CassetteContent."
                    << "Form is type" << (int)this->_form;
         return QSharedDataPointer<Cassette>();
     }
 }
 
-QHash<QString, QSharedDataPointer<Cassette> > CassetteContent::subCassettes() const
+QHash<QString, QSharedDataPointer<Cassette> >
+CassetteContent::subCassettes() const
 {
     if (this->_form == CassetteContent::SubCassettes)
         return this->_subCassettes;
     else
     {
-        qWarning() << "CassetteContent::subCassettes(id) accessed on non-subCassette CassetteContent."
+        qWarning() << "CassetteContent::subCassettes(id) accessed on"
+                   << " non-subCassette CassetteContent."
                    << "Form is type" << (int)this->_form;
         return QHash<QString,QSharedDataPointer<Cassette> >();
     }
 }
 
-void CassetteContent::empty()
+void
+CassetteContent::empty()
 {
     this->_empty();
 }
 
-void CassetteContent::setContent(QString str)
+void
+CassetteContent::setContent(QString str)
 {
     this->_form = CassetteContent::Text;
     this->_empty();
     this->_textContent = str;
 }
 
-void CassetteContent::setContent(QByteArray binaryData)
+void
+CassetteContent::setContent(QByteArray binaryData)
 {
     this->_form = CassetteContent::Binary;
     this->_empty();
     this->_binaryData = binaryData;
 }
 
-void CassetteContent::setContent(QList<QSharedDataPointer<Cassette> > cassettes)
+void
+CassetteContent::setContent(QList<QSharedDataPointer<Cassette> > cassettes)
 {
     this->_form = CassetteContent::SubCassettes;
     this->_empty();
@@ -111,11 +125,13 @@ void CassetteContent::setContent(QList<QSharedDataPointer<Cassette> > cassettes)
     }
 }
 
-void CassetteContent::_empty()
+void
+CassetteContent::_empty()
 {
     if (this->_form == CassetteContent::SubCassettes)
     {
-        QHash<QString,QSharedDataPointer<Cassette> >::iterator cassette = this->_subCassettes.begin();
+        QHash<QString,QSharedDataPointer<Cassette> >::iterator cassette =
+            this->_subCassettes.begin();
         while (cassette != this->_subCassettes.end())
             delete cassette;
         this->_subCassettes.clear();
@@ -134,6 +150,8 @@ void CassetteContent::_empty()
     }
     else
     {
-        qWarning() << "CassetteContent::_empty() called on object with illegal internal form. Form type is" << this->_form;
+        qWarning() << "CassetteContent::_empty() called on object with"
+                   << " illegal internal form. Form type is"
+                   << this->_form;
     }
 }

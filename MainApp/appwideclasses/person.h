@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -28,26 +28,71 @@
 class Person
 {
 public:
-    /*  This class is registered with the QMetaType system.
-     *  Therefore, a default public constructor, public copy constructor and
-     *  public assignment operator are required.
+    /* This class is registered with the QMetaType system.  Therefore,
+     * a default public constructor, public copy constructor and
+     * public assignment operator are required.
      */
     Person(){}  // See above
     Person(QString name, QString email, QUrl website, QString username);
     // Using compiler generated public copy constructor
     // Using compiler generated public assignment operator
 
-    QString name() const                                                        { return this->_name; }
-    QString email() const                                                       { return this->_email; }
-    QUrl website() const                                                        { return this->_website; }
-    QString username() const                                                    { return this->_username; }
-    QDateTime activity(QString activity) const                                  { return this->_activities.key(activity); }
-    void addActivity(QDateTime timestamp, QString activity)                     { this->_activities.insert(timestamp, activity); }
-    QMultiMap<QDateTime,QString> activities(QDateTime earliest, QDateTime latest) const;
+    QString
+    name() const
+    {
+        return this->_name;
+    }
 
-    void addInfo(QString key, QVariant value)                                   { this->_info.insert(key, value); }
-    QMultiMap<QString,QVariant> info(void) const                                { return this->_info; }
-    QList<QVariant> info(QString key) const                                     { return this->_info.values(key); }
+    QString
+    email() const
+    {
+        return this->_email;
+    }
+
+    QUrl
+    website() const
+    {
+        return this->_website;
+    }
+
+    QString
+    username() const
+    {
+        return this->_username;
+    }
+
+    QDateTime
+    activity(QString activity) const
+    {
+        return this->_activities.key(activity);
+    }
+
+    void
+    addActivity(QDateTime timestamp, QString activity)
+    {
+        this->_activities.insert(timestamp, activity);
+    }
+
+    QMultiMap<QDateTime,QString>
+    activities(QDateTime earliest, QDateTime latest) const;
+
+    void
+    addInfo(QString key, QVariant value)
+    {
+        this->_info.insert(key, value);
+    }
+
+    QMultiMap<QString,QVariant>
+    info(void) const
+    {
+        return this->_info;
+    }
+
+    QList<QVariant>
+    info(QString key) const
+    {
+        return this->_info.values(key);
+    }
 
 private:
     QString _name;

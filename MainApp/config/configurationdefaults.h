@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,23 +14,28 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef CONFIG_CONFIGURATION_DEFAULTS_H
-#define CONFIG_CONFIGURATION_DEFAULTS_H
+#ifndef CONFIG_CONFIGURATIONDEFAULTS_H
+#define CONFIG_CONFIGURATIONDEFAULTS_H
 
 #include <QString>
 
 #include "config/configuration.h"
 
-// This file contains default values used for settings in Configuration.
-// All members are protected or private, and Configuration is its only friend.
+// This file contains default values used for settings in
+// Configuration.  All members are protected or private, and
+// Configuration is its only friend.
 
 class ConfigurationDefaults {
     friend class Configuration;
 
 protected:
-    QString searchQuery;        // Prepended to search terms to get a (complete) web search url. Encode in UTF-8 w/o url encoding.
-    bool hideDevelInfo;         // Applies when #ifndef HIDE_DEVEL_INFO
-    QUrl startPage;             // See issue #24
+    // Prepended to search terms to get a (complete) web search
+    // url. Encode in UTF-8 w/o url encoding.
+    QString searchQuery;
+    // Applies when #ifndef HIDE_DEVEL_INFO
+    bool hideDevelInfo;
+    // See issue #24
+    QUrl startPage;
 
     ConfigurationDefaults() {
         this->searchQuery = QString("https://www.startpage.com/do/search?q=");
@@ -42,4 +47,4 @@ protected:
     { }
 };
 
-#endif // CONFIG_CONFIGURATION_DEFAULTS_H
+#endif // CONFIG_CONFIGURATIONDEFAULTS_H

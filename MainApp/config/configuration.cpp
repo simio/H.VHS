@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Jesper Räftegård <jesper@huggpunkt.org>
+ * Copyright (c) 2012 Jesper Raftegard <jesper@huggpunkt.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -46,12 +46,14 @@ Configuration::Configuration(QObject *parent) :
     this->_gitTag = QString( GIT_TAG );
 }
 
-void Configuration::setWriteBlock(bool blocked)
+void
+Configuration::setWriteBlock(bool blocked)
 {
     this->_writeBlock = blocked;
 }
 
-bool Configuration::clearStorage()
+bool
+Configuration::clearStorage()
 {
     this->_settings.data()->clear();
 
@@ -62,99 +64,110 @@ bool Configuration::clearStorage()
     return true;
 }
 
-QString Configuration::locale(bool full)
+QString
+Configuration::locale(bool full)
 {
     //XXX: Fixing this is and actually detecting the proper locale is issue #7
     return ( full ? "sv" : "sv-se" );
 }
 
-Configuration *Configuration::p()
+Configuration *
+Configuration::p()
 {
     if (s_instance == NULL)
         s_instance = new Configuration;        // alloc: Singleton object
     return s_instance;
 }
 
-QString Configuration::appName(bool full)
+QString
+Configuration::appName(bool full)
 {
     return qApp->applicationName()
-            + " " + this->appVersion()
-            + this->_wrapPublicAppTag(" ")
-            + (this->_hideDevelInfo ? "" : this->_wrapGitInfo());
+        + " " + this->appVersion()
+        + this->_wrapPublicAppTag(" ")
+        + (this->_hideDevelInfo ? "" : this->_wrapGitInfo());
 }
 
-QString Configuration::_wrapPublicAppTag(QString prepend, QString append)
+QString
+Configuration::_wrapPublicAppTag(QString prepend, QString append)
 {
     return (this->_publicAppTag.isEmpty()
-	    ? ""
-	    : prepend + this->_publicAppTag + append);
+            ? ""
+            : prepend + this->_publicAppTag + append);
 }
 
-QString Configuration::_wrapGitInfo(QString prepend, QString append)
+QString
+Configuration::_wrapGitInfo(QString prepend, QString append)
 {
     QString info = (this->_gitTag.isEmpty() ? "" : ":" + this->_gitTag)
-      + " ("
-      + (this->_gitBranch.isEmpty()
-	 ? ""
-	 : this->_gitBranch + "/")
-      + this->_gitHash
-      + ")";
+        + " ("
+        + (this->_gitBranch.isEmpty()
+           ? ""
+           : this->_gitBranch + "/")
+        + this->_gitHash
+        + ")";
     return (info.isEmpty() ? "" : prepend + info + append);
 }
 
-QString Configuration::appVersion()
+QString
+Configuration::appVersion()
 {
     return ( this->_hideDevelInfo
-            ? qApp->applicationVersion().remove(QRegExp("\\.[0-9]+$"))
-            : qApp->applicationVersion());
+             ? qApp->applicationVersion().remove(QRegExp("\\.[0-9]+$"))
+             : qApp->applicationVersion());
 }
 
-void Configuration::saveWindow(Window window,
-			       QByteArray state,
-			       QByteArray geometry)
+void
+Configuration::saveWindow(Window window,
+                          QByteArray state,
+                          QByteArray geometry)
 {
     this->_settings.data()->beginGroup("Layout");
     this->_setValue(QString("WindowState")
-		    + QString::number((int)window), state);
+                    + QString::number((int)window), state);
     this->_setValue(QString("WindowGeometry")
-		    + QString::number((int)window), geometry);
+                    + QString::number((int)window), geometry);
     this->_settings.data()->endGroup();
 }
 
-QByteArray Configuration::getWindowState(Window window)
+QByteArray
+Configuration::getWindowState(Window window)
 {
     this->_settings.data()->beginGroup("Layout");
     QByteArray retVal =
-      this->_value(QString("WindowState")
-		   + QString::number((int)window), "").toByteArray();
+        this->_value(QString("WindowState")
+                     + QString::number((int)window), "").toByteArray();
     this->_settings.data()->endGroup();
     return retVal;
 }
 
-QByteArray Configuration::getWindowGeometry(Window window)
+QByteArray
+Configuration::getWindowGeometry(Window window)
 {
     this->_settings.data()->beginGroup("Layout");
     QByteArray retVal =
-      this->_value(QString("WindowGeometry")
-		   + QString::number((int)window), "").toByteArray();
+        this->_value(QString("WindowGeometry")
+                     + QString::number((int)window), "").toByteArray();
     this->_settings.data()->endGroup();
     return retVal;
 }
 
-void Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
+void
+Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
 {
     QMap<QString,QVariant>::iterator webViewSetting;
     this->_settings.data()->beginGroup("WebView");
     for (webViewSetting = webViewSettings.begin();
-	 webViewSetting != webViewSettings.end();
-	 webViewSetting++)
+         webViewSetting != webViewSettings.end();
+         webViewSetting++)
     {
         this->_setValue(webViewSetting.key(), webViewSetting.value());
     }
     this->_settings.data()->endGroup();
 }
 
-QMap<QString,QVariant> Configuration::getWebViewSettings()
+QMap<QString,QVariant>
+Configuration::getWebViewSettings()
 {
     QMap<QString,QVariant> result;
 
@@ -170,7 +183,8 @@ QMap<QString,QVariant> Configuration::getWebViewSettings()
     return result;
 }
 
-QUrl Configuration::getStartPage()
+QUrl
+Configuration::getStartPage()
 {
     // Putting code here is issue #24
 
@@ -178,35 +192,42 @@ QUrl Configuration::getStartPage()
     return this->_defaults.startPage;
 }
 
-QUrl Configuration::makeSearchUrl(QString query)
+QUrl
+Configuration::makeSearchUrl(QString query)
 {
     this->_settings.data()->beginGroup("WebBrowser");
     QUrl url = QUrl(this->_value("DefaultQuery",
-				 this->_defaults.searchQuery).toString()
-		    + query.replace(" ", "+"));
+                                 this->_defaults.searchQuery).toString()
+                    + query.replace(" ", "+"));
     this->_settings.data()->endGroup();
     return url;
 }
 
-QDir Configuration::getStorageLocation(StorageLocation type)
+QDir
+Configuration::getStorageLocation(StorageLocation type)
 {
     QDir location;
     switch (type)
     {
     case FaviconStorageLocation:
-        location = QDir(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
+        location = QDir(QDesktopServices::storageLocation(
+                            QDesktopServices::CacheLocation));
         break;
     case SystemExtensionsLocation:
-        location = QDir(PlatformDependent::p()->extensionsDir(PlatformDependent::System));
+        location = QDir(PlatformDependent::p()->extensionsDir(
+                            PlatformDependent::System));
         break;
     case UserExtensionsLocation:
-        location = QDir(PlatformDependent::p()->extensionsDir(PlatformDependent::User));
+        location = QDir(PlatformDependent::p()->extensionsDir(
+                            PlatformDependent::User));
         break;
     case SystemPresetsLocation:
-        location = QDir(PlatformDependent::p()->presetsDir(PlatformDependent::System));
+        location = QDir(PlatformDependent::p()->presetsDir(
+                            PlatformDependent::System));
         break;
     case UserPresetsLocation:
-        location = QDir(PlatformDependent::p()->presetsDir(PlatformDependent::User));
+        location = QDir(PlatformDependent::p()->presetsDir(
+                            PlatformDependent::User));
         break;
     default:
         return QDir();
@@ -218,18 +239,20 @@ QDir Configuration::getStorageLocation(StorageLocation type)
     return location;
 }
 
-/*  Return the first file matching the pattern
- *  "extensions/<id>/<id><extension-apiversion-mejor>.*". For the "dummy"
- *  extension using API version 1.2, this means "extensions/dummy/dummy1.*".
- *  In other words: Extensions must provide exactly one file matching this
- *  pattern, and that file must contain root class/function of the extension.
+/* Return the first file matching the pattern
+ * "extensions/<id>/<id><extension-apiversion-mejor>.*". For the
+ * "dummy" extension using API version 1.2, this means
+ * "extensions/dummy/dummy1.*".  In other words: Extensions must
+ * provide exactly one file matching this pattern, and that file must
+ * contain root class/function of the extension.
  *
- *  Scripted extensions with the root class inlined in the XML file are not
- *  affected by this restriction.
+ * Scripted extensions with the root class inlined in the XML file are
+ * not affected by this restriction.
  *
- *  Returns QFileInfo() if no such file was found.
+ * Returns QFileInfo() if no such file was found.
  */
-QFileInfo Configuration::extensionRootFile(QString id, VersionNumber apiVersion)
+QFileInfo
+Configuration::extensionRootFile(QString id, VersionNumber apiVersion)
 {
     QFileInfoList candidateFiles;
     QString pattern = id + QString::number(apiVersion.majorVersion()) + ".*";
@@ -238,7 +261,7 @@ QFileInfo Configuration::extensionRootFile(QString id, VersionNumber apiVersion)
     QDir base = PlatformDependent::p()->extensionsDir(PlatformDependent::User);
     base.cd(id);
     candidateFiles = base.entryInfoList(QStringList(pattern),
-					QDir::Files | QDir::Readable);
+                                        QDir::Files | QDir::Readable);
 
     // If there were no such files in the user extension repository,
     // check the system repository.
@@ -247,7 +270,7 @@ QFileInfo Configuration::extensionRootFile(QString id, VersionNumber apiVersion)
         base = PlatformDependent::p()->extensionsDir(PlatformDependent::System);
         base.cd(id);
         candidateFiles = base.entryInfoList(QStringList(pattern),
-					    QDir::Files | QDir::Readable);
+                                            QDir::Files | QDir::Readable);
     }
 
     if (candidateFiles.isEmpty())
@@ -256,7 +279,8 @@ QFileInfo Configuration::extensionRootFile(QString id, VersionNumber apiVersion)
         return candidateFiles.first();
 }
 
-void Configuration::_setValue(const QString &key, const QVariant &value)
+void
+Configuration::_setValue(const QString &key, const QVariant &value)
 {
     if (! this->_writeBlock)
     {
@@ -264,8 +288,9 @@ void Configuration::_setValue(const QString &key, const QVariant &value)
     }
 }
 
-QVariant Configuration::_value(const QString &key,
-			       const QVariant &defaultValue) const
+QVariant
+Configuration::_value(const QString &key,
+                      const QVariant &defaultValue) const
 {
     return this->_settings.data()->value(key, defaultValue);
 }

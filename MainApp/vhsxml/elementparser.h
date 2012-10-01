@@ -34,35 +34,43 @@ namespace VhsXml {
 
         // Returns true iff element.tagName() matches tagName.
         // Prints parsing errors if e.isNull().
-        static bool expect(const QDomElement &element,
-                           const QString &tagName,
-                           ElementAttribute attribute);
+        static bool
+        expect(const QDomElement &element,
+               const QString &tagName,
+               ElementAttribute attribute);
 
         // Parse as ISO date (xsd:dateTime)
-        static QDateTime dateTime(const QString &str);
+        static QDateTime
+        dateTime(const QString &str);
 
         // Parse as boolean
-        static bool boolean(const QString &str, bool defaultValue = false);
+        static bool
+        boolean(const QString &str, bool defaultValue = false);
 
         // Parse as xsd:token
-        static QString token(const QString &str);
+        static QString
+        token(const QString &str);
 
         // Parse child elements and return list of text() from all
-	// childElementName childs, parsed as xsd:token
-        static QStringList tokenList(const QDomElement &parent,
-                                     const QString &childElementName);
+        // childElementName childs, parsed as xsd:token
+        static QStringList
+        tokenList(const QDomElement &parent,
+                  const QString &childElementName);
 
         // Parse as xsd:NMTOKEN.
-        static QString nmtoken(const QString &str);
+        static QString
+        nmtoken(const QString &str);
 
         // Parse child elements and return list of text() from all
-	// childElementName childs, parsed as xsd:NMTOKEN
-        static QStringList nmtokenList(const QDomElement &parent,
-                                       const QString &childElementName);
+        // childElementName childs, parsed as xsd:NMTOKEN
+        static QStringList
+        nmtokenList(const QDomElement &parent,
+                    const QString &childElementName);
 
         // Parse this and all following elements of the same tagname,
         // text() from the element that best matches the current locale.
-        static QString localisedString(QDomElement &e);
+        static QString
+        localisedString(QDomElement &e);
 
     signals:
 

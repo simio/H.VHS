@@ -397,6 +397,7 @@ namespace VhsXml {
                                     releaseDate,
                                     authors,
                                     licenseName,
+                                    licenseUrl,
                                     maintainers,
                                     enabled,
                                     condition,
@@ -408,7 +409,9 @@ namespace VhsXml {
                                     inputTransports,
                                     inputFormats,
                                     outputTransports,
-                                    outputFormats, audits, 0));
+                                    outputFormats,
+                                    audits,
+                                    0));
         if (extension->isValid())
             return extension;
 

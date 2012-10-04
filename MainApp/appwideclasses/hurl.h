@@ -38,19 +38,19 @@ public:
     HUrl(QUrl url, QDateTime timestamp = QDateTime());
     HUrl(QFileInfo file, QDateTime timestamp = QDateTime());
 
-    inline bool
+    bool
     isValid() const;
 
-    inline QUrl
+    QUrl
     toUrl() const;
 
-    inline QString
+    QString
     toString() const;
 
-    inline QFileInfo
+    QFileInfo
     toFileInfo() const;
 
-    inline QDateTime
+    QDateTime
     dateTime() const;
 
 

@@ -19,6 +19,7 @@
 
 #include <QObject>
 #include <QtGui/QApplication>
+#include <QClipboard>
 #include <QWeakPointer>
 #include <QSettings>
 #include <QDebug>
@@ -97,7 +98,7 @@ public:
     getWebViewSettings();
 
     // Browser stuff
-    QUrl
+    QString
     getStartPage();
 
     QUrl

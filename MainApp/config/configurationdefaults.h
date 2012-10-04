@@ -35,12 +35,12 @@ protected:
     // Applies when #ifndef HIDE_DEVEL_INFO
     bool hideDevelInfo;
     // See issue #24
-    QUrl startPage;
+    QString startPage;
 
     ConfigurationDefaults() {
         this->searchQuery = QString("https://www.startpage.com/do/search?q=");
         this->hideDevelInfo = true;
-        this->startPage = QUrl("about:blank");
+        this->startPage = QString("about:blank");
     }
 
     ~ConfigurationDefaults()

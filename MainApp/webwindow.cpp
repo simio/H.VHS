@@ -30,7 +30,7 @@ WebWindow::WebWindow(QWidget *parent) :
 
     this->_setupGui();
 
-    this->_loadPage(Configuration::p()->getStartPage());
+    this->_loadPage(HUrl(Configuration::p()->getStartPage()).toUrl());
 
     ExtensionManager::p()->callHook(EXT_HOOK_AFTER_WEBWINDOW_CONSTRUCTOR);
 }

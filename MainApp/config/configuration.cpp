@@ -183,12 +183,28 @@ Configuration::getWebViewSettings()
     return result;
 }
 
-QUrl
+QString
 Configuration::getStartPage()
 {
-    // Putting code here is issue #24
+    // Prioritised list of values to try. First valid HUrl is used.
+    QStringList candidates;
+    candidates
+	<< (QApplication::arguments().count() > 1
+	    ? QApplication::arguments().at(1)
+	    : "")
+	<< QApplication::clipboard()->text(QClipboard::Clipboard)
+	<< QApplication::clipboard()->text(QClipboard::Selection)
+	//XXX: This needs to be thought through first
+	//<< this->_value("showOnceStartPage", "")
+	//XXX: This needs access to a settings.xml from the net, or
+	//     something similar.
+	//<< this->_value("startPageFromHttp", "")
+	<< this->_value("userStartPage", "").toString();
 
-    // As a last resort, the hard coded default is used
+    foreach(QString cand, candidates)
+	if (! cand.trimmed().isEmpty())
+	    return cand;
+
     return this->_defaults.startPage;
 }
 

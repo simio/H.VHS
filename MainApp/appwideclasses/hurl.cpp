@@ -77,7 +77,11 @@ HUrl::isValid() const
 void
 HUrl::_set(QString uri, QDateTime timestamp)
 {
+    if (uri.startsWith("hvhs:"))
+	uri.remove(0, 5);
+
     this->_uri = uri;
+
     if (timestamp.isNull() || ! timestamp.isValid())
         this->_timestamp = QDateTime::currentDateTimeUtc();
     else

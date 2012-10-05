@@ -48,6 +48,7 @@ WebBrowserLineEdit::focusOutEvent(QFocusEvent *e)
 void
 WebBrowserLineEdit::mouseDoubleClickEvent(QMouseEvent *e)
 {
+    Q_UNUSED(e);
     this->selectAll();
 }
 
@@ -103,6 +104,7 @@ WebBrowserComboBox::addUrl(const QIcon &icon, const QUrl &url)
 void
 WebBrowserLineEdit::onTextChanged(const QString &text)
 {
+    Q_UNUSED(text);
     if (! this->hasFocus())
         this->setCursorPosition(0);
 }

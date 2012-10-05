@@ -19,7 +19,6 @@
 
 #include <QObject>
 #include <QtGui/QApplication>
-#include <QClipboard>
 #include <QWeakPointer>
 #include <QSettings>
 #include <QDebug>
@@ -68,6 +67,12 @@ public:
         UserExtensionsLocation
     };
 
+    enum BrowserStartPage {
+	CompiledDefaultStartPage,
+	UserDefaultStartPage,
+	OneShotStartPage
+    };
+
     QString
     locale(bool full = false);
 
@@ -98,12 +103,16 @@ public:
     getWebViewSettings();
 
     // Browser stuff
-    QString
-    getStartPage();
-
     QUrl
-    makeSearchUrl(QString query);
+    makeSearchUrl(QString query) const;
 
+    QString
+    getStartPage(const BrowserStartPage &page) const;
+
+    void
+    setStartPage(const BrowserStartPage &page,
+		 const QString &page);
+    
     // Filesystem things
     QDir
     getStorageLocation(StorageLocation type);

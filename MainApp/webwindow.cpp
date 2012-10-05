@@ -30,7 +30,7 @@ WebWindow::WebWindow(QWidget *parent) :
 
     this->_setupGui();
 
-    this->_loadPage(HUrl(Configuration::p()->getStartPage()).toUrl());
+    this->_setupWebView();
 
     ExtensionManager::p()->callHook(EXT_HOOK_AFTER_WEBWINDOW_CONSTRUCTOR);
 }
@@ -136,6 +136,46 @@ void WebWindow::_setFocusOnSearchBox()
 void WebWindow::_launchConsoleWindow()
 {
     MessageHandler::p()->createConsoleWindow();
+}
+
+void WebWindow::_setupWebView()
+{
+    HUrl startPage = this->_pickStartPage();
+    qDebug() << "Startpage is" << startPage.toString();
+    this->_loadPage(startPage.toUrl());
+}
+
+HUrl WebWindow::_pickStartPage()
+{
+    QStringList candidates;
+    candidates << (QApplication::arguments().count() > 1
+		   ? QApplication::arguments().at(1)
+		   : "")
+	       << QApplication::clipboard()->text(QClipboard::Clipboard)
+	       << QApplication::clipboard()->text(QClipboard::Selection)
+	       << Configuration::p()->getStartPage(
+		   Configuration::OneShotStartPage)
+	       //XXX: Insert startpage string from http get api here (issue #64)
+	       << Configuration::p()->getStartPage(
+		   Configuration::UserDefaultStartPage);
+
+    foreach(QString cand, candidates)
+	if (! cand.trimmed().isEmpty() && HUrl(cand).isValid())
+	{
+	    if (cand == Configuration::p()->getStartPage(
+		    Configuration::OneShotStartPage))
+		Configuration::p()->setStartPage(
+		    Configuration::OneShotStartPage,
+		    "");
+	    qDebug() << "WebWindow::_pickStartPage(): picked" << cand;
+	    return HUrl(cand);
+	}
+
+    QString page = Configuration::p()->getStartPage(
+	Configuration::CompiledDefaultStartPage);
+    qDebug() << "WebWindow::pickStartPage(): picked compiled default value"
+	     << page;
+    return HUrl(page);
 }
 
 void WebWindow::_updateBrowserIcon(const int &index, const bool &force)

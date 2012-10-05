@@ -19,6 +19,7 @@
 
 #include <QMainWindow>
 #include <QDesktopWidget>
+#include <QClipboard>
 #include <QProgressBar>
 #include <QToolBar>
 #include <QComboBox>
@@ -75,6 +76,7 @@ private:
 
     void _setupGui();                        // Located in webwindowguisetup.cpp
     void _setupWebView();
+    HUrl _pickStartPage();
     void _updateBrowserIcon(const int &index, const bool &force = false);
 
     enum BrowserStatus {

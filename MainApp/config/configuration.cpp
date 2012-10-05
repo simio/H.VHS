@@ -183,33 +183,8 @@ Configuration::getWebViewSettings()
     return result;
 }
 
-QString
-Configuration::getStartPage()
-{
-    // Prioritised list of values to try. First valid HUrl is used.
-    QStringList candidates;
-    candidates
-	<< (QApplication::arguments().count() > 1
-	    ? QApplication::arguments().at(1)
-	    : "")
-	<< QApplication::clipboard()->text(QClipboard::Clipboard)
-	<< QApplication::clipboard()->text(QClipboard::Selection)
-	//XXX: This needs to be thought through first
-	//<< this->_value("showOnceStartPage", "")
-	//XXX: This needs access to a settings.xml from the net, or
-	//     something similar.
-	//<< this->_value("startPageFromHttp", "")
-	<< this->_value("userStartPage", "").toString();
-
-    foreach(QString cand, candidates)
-	if (! cand.trimmed().isEmpty())
-	    return cand;
-
-    return this->_defaults.startPage;
-}
-
 QUrl
-Configuration::makeSearchUrl(QString query)
+Configuration::makeSearchUrl(QString query) const
 {
     this->_settings.data()->beginGroup("WebBrowser");
     QUrl url = QUrl(this->_value("DefaultQuery",
@@ -217,6 +192,42 @@ Configuration::makeSearchUrl(QString query)
                     + query.replace(" ", "+"));
     this->_settings.data()->endGroup();
     return url;
+}
+
+QString
+Configuration::getStartPage(const BrowserStartPage &page) const
+{
+    switch (page)
+    {
+    case Configuration::UserDefaultStartPage:
+	return this->_value("userStartPage", QString()).toString();
+	/* NOTREACHED */
+    case Configuration::OneShotStartPage:
+	return this->_value("oneShotStartPage", QString()).toString();
+	/* NOTREACHED */
+    case Configuration::CompiledDefaultStartPage:
+    default:
+	return this->_defaults.startPage;
+	/* NOTREACHED */
+    }
+}
+
+void
+Configuration::setStartPage(const BrowserStartPage &page,
+			    const QString &value)
+{
+    switch (page)
+    {
+    case Configuration::UserDefaultStartPage:
+	this->_setValue("userStartPage", value);
+	break;
+    case Configuration::OneShotStartPage:
+	this->_setValue("oneShotStartPage", value);
+	break;
+    default:
+	qWarning() << "Configuration::setStartPage(): cannot set start"
+		   << "page of type" << page;
+    }
 }
 
 QDir

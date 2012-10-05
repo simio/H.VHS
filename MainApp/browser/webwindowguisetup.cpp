@@ -35,8 +35,7 @@ WebWindow::_setupGui()
     this->_toolBarBrowser =
         QWeakPointer<QToolBar>(new QToolBar(tr("Browser Navigation"), this));
     this->_toolBarBrowser.data()->layout()->setSpacing(3);
-    this->_toolBarBrowser.data()->layout()->setObjectName(
-        "BrowserToolBarLayout");
+    this->_toolBarBrowser.data()->layout()->setObjectName("BrowserToolBarLayout");
     this->_toolBarBrowser.data()->setObjectName("BrowserToolBar");
     this->_toolBarBrowser.data()->setIconSize(QSize(24, 24));
     this->addToolBar(this->_toolBarBrowser.data());
@@ -46,44 +45,34 @@ WebWindow::_setupGui()
         QWeakPointer<QAction>(
             this->_webView.data()->pageAction(QWebPage::Back));
     this->_actionBrowseForward =
-        QWeakPointer<QAction>(
-            this->_webView.data()->pageAction(QWebPage::Forward));
+        QWeakPointer<QAction>(this->_webView.data()->pageAction(QWebPage::Forward));
     this->_actionBrowseReload =
-        QWeakPointer<QAction>(
-            this->_webView.data()->pageAction(QWebPage::Reload));
+        QWeakPointer<QAction>(this->_webView.data()->pageAction(QWebPage::Reload));
     this->_actionBrowseReloadAndBypassCache =
-        QWeakPointer<QAction>(
-            this->_webView.data()->pageAction(QWebPage::ReloadAndBypassCache));
+        QWeakPointer<QAction>(this->_webView.data()->pageAction(QWebPage::ReloadAndBypassCache));
     this->_actionBrowseStop =
-        QWeakPointer<QAction>(
-            this->_webView.data()->pageAction(QWebPage::Stop));
+        QWeakPointer<QAction>(this->_webView.data()->pageAction(QWebPage::Stop));
     // alloc: Has parent
-    this->_actionBrowseHome =
-        QWeakPointer<QAction>(
-            new QAction(tr("Go Home"), this));
+    this->_actionBrowseHome = QWeakPointer<QAction>(new QAction(tr("Go Home"), this));
 
     // alloc: Has parent
     this->_actionFocusAddressBar =
-        QWeakPointer<QAction>(
-            new QAction(tr("Set Focus on Address Bar"), this));
+        QWeakPointer<QAction>(new QAction(tr("Set Focus on Address Bar"), this));
     // alloc: Has parent
     this->_actionFocusSearchBox =
-        QWeakPointer<QAction>(
-            new QAction(tr("Set Focus on Search Box"), this));
+        QWeakPointer<QAction>(new QAction(tr("Set Focus on Search Box"), this));
 
     // ...and widgets
     // alloc: Has parent
     this->_comboBoxAddressBar =
-        QWeakPointer<WebBrowserComboBox>(
-            new WebBrowserComboBox(this));
+        QWeakPointer<WebBrowserComboBox>(new WebBrowserComboBox(this));
     // alloc: Has parent
     this->_comboBoxQuickPicker = QWeakPointer<QComboBox>(new QComboBox(this));
     // alloc: Has parent
     this->_lineEditSearch = QWeakPointer<QLineEdit>(new QLineEdit(this));
     // alloc: Has parent
     this->_browserProgressBar =
-        QWeakPointer<QProgressBar>(
-            new QProgressBar(this));
+        QWeakPointer<QProgressBar>(new QProgressBar(this));
 
     // Configure actions
     this->_actionBrowseBack.data()->setIcon(QIcon(":/icons/browseBack"));
@@ -117,18 +106,13 @@ WebWindow::_setupGui()
     actionFocusAddressBarShortcuts << QKeySequence(tr("F8"))
                                    << QKeySequence(tr("Ctrl+L"))
                                    << QKeySequence(tr("Alt+D"));
-    this->_actionFocusAddressBar.data()->setShortcuts(
-        actionFocusAddressBarShortcuts);
-    this->_actionFocusSearchBox.data()->setShortcut(
-        QKeySequence(tr("Ctrl+E")));
+    this->_actionFocusAddressBar.data()->setShortcuts(actionFocusAddressBarShortcuts);
+    this->_actionFocusSearchBox.data()->setShortcut(QKeySequence(tr("Ctrl+E")));
 
     // Configure widgets
-    this->_comboBoxAddressBar.data()->setSizePolicy(
-        QSizePolicy::Expanding,
+    this->_comboBoxAddressBar.data()->setSizePolicy(QSizePolicy::Expanding,
         this->_comboBoxAddressBar.data()->sizePolicy().verticalPolicy());
-    this->_comboBoxAddressBar.data()->setItemIcon(
-        0,
-        this->_webView.data()->icon());
+    this->_comboBoxAddressBar.data()->setItemIcon(0, this->_webView.data()->icon());
     this->_lineEditSearch.data()->setSizePolicy(
         QSizePolicy::Minimum,
         this->_lineEditSearch.data()->sizePolicy().verticalPolicy());
@@ -139,50 +123,28 @@ WebWindow::_setupGui()
     this->_browserProgressBar.data()->setMaximumHeight(20);
 
     // Connect actions and widgets
-    connect(this->_comboBoxAddressBar.data(),
-            SIGNAL(activated(const QString&)),
-            this,
-            SLOT(_loadPage(const QString&)));
-    connect(this->_webView.data(),
-            SIGNAL(loadProgress(int)),
-            this,
-            SLOT(_receiveBrowserProgress(int)));
-    connect(this->_webView.data(),
-            SIGNAL(loadStarted()),
-            this,
-            SLOT(_whenWebViewLoadStarted()));
-    connect(this->_webView.data(),
-            SIGNAL(loadFinished(bool)),
-            this,
-            SLOT(_whenWebViewLoadFinished(bool)));
-    connect(this->_webView.data(),
-            SIGNAL(iconChanged()),
-            this,
-            SLOT(_whenWebViewIconChanged()));
-    connect(this->_webView.data(),
-            SIGNAL(urlChanged(const QUrl &)),
-            this,
-            SLOT(_whenWebViewUrlChanged(const QUrl&)));
-    connect(this->_webView.data(),
-            SIGNAL(statusBarMessage(const QString &)),
-            this,
-            SLOT(_receiveStatusBarMessage(QString)));
-    connect(this->_webView.data(),
-            SIGNAL(titleChanged(const QString &)),
-            this,
-            SLOT(_whenWebViewTitleChanged(QString)));
-    connect(this->_lineEditSearch.data(),
-            SIGNAL(returnPressed()),
-            this,
-            SLOT(_whenSearchBoxReturnPressed()));
-    connect(this->_actionFocusAddressBar.data(),
-            SIGNAL(triggered()),
-            this,
-            SLOT(_setFocusOnAddressBar()));
-    connect(this->_actionFocusSearchBox.data(),
-            SIGNAL(triggered()),
-            this,
-            SLOT(_setFocusOnSearchBox()));
+    connect(this->_comboBoxAddressBar.data(), SIGNAL(activated(const QString&)),
+            this, SLOT(_loadPage(const QString&)));
+    connect(this->_webView.data(), SIGNAL(loadProgress(int)),
+            this, SLOT(_receiveBrowserProgress(int)));
+    connect(this->_webView.data(), SIGNAL(loadStarted()),
+            this, SLOT(_whenWebViewLoadStarted()));
+    connect(this->_webView.data(), SIGNAL(loadFinished(bool)),
+            this, SLOT(_whenWebViewLoadFinished(bool)));
+    connect(this->_webView.data(), SIGNAL(iconChanged()),
+            this, SLOT(_whenWebViewIconChanged()));
+    connect(this->_webView.data(), SIGNAL(urlChanged(const QUrl &)),
+            this, SLOT(_whenWebViewUrlChanged(const QUrl&)));
+    connect(this->_webView.data(), SIGNAL(statusBarMessage(const QString &)),
+            this, SLOT(_receiveStatusBarMessage(QString)));
+    connect(this->_webView.data(), SIGNAL(titleChanged(const QString &)),
+            this, SLOT(_whenWebViewTitleChanged(QString)));
+    connect(this->_lineEditSearch.data(), SIGNAL(returnPressed()),
+            this, SLOT(_whenSearchBoxReturnPressed()));
+    connect(this->_actionFocusAddressBar.data(), SIGNAL(triggered()),
+            this, SLOT(_setFocusOnAddressBar()));
+    connect(this->_actionFocusSearchBox.data(), SIGNAL(triggered()),
+            this, SLOT(_setFocusOnSearchBox()));
 
     // Add actions and widgets to browser toolbar
     this->_toolBarBrowser.data()->addAction(this->_actionBrowseBack.data());
@@ -200,14 +162,10 @@ WebWindow::_setupGui()
 
     // Restore window state and geometry, or set default geometry if
     // no previous settings exist
-    if (! Configuration::p()->getWindowState(
-            Configuration::WebWindow).isEmpty())
-        this->restoreState(
-            Configuration::p()->getWindowState(Configuration::WebWindow));
-    if (! Configuration::p()->getWindowGeometry(
-            Configuration::WebWindow).isEmpty())
-        this->restoreGeometry(
-            Configuration::p()->getWindowGeometry(Configuration::WebWindow));
+    if (! Configuration::p()->getWindowState(Configuration::WebWindow).isEmpty())
+        this->restoreState(Configuration::p()->getWindowState(Configuration::WebWindow));
+    if (! Configuration::p()->getWindowGeometry(Configuration::WebWindow).isEmpty())
+        this->restoreGeometry(Configuration::p()->getWindowGeometry(Configuration::WebWindow));
     else
     {
         int defaultWidth =
@@ -223,17 +181,13 @@ WebWindow::_setupGui()
 
     // Create top menus
     // alloc: Has parent
-    this->_menuFile =
-        QWeakPointer<QMenu>(new QMenu(tr("&File"), ui->menuBar));
+    this->_menuFile = QWeakPointer<QMenu>(new QMenu(tr("&File"), ui->menuBar));
     // alloc: Has parent
-    this->_menuSettings =
-        QWeakPointer<QMenu>(new QMenu(tr("&Settings"), ui->menuBar));
+    this->_menuSettings = QWeakPointer<QMenu>(new QMenu(tr("&Settings"), ui->menuBar));
     // alloc: Has parent
-    this->_menuAdvanced =
-        QWeakPointer<QMenu>(new QMenu(tr("&Advanced"), ui->menuBar));
+    this->_menuAdvanced = QWeakPointer<QMenu>(new QMenu(tr("&Advanced"), ui->menuBar));
     // alloc: Has parent
-    this->_menuInfo =
-        QWeakPointer<QMenu>(new QMenu(tr("&Info"), ui->menuBar));
+    this->_menuInfo = QWeakPointer<QMenu>(new QMenu(tr("&Info"), ui->menuBar));
 
     // FILE MENU
     // += Quit
@@ -253,33 +207,24 @@ WebWindow::_setupGui()
         QWeakPointer<QAction>(new QAction(tr("Allow Browser &Plugins"),
                                           this->_menuSettings.data()));
     this->_actionToggleWebViewPlugins.data()->setCheckable(true);
-    this->_actionToggleWebViewPlugins.data()->setChecked(
-        this->_webView.data()->pluginsEnabled());
-    this->_actionToggleWebViewPlugins.data()->setShortcut(
-        QKeySequence(tr("Ctrl+Alt+P")));
-    connect(this->_actionToggleWebViewPlugins.data(),
-            SIGNAL(toggled(bool)),
-            this->_webView.data(),
-            SLOT(setPluginsEnabled(bool)));
+    this->_actionToggleWebViewPlugins.data()->setChecked(this->_webView.data()->pluginsEnabled());
+    this->_actionToggleWebViewPlugins.data()->setShortcut(QKeySequence(tr("Ctrl+Alt+P")));
+    connect(this->_actionToggleWebViewPlugins.data(), SIGNAL(toggled(bool)),
+            this->_webView.data(), SLOT(setPluginsEnabled(bool)));
 
-    this->_menuSettings.data()->addAction(
-        this->_actionToggleWebViewPlugins.data());
+    this->_menuSettings.data()->addAction(this->_actionToggleWebViewPlugins.data());
     // +- Toggle Java
     // alloc: Has parent
-    this->_actionToggleWebViewJava =
-        QWeakPointer<QAction>(new QAction(tr("Allow &Java"),
-                                          this->_menuSettings.data()));
+    this->_actionToggleWebViewJava = QWeakPointer<QAction>(new QAction(tr("Allow &Java"),
+								       this->_menuSettings.data()));
     this->_actionToggleWebViewJava.data()->setCheckable(true);
-    this->_actionToggleWebViewJava.data()->setChecked(
-        this->_webView.data()->javaEnabled());
-    this->_actionToggleWebViewJava.data()->setShortcut(
-        QKeySequence(tr("Ctrl+Alt+J")));
+    this->_actionToggleWebViewJava.data()->setChecked(this->_webView.data()->javaEnabled());
+    this->_actionToggleWebViewJava.data()->setShortcut(QKeySequence(tr("Ctrl+Alt+J")));
     connect(this->_actionToggleWebViewJava.data(),
             SIGNAL(toggled(bool)),
             this->_webView.data(),
             SLOT(setJavaEnabled(bool)));
-    this->_menuSettings.data()->addAction(
-        this->_actionToggleWebViewJava.data());
+    this->_menuSettings.data()->addAction(this->_actionToggleWebViewJava.data());
 
     // ADVANCED MENU
     // +- Launch Console Window
@@ -287,27 +232,19 @@ WebWindow::_setupGui()
     this->_actionLaunchConsoleWindow =
         QWeakPointer<QAction>(new QAction(tr("Launch &Console Window"),
                                           this->_menuAdvanced.data()));
-    this->_actionLaunchConsoleWindow.data()->setShortcut(
-        QKeySequence(tr("F12")));
-    connect(this->_actionLaunchConsoleWindow.data(),
-            SIGNAL(triggered()),
-            this,
-            SLOT(_launchConsoleWindow()));
-    this->_menuAdvanced.data()->addAction(
-        this->_actionLaunchConsoleWindow.data());
+    this->_actionLaunchConsoleWindow.data()->setShortcut(QKeySequence(tr("F12")));
+    connect(this->_actionLaunchConsoleWindow.data(), SIGNAL(triggered()),
+            this, SLOT(_launchConsoleWindow()));
+    this->_menuAdvanced.data()->addAction(this->_actionLaunchConsoleWindow.data());
     // +- Clear storage and quit
     // alloc: Has parent
     this->_actionClearStorageAndQuit =
         QWeakPointer<QAction>(new QAction(tr("Clear &Storage and Quit"),
                                           this->_menuAdvanced.data()));
-    this->_actionClearStorageAndQuit.data()->setShortcut(
-        QKeySequence(tr("Ctrl+Alt+Q")));
-    connect(this->_actionClearStorageAndQuit.data(),
-            SIGNAL(triggered()),
-            this,
-            SLOT(_clearStorageAndQuit()));
-    this->_menuAdvanced.data()->addAction(
-        this->_actionClearStorageAndQuit.data());
+    this->_actionClearStorageAndQuit.data()->setShortcut(QKeySequence(tr("Ctrl+Alt+Q")));
+    connect(this->_actionClearStorageAndQuit.data(), SIGNAL(triggered()),
+            this, SLOT(_clearStorageAndQuit()));
+    this->_menuAdvanced.data()->addAction(this->_actionClearStorageAndQuit.data());
 
     // INFO MENU
     // += About

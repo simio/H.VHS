@@ -77,6 +77,7 @@ public:
     virtual qint64
     pluginHook(const qint64 hook, QVariant &hookData)
     {
+        Q_UNUSED(hook); Q_UNUSED(hookData);
         return EXT_RETVAL_NOOP;
     }
 
@@ -90,6 +91,7 @@ public:
     virtual const QSharedPointer<QIODevice>
     openStream(QIODevice::OpenModeFlag openMode, const QString hurl)
     {
+        Q_UNUSED(openMode); Q_UNUSED(hurl);
         return QSharedPointer<QIODevice>();
     }
 
@@ -97,6 +99,7 @@ public:
     virtual const bool
     setupFilter(QHash<QString,QVariant> setupData)
     {
+        Q_UNUSED(setupData);
         return false;
     }
 

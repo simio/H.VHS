@@ -211,8 +211,8 @@ WebWindow::_setupGui()
     this->_actionToggleWebViewPlugins.data()->setShortcut(QKeySequence(tr("Ctrl+Alt+P")));
     connect(this->_actionToggleWebViewPlugins.data(), SIGNAL(toggled(bool)),
             this->_webView.data(), SLOT(setPluginsEnabled(bool)));
-
     this->_menuSettings.data()->addAction(this->_actionToggleWebViewPlugins.data());
+
     // +- Toggle Java
     // alloc: Has parent
     this->_actionToggleWebViewJava = QWeakPointer<QAction>(new QAction(tr("Allow &Java"),
@@ -225,6 +225,18 @@ WebWindow::_setupGui()
             this->_webView.data(),
             SLOT(setJavaEnabled(bool)));
     this->_menuSettings.data()->addAction(this->_actionToggleWebViewJava.data());
+
+    // +====================
+    this->_menuSettings.data()->addSeparator();
+
+    // +- Select File Dialog Default Path
+    // alloc: Has parent
+    this->_actionSelectDefaultFileDialogPath =
+	QWeakPointer<QAction>(new QAction(tr("&Default Save/Open Folder..."),
+					  this->_menuSettings.data()));
+    connect(this->_actionSelectDefaultFileDialogPath.data(), SIGNAL(triggered()),
+	    this, SLOT(_selectDefaultFileDialogPath()));
+    this->_menuSettings.data()->addAction(this->_actionSelectDefaultFileDialogPath.data());
 
     // ADVANCED MENU
     // +- Launch Console Window

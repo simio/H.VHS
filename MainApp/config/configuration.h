@@ -129,6 +129,9 @@ public:
     void
     setDefaultFileDialogPath(const QString &path);
 
+    void
+    setSessionFileDialogPath(const QString &path);
+
 public slots:
 
 signals:
@@ -159,6 +162,8 @@ private:
     QString _gitBranch;
 
     QWeakPointer<QSettings> _settings;
+
+    QString _sessionFileDialogPath;
 };
 
 #endif // CONFIG_CONFIGURATION_H

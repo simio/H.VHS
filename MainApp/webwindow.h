@@ -19,6 +19,7 @@
 
 #include <QMainWindow>
 #include <QDesktopWidget>
+#include <QFileDialog>
 #include <QClipboard>
 #include <QProgressBar>
 #include <QToolBar>
@@ -71,6 +72,8 @@ private slots:
 
     void _launchConsoleWindow();
 
+    void _selectDefaultFileDialogPath();
+
 private:
     Ui::WebWindow *ui;
 
@@ -112,6 +115,7 @@ private:
     QWeakPointer<QMenu> _menuSettings;
     QWeakPointer<QAction> _actionToggleWebViewPlugins;
     QWeakPointer<QAction> _actionToggleWebViewJava;
+    QWeakPointer<QAction> _actionSelectDefaultFileDialogPath;
 
     // Advanced menu
     QWeakPointer<QMenu> _menuAdvanced;

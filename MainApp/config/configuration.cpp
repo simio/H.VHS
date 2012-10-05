@@ -44,6 +44,8 @@ Configuration::Configuration(QObject *parent) :
     this->_gitHash = QString( GIT_HASH );
     this->_gitBranch = QString( GIT_BRANCH );
     this->_gitTag = QString( GIT_TAG );
+
+    this->_sessionFileDialogPath = QString();
 }
 
 void
@@ -311,8 +313,9 @@ Configuration::extensionRootFile(const QString &id,
 QDir
 Configuration::getDefaultFileDialogPath() const
 {
-    return this->_value("defaultFileDialogPath",
-			this->_defaults.fileDialogPath).toString();
+    return (this->_sessionFileDialogPath.isEmpty())
+	? this->_value("defaultFileDialogPath", this->_defaults.fileDialogPath).toString()
+	: QDir(this->_sessionFileDialogPath);
 }
 
 void
@@ -323,6 +326,11 @@ Configuration::setDefaultFileDialogPath(const QString &path)
 	     << "path is now" << path;
 }
 
+void
+Configuration::setSessionFileDialogPath(const QString &path)
+{
+    this->_sessionFileDialogPath = path;
+}
 
 void
 Configuration::_setValue(const QString &key, const QVariant &value)

@@ -34,7 +34,7 @@ protected:
     QString searchQuery;
     // Applies when #ifndef HIDE_DEVEL_INFO
     bool hideDevelInfo;
-    // See issue #24
+    // "Factory default" web browser start page
     QString startPage;
 
     ConfigurationDefaults() {

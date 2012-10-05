@@ -70,8 +70,10 @@ HUrl::dateTime() const
 bool
 HUrl::isValid() const
 {
-    // Just a basic check for now
-    return (! this->_uri.isEmpty() && this->_timestamp.isValid());
+    return (! this->_uri.isEmpty() &&
+	    this->_timestamp.isValid() &&
+	    QRegExp("^[a-z]+:").indexIn(this->_uri) == 0
+	);
 }
 
 void

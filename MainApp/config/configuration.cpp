@@ -308,6 +308,22 @@ Configuration::extensionRootFile(const QString &id,
         return candidateFiles.first();
 }
 
+QDir
+Configuration::getDefaultFileDialogPath() const
+{
+    return this->_value("defaultFileDialogPath",
+			this->_defaults.fileDialogPath).toString();
+}
+
+void
+Configuration::setDefaultFileDialogPath(const QString &path)
+{
+    this->_setValue("defaultFileDialogPath", path);
+    qDebug() << "Configuration::setDefaultFileDialogPath():"
+	     << "path is now" << path;
+}
+
+
 void
 Configuration::_setValue(const QString &key, const QVariant &value)
 {

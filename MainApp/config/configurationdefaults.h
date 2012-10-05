@@ -18,6 +18,8 @@
 #define CONFIG_CONFIGURATIONDEFAULTS_H
 
 #include <QString>
+#include <QDir>
+#include <QDesktopServices>
 
 #include "config/configuration.h"
 
@@ -36,11 +38,40 @@ protected:
     bool hideDevelInfo;
     // "Factory default" web browser start page
     QString startPage;
+    // "Factory default" save/open file dialog path
+    QString fileDialogPath;
 
     ConfigurationDefaults() {
         this->searchQuery = QString("https://www.startpage.com/do/search?q=");
         this->hideDevelInfo = true;
         this->startPage = QString("about:blank");
+	this->fileDialogPath = QDir::rootPath();
+
+	// Use the first existing path for fileDialogPath
+	QStringList candidates;
+	candidates
+	    << QDesktopServices::storageLocation(
+		QDesktopServices::HomeLocation) + "/Downloads"
+	    << QDesktopServices::storageLocation(
+		QDesktopServices::DesktopLocation) + "/Downloads"
+	    << QDesktopServices::storageLocation(
+		QDesktopServices::MoviesLocation)
+	    << QDesktopServices::storageLocation(
+		QDesktopServices::DocumentsLocation)
+	    << QDesktopServices::storageLocation(
+		QDesktopServices::DesktopLocation)
+	    << QDesktopServices::storageLocation(
+		QDesktopServices::HomeLocation);
+
+	foreach (QString cand, candidates)
+	    if (QDir(cand).exists())
+	    {
+		this->fileDialogPath = cand;
+		break;
+	    }
+
+	qDebug() << "ConfigurationDefaults(): fileDialogPath factory default is"
+		 << this->fileDialogPath;
     }
 
     ~ConfigurationDefaults()

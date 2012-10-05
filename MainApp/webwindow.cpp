@@ -103,14 +103,12 @@ void WebWindow::_whenWebViewIconChanged()
 
 void WebWindow::_whenWebViewTitleChanged(const QString &title)
 {
-    this->setWindowTitle(title + (title.isEmpty() ? "" : " - ")
-                         + Configuration::p()->appName());
+    this->setWindowTitle(title + (title.isEmpty() ? "" : " - ") + Configuration::p()->appName());
 }
 
 void WebWindow::_whenSearchBoxReturnPressed()
 {
-    this->_loadPage(Configuration::p()->makeSearchUrl(
-                        this->_lineEditSearch.data()->text()));
+    this->_loadPage(Configuration::p()->makeSearchUrl(this->_lineEditSearch.data()->text()));
 }
 
 void WebWindow::_receiveStatusBarMessage(const QString &text)
@@ -153,20 +151,15 @@ HUrl WebWindow::_pickStartPage()
 		   : "")
 	       << QApplication::clipboard()->text(QClipboard::Clipboard)
 	       << QApplication::clipboard()->text(QClipboard::Selection)
-	       << Configuration::p()->getStartPage(
-		   Configuration::OneShotStartPage)
+	       << Configuration::p()->getStartPage(Configuration::OneShotStartPage)
 	       //XXX: Insert startpage string from http get api here (issue #64)
-	       << Configuration::p()->getStartPage(
-		   Configuration::UserDefaultStartPage);
+	       << Configuration::p()->getStartPage(Configuration::UserDefaultStartPage);
 
     foreach(QString cand, candidates)
 	if (! cand.trimmed().isEmpty() && HUrl(cand).isValid())
 	{
-	    if (cand == Configuration::p()->getStartPage(
-		    Configuration::OneShotStartPage))
-		Configuration::p()->setStartPage(
-		    Configuration::OneShotStartPage,
-		    "");
+	    if (cand == Configuration::p()->getStartPage(Configuration::OneShotStartPage))
+		Configuration::p()->setStartPage(Configuration::OneShotStartPage, "");
 	    qDebug() << "WebWindow::_pickStartPage(): picked" << cand;
 	    return HUrl(cand);
 	}
@@ -182,14 +175,15 @@ void WebWindow::_updateBrowserIcon(const int &index, const bool &force)
 {
     if (force || this->_comboBoxAddressBar.data()->itemIcon(index).isNull())
         this->_comboBoxAddressBar.data()->setItemIcon(
-            index,
-            this->_webView.data()->settings()->iconForUrl(
-                QUrl(this->_comboBoxAddressBar.data()->itemText(index))));
+	    index,
+	    this->_webView.data()->settings()->iconForUrl(
+		QUrl(this->_comboBoxAddressBar.data()->itemText(index))));
 }
 
 void WebWindow::closeEvent(QCloseEvent *event)
 {
-    Configuration::p()->saveWindow(
-        Configuration::WebWindow, this->saveState(), this->saveGeometry());
+    Configuration::p()->saveWindow(Configuration::WebWindow,
+				   this->saveState(),
+				   this->saveGeometry());
     QMainWindow::closeEvent(event);
 }

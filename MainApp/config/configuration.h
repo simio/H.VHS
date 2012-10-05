@@ -68,9 +68,9 @@ public:
     };
 
     enum BrowserStartPage {
-	CompiledDefaultStartPage,
-	UserDefaultStartPage,
-	OneShotStartPage
+        CompiledDefaultStartPage,
+        UserDefaultStartPage,
+        OneShotStartPage
     };
 
     QString
@@ -89,8 +89,8 @@ public:
     // GUI states
     void
     saveWindow(const Window &window,
-	       const QByteArray &state,
-	       const QByteArray &geometry);
+               const QByteArray &state,
+               const QByteArray &geometry);
 
     QByteArray
     getWindowState(const Window &window) const;
@@ -113,15 +113,21 @@ public:
 
     void
     setStartPage(const BrowserStartPage &page,
-		 const QString &page);
-    
+                 const QString &page);
+
     // Filesystem things
     QDir
     getStorageLocation(const StorageLocation &type) const;
 
     QFileInfo
     extensionRootFile(const QString &id,
-		      const VersionNumber &apiVersion) const;
+                      const VersionNumber &apiVersion) const;
+
+    QDir
+    getDefaultFileDialogPath() const;
+
+    void
+    setDefaultFileDialogPath(const QString &path);
 
 public slots:
 

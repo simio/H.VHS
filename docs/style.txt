@@ -1,0 +1,25 @@
+CODING STYLE
+
+(work in progress)
+
+- Use Qt data types and functions whenever possible.
+- Wrap long lines after 100 columns
+- Pick useful variable names
+- Prefix private names with _ (underscore)
+- Typos should break at compile time
+- Do not omit "this->"
+- Indent like the Emacs "bsd" style, with a tab width of 4
+
+
+.emacs SNIPPETS
+
+Indentation:
+
+    (setq c-default-style "bsd"
+          c-basic-offset 4)
+
+Recognise Qt keywords:
+
+    (require 'cc-mode)
+    (setq c-C++-access-key "\\<\\(slots\\|signals\\|private\\|protected\\|public\\)\\>[\t]*[(slots\\|signals)]*[ \t]*:")
+    (font-lock-add-keywords 'c++-mode '(("\\<\\(Q_OBJECT\\|public slots\\|public signals\\|private slots\\|private signals\\|protected slots\\|signals\\|protected signals\\)\\>" . font-lock-keyword-face)))

@@ -65,7 +65,7 @@ Configuration::clearStorage()
 }
 
 QString
-Configuration::locale(bool full)
+Configuration::locale(bool full) const
 {
     //XXX: Fixing this is and actually detecting the proper locale is issue #7
     return ( full ? "sv" : "sv-se" );
@@ -80,7 +80,7 @@ Configuration::p()
 }
 
 QString
-Configuration::appName(bool full)
+Configuration::appName(bool full) const
 {
     return qApp->applicationName()
         + " " + this->appVersion()
@@ -89,7 +89,7 @@ Configuration::appName(bool full)
 }
 
 QString
-Configuration::_wrapPublicAppTag(QString prepend, QString append)
+Configuration::_wrapPublicAppTag(QString prepend, QString append) const
 {
     return (this->_publicAppTag.isEmpty()
             ? ""
@@ -97,7 +97,7 @@ Configuration::_wrapPublicAppTag(QString prepend, QString append)
 }
 
 QString
-Configuration::_wrapGitInfo(QString prepend, QString append)
+Configuration::_wrapGitInfo(QString prepend, QString append) const
 {
     QString info = (this->_gitTag.isEmpty() ? "" : ":" + this->_gitTag)
         + " ("
@@ -110,7 +110,7 @@ Configuration::_wrapGitInfo(QString prepend, QString append)
 }
 
 QString
-Configuration::appVersion()
+Configuration::appVersion() const
 {
     return ( this->_hideDevelInfo
              ? qApp->applicationVersion().remove(QRegExp("\\.[0-9]+$"))
@@ -118,9 +118,9 @@ Configuration::appVersion()
 }
 
 void
-Configuration::saveWindow(Window window,
-                          QByteArray state,
-                          QByteArray geometry)
+Configuration::saveWindow(const Window &window,
+                          const QByteArray &state,
+                          const QByteArray &geometry)
 {
     this->_settings.data()->beginGroup("Layout");
     this->_setValue(QString("WindowState")
@@ -131,7 +131,7 @@ Configuration::saveWindow(Window window,
 }
 
 QByteArray
-Configuration::getWindowState(Window window)
+Configuration::getWindowState(const Window &window) const
 {
     this->_settings.data()->beginGroup("Layout");
     QByteArray retVal =
@@ -142,7 +142,7 @@ Configuration::getWindowState(Window window)
 }
 
 QByteArray
-Configuration::getWindowGeometry(Window window)
+Configuration::getWindowGeometry(const Window &window) const
 {
     this->_settings.data()->beginGroup("Layout");
     QByteArray retVal =
@@ -167,7 +167,7 @@ Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
 }
 
 QMap<QString,QVariant>
-Configuration::getWebViewSettings()
+Configuration::getWebViewSettings() const
 {
     QMap<QString,QVariant> result;
 
@@ -184,12 +184,13 @@ Configuration::getWebViewSettings()
 }
 
 QUrl
-Configuration::makeSearchUrl(QString query) const
+Configuration::makeSearchUrl(const QString &query) const
 {
+    QString q(query);
     this->_settings.data()->beginGroup("WebBrowser");
     QUrl url = QUrl(this->_value("DefaultQuery",
                                  this->_defaults.searchQuery).toString()
-                    + query.replace(" ", "+"));
+                    + q.replace(" ", "+"));
     this->_settings.data()->endGroup();
     return url;
 }
@@ -231,7 +232,7 @@ Configuration::setStartPage(const BrowserStartPage &page,
 }
 
 QDir
-Configuration::getStorageLocation(StorageLocation type)
+Configuration::getStorageLocation(const StorageLocation &type) const
 {
     QDir location;
     switch (type)
@@ -279,7 +280,8 @@ Configuration::getStorageLocation(StorageLocation type)
  * Returns QFileInfo() if no such file was found.
  */
 QFileInfo
-Configuration::extensionRootFile(QString id, VersionNumber apiVersion)
+Configuration::extensionRootFile(const QString &id,
+				 const VersionNumber &apiVersion) const
 {
     QFileInfoList candidateFiles;
     QString pattern = id + QString::number(apiVersion.majorVersion()) + ".*";

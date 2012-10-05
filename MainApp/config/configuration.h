@@ -74,37 +74,39 @@ public:
     };
 
     QString
-    locale(bool full = false);
+    locale(bool full = false) const;
 
     // App and version info
     QString
-    appName(bool full = false);
+    appName(bool full = false) const;
 
     QString
-    appVersion();
+    appVersion() const;
 
     QString
     fullAppName(bool fullVersion = false);
 
     // GUI states
     void
-    saveWindow(Window window, QByteArray state, QByteArray geometry);
+    saveWindow(const Window &window,
+	       const QByteArray &state,
+	       const QByteArray &geometry);
 
     QByteArray
-    getWindowState(Window window);
+    getWindowState(const Window &window) const;
 
     QByteArray
-    getWindowGeometry(Window window);
+    getWindowGeometry(const Window &window) const;
 
     void
     saveWebViewSettings(QMap<QString,QVariant> settings);
 
     QMap<QString,QVariant>
-    getWebViewSettings();
+    getWebViewSettings() const;
 
     // Browser stuff
     QUrl
-    makeSearchUrl(QString query) const;
+    makeSearchUrl(const QString &query) const;
 
     QString
     getStartPage(const BrowserStartPage &page) const;
@@ -115,10 +117,11 @@ public:
     
     // Filesystem things
     QDir
-    getStorageLocation(StorageLocation type);
+    getStorageLocation(const StorageLocation &type) const;
 
     QFileInfo
-    extensionRootFile(QString id, VersionNumber apiVersion);
+    extensionRootFile(const QString &id,
+		      const VersionNumber &apiVersion) const;
 
 public slots:
 
@@ -131,15 +134,16 @@ private:
 
     void
     _setValue(const QString &key, const QVariant &value);
+
     QVariant
     _value(const QString &key,
            const QVariant &defaultValue = QVariant()) const;
     QString
     _wrapPublicAppTag(QString prepend = QString(),
-                      QString append = QString());
+                      QString append = QString()) const;
     QString
     _wrapGitInfo(QString prepend = QString(),
-                 QString append = QString());
+                 QString append = QString()) const;
 
     bool _writeBlock;
     bool _hideDevelInfo;

@@ -1,14 +1,15 @@
-Huggpunkt VHS is currently undergoing a complete rewrite. The rewritten
+Huggpunkt VHS is undergoing a complete rewrite. The rewritten
 code, which will be released as version 0.4.0 once the basic
-functionality is completed, is maintained in this repository.
+functionality is completed, is contained within this repository.
 
-The latest release is 0.3.5. It is only available in Swedish for the
-Windows platform. You can download it via the project bulletin board:
+Development has stalled due to lack of time, and will be continued
+no sooner than 2015. Another program which solves the same
+problem, though with a narrower scope, is being actively developed
+and maintained at:
 
-    http://planka.huggpunkt.org/h-vhs
+    https://github.com/simio/teve
 
-The next release is 0.3.7, which will be based on the new, though
-uncompleted code.
+The latest release is 0.3.5. It is outdated and not of much use.
 
 For build instructions, please refer to the following url:
 

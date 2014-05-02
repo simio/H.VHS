@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QTranslator>
 #include <QList>
 #include <QMetaType>
@@ -25,7 +25,7 @@
 
 int main(int argc, char *argv[])
 {
-    qInstallMsgHandler(messageHandler);
+    qInstallMessageHandler(messageHandler);
 
     QApplication a(argc, argv);
 

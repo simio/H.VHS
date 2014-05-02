@@ -102,8 +102,8 @@ private:
     // as the ExtensionManager is around.
     QMultiMap<qint64,QSharedPointer<Extension> > _persistentExtensions;
 
-    // QWeakPointer: Gets parent at allocation in initialise()
-    QWeakPointer<JobManager> _jobManager;
+    // pointer: Gets parent at allocation in initialise()
+    JobManager * _jobManager;
 
     QSharedPointer<Extension>
     _loadExtension(QSharedPointer<ExtensionDefinition> definition);

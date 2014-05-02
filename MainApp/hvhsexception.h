@@ -59,7 +59,7 @@ public:
             break;
         case Fatal:
             qFatal(QString("Fatal exception:"
-                           + this->_humaneMessage).toAscii().constData());
+                           + this->_humaneMessage).toLatin1().constData());
             break;
         default:
             qCritical() << "Unclassified exception" << this->_humaneMessage;

@@ -38,7 +38,7 @@ Configuration::Configuration(QObject *parent) :
     this->_writeBlock = false;
 
     this->_settings = PlatformDependent::p()->newSettings(this);
-    this->_settings.data()->setIniCodec("UTF-8");
+    this->_settings->setIniCodec("UTF-8");
 
     this->_publicAppTag = QString( PUBLIC_APP_TAG );
     this->_gitHash = QString( GIT_HASH );
@@ -57,11 +57,11 @@ Configuration::setWriteBlock(bool blocked)
 bool
 Configuration::clearStorage()
 {
-    this->_settings.data()->clear();
+    this->_settings->clear();
 
     // Remove the file
-    if (this->_settings.data()->format() == QSettings::IniFormat)
-        QFile(this->_settings.data()->fileName()).remove();
+    if (this->_settings->format() == QSettings::IniFormat)
+        QFile(this->_settings->fileName()).remove();
 
     return true;
 }
@@ -124,33 +124,33 @@ Configuration::saveWindow(const Window &window,
                           const QByteArray &state,
                           const QByteArray &geometry)
 {
-    this->_settings.data()->beginGroup("Layout");
+    this->_settings->beginGroup("Layout");
     this->_setValue(QString("WindowState")
                     + QString::number((int)window), state);
     this->_setValue(QString("WindowGeometry")
                     + QString::number((int)window), geometry);
-    this->_settings.data()->endGroup();
+    this->_settings->endGroup();
 }
 
 QByteArray
 Configuration::getWindowState(const Window &window) const
 {
-    this->_settings.data()->beginGroup("Layout");
+    this->_settings->beginGroup("Layout");
     QByteArray retVal =
         this->_value(QString("WindowState")
                      + QString::number((int)window), "").toByteArray();
-    this->_settings.data()->endGroup();
+    this->_settings->endGroup();
     return retVal;
 }
 
 QByteArray
 Configuration::getWindowGeometry(const Window &window) const
 {
-    this->_settings.data()->beginGroup("Layout");
+    this->_settings->beginGroup("Layout");
     QByteArray retVal =
         this->_value(QString("WindowGeometry")
                      + QString::number((int)window), "").toByteArray();
-    this->_settings.data()->endGroup();
+    this->_settings->endGroup();
     return retVal;
 }
 
@@ -158,14 +158,14 @@ void
 Configuration::saveWebViewSettings(QMap<QString,QVariant> webViewSettings)
 {
     QMap<QString,QVariant>::iterator webViewSetting;
-    this->_settings.data()->beginGroup("WebView");
+    this->_settings->beginGroup("WebView");
     for (webViewSetting = webViewSettings.begin();
          webViewSetting != webViewSettings.end();
          webViewSetting++)
     {
         this->_setValue(webViewSetting.key(), webViewSetting.value());
     }
-    this->_settings.data()->endGroup();
+    this->_settings->endGroup();
 }
 
 QMap<QString,QVariant>
@@ -173,14 +173,14 @@ Configuration::getWebViewSettings() const
 {
     QMap<QString,QVariant> result;
 
-    this->_settings.data()->beginGroup("WebView");
-    QStringList keys = this->_settings.data()->childKeys();
+    this->_settings->beginGroup("WebView");
+    QStringList keys = this->_settings->childKeys();
     QStringList::iterator iterator;
     for (iterator = keys.begin(); iterator != keys.end(); iterator++)
     {
         result.insert(*iterator, this->_value(*iterator));
     }
-    this->_settings.data()->endGroup();
+    this->_settings->endGroup();
 
     return result;
 }
@@ -189,11 +189,11 @@ QUrl
 Configuration::makeSearchUrl(const QString &query) const
 {
     QString q(query);
-    this->_settings.data()->beginGroup("WebBrowser");
+    this->_settings->beginGroup("WebBrowser");
     QUrl url = QUrl(this->_value("DefaultQuery",
                                  this->_defaults.searchQuery).toString()
                     + q.replace(" ", "+"));
-    this->_settings.data()->endGroup();
+    this->_settings->endGroup();
     return url;
 }
 
@@ -240,8 +240,8 @@ Configuration::getStorageLocation(const StorageLocation &type) const
     switch (type)
     {
     case FaviconStorageLocation:
-        location = QDir(QDesktopServices::storageLocation(
-                            QDesktopServices::CacheLocation));
+        location = QDir(QStandardPaths::writableLocation(
+                            QStandardPaths::CacheLocation));
         break;
     case SystemExtensionsLocation:
         location = QDir(PlatformDependent::p()->extensionsDir(
@@ -337,7 +337,7 @@ Configuration::_setValue(const QString &key, const QVariant &value)
 {
     if (! this->_writeBlock)
     {
-        this->_settings.data()->setValue(key, value);
+        this->_settings->setValue(key, value);
     }
 }
 
@@ -345,5 +345,5 @@ QVariant
 Configuration::_value(const QString &key,
                       const QVariant &defaultValue) const
 {
-    return this->_settings.data()->value(key, defaultValue);
+    return this->_settings->value(key, defaultValue);
 }

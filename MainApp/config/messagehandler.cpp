@@ -19,9 +19,9 @@
 // OBS: Inte del av klass!
 // Anropas av Qt.
 void
-messageHandler(QtMsgType type, const char *msg)
+messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    MessageHandler::p()->message(type, msg);
+    MessageHandler::p()->message(type, context, msg);
 }
 
 // Singleton (MessageHandler::p())
@@ -30,7 +30,7 @@ MessageHandler *MessageHandler::s_instance = NULL;
 MessageHandler::MessageHandler(QObject *parent) :
     QObject(parent)
 {
-    this->message(QtDebugMsg, "READY.");
+    this->message(QtDebugMsg, QMessageLogContext(), QString("READY."));
 }
 
 MessageHandler *
@@ -43,7 +43,7 @@ MessageHandler::p()
 }
 
 void
-MessageHandler::message(QtMsgType type, const char *msg)
+MessageHandler::message(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     QString message;
 
@@ -58,7 +58,8 @@ MessageHandler::message(QtMsgType type, const char *msg)
     default:                message += "Message:";
     }
 
-    message += QString(" ") + QString(msg);
+    message += QString(" ") + msg;
+    message += QString(" (line #") + context.line + QString(" in ") + context.file + QString(")");
 
     emit deliverMessage(message);
 
@@ -72,29 +73,29 @@ MessageHandler::message(QtMsgType type, const char *msg)
         abort();
 }
 
-QWeakPointer<ConsoleWindow>
+ConsoleWindow *
 MessageHandler::createConsoleWindow()
 {
-    if (! this->_consoleWindow.isNull())
+    if (! this->_consoleWindow)
         return this->_consoleWindow;
 
     // alloc: QSharedPointer here, plus it sets Qt::WA_DeleteOnClose
     // in its constructor.
-    this->_consoleWindow = QWeakPointer<ConsoleWindow>(new ConsoleWindow(0));
+    this->_consoleWindow = new ConsoleWindow(0);
 
     if (! QObject::connect(MessageHandler::p(),
                            SIGNAL(deliverMessage(QString)),
-                           this->_consoleWindow.data(),
+                           this->_consoleWindow,
                            SLOT(printMessage(QString))))
         qWarning() << "Could not connect console.";
-    QObject::connect(this->_consoleWindow.data(),
+    QObject::connect(this->_consoleWindow,
                      SIGNAL(destroyed(QObject*)),
                      this,
                      SLOT(notifyQObjectDestroyed(QObject*)));
 
-    this->_consoleWindow.data()->show();
-    this->_consoleWindow.data()->raise();
-    this->_consoleWindow.data()->activateWindow();
+    this->_consoleWindow->show();
+    this->_consoleWindow->raise();
+    this->_consoleWindow->activateWindow();
 
     foreach(QString m, this->_buffer)
         emit deliverMessage(m);

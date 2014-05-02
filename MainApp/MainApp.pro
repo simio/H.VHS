@@ -8,7 +8,7 @@ APP_PRO_DIR = ".."
 include( $$APP_PRO_DIR/global.pri )
 
 ## BUILD
-QT                 += core gui network script svg webkit xml
+QT                 += core gui widgets network script svg webkit webkitwidgets xml
 TARGET              = HuggpunktVHS
 TEMPLATE            = app
 

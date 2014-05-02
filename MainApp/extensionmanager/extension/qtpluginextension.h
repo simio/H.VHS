@@ -18,7 +18,6 @@
 #define EXTENSIONMANAGER_EXTENSION_QTPLUGINEXTENSION_H
 
 #include <QObject>
-#include <QWeakPointer>
 #include <QSharedPointer>
 #include <QStringList>
 #include <QIODevice>

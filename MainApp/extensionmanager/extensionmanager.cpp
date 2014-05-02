@@ -75,7 +75,7 @@ ExtensionManager::callHook(const qint64 hook, QVariant &hookData)
     // currently present in the JobManager. This is to ensure that
     // any hookData modifications take place before the JobManager
     // extension instances are called.
-    result += this->_jobManager.data()->callHook(hook, hookData);
+    result += this->_jobManager->callHook(hook, hookData);
 
     return result;
 }
@@ -126,8 +126,8 @@ ExtensionManager::_initialise()
     }
 
     // Set up a JobManager
-    // alloc: QWeakPointer with parent
-    this->_jobManager = QWeakPointer<JobManager>(new JobManager(this));
+    // alloc: has parent
+    this->_jobManager = new JobManager(this);
 }
 
 // Load an extension and return a pointer to it (or NULL). Checking

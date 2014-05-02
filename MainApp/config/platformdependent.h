@@ -18,8 +18,7 @@
 #define CONFIG_PLATFORMDEPENDENT_H
 
 #include <QApplication>
-#include <QWeakPointer>
-#include <QDesktopServices>
+#include <QStandardPaths>
 #include <QDir>
 #include <QString>
 #include <QSettings>
@@ -49,7 +48,7 @@ public:
     QDir
     presetsDir(Scope scope);
 
-    QWeakPointer<QSettings>
+    QSettings *
     newSettings(QObject *parent);
 
 private:

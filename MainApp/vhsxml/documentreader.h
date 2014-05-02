@@ -80,8 +80,8 @@ namespace VhsXml {
     private:
         static bool _isCompatibleWith(QString foulString);
 
-        bool _initialise(QWeakPointer<QFile> file);
-        bool _initialise(QWeakPointer<QIODevice> device);
+        bool _initialise(QFile *file);
+        bool _initialise(QIODevice * device);
         bool _initialise(QSharedPointer<QXmlInputSource> source);
 
         QDomDocument _xml;

@@ -21,7 +21,6 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QKeyEvent>
-#include <QWeakPointer>
 
 #include "main.h"
 

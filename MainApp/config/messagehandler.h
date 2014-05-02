@@ -21,7 +21,7 @@
 
 #include <QObject>
 #include <QDebug>
-#include <QWeakPointer>
+#include <QString>
 #include <QQueue>
 #include <QDateTime>
 
@@ -36,9 +36,8 @@ public:
     p();
 
     void
-    message(QtMsgType type, const char *msg);
-    QWeakPointer<ConsoleWindow>
-    createConsoleWindow();
+    message(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+    ConsoleWindow * createConsoleWindow();
 
 public slots:
     void
@@ -55,10 +54,10 @@ private:
     static const qint64 _bufferLength = 10240;      // Lines
 
     // Independent Window; won't get parent
-    QWeakPointer<ConsoleWindow> _consoleWindow;
+    ConsoleWindow * _consoleWindow;
 };
 
 void
-messageHandler(QtMsgType type, const char *msg);
+messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
 #endif // CONFIG_MESSAGEHANDLER_H

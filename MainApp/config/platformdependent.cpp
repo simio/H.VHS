@@ -55,8 +55,8 @@ PlatformDependent::extensionsDir(Scope scope)
         /* NOTREACHED */
     default:
     case User:
-        return QDir(QDesktopServices::storageLocation(
-                        QDesktopServices::DataLocation)
+        return QDir(QStandardPaths::writableLocation(
+                        QStandardPaths::DataLocation)
                     + "/extensions");
         /* NOTREACHED */
     }
@@ -70,8 +70,8 @@ PlatformDependent::extensionsDir(Scope scope)
         /* NOTREACHED */
     default:
     case User:
-        return QDir(QDesktopServices::storageLocation(
-                        QDesktopServices::DataLocation)
+        return QDir(QStandardPaths::writableLocation(
+                        QStandardPaths::DataLocation)
                     + "/extensions");
         /* NOTREACHED */
     }
@@ -89,8 +89,8 @@ PlatformDependent::presetsDir(Scope scope)
         /* NOTREACHED */
     default:
     case User:
-        return QDir(QDesktopServices::storageLocation(
-                        QDesktopServices::DataLocation)
+        return QDir(QStandardPaths::writableLocation(
+                        QStandardPaths::DataLocation)
                     + "/presets");
         /* NOTREACHED */
     }
@@ -103,8 +103,8 @@ PlatformDependent::presetsDir(Scope scope)
         /* NOTREACHED */
     default:
     case User:
-        return QDir(QDesktopServices::storageLocation(
-                        QDesktopServices::DataLocation)
+        return QDir(QStandardPaths::writableLocation(
+                        QStandardPaths::DataLocation)
                     + "/presets");
         /* NOTREACHED */
     }
@@ -112,21 +112,21 @@ PlatformDependent::presetsDir(Scope scope)
 }
 
 
-QWeakPointer<QSettings>
+QSettings *
 PlatformDependent::newSettings(QObject * parent)
 {
     // alloc: Has parent assigned from parameter above
 #ifdef _WIN32
     return new QSettings(QDir::toNativeSeparators(
-                             QDesktopServices::storageLocation(
-                                 QDesktopServices::DataLocation)
+                             QStandardPaths::writableLocation(
+                                 QStandardPaths::DataLocation)
                              + "/hvhs.ini"),
                          QSettings::IniFormat, parent);
 #endif // _WIN32
 #ifdef __unix__
     return new QSettings(QDir::toNativeSeparators(
-                             QDesktopServices::storageLocation(
-                                 QDesktopServices::DataLocation)
+                             QStandardPaths::writableLocation(
+                                 QStandardPaths::DataLocation)
                              + "/hvhs.conf"),
                          QSettings::NativeFormat, parent);
 #endif // __unix__

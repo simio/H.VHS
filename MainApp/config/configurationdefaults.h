@@ -19,7 +19,7 @@
 
 #include <QString>
 #include <QDir>
-#include <QDesktopServices>
+#include <QStandardPaths>
 
 #include "config/configuration.h"
 
@@ -50,18 +50,14 @@ protected:
 	// Use the first existing path for fileDialogPath
 	QStringList candidates;
 	candidates
-	    << QDesktopServices::storageLocation(
-		QDesktopServices::HomeLocation) + "/Downloads"
-	    << QDesktopServices::storageLocation(
-		QDesktopServices::DesktopLocation) + "/Downloads"
-	    << QDesktopServices::storageLocation(
-		QDesktopServices::MoviesLocation)
-	    << QDesktopServices::storageLocation(
-		QDesktopServices::DocumentsLocation)
-	    << QDesktopServices::storageLocation(
-		QDesktopServices::DesktopLocation)
-	    << QDesktopServices::storageLocation(
-		QDesktopServices::HomeLocation);
+        << QStandardPaths::writableLocation(
+        QStandardPaths::DownloadLocation)
+        << QStandardPaths::writableLocation(
+        QStandardPaths::MoviesLocation)
+        << QStandardPaths::writableLocation(
+        QStandardPaths::DesktopLocation)
+        << QStandardPaths::writableLocation(
+        QStandardPaths::HomeLocation);
 
 	foreach (QString cand, candidates)
 	    if (QDir(cand).exists())

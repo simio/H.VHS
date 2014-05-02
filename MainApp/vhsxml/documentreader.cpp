@@ -21,12 +21,12 @@ namespace VhsXml {
                                    QObject *parent) :
         QObject(parent)
     {
-        // Use a weak pointer and set this as file parent. The file
+        // Use a C++ pointer and set this as file parent. The file
         // will be used to construct a QXmlInputSource instance, which
         // might (or might not) read from it at any time until this
         // DocumentReader instance is destructed.
-        // alloc: QWeakPointer with parent
-        QWeakPointer<QFile> p(new QFile(file.canonicalFilePath(), this));
+        // alloc: has parent
+        QFile * p = new QFile(file.canonicalFilePath(), this);
         this->_initialise(p);
     }
 
@@ -137,27 +137,27 @@ namespace VhsXml {
     }
 
     bool
-    DocumentReader::_initialise(QWeakPointer<QIODevice> device)
+    DocumentReader::_initialise(QIODevice * device)
     {
         // alloc: QSharedPointer
         QSharedPointer<QXmlInputSource> source(
-            new QXmlInputSource(device.data()));
+            new QXmlInputSource(device));
         bool retVal = this->_initialise(source);
         return retVal;
     }
 
-    bool DocumentReader::_initialise(QWeakPointer<QFile> file)
+    bool DocumentReader::_initialise(QFile * file)
     {
-        if (file.data()->exists())
+        if (file->exists())
         {
             // alloc: QSharedPointer
             QSharedPointer<QXmlInputSource> source(
-                new QXmlInputSource(file.data()));
+                new QXmlInputSource(file));
             bool retVal = this->_initialise(source);
             return retVal;
         }
         qDebug() << "DocumentReader failed to initialise on"
-                 << file.data()->fileName();
+                 << file->fileName();
         return false;
     }
 } // namespace VhsXml

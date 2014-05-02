@@ -26,7 +26,6 @@
 #include <QComboBox>
 #include <QWebView>
 #include <QShortcut>
-#include <QWeakPointer>
 
 #include "main.h"
 
@@ -89,42 +88,42 @@ private:
     BrowserStatus _browserStatus;
 
     // All UI elements are parented
-    QWeakPointer<WebView> _webView;
+    WebView * _webView;
 
-    QWeakPointer<QToolBar> _toolBarBrowser;
-    QWeakPointer<QAction> _actionBrowseHome;
-    QWeakPointer<QAction> _actionBrowseBack;
-    QWeakPointer<QAction> _actionBrowseForward;
-    QWeakPointer<QAction> _actionBrowseReload;
-    QWeakPointer<QAction> _actionBrowseReloadAndBypassCache;
-    QWeakPointer<QAction> _actionBrowseStop;
+    QToolBar * _toolBarBrowser;
+    QAction * _actionBrowseHome;
+    QAction * _actionBrowseBack;
+    QAction * _actionBrowseForward;
+    QAction * _actionBrowseReload;
+    QAction * _actionBrowseReloadAndBypassCache;
+    QAction * _actionBrowseStop;
 
-    QWeakPointer<WebBrowserComboBox> _comboBoxAddressBar;
-    QWeakPointer<QComboBox> _comboBoxQuickPicker;
-    QWeakPointer<QLineEdit> _lineEditSearch;
-    QWeakPointer<QProgressBar> _browserProgressBar;
+    WebBrowserComboBox * _comboBoxAddressBar;
+    QComboBox * _comboBoxQuickPicker;
+    QLineEdit * _lineEditSearch;
+    QProgressBar * _browserProgressBar;
 
-    QWeakPointer<QAction> _actionFocusAddressBar;
-    QWeakPointer<QAction> _actionFocusSearchBox;
+    QAction * _actionFocusAddressBar;
+    QAction * _actionFocusSearchBox;
 
     // File menu
-    QWeakPointer<QMenu> _menuFile;
-    QWeakPointer<QAction> _actionQuit;
+    QMenu * _menuFile;
+    QAction * _actionQuit;
 
     // Settings menu
-    QWeakPointer<QMenu> _menuSettings;
-    QWeakPointer<QAction> _actionToggleWebViewPlugins;
-    QWeakPointer<QAction> _actionToggleWebViewJava;
-    QWeakPointer<QAction> _actionSelectDefaultFileDialogPath;
+    QMenu * _menuSettings;
+    QAction * _actionToggleWebViewPlugins;
+    QAction * _actionToggleWebViewJava;
+    QAction * _actionSelectDefaultFileDialogPath;
 
     // Advanced menu
-    QWeakPointer<QMenu> _menuAdvanced;
-    QWeakPointer<QAction> _actionClearStorageAndQuit;
-    QWeakPointer<QAction> _actionLaunchConsoleWindow;
+    QMenu * _menuAdvanced;
+    QAction * _actionClearStorageAndQuit;
+    QAction * _actionLaunchConsoleWindow;
 
     // Info menu
-    QWeakPointer<QMenu> _menuInfo;
-    QWeakPointer<QAction> _actionAbout;
+    QMenu * _menuInfo;
+    QAction * _actionAbout;
 
 };
 

@@ -130,10 +130,13 @@ CassetteContent::_empty()
 {
     if (this->_form == CassetteContent::SubCassettes)
     {
+        /* XXX: This does not build, and seems unnecessary, since
+         * QSharedDataPointers manages themselves.
         QHash<QString,QSharedDataPointer<Cassette> >::iterator cassette =
             this->_subCassettes.begin();
         while (cassette != this->_subCassettes.end())
             delete cassette;
+        */
         this->_subCassettes.clear();
     }
     else if (this->_form == CassetteContent::Binary)

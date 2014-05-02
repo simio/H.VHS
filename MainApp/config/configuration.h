@@ -18,12 +18,11 @@
 #define CONFIG_CONFIGURATION_H
 
 #include <QObject>
-#include <QtGui/QApplication>
-#include <QWeakPointer>
+#include <QtWidgets/QApplication>
 #include <QSettings>
 #include <QDebug>
 #include <QRegExp>
-#include <QDesktopServices>
+#include <QStandardPaths>
 #include <QUrl>
 #include <QFile>
 #include <QMap>
@@ -161,7 +160,7 @@ private:
     QString _gitTag;
     QString _gitBranch;
 
-    QWeakPointer<QSettings> _settings;
+    QSettings * _settings;
 
     QString _sessionFileDialogPath;
 };

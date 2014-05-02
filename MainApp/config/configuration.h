@@ -113,7 +113,7 @@ public:
 
     void
     setStartPage(const BrowserStartPage &page,
-                 const QString &page);
+                 const QString &value);
 
     // Filesystem things
     QDir

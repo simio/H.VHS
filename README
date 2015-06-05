@@ -2,15 +2,13 @@ Huggpunkt VHS is undergoing a complete rewrite. The rewritten
 code, which will be released as version 0.4.0 once the basic
 functionality is completed, is contained within this repository.
 
+For build instructions, please refer to the following url:
+
+    https://github.com/simio/H.VHS/wiki/Build-environment
+
 Development has stalled due to lack of time, and will be continued
 no sooner than 2015. Another program which solves the same
 problem, though with a narrower scope, is being actively developed
 and maintained at:
 
     https://github.com/simio/teve
-
-The latest release is 0.3.5. It is outdated and not of much use.
-
-For build instructions, please refer to the following url:
-
-    https://github.com/simio/H.VHS/wiki/Build-environment
